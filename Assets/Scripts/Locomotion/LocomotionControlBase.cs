@@ -71,6 +71,10 @@ namespace Locomotion
         public Vector3 Position;
         public Quaternion Rotation;
         public Vector3 Velocity;
+        public override string ToString()
+        {
+            return $"Position: {Position}, Velocity: {Velocity}";
+        }
     }
     public abstract class LocomotionControlBase : MonoBehaviour
     {

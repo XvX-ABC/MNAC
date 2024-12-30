@@ -150,9 +150,11 @@ namespace Locomotion.Animation
         }
         void Start()
         {
-            var locomotionControl = GetComponent<LocomotionControlBase>();
-            _jumpLocomotion = locomotionControl.jumpLocomotion;
-            _jumpAnimator = new(_jumpLocomotion, _jumpAnimatorDefines, locomotionControl.locomotionDefines.Jump, _animator, this.transform, _groundSampler);
+            //var locomotionControl = GetComponent<LocomotionControlBase>();
+            //_jumpLocomotion = locomotionControl.jumpLocomotion;
+            //_jumpAnimator = new(_jumpLocomotion, _jumpAnimatorDefines, locomotionControl.locomotionDefines.Jump, _animator, this.transform, _groundSampler);
+
+
             //_jumpAnimator.UpdateAscendingMultiplier();
         }
 
@@ -227,7 +229,8 @@ namespace Locomotion.Animation
         public void OnFixedUpdate(LocomotionContext context)
         {
             var velocity = context.Velocity;
-            if (!_isOnGround && !_jumpLocomotion.InJumping)
+            //if (!_isOnGround && !_jumpLocomotion.InJumping)
+            if (!_isOnGround)
             {
                 _animator.SetBool(_inAirLocomotionAnimatorDefines.EnterParamName, true);
                 UpdateAnimationInAir(velocity);
@@ -238,7 +241,7 @@ namespace Locomotion.Animation
                 UpdateAnimationOnGround(velocity);
             }
             //UpdateAnimationInJump();
-            _jumpAnimator.OnFixedUpdate();
+            //_jumpAnimator.OnFixedUpdate();
         }
         void UpdateAnimationOfHorizontalMovement(Vector3 currentVelocity, string paramName_x, string paramName_y)
         {

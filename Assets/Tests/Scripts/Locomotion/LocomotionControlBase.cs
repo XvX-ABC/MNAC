@@ -1,12 +1,20 @@
 ﻿using Locomotion;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tests.Locomotion.Animation;
 using Unity.VisualScripting;
 using UnityEngine;
 namespace Tests.Locomotion
 {
+    public enum State
+    {
+        OnGround,
+        Ascending,
+        Descending
+    }
     public class Context
     {
         public LocomotionContext Locomotion;
@@ -17,6 +25,11 @@ namespace Tests.Locomotion
         public float DeltaTime;
         public IInput Input;
         public IGround Ground;
+        public State State;
+        public override string ToString()
+        {
+            return $"State: {State},\nGround: {{ {Ground} }}, \nLocomotionContext: {{ {Locomotion} }}";
+        }
 
     }
     [RequireComponent(typeof(Rigidbody))]
@@ -26,10 +39,16 @@ namespace Tests.Locomotion
         Camera _camera;
 
         Rigidbody _rb;
-        HorizontalLocomotion _horizontalLocomotion;
-        JumpLocomotion _jumpLocomotion;
-        Gravity _gravity;
-        QuarterViewRotation _rotation;
+        internal HorizontalLocomotion horizontalLocomotion;
+        internal HorizontalDrag horizontalDrag;
+        internal JumpLocomotion jumpLocomotion;
+        internal AirLocomotion airLocomotion;
+        internal Gravity gravity;
+        internal QuarterViewRotation rotation;
+
+
+        LocomotionAnimator _locomotionAnimator;
+
         ILocomotionDefine _defines;
         IGroundSampler _groundSampler;
         ILocomotionAnimator _animator;
@@ -42,15 +61,19 @@ namespace Tests.Locomotion
         {
             _defines = GetComponent<ILocomotionDefine>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(ILocomotionDefine));
             _groundSampler = GetComponent<IGroundSampler>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(IGroundSampler));
-            _animator = GetComponent<ILocomotionAnimator>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(ILocomotionAnimator));
+            //_animator = GetComponent<ILocomotionAnimator>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(ILocomotionAnimator));
             _input = GetComponent<IInput>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(IInput));
+
 
             _rb = GetComponent<Rigidbody>();
 
-            _horizontalLocomotion = new(_defines.Base);
-            _jumpLocomotion = new(_defines.Jump);
-            _gravity = new(_jumpLocomotion);
-            _rotation = new(this.gameObject);
+
+            horizontalLocomotion = new(_defines.Base);
+            horizontalDrag = new(_defines.Base);
+            jumpLocomotion = new(_defines.Jump);
+            airLocomotion = new(_defines.Base, jumpLocomotion);
+            gravity = new();
+            rotation = new(this.gameObject);
 
 
             var ground = new Ground(_groundSampler);
@@ -66,10 +89,21 @@ namespace Tests.Locomotion
 
             _modules = new IModule[]
             {
-            _horizontalLocomotion,
-            _jumpLocomotion,
-            _gravity,
+                rotation,
+                horizontalLocomotion,
+                horizontalDrag,
+                jumpLocomotion,
+                airLocomotion,
+                gravity,
             };
+
+
+            _locomotionAnimator = GetComponent<LocomotionAnimator>();
+            if (_locomotionAnimator != null)
+            {
+                Array.Resize(ref _modules, _modules.Length + 1);
+                _modules[^1] = _locomotionAnimator;
+            }
         }
         void UpdateContext()
         {
@@ -79,24 +113,42 @@ namespace Tests.Locomotion
                 Rotation = _rb.rotation,
                 Velocity = _rb.velocity,
             };
+            var ground = _context.Ground;
+            var state = _context.State;
+            if (ground.Touched)
+                _context.State = State.OnGround;
+            else if (!ground.Touched && state != State.Ascending)
+                _context.State = State.Descending;
             _context.DeltaTime = Time.fixedDeltaTime;
+
         }
 
         void ApplyContext()
         {
             _rb.velocity = _context.Velocity;
             _rb.MoveRotation(_context.Rotation);
-            _animator.OnFixedUpdate(_context.Locomotion);
         }
-        void FixedUpdate()
+        void DebugRun()
         {
-            UpdateContext();
+            var sbuilder = new StringBuilder();
             for (int i = 0; i < _modules.Length; i++)
             {
                 var module = _modules[i];
-                module.Update(_context);
+                module.OnUpdate(_context);
+                sbuilder.AppendLine($"[{module.GetType().Name}]->{_context}\t");
             }
-
+            Debug.Log(sbuilder.ToString());
+        }
+        void FixedUpdate()
+        {
+            _groundSampler.Sample();
+            UpdateContext();
+            //for (int i = 0; i < _modules.Length; i++)
+            //{
+            //    var module = _modules[i];
+            //    module.OnUpdate(_context);
+            //}
+            DebugRun();
             ApplyContext();
         }
     }

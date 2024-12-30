@@ -15,5 +15,9 @@ namespace Tests.Locomotion
         public Vector3 Normal => _sampler.Normal;
 
         public bool Touched => _sampler.IsOnGround;
+        public override string ToString()
+        {
+            return $"Normal: {_sampler.Normal}, Touched: {_sampler.IsOnGround}";
+        }
     }
 }

@@ -2,7 +2,7 @@
 {
     public interface IModule
     {
-        public void Update(Context context);
+        public void OnUpdate(Context context);
     }
 
 }

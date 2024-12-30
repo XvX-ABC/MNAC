@@ -1,17 +1,23 @@
-﻿using Assets.Scripts.Utilities.Timeline;
-using global::Locomotion;
+﻿#define LOCOMOTION_JUMP_DIRECTION_KEEP
+using Assets.Scripts.Utilities.Timeline;
 using Locomotion;
 using System;
+using System.Data;
 using UnityEngine;
-using static Tests.Locomotion.IAirModule;
-
+using LState = Tests.Locomotion.State;
 namespace Tests.Locomotion
 {
 
 
-    class JumpLocomotion : IAirModule
+    class JumpLocomotion : IModule
     {
-
+        public enum State
+        {
+            Idle,
+            Preparating,
+            Ascending,
+            Descending
+        }
         class PrepareCompleted : PointEvent
         {
             JumpLocomotion _locomotion;
@@ -25,6 +31,7 @@ namespace Tests.Locomotion
             public override void Execute(TimelineContext context)
             {
                 _locomotion._currentState = State.Ascending;
+                _locomotion._context.State = LState.Ascending;
             }
         }
         class Ascending : RangeEvent
@@ -40,7 +47,7 @@ namespace Tests.Locomotion
             public override void Execute(TimelineContext context)
             {
                 //_locomotion._currentVelocity = _locomotion.CalculateVelocityInAscendingStage(_time);
-                _locomotion._currentVelocity = _locomotion.CalculateVelocity(_time);
+                _locomotion._currentVelocity.y = _locomotion.CalculateVelocity(_time).y;
                 _time += context.DeltaTime;
             }
             public override void Reset()
@@ -60,17 +67,24 @@ namespace Tests.Locomotion
             public override void Execute(TimelineContext context)
             {
                 _locomotion._currentState = State.Descending;
+                _locomotion._context.State = LState.Descending;
             }
         }
         Vector3 _startVelocity;
         Vector3 _currentVelocity;
         float _ascendingDuration;
         IJumpDefines _defines;
+        //State __currentState { get => _context.State; set => _context.State = value; }
         State _currentState;
         Timeline _timeline;
+        Context _context;
 
-        public State CurrentState { get => _currentState; set => _currentState = value; }
-
+        public State CurrentState
+        {
+            get => _currentState;
+        }
+        public float AscendingDuration { get => _ascendingDuration; }
+        public IJumpDefines Defines { get => _defines; }
         public JumpLocomotion(IJumpDefines defines)
         {
             _defines = defines ?? throw new ArgumentNullException(nameof(defines));
@@ -87,38 +101,59 @@ namespace Tests.Locomotion
             _timeline = new(_ascendingDuration + _defines.PreparationDuration, false, new PrepareCompleted(t0, this), new Ascending(t0, t1, this), new AscendingEnd(1, this));
 
         }
-        void StartJump()
+        public void StartJump()
         {
-            if (_currentState > State.OnGround)
-                return;
-            _currentVelocity = Vector3.zero;
-            _currentState = State.Preparing;
+            _currentVelocity = _context.Velocity;
+            _currentState = State.Preparating;
             _timeline.Start();
         }
-        void EndJump()
+        public void EndJump()
         {
-            if (_currentState == State.OnGround)
-                return;
-            _currentState = State.OnGround;
+            _currentState = State.Idle;
+            _currentVelocity = Vector3.zero;
             _timeline.Stop();
         }
         Vector3 CalculateVelocity(float time)
         {
             return _startVelocity + Physics.gravity * time;
         }
-        public void Update(Context context)
+        //StringBuilder builder = new StringBuilder();
+
+        public void OnUpdate(Context context)
         {
             var input = context.Input;
             var ground = context.Ground;
-            if (_currentState == State.OnGround && input.IsAscending)
+            var state = context.State;
+            if (_context != context)
+                _context = context;
+            if (_currentState == State.Idle && state == LState.OnGround && input.IsAscending)
                 StartJump();
-            else if (_currentState == State.Descending && ground.Touched)
-                EndJump();
-            else
+#if LOCOMOTION_JUMP_DIRECTION_KEEP
+            else if (_currentState == State.Ascending)
+                context.Velocity = _currentVelocity;
+            else if (_currentState == State.Descending)
             {
-                _timeline.OnUpdate(Time.fixedDeltaTime);
+                if (ground.Touched)
+                    EndJump();
+                else
+                {
+                    var currentVelocity = new Vector3(_currentVelocity.x, _context.Velocity.y, _currentVelocity.z);
+                    _context.Velocity = currentVelocity;
+                }
             }
-            context.Velocity += _currentVelocity;
+#else
+            else if (__currentState == State.Ascending)
+            {
+                var velocity = context.Velocity;
+                velocity.y = _currentVelocity.y;
+                context.Velocity = velocity;
+            }
+            else if (__currentState == State.Descending && ground.Touched)
+                EndJump();
+#endif
+            if (_timeline.IsRunning)
+                _timeline.OnUpdate(Time.fixedDeltaTime);
+
         }
     }
 

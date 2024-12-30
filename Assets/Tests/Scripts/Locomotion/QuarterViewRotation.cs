@@ -26,9 +26,10 @@ namespace Tests.Locomotion
             var newRotation = currentRotation * Quaternion.LookRotation(finalVector, _obj.transform.up);
             context.Rotation = newRotation;
         }
-        public void Update(Context context)
+        public void OnUpdate(Context context)
         {
             Rotate(context);
         }
+
     }
 }

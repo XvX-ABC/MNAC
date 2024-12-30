@@ -1,30 +1,23 @@
-﻿using UnityEngine;
+﻿using System.Linq.Expressions;
+using UnityEngine;
 namespace Tests.Locomotion
 {
-
     public class Gravity : IModule
     {
-        IAirModule[] dependencies;
-        public Gravity(params IAirModule[] modules)
+
+        public Gravity()
         {
-            dependencies = modules;
         }
-        (bool, IAirModule) Check()
+
+        public void OnUpdate(Context context)
         {
-            foreach (var d in dependencies)
-                if (d.CurrentState != IAirModule.State.Descending)
-                    return (false, d);
-            return (true, default);
-        }
-        public void Update(Context context)
-        {
-            var (passed, module) = Check();
-            if (!passed)
+            if (context.State == State.Descending)
             {
-                Debug.LogWarning($"There is a dependent module of type '{module.GetType().Name}' that has not entered 'Descending' state, so the gravity will not work.");
-                return;
+                var currentVelocity = context.Velocity;
+
+                currentVelocity.y += Physics.gravity.y * context.DeltaTime;
+                context.Velocity = currentVelocity;
             }
-            context.Velocity += Physics.gravity * context.DeltaTime;
         }
     }
 }
