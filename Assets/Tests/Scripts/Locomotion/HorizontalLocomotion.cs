@@ -2,7 +2,6 @@
 using UnityEngine;
 namespace Tests.Locomotion
 {
-
     class HorizontalLocomotion : IModule
     {
         IBaseDefines _defines;

@@ -6,6 +6,7 @@ namespace Tests.Locomotion
 {
     class AirLocomotion : IModule
     {
+
         IBaseDefines _defines;
         JumpLocomotion _jump;
         public AirLocomotion(IBaseDefines defines, JumpLocomotion jumpLocomotion)

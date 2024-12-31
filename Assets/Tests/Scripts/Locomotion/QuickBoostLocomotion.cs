@@ -1,0 +1,102 @@
+﻿using System;
+using Assets.Scripts.Utilities.Timeline;
+using Locomotion;
+using UnityEngine;
+using JState = Tests.Locomotion.JumpLocomotion.State;
+namespace Tests.Locomotion
+{
+    class QuickBoostLocomotion : IModule
+    {
+        class Boosting : RangeEvent
+        {
+            QuickBoostLocomotion _locomotion;
+            public Boosting(float triggeredProportion, float durationProportion, QuickBoostLocomotion locomotion) : base(durationProportion, triggeredProportion)
+            {
+                _locomotion = locomotion;
+            }
+            public override void Execute(TimelineContext _)
+            {
+                Debug.Log("Boosting: " + _locomotion._velocity);
+                _locomotion._context.Velocity = _locomotion._velocity;
+            }
+        }
+        class EndBoostEvent : PointEvent
+        {
+            QuickBoostLocomotion _locomotion;
+
+            public EndBoostEvent(float triggeredProportion, QuickBoostLocomotion locomotion) : base(triggeredProportion)
+            {
+                _locomotion = locomotion;
+            }
+
+            public override void Execute(TimelineContext context)
+            {
+                _locomotion.EndBoost();
+            }
+        }
+        IQuickBoostDefines _defines;
+        JumpLocomotion _jumpLocomotion;
+        Timeline _timeline;
+        bool _boosting;
+        Context _context;
+        Vector3 _velocity;
+        float _lastTime;
+        public QuickBoostLocomotion(IQuickBoostDefines defines, JumpLocomotion jumpLocomotion)
+        {
+            _defines = defines ?? throw new ArgumentNullException(nameof(defines));
+            _timeline = new(_defines.Duration, false, new Boosting(0f, 1f, this), new EndBoostEvent(1f, this));
+            _jumpLocomotion = jumpLocomotion;
+        }
+        public void StartBoost()
+        {
+            if (_boosting)
+                return;
+
+            var currentTime = Time.unscaledTime;
+            if (Mathf.Abs(currentTime - _lastTime) < _defines.Interval)
+                return;
+
+
+            var context = _context;
+            var direction = context.Input.HorizontalDirection;
+            var velocity = context.Velocity;
+
+            _velocity = CalculateVelocity(direction, velocity);
+
+            _timeline.Start();
+
+            _boosting = true;
+        }
+        public void EndBoost()
+        {
+            if (!_boosting)
+                return;
+            _timeline.Stop();
+            _boosting = false;
+            _lastTime = Time.unscaledTime;
+            _velocity = Vector3.zero;
+        }
+        public Vector3 CalculateVelocity(Vector3 direction, Vector3 currentVelocity)
+        {
+            direction = direction.normalized;
+            var velocity = direction * _defines.Velocity;
+            velocity.y = currentVelocity.y;
+            return velocity;
+        }
+        public void OnUpdate(Context context)
+        {
+            _context = context;
+            var input = context.Input;
+            if (input.IsBoosting)
+            {
+                if (_jumpLocomotion.CurrentState > JState.Idle && _jumpLocomotion.CurrentState <= JState.Ascending)
+                    _jumpLocomotion.EndJump();
+
+                StartBoost();
+            }
+            if (_timeline.IsRunning)
+                _timeline.OnUpdate(context.DeltaTime);
+
+        }
+    }
+}

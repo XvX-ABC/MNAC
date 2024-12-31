@@ -13,6 +13,8 @@ namespace Tests.Locomotion
         KeyCode _right;
         [SerializeField]
         KeyCode _up;
+        [SerializeField]
+        KeyCode _qb;
         public Vector3 HorizontalDirection
         {
             get
@@ -32,5 +34,14 @@ namespace Tests.Locomotion
         }
 
         public bool IsAscending => Input.GetKey(_up);
+
+        public bool IsBoosting
+        {
+            get
+            {
+                var direction = HorizontalDirection;
+                return Input.GetKeyDown(_qb) && direction != Vector3.zero;
+            }
+        }
     }
 }

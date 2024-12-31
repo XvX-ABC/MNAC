@@ -40,6 +40,7 @@ namespace Tests.Locomotion
 
         Rigidbody _rb;
         internal HorizontalLocomotion horizontalLocomotion;
+        internal QuickBoostLocomotion quickBoostLocomotion;
         internal HorizontalDrag horizontalDrag;
         internal JumpLocomotion jumpLocomotion;
         internal AirLocomotion airLocomotion;
@@ -71,6 +72,7 @@ namespace Tests.Locomotion
             horizontalLocomotion = new(_defines.Base);
             horizontalDrag = new(_defines.Base);
             jumpLocomotion = new(_defines.Jump);
+            quickBoostLocomotion = new(_defines.QuickBoost, jumpLocomotion);
             airLocomotion = new(_defines.Base, jumpLocomotion);
             gravity = new();
             rotation = new(this.gameObject);
@@ -91,6 +93,7 @@ namespace Tests.Locomotion
             {
                 rotation,
                 horizontalLocomotion,
+                quickBoostLocomotion,
                 horizontalDrag,
                 jumpLocomotion,
                 airLocomotion,
@@ -139,6 +142,14 @@ namespace Tests.Locomotion
             }
             Debug.Log(sbuilder.ToString());
         }
+        void Run()
+        {
+            for (int i = 0; i < _modules.Length; i++)
+            {
+                var module = _modules[i];
+                module.OnUpdate(_context);
+            }
+        }
         void FixedUpdate()
         {
             _groundSampler.Sample();
@@ -148,7 +159,8 @@ namespace Tests.Locomotion
             //    var module = _modules[i];
             //    module.OnUpdate(_context);
             //}
-            DebugRun();
+            Run();
+            //DebugRun();
             ApplyContext();
         }
     }
