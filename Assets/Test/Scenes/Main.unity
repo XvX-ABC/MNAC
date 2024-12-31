@@ -2064,11 +2064,19 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9d739a9b54eaf3f4b9df643170c41867,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1473502702}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9d739a9b54eaf3f4b9df643170c41867,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1473502699}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9d739a9b54eaf3f4b9df643170c41867,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1473502702}
+      addedObject: {fileID: 1473502703}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9d739a9b54eaf3f4b9df643170c41867,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1473502705}
   m_SourcePrefab: {fileID: 100100000, guid: 9d739a9b54eaf3f4b9df643170c41867, type: 3}
 --- !u!1 &1473502686 stripped
 GameObject:
@@ -2093,6 +2101,7 @@ MonoBehaviour:
   _left: 97
   _right: 100
   _up: 32
+  _qb: 304
 --- !u!114 &1473502691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2270,6 +2279,10 @@ MonoBehaviour:
     _descendingClipName: Bones_Jump_Descending_InAir
     _descendingClipLength: 1
     _enterParamName: ToJump
+  _air:
+    _enterParamName: InAir
+    _xParamName: InAirXValue
+    _yParamName: InAirYValue
 --- !u!114 &1473502702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2280,6 +2293,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 897f1cf384e16e84585c0b6e2f5e557d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1473502703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473502686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6792f542d4ef7d44fac7a452c577a813, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1473502705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473502686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95c6192c3a1504f4394378b6076c55cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1897774178 stripped
