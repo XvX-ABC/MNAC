@@ -1,5 +1,6 @@
 ﻿using System;
 using Locomotion;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 using JState = Tests.Locomotion.JumpLocomotion.State;
 namespace Tests.Locomotion.Animation
@@ -56,9 +57,13 @@ namespace Tests.Locomotion.Animation
                 var pos = context.Position;
                 _animator.SetBool(_defines.EnterParamName, true);
                 _maxHeight = pos.y + _jumpLocomotion.Defines.Height;
+                _oldState = currentState;
             }
             else if (currentState == JState.Idle)
+            {
                 _animator.SetBool(_defines.EnterParamName, false);
+                _oldState = currentState;
+            }
 
             if (currentState == JState.Descending)
             {
