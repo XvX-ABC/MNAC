@@ -1,0 +1,20 @@
+- 基础运动 
+    -   地面、跳跃      √
+    -   空中    √
+    -   QB      √
+    -   Arm rotation    ×   （2~3）
+    -   Animations
+        -   地面    √
+        -   跳跃    √
+        -   空中    √
+        -   QB  ×       
+        -   Arm rotation ×  （1）
+-   武器
+    -   直击    ×   （0.5）
+    -   Missile ×   （4~5）
+    -   Knief   ×   （待定）
+    -   Arts    ×   （待定）
+        -   (待定)
+-   AI  ×   (待定)
+-   Assembly    ×   （待定）
+-   Mission   ×   （待定）
