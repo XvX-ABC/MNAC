@@ -57,7 +57,7 @@ namespace Tests.Locomotion.Arms
         {
             var rotation = Quaternion.Inverse(preRotation);
             var tv0 = (_target.Locomotion.Position - _elbow.transform.position).normalized;
-            var tv1 = Vector3.ProjectOnPlane(rotation*tv0, Vector3.up);
+            var tv1 = Vector3.ProjectOnPlane(rotation * tv0, Vector3.up);
 
             var forward_0 = Vector3.ProjectOnPlane(_localForward, Vector3.up);
 

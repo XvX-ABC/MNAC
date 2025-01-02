@@ -119,12 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &91277659 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -6048976933569965052, guid: 9d739a9b54eaf3f4b9df643170c41867,
-    type: 3}
-  m_PrefabInstance: {fileID: 765057757}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &270931722
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,12 +370,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &592148355 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -3522004264418218004, guid: 9d739a9b54eaf3f4b9df643170c41867,
-    type: 3}
-  m_PrefabInstance: {fileID: 765057757}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &712140477 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8622611350343706280, guid: 9d739a9b54eaf3f4b9df643170c41867,
@@ -479,12 +467,12 @@ PrefabInstance:
     - target: {fileID: -2855506557917006508, guid: 9d739a9b54eaf3f4b9df643170c41867,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9199926
+      value: 0.8660254
       objectReference: {fileID: 0}
     - target: {fileID: -2855506557917006508, guid: 9d739a9b54eaf3f4b9df643170c41867,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.39193577
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -2855506557917006508, guid: 9d739a9b54eaf3f4b9df643170c41867,
         type: 3}
@@ -499,7 +487,7 @@ PrefabInstance:
     - target: {fileID: -2855506557917006508, guid: 9d739a9b54eaf3f4b9df643170c41867,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 46.15
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: -2855506557917006508, guid: 9d739a9b54eaf3f4b9df643170c41867,
         type: 3}
@@ -730,7 +718,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _body: {fileID: 765057761}
   _shoulder_end: {fileID: 765057759}
-  _elbow_Rotation: {fileID: 592148355}
   _elbow: {fileID: 765057758}
   _hand: {fileID: 448114150}
 --- !u!114 &765057763
@@ -1015,7 +1002,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _body: {fileID: 765057761}
   _shoulder_end: {fileID: 910034098}
-  _elbow_Rotation: {fileID: 91277659}
   _elbow: {fileID: 1047372789}
   _hand: {fileID: 712140477}
 --- !u!1660057539 &9223372036854775807
