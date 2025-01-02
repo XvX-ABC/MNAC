@@ -1,5 +1,7 @@
 #define TESTS
+using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 namespace Tests.Locomotion.Arms
 {
     public class ShoulderControlBase : MonoBehaviour
@@ -10,23 +12,39 @@ namespace Tests.Locomotion.Arms
         GameObject _shoulder_end;
         [SerializeField]
         GameObject _elbow;
+        [SerializeField]
+        GameObject _hand;
         //GameObject _handle;
         Tests.ITarget _target;
-        Vector3 _forward;
+        Vector3 _localForward;
+        Quaternion _r;
         Vector3 _up;
+
+        bool _applyRotation;
+        Quaternion _rotation;
 
         private void Start()
         {
-            var f = _elbow.transform.position - this.gameObject.transform.position;
-            _forward = _elbow.transform.localRotation * f.normalized;
+            //var f = _elbow.transform.position - _shoulder_end.gameObject.transform.position;
+            //_forward = _elbow.transform.localRotation * f.normalized;
 
+            UpdateForward();
 
             _up = this.transform.up;
 #if TESTS
             _target = GetComponent<Tests.ITarget>();
+
+            _rotation = this.transform.rotation;
 #endif
         }
-
+        void UpdateForward()
+        {
+            var f = _elbow.transform.position - _shoulder_end.transform.position;
+            var r = Quaternion.FromToRotation(f, _elbow.transform.up);
+            f = Quaternion.Inverse(this.transform.rotation) * r * f;
+            _localForward = f;
+            _r = r;
+        }
         Quaternion CalculateHorizontalRotation()
         {
             var currentPos = _shoulder_end.transform.position;
@@ -35,19 +53,31 @@ namespace Tests.Locomotion.Arms
             var tv_b = Vector3.ProjectOnPlane(tv_w, _body.transform.up);
             return Quaternion.LookRotation(tv_b, _up);
         }
-        float a;
-        Quaternion CalculateVerticalRotation(Quaternion preRotation)
+        Quaternion CalculateVertcalRotation_0(Quaternion preRotation)
         {
-            var tv0 = _target.Locomotion.Position - _shoulder_end.transform.position;
-            var tv1 = Vector3.ProjectOnPlane(Quaternion.Inverse(preRotation) * tv0, Vector3.up);
-            var r = Quaternion.LookRotation(tv1, Vector3.up);
+            var rotation = Quaternion.Inverse(preRotation);
+            var tv0 = (_target.Locomotion.Position - _elbow.transform.position).normalized;
+            var tv1 = Vector3.ProjectOnPlane(rotation*tv0, Vector3.up);
+
+            var forward_0 = Vector3.ProjectOnPlane(_localForward, Vector3.up);
+
+            var r = Quaternion.FromToRotation(forward_0, tv1);
+
             return r;
         }
+
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Space))
+                _applyRotation = !_applyRotation;
+
             var hrotaton = CalculateHorizontalRotation();
-            var vrotation = CalculateVerticalRotation(hrotaton);
-            this.transform.rotation = hrotaton * vrotation;
+            var vrotation = CalculateVertcalRotation_0(hrotaton);
+            if (_applyRotation)
+                this.transform.rotation = hrotaton * vrotation;
+
+
+            //this.transform.rotation = hrotaton * vrotation;
             Debug.DrawLine(this.transform.position, this.transform.position + this.transform.up, Color.magenta);
         }
         void OnDrawGizmos()

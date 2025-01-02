@@ -2,7 +2,7 @@
     -   地面、跳跃      √
     -   空中    √
     -   QB      √
-    -   Arm rotation    ×   （2~3）
+    -   Arm rotation    √
     -   Animations
         -   地面    √
         -   跳跃    √
