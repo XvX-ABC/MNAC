@@ -23,8 +23,8 @@ namespace Tests.Weapons
         public Vector3 BorePosition { get => _borePosition; }
         public Vector3 MuzzlePosition { get => _muzzlePosition; }
         public float FiringRate { get => _firingRate; }
-        public ushort BulletsTotalNum { get => _bulletsTotalNum; }
-        public ushort BulletsTotalNumInMagazine { get => _bulletsTotalNumInMagazine; }
+        public ushort ProjectilesTotalNum { get => _bulletsTotalNum; }
+        public ushort ProjectilesTotalNumInMagazine { get => _bulletsTotalNumInMagazine; }
         public float ReloadDuration { get => _reloadDuration; }
         void Start()
         {

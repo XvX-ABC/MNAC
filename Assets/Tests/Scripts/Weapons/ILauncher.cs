@@ -6,7 +6,9 @@ namespace Tests.Weapons
     public interface ILauncher : IWeapon
     {
         public void Suppelement(ushort num);
-        public bool Reload();
+        public bool StartReload();
+        public bool EndReload();
+        public void Reload();
         public void Fire();
     }
 }

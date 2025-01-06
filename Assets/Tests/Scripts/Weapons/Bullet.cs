@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Tests.Weapons
 {
+    [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Collider))]
     public class Bullet : MonoBehaviour, IProjectile
     {
         IProjectlieDefines _defines;
         Action<IProjectile, GameObject> _hitAction;
-        public GameObject Object => this.gameObject;
 
         public Action<IProjectile, GameObject> HitAction { get => _hitAction; set => _hitAction = value; }
 
