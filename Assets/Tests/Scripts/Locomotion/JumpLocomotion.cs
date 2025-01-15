@@ -128,18 +128,31 @@ namespace Tests.Locomotion
                 _context = context;
             if (_currentState == State.Idle && state == LState.OnGround && input.IsAscending)
                 StartJump();
+            else if (_currentState == State.Descending && ground.Touched)
+            {
+                EndJump();
+                return;
+            }
+
+
+            if (_timeline.IsRunning)
+                _timeline.OnUpdate(Time.fixedDeltaTime);
+
+
 #if LOCOMOTION_JUMP_DIRECTION_KEEP
-            else if (_currentState == State.Ascending)
+            if (_currentState == State.Ascending)
                 context.Velocity = _currentVelocity;
             else if (_currentState == State.Descending)
             {
-                if (ground.Touched)
-                    EndJump();
-                else
-                {
-                    var currentVelocity = new Vector3(_currentVelocity.x, _context.Velocity.y, _currentVelocity.z);
-                    _context.Velocity = currentVelocity;
-                }
+                //if (ground.Touched)
+                //    EndJump();
+                //else
+                //{
+                //    var currentVelocity = new Vector3(_currentVelocity.x, _context.Velocity.y, _currentVelocity.z);
+                //    _context.Velocity = currentVelocity;
+                //}
+                var currentVelocity = new Vector3(_currentVelocity.x, _context.Velocity.y, _currentVelocity.z);
+                _context.Velocity = currentVelocity;
             }
 #else
             else if (__currentState == State.Ascending)
@@ -151,8 +164,7 @@ namespace Tests.Locomotion
             else if (__currentState == State.Descending && ground.Touched)
                 EndJump();
 #endif
-            if (_timeline.IsRunning)
-                _timeline.OnUpdate(Time.fixedDeltaTime);
+          
 
         }
     }

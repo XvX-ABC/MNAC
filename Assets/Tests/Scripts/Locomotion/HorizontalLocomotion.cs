@@ -22,7 +22,7 @@ namespace Tests.Locomotion
             if (touched)
                 direction = Vector3.ProjectOnPlane(direction, normal);
             var velocity = Vector3.MoveTowards(currentVelocity, direction * _defines.Speed, _defines.AscendingSpeed);
-            velocity.y = currentVelocity.y;
+            //velocity.y = currentVelocity.y;
             context.Velocity = velocity;
         }
     }

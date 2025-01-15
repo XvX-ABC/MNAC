@@ -118,7 +118,7 @@ namespace Tests.Locomotion
             };
             var ground = _context.Ground;
             var state = _context.State;
-            if (ground.Touched)
+            if (ground.Touched && _rb.velocity.y <= 0)
                 _context.State = State.OnGround;
             else if (!ground.Touched && state != State.Ascending)
                 _context.State = State.Descending;
