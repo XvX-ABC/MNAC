@@ -40,7 +40,8 @@ namespace Tests.Locomotion.Animation
                 _animator.SetIKPosition(goalIK, position);
 
                 var normalRotation = Quaternion.FromToRotation(up, hitInfo.normal);
-                var finalRotation = normalRotation * rotation;
+                //var finalRotation = normalRotation * rotation;
+                var finalRotation = Quaternion.RotateTowards(rotation, normalRotation * rotation, 5);
                 _animator.SetIKRotation(goalIK, finalRotation);
 
                 _animator.SetIKRotationWeight(goalIK, 1);

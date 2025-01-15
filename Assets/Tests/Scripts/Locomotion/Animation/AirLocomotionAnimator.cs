@@ -31,11 +31,15 @@ namespace Tests.Locomotion.Animation
             if (_jumpLocomotion.CurrentState > JState.Idle && _jumpLocomotion.CurrentState <= JState.Ascending)
                 return;
 
+            var input = context.Input;
+            if (!input.IsAscending)
+                return;
+
 
             _animator.SetBool(_defines.EnterParamName, true);
 
 
-            var velocity = context.Velocity;
+            var velocity = context.Velocity * 0.05f;
             _animator.SetFloat(_defines.XParamName, velocity.x);
             _animator.SetFloat(_defines.YParamName, velocity.z);
         }

@@ -37,7 +37,7 @@ namespace Tests.Locomotion.Animation
             _animator.SetFloat(_defines.LandingMultiplierName, clipLength / length);
 
         }
-        void UpdateInLanding()
+        void Landing()
         {
             var point = _sampler.Point;
             var groundHeight = point.y;
@@ -67,7 +67,7 @@ namespace Tests.Locomotion.Animation
 
             if (currentState == JState.Descending)
             {
-                UpdateInLanding();
+                Landing();
             }
         }
     }
