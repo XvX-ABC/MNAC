@@ -12,7 +12,7 @@ namespace Tests.Weapons
         Action<IProjectile, GameObject> _hitAction;
 
         public Action<IProjectile, GameObject> HitAction { get => _hitAction; set => _hitAction = value; }
-
+        public bool Enabled { get => enabled; set => enabled = value; }
         void Awake()
         {
             _defines = GetComponent<IProjectlieDefines>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(IProjectlieDefines));
