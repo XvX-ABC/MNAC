@@ -620,6 +620,7 @@ MonoBehaviour:
   _angularSpeed: 2
   _maxAngle: 10
   _speed: 50
+  _angularAngle: 1
 --- !u!114 &1100965374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -646,7 +647,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _acceleratedAngle: 0
-  _currentAngle: 0
 --- !u!54 &1100965376
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -670,7 +670,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
