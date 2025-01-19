@@ -61,7 +61,8 @@ namespace Tests.Weapons
                 },
                 obj =>
                 {
-                    obj.transform.position = this.transform.position + this.transform.rotation * defines.MuzzlePosition;
+            obj.transform.position = MagazinePosition;
+            obj.transform.localRotation = Quaternion.identity;
                     obj.transform.SetParent(null);
                     obj.SetActive(true);
                     if (obj.TryGetComponent<IProjectile>(out var p))
@@ -71,7 +72,8 @@ namespace Tests.Weapons
                 {
                     obj.SetActive(false);
                     obj.transform.SetParent(this.transform);
-                    obj.transform.localPosition = defines.BorePosition;
+            obj.transform.localPosition = defines.MagazinePosition;
+            obj.transform.localRotation = Quaternion.identity;
                     if (obj.TryGetComponent<IProjectile>(out var p))
                         p.Enabled = false;
                 },
