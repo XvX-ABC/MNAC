@@ -26,28 +26,41 @@ namespace Tests.Weapons
                 _gun.Reload();
             }
         }
-        protected ObjectPool<GameObject> projectilesPool;
+        protected ObjectPool<GameObject> ammoPool;
         protected ILauncherDefines defines;
         [SerializeField]
         protected float launchingInterval;
         [SerializeField]
-        protected float magazineRemainingCount;
+        protected float LaunchingDelay;
         [SerializeField]
-        protected float remainingCount;
-        protected float lastLaunchingTIme;
+        protected ushort ammoQuantityInMagazine;
+        [SerializeField]
+        protected ushort ammoSpareQuantity;
+
+        private Action<ILauncher> initializationAction;
+        protected float lastLaunchTime;
         protected float lastReloadTime;
         protected Timeline reloadTimeline;
-        public float RemainingCount { get => remainingCount; }
-        public float MagazineRemainingCount { get => magazineRemainingCount; set => magazineRemainingCount = value; }
+        protected Timeline launchDelayTimeline;
+        public ushort SpareCount { get => ammoSpareQuantity; }
+        public ushort MagazineCount { get => ammoQuantityInMagazine; set => ammoQuantityInMagazine = value; }
+        public ILauncherDefines Defines { get => defines; }
+        public Vector3 MagazinePosition { get => this.transform.position + this.transform.rotation * defines.MagazinePosition; }
+        public Action<ILauncher> InitializationAction { get => initializationAction; set => initializationAction = value; }
+
         protected virtual void Awake()
         {
             defines = GetComponent<ILauncherDefines>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(ILauncherDefines));
         }
         protected virtual void OnEnable()
         {
-            projectilesPool = new(
-                () =>
-                {
+
+
+
+            //reloadTimeline = new(defines.ReloadDuration, false, new ReloadCompleted(this, 1));
+        }
+        protected virtual void OnDisable()
+        {
             ammoPool.Dispose();
         }
 
@@ -85,47 +98,38 @@ namespace Tests.Weapons
         protected virtual GameObject CreateAmmo()
         {
             var origin = defines.AmmoOrigin;
-                    var obj = Instantiate(origin, this.transform);
-                    obj.name = origin.name + "_" + projectilesPool.CountAll;
-                    obj.transform.localPosition = defines.BorePosition;
-                    obj.SetActive(false);
+            var obj = Instantiate(origin, this.transform);
+            obj.name = origin.name + "_" + ammoPool.CountAll;
+
+            obj.SetActive(false);
 
 
-                    if (obj.TryGetComponent<IProjectile>(out var p))
-                        p.HitAction += ReleaseBullet;
-                    return obj;
+            if (obj.TryGetComponent<IProjectile>(out var p))
+                p.HitAction += ReleaseAmmo;
+            return obj;
         }
         protected virtual void GetAmmo(GameObject obj)
-                {
+        {
             obj.transform.position = MagazinePosition;
             obj.transform.localRotation = Quaternion.identity;
-                    obj.transform.SetParent(null);
-                    obj.SetActive(true);
-                    if (obj.TryGetComponent<IProjectile>(out var p))
-                        p.Enabled = true;
+            obj.transform.SetParent(null);
+            obj.SetActive(true);
+            if (obj.TryGetComponent<IProjectile>(out var p))
+                p.Enabled = true;
         }
         protected virtual void ReleaseAmmo(GameObject obj)
-                {
-                    obj.SetActive(false);
-                    obj.transform.SetParent(this.transform);
+        {
+            obj.SetActive(false);
+            obj.transform.SetParent(this.transform);
             obj.transform.localPosition = defines.MagazinePosition;
             obj.transform.localRotation = Quaternion.identity;
-                    if (obj.TryGetComponent<IProjectile>(out var p))
-                        p.Enabled = false;
+            if (obj.TryGetComponent<IProjectile>(out var p))
+                p.Enabled = false;
         }
         protected virtual void DestroyAmmo(GameObject obj)
-                {
-                    if (obj.TryGetComponent<IProjectile>(out var p))
-                        p.HitAction -= ReleaseBullet;
-                }
-                );
-            reloadTimeline = new(defines.ReloadDuration);
-            reloadTimeline.AddPointEvent(1, _ => Reload());
-            //reloadTimeline = new(defines.ReloadDuration, false, new ReloadCompleted(this, 1));
-        }
-        protected virtual void OnDisable()
         {
-            projectilesPool.Dispose();
+            if (obj.TryGetComponent<IProjectile>(out var p))
+                p.HitAction -= ReleaseAmmo;
         }
 
         protected virtual Timeline CreateReloadTimeline()
@@ -137,72 +141,67 @@ namespace Tests.Weapons
 
         protected virtual Timeline CreateLaunchDelayTimeline()
         {
-            if (Input.GetKey(KeyCode.Mouse0))
-                Launch();
-            if (Input.GetKeyDown(KeyCode.R))
-                Reload();
-            if (Input.GetKeyDown(KeyCode.Space))
-                Supply(10);
-            if (reloadTimeline.IsRunning)
-                reloadTimeline.OnUpdate(Time.deltaTime);
+            var timeline = new Timeline(defines.FireDelay);
+            return timeline;
         }
-        protected virtual void ReleaseBullet(IProjectile projectile, GameObject hitObj)
+        protected virtual void ReleaseAmmo(IProjectile ammo, GameObject hitObj)
         {
             if (hitObj == this.gameObject)
                 return;
-            if (projectile is Component pobj)
-                projectilesPool.Release(pobj.gameObject);
+            if (ammo is Component pobj)
+                ammoPool.Release(pobj.gameObject);
         }
-        public void Supply(ushort num)
+        public int Supply(int num)
         {
             Debug.Log(MethodInfo.GetCurrentMethod().Name);
-            if (!enabled)
-                return;
-            if (reloadTimeline.IsRunning)
-                return;
-            remainingCount = Mathf.Min(defines.ProjectilesTotalNum - defines.ProjectilesTotalNumInMagazine, remainingCount + num);
+            if (!enabled || reloadTimeline.IsRunning || ammoSpareQuantity + num < 0)
+                return 0;
+            var suppNum = Mathf.Min(Mathf.Max(0, defines.AmmoSpareQuantity) - ammoSpareQuantity, num);
+            ammoSpareQuantity += (ushort)suppNum;
+            //remainingCount =(ushort) Mathf.Min(defines.AmmoTotalNum - defines.AmmoTotalNumInMagazine, remainingCount + num);
+            return suppNum;
         }
-        public bool StartReload()
+        public virtual bool StartReload()
         {
             if (!enabled)
                 return false;
-            if (Time.time - lastReloadTime <= defines.ReloadDuration || remainingCount <= 0 || reloadTimeline.IsRunning)
+            if (Time.time - lastReloadTime <= defines.ReloadDuration || ammoSpareQuantity <= 0 || reloadTimeline.IsRunning)
                 return false;
             reloadTimeline.Start();
             return true;
         }
-        public bool EndReload()
+        public virtual bool EndReload()
         {
             if (!enabled || !reloadTimeline.IsRunning)
                 return false;
             reloadTimeline.Stop();
             return true;
         }
-        internal void Reload()
+        internal virtual void Reload()
         {
             Debug.Log(MethodInfo.GetCurrentMethod().Name);
             if (!enabled)
                 return;
 
-            var num = Mathf.Min(remainingCount, defines.ProjectilesTotalNumInMagazine - magazineRemainingCount);
-            magazineRemainingCount += num;
-            remainingCount -= num;
+            var num = (ushort)Mathf.Min(ammoSpareQuantity, defines.AmmoQuantityInMagazine - ammoQuantityInMagazine);
+            ammoQuantityInMagazine += num;
+            ammoSpareQuantity -= num;
             lastReloadTime = Time.time;
             return;
         }
-        public void Launch()
+        public virtual void Launch()
         {
             Debug.Log(MethodInfo.GetCurrentMethod().Name);
             if (!enabled || reloadTimeline.IsRunning)
                 return;
             var time = Time.time;
-            if (time - lastLaunchingTIme <= launchingInterval || magazineRemainingCount <= 0)
+            if (time - lastLaunchTime <= launchingInterval || ammoQuantityInMagazine <= 0)
                 return;
 
 
-            var obj = projectilesPool.Get();
-            magazineRemainingCount--;
-            lastLaunchingTIme = Time.time;
+            var obj = ammoPool.Get();
+            ammoQuantityInMagazine--;
+            lastLaunchTime = Time.time;
         }
 
 
