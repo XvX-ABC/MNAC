@@ -4,12 +4,14 @@ namespace Tests.Weapons
 {
     public interface ILauncherDefines
     {
-        public GameObject ProjectileOrigin { get; }
-        public Vector3 BorePosition { get; }
+        public GameObject AmmoOrigin { get; }
+        public Vector3 MagazinePosition { get; }
         public Vector3 MuzzlePosition { get; }
-        public float FiringRate { get; }
-        public ushort ProjectilesTotalNum { get; }
-        public ushort ProjectilesTotalNumInMagazine { get; }
+        public float FireDelay { get; }
+        public float FireRate { get; }
+        public ushort AmmoTotalQuantity { get; }
+        public ushort AmmoSpareQuantity { get; }
+        public ushort AmmoQuantityInMagazine { get; }
         //public ushort BulletsTotalNumInBore { get; }
         public float ReloadDuration { get; }
     }
