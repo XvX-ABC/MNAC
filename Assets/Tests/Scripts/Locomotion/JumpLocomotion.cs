@@ -1,5 +1,7 @@
 ﻿#define LOCOMOTION_JUMP_DIRECTION_KEEP
 using Assets.Scripts.Utilities.Timeline;
+using Assets.Scripts.Utilities.Timeline.Event.Point;
+using Assets.Scripts.Utilities.Timeline.Event.Range;
 using Locomotion;
 using System;
 using System.Data;

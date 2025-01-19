@@ -1,5 +1,7 @@
 ﻿using System;
 using Assets.Scripts.Utilities.Timeline;
+using Assets.Scripts.Utilities.Timeline.Event.Point;
+using Assets.Scripts.Utilities.Timeline.Event.Range;
 using Locomotion;
 using UnityEngine;
 using JState = Tests.Locomotion.JumpLocomotion.State;

@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Utilities.Timeline;
+using Assets.Scripts.Utilities.Timeline.Event.Point;
+using Assets.Scripts.Utilities.Timeline.Event.Range;
 using System;
 using System.Collections.Generic;
 using System.Linq;
