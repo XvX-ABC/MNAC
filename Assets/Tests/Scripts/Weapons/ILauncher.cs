@@ -1,3 +1,4 @@
+using System;
 using TMPro.EditorUtilities;
 using Unity.VisualScripting;
 
@@ -5,10 +6,13 @@ namespace Tests.Weapons
 {
     public interface ILauncher : IWeapon
     {
-        public void Supply(ushort num);
+        public Action<ILauncher> InitializationAction { get; set; }
+        public ILauncherDefines Defines { get; }
+        public ushort SpareCount { get; }
+        public ushort MagazineCount { get; }
+        public int Supply(int num);
         public bool StartReload();
         public bool EndReload();
-        //public void Reload();
         public void Launch();
     }
 }
