@@ -48,7 +48,43 @@ namespace Tests.Weapons
             projectilesPool = new(
                 () =>
                 {
-                    var origin = defines.ProjectileOrigin;
+            ammoPool.Dispose();
+        }
+
+        protected virtual void Start()
+        {
+            ammoPool = new(
+             CreateAmmo,
+             GetAmmo,
+             ReleaseAmmo,
+             DestroyAmmo
+                );
+
+            reloadTimeline = CreateReloadTimeline();
+            launchDelayTimeline = CreateLaunchDelayTimeline();
+
+            if (defines.FireRate > 0 && defines.FireDelay > 0)
+                launchingInterval = 1 / defines.FireRate;
+            else
+                this.enabled = false;
+            ammoQuantityInMagazine = defines.AmmoQuantityInMagazine;
+            ammoSpareQuantity = defines.AmmoSpareQuantity;
+            initializationAction?.Invoke(this);
+        }
+        protected virtual void Update()
+        {
+            //if (Input.GetKey(KeyCode.Mouse0))
+            //    Launch();
+            //if (Input.GetKeyDown(KeyCode.R))
+            //    Reload();
+            //if (Input.GetKeyDown(KeyCode.Space))
+            //    Supply(10);
+            if (reloadTimeline.IsRunning)
+                reloadTimeline.OnUpdate(Time.deltaTime);
+        }
+        protected virtual GameObject CreateAmmo()
+        {
+            var origin = defines.AmmoOrigin;
                     var obj = Instantiate(origin, this.transform);
                     obj.name = origin.name + "_" + projectilesPool.CountAll;
                     obj.transform.localPosition = defines.BorePosition;
@@ -58,8 +94,8 @@ namespace Tests.Weapons
                     if (obj.TryGetComponent<IProjectile>(out var p))
                         p.HitAction += ReleaseBullet;
                     return obj;
-                },
-                obj =>
+        }
+        protected virtual void GetAmmo(GameObject obj)
                 {
             obj.transform.position = MagazinePosition;
             obj.transform.localRotation = Quaternion.identity;
@@ -67,8 +103,8 @@ namespace Tests.Weapons
                     obj.SetActive(true);
                     if (obj.TryGetComponent<IProjectile>(out var p))
                         p.Enabled = true;
-                },
-                obj =>
+        }
+        protected virtual void ReleaseAmmo(GameObject obj)
                 {
                     obj.SetActive(false);
                     obj.transform.SetParent(this.transform);
@@ -76,8 +112,8 @@ namespace Tests.Weapons
             obj.transform.localRotation = Quaternion.identity;
                     if (obj.TryGetComponent<IProjectile>(out var p))
                         p.Enabled = false;
-                },
-                obj =>
+        }
+        protected virtual void DestroyAmmo(GameObject obj)
                 {
                     if (obj.TryGetComponent<IProjectile>(out var p))
                         p.HitAction -= ReleaseBullet;
@@ -92,16 +128,14 @@ namespace Tests.Weapons
             projectilesPool.Dispose();
         }
 
-        protected virtual void Start()
+        protected virtual Timeline CreateReloadTimeline()
         {
-            if (defines.FiringRate > 0)
-                launchingInterval = 1 / defines.FiringRate;
-            else
-                this.enabled = false;
-            magazineRemainingCount = defines.ProjectilesTotalNumInMagazine;
-            remainingCount = Mathf.Max(0, defines.ProjectilesTotalNum - defines.ProjectilesTotalNumInMagazine);
+            var timeline = new Timeline(defines.ReloadDuration);
+            timeline.AddPointEvent(1, _ => Reload());
+            return timeline;
         }
-        protected virtual void Update()
+
+        protected virtual Timeline CreateLaunchDelayTimeline()
         {
             if (Input.GetKey(KeyCode.Mouse0))
                 Launch();
