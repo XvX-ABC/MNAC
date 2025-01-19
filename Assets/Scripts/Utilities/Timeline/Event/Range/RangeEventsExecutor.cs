@@ -59,8 +59,11 @@ namespace Assets.Scripts.Utilities.Timeline.Event.Range
         {
             if (evt == null || evt is not IRangeEvent revt)
                 return false;
-            Array.Resize(ref _events, _events.Length + 1);
-            _events[^1] = revt;
+            if (_events != null)
+                Array.Resize(ref _events, _events.Length + 1);
+            else
+                _events = new InternalRangeEvent[1];
+            _events[^1] = new() { Event = revt };
             return true;
         }
         public ushort AddEvents(Span<ITimelineEvent> events)
@@ -80,7 +83,13 @@ namespace Assets.Scripts.Utilities.Timeline.Event.Range
         {
             if (evt == null || evt is not IRangeEvent revt)
                 return false;
-            var index = Array.IndexOf(_events, revt);
+            var index = -1;
+            for (var i = 0; i < _events.Length; i++)
+            {
+                var internalEvent = _events[i];
+                if (internalEvent.Event == evt)
+                    index = i;
+            }
             if (index == -1)
                 return false;
             Array.Copy(_events, index + 1, _events, index, _events.Length - index + 1);
@@ -94,8 +103,14 @@ namespace Assets.Scripts.Utilities.Timeline.Event.Range
             var existenceCount = (ushort)0;
             foreach (var evt in events)
             {
-                var i = Array.IndexOf(_events, evt);
-                if (i == -1)
+                var index = -1;
+                for (var i = 0; i < _events.Length; i++)
+                {
+                    var internalEvent = _events[i];
+                    if (internalEvent.Event == evt)
+                        index = i;
+                }
+                if (index == -1)
                     continue;
                 existenceCount++;
             }
@@ -103,6 +118,8 @@ namespace Assets.Scripts.Utilities.Timeline.Event.Range
         }
         public void Execute(TimelineContext context)
         {
+            if (_events == null)
+                return;
             var currentProportion = context.Proportion;
             foreach (var evt in _events)
             {
@@ -115,6 +132,8 @@ namespace Assets.Scripts.Utilities.Timeline.Event.Range
 
         public void Reset()
         {
+            if (_events == null)
+                return;
             foreach (var evt in _events)
                 evt.Reset();
         }

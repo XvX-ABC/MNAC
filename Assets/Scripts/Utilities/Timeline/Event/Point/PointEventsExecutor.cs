@@ -29,7 +29,10 @@ namespace Assets.Scripts.Utilities.Timeline.Event.Point
         {
             if (evt == null || evt is not IPointEvent pevt)
                 return false;
-            Array.Resize(ref _events, _events.Length + 1);
+            if (_events != null)
+                Array.Resize(ref _events, _events.Length + 1);
+            else
+                _events = new IPointEvent[1];
             _events[^1] = pevt;
             return true;
         }
@@ -75,6 +78,8 @@ namespace Assets.Scripts.Utilities.Timeline.Event.Point
         }
         public void Execute(TimelineContext context)
         {
+            if (_events == null)
+                return;
             ref var index = ref _nextEventIndex;
             var currentEvt = default(ITimelineEvent);
             do
@@ -94,6 +99,8 @@ namespace Assets.Scripts.Utilities.Timeline.Event.Point
 
         public void Reset()
         {
+            if (_events == null)
+                return;
             _nextEventIndex = 0;
             foreach (var evt in _events)
                 evt.Reset();
