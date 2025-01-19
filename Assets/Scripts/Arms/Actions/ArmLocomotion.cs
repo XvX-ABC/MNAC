@@ -19,7 +19,7 @@ namespace Assets.Scripts.Arms.Actions
         [SerializeField]
         GameObject _shoulder_end;
         IArmComponent[] _components;
-        public ITarget Target
+        public IArmTarget Target
         {
             get => _target;
             set
@@ -41,7 +41,7 @@ namespace Assets.Scripts.Arms.Actions
             Target = _target;
 
         }
-        void UpdateTargetForComponents(ITarget target)
+        void UpdateTargetForComponents(IArmTarget target)
         {
             foreach (var c in _components)
                 c.Target = target;

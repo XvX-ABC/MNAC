@@ -2,13 +2,13 @@
 
 namespace Assets.Scripts.Arms.Actions
 {
-    public interface ITarget
+    public interface IArmTarget
     {
         public Vector3 Position { get; set; }
     }
     internal interface IArmComponent
     {
-        public ITarget Target { get; set; }
+        public IArmTarget Target { get; set; }
     }
     internal interface IArmLocomotionComponent : IArmComponent
     {

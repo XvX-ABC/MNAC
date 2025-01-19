@@ -8,14 +8,14 @@ namespace Assets.Scripts.Arms.Actions
         GameObject _elbow;
         GameObject _hand;
         GameObject _body;
-        ITarget _target;
+        IArmTarget _target;
         Vector3 _up;
 
         internal GameObject ShoulderEnd { get => _shoulder_end; set => _shoulder_end = value; }
         internal GameObject Elbow { get => _elbow; set => _elbow = value; }
         internal GameObject Hand { get => _hand; set => _hand = value; }
         public GameObject Body { get => _body; set => _body = value; }
-        public ITarget Target { get => _target; set => _target = value; }
+        public IArmTarget Target { get => _target; set => _target = value; }
         void Awake()
         {
             _up = this.transform.up;
