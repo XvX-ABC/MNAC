@@ -7,37 +7,46 @@ namespace Tests.Weapons
         [SerializeField]
         GameObject _origin;
         [SerializeField]
-        Vector3 _borePosition;
+        Vector3 _magazinePosition;
         [SerializeField]
         Vector3 _muzzlePosition;
         [SerializeField]
-        float _firingRate;
+        float _fireRate;
         [SerializeField]
-        ushort _bulletsTotalNum;
+        float _fireDelay;
         [SerializeField]
-        ushort _bulletsTotalNumInMagazine;
+        ushort _ammoTotalQuantity;
+        [SerializeField]
+        ushort _ammoQuantityInMagazine;
         [SerializeField]
         float _reloadDuration;
 
-        public GameObject ProjectileOrigin { get => _origin; }
-        public Vector3 BorePosition { get => _borePosition; }
+        public GameObject AmmoOrigin { get => _origin; }
+        public Vector3 MagazinePosition { get => _magazinePosition; }
         public Vector3 MuzzlePosition { get => _muzzlePosition; }
-        public float FiringRate { get => _firingRate; }
-        public ushort ProjectilesTotalNum { get => _bulletsTotalNum; }
-        public ushort ProjectilesTotalNumInMagazine { get => _bulletsTotalNumInMagazine; }
+        public float FireRate { get => _fireRate; }
+        public float FireDelay { get => _fireDelay; }
+        public ushort AmmoTotalQuantity { get => _ammoTotalQuantity; }
+        public ushort AmmoSpareQuantity { get => (ushort)(_ammoTotalQuantity - _ammoQuantityInMagazine); }
+        public ushort AmmoQuantityInMagazine { get => _ammoQuantityInMagazine; }
         public float ReloadDuration { get => _reloadDuration; }
         void Start()
         {
-            _origin.SetActive(false);
+            if (_origin != null)
+                _origin.SetActive(false);
         }
         private void OnDrawGizmosSelected()
         {
             var pos = this.transform.position;
             var rotation = this.transform.rotation;
             Gizmos.color = Color.yellow;
-            Gizmos.DrawCube(pos + this.transform.InverseTransformPoint(_borePosition), Vector3.one * 0.3f);
+            var magazinePos = pos + rotation * _magazinePosition;
+            Gizmos.DrawCube(magazinePos, Vector3.one * 0.3f);
+            Gizmos.DrawLine(magazinePos, magazinePos + this.transform.forward);
             Gizmos.color = Color.red;
-            Gizmos.DrawCube(pos + this.transform.InverseTransformPoint(_muzzlePosition), Vector3.one * 0.3f);
+            var muzzlePos = pos + rotation * _muzzlePosition;
+            Gizmos.DrawCube(muzzlePos, Vector3.one * 0.3f);
+            Gizmos.DrawLine(muzzlePos, muzzlePos + this.transform.forward);
         }
     }
 }
