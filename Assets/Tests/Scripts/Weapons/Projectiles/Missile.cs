@@ -10,7 +10,7 @@ namespace Tests.Weapons.Projectiles
     }
     public interface IMissileDefines : IProjectlieDefines
     {
-        public float AngularAngle { get; }
+        public float AngularSpeed { get; }
         public float MaxAngle { get; }
     }
     [RequireComponent(typeof(Rigidbody))]
@@ -18,6 +18,7 @@ namespace Tests.Weapons.Projectiles
     public class Missile : MonoBehaviour, IMissile
     {
         //public GameObject Object => this.gameObject;
+        Rigidbody _rb;
         IMissileDefines _defines;
         ITarget _target;
         [SerializeField]
@@ -30,14 +31,24 @@ namespace Tests.Weapons.Projectiles
         void Awake()
         {
             _defines = GetComponent<IMissileDefines>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(IMissileDefines));
+            _rb = GetComponent<Rigidbody>();
 
-            _target = GetComponent<ITarget>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(ITarget));
+            _target = GetComponent<ITarget>();
+            //_rb.isKinematic = true;
+        }
+        private void OnEnable()
+        {
+            _rb.isKinematic = false;
+        }
+        private void OnDisable()
+        {
+            _rb.isKinematic = true;
         }
         private void OnCollisionEnter(Collision collision)
         {
             _hitAction?.Invoke(this, collision.gameObject);
             var obj = collision.gameObject;
-            if (obj == _target.Obj)
+            if (obj == _target?.Obj)
                 enabled = false;
         }
         void Update()
@@ -52,6 +63,8 @@ namespace Tests.Weapons.Projectiles
             if (!Application.isPlaying)
                 return;
             var pos = this.transform.position;
+            if (_target == null)
+                return;
             var targetPos = _target.Locomotion.Position;
             Gizmos.color = Color.red;
             Gizmos.DrawLine(pos, targetPos);
@@ -79,7 +92,7 @@ namespace Tests.Weapons.Projectiles
             }
             else
             {
-                var expectedAngle = Mathf.Min(_acceleratedAngle + Mathf.Min(angle, _defines.AngularAngle * deltaTime), _defines.MaxAngle);
+                var expectedAngle = Mathf.Min(_acceleratedAngle + Mathf.Min(angle, _defines.AngularSpeed * deltaTime), _defines.MaxAngle);
                 _acceleratedAngle = expectedAngle;
                 return Quaternion.Lerp(rotation, trotation, expectedAngle / angle);
             }
