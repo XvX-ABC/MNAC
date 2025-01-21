@@ -6,23 +6,98 @@ using UnityEngine;
 
 namespace Assets.Tests.Scripts.Weapons
 {
-    public class MultiLauncher : MonoBehaviour, ILauncher
+    public class MultiLauncher : MonoBehaviour, IMissileLauncher
     {
-        ILauncher[] _subLaunchers;
+        class TimelinesGroup : ITimeline
+        {
+            ITimeline[] _timelines;
+
+            public TimelinesGroup(params ITimeline[] timelines)
+            {
+                _timelines = timelines;
+            }
+
+            public bool IsRunning => _timelines.Any(t => t.IsRunning);
+
+            public float Time => throw new NotImplementedException();
+
+            public bool AddEvent(ITimelineEvent evt)
+            {
+                foreach (var t in _timelines)
+                    if (!t.AddEvent(evt))
+                    {
+                        RemoveEvent(evt);
+                        return false;
+                    }
+                return true;
+            }
+
+            public void Continue()
+            {
+                foreach (var l in _timelines)
+                    l.Continue();
+            }
+
+            public void OnUpdate(float deltaTime)
+            {
+                foreach (var l in _timelines)
+                    l.OnUpdate(deltaTime);
+            }
+
+            public bool RemoveEvent(ITimelineEvent evt)
+            {
+                foreach (var t in _timelines)
+                    if (!t.RemoveEvent(evt))
+                        return false;
+                return true;
+            }
+
+            public void Start()
+            {
+                foreach (var l in _timelines)
+                    l.Start();
+            }
+
+            public void Stop()
+    {
+                foreach (var l in _timelines)
+                    l.Stop();
+            }
+        }
+        IMissileLauncher[] _subLaunchers;
         [SerializeField]
         ushort _ammoSpareQuantity;
         [SerializeField]
         ushort _ammoQuantityInMagazine;
-        ILauncherDefines _defines;
+        IMissileLauncherDefines _defines;
         Action<ILauncher> _initializationAction;
+        ITarget _target;
+        ITimeline _reloadTimeline;
+        ITimeline _delayLaunchTimeline;
         public ushort SpareCount { get => _ammoSpareQuantity; }
         public ushort MagazineCount { get => _ammoQuantityInMagazine; }
         public ILauncherDefines Defines { get => _defines; }
+        IMissileLauncherDefines IMissileLauncher.Defines => _defines;
         public Action<ILauncher> InitializationAction { get => _initializationAction; set => _initializationAction = value; }
+        public ITarget Target
+        {
+            get => _target;
+            set
+            {
+                _target = value;
+                foreach (var l in _subLaunchers)
+                    l.Target = value;
+            }
+        }
+
+
+        public ITimeline ReloadTimeline { get => _reloadTimeline; }
+        public ITimeline DelayLaunchTimeline { get => _delayLaunchTimeline; }
+
 
         void Awake()
         {
-            var list = GetComponentsInChildren<ILauncher>().ToList();
+            var list = GetComponentsInChildren<IMissileLauncher>().ToList();
             if (list.Contains(this))
                 list.Remove(this);
             _subLaunchers = list.ToArray();
@@ -38,6 +113,22 @@ namespace Assets.Tests.Scripts.Weapons
         void Start()
         {
             _ammoSpareQuantity = (ushort)(_defines.AmmoTotalQuantity - _subLaunchers.Length);
+
+            var quantity = _subLaunchers.Length;
+            var reloadTimelines = new ITimeline[quantity];
+            var delayLaunchTimelines = new ITimeline[quantity];
+            for (int i = 0; i < quantity; i++)
+            {
+                var l = _subLaunchers[i];
+                reloadTimelines[i] = l.ReloadTimeline;
+                delayLaunchTimelines[i] = l.DelayLaunchTimeline;
+            }
+
+
+            _reloadTimeline = new TimelinesGroup(reloadTimelines);
+            _delayLaunchTimeline = new TimelinesGroup(delayLaunchTimelines);
+
+
             _initializationAction?.Invoke(this);
         }
         void Update()

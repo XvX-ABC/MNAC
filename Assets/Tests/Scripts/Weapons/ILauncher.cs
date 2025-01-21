@@ -1,3 +1,5 @@
+using Assets.Scripts.Utilities.Timeline;
+using Assets.Tests.Scripts.Weapons;
 using System;
 using TMPro.EditorUtilities;
 using Unity.VisualScripting;
@@ -16,6 +18,7 @@ namespace Tests.Weapons
             All = 255,
         }
         public Action<ILauncher> InitializationAction { get; set; }
+        public ITimeline ReloadTimeline { get; }
         public ILauncherDefines Defines { get; }
         public ushort SpareCount { get; }
         public ushort MagazineCount { get; }
@@ -23,5 +26,11 @@ namespace Tests.Weapons
         public bool StartReload();
         public bool EndReload();
         public void Launch();
+    }
+    public interface IMissileLauncher : ILauncher
+    {
+        public ITarget Target { get; set; }
+        public new IMissileLauncherDefines Defines { get; }
+        public ITimeline DelayLaunchTimeline { get; }
     }
 }

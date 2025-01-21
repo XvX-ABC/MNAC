@@ -15,10 +15,15 @@ using UnityEngine.SearchService;
 
 namespace Assets.Tests.Scripts.Weapons
 {
-    public class MissileLauncher : LauncherBase
+    public class MissileLauncher : LauncherBase, IMissileLauncher
     {
         protected GameObject missileObj;
+        private ITimeline delayLaunchTimeline;
         public ITarget Target;
+        ITarget IMissileLauncher.Target { get => Target; set => Target = value; }
+        public new IMissileLauncherDefines Defines { get => (IMissileLauncherDefines)defines; }
+        public ITimeline DelayLaunchTimeline { get => delayLaunchTimeline; }
+
         protected override void Awake()
         {
             defines = GetComponent<IMissileLauncherDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IMissileLauncherDefines));
@@ -26,13 +31,19 @@ namespace Assets.Tests.Scripts.Weapons
                 throw new ComponentCantFindException(Defines.AmmoOrigin, typeof(IMissile));
 
         }
-        protected override void OnEnable()
+        protected override void Start()
         {
             base.Start();
             delayLaunchTimeline = new Timeline(Defines.LaunchDelay);
             delayLaunchTimeline.AddPointEvent(0, _ => actionsLock.LockAll());
             delayLaunchTimeline.AddPointEvent(1, _ => { DoLaunch(); actionsLock.UnlockAll(); });
             Reload();
+        }
+        protected override void Update()
+        {
+            base.Update();
+            if (delayLaunchTimeline.IsRunning)
+                delayLaunchTimeline.OnUpdate(Time.deltaTime);
         }
         protected override void GetAmmo(GameObject obj)
         {
@@ -72,6 +83,19 @@ namespace Assets.Tests.Scripts.Weapons
 
             ammoQuantityInMagazine--;
             lastLaunchTime = Time.time;
+        }
+        public override void Launch()
+        {
+            if (!enabled
+                || Target == null
+                || actionsLock.LaunchIsLocked())
+                return;
+
+            if (Time.time - lastLaunchTime <= launchingInterval
+                || ammoQuantityInMagazine <= 0)
+                return;
+
+            delayLaunchTimeline.Start();
         }
     }
 }

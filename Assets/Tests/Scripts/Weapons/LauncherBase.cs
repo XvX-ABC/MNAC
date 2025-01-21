@@ -6,7 +6,7 @@ using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
-
+using ActionsEnum = Tests.Weapons.ILauncher.ActionsEnum;
 namespace Tests.Weapons
 {
 
@@ -51,6 +51,7 @@ namespace Tests.Weapons
         public ILauncherDefines Defines { get => defines; }
         public Vector3 MagazinePosition { get => this.transform.position + this.transform.rotation * defines.MagazinePosition; }
         public Action<ILauncher> InitializationAction { get => initializationAction; set => initializationAction = value; }
+        public ITimeline ReloadTimeline { get => reloadTimeline; }
 
         protected virtual void Awake()
         {
@@ -140,7 +141,7 @@ namespace Tests.Weapons
                 p.HitAction -= ReleaseAmmo;
         }
 
-        protected virtual Timeline CreateReloadTimeline()
+        protected virtual ITimeline CreateReloadTimeline()
         {
             var timeline = new Timeline(defines.ReloadDuration);
             timeline.AddPointEvent(0, _ => actionsLock.LockAll());
