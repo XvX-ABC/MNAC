@@ -13,7 +13,8 @@ using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Utilities.Timeline
 {
-    public class Timeline
+
+    public class Timeline : ITimeline
     {
 
         internal IEventsExecutor[] executors;
@@ -94,6 +95,25 @@ namespace Assets.Scripts.Utilities.Timeline
                 time = 0;
             isRunning = isLoop;
             ResetExecutors();
+        }
+
+        public bool AddEvent(ITimelineEvent evt)
+        {
+            if (evt == null)
+                return false;
+            foreach (var executor in executors)
+                if (executor.AddEvent(evt))
+                    return true;
+            return false;
+        }
+        public bool RemoveEvent(ITimelineEvent evt)
+        {
+            if (evt == null)
+                return false;
+            foreach (var e in executors)
+                if (e.RemoveEvent(evt))
+                    return true;
+            return false;
         }
         public override string ToString()
         {

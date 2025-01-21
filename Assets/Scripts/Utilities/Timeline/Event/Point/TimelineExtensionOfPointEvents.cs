@@ -20,27 +20,26 @@ namespace Assets.Scripts.Utilities.Timeline.Event.Point
             }
         }
 
-        public static ITimelineEvent AddPointEvent(this Timeline timeline, float triggerProportion, Action<TimelineContext> action)
+        public static ITimelineEvent AddPointEvent(this ITimeline timeline, float triggerProportion, Action<TimelineContext> action)
         {
-            if (timeline.isRunning)
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+            if (triggerProportion < 0 || triggerProportion > 1)
+                throw new ArgumentOutOfRangeException($"The trigger proportion must be in range of 0 and 1.");
+            if (timeline.IsRunning)
                 throw new InvalidOperationException($"Can't to add the event, because the timeline is running now.");
-            var executor = timeline.executors.FirstOrDefault(executor => executor is PointEventsExecutor);
-            if (executor == null)
-                throw new NotSupportedEventTypeException($"Doesn't exist a events executor is support the 'IPointEvent' event type in the timeline.");
             var evt = new PointEventWrapper(action, triggerProportion);
-            executor.AddEvent(evt);
+            if (!timeline.AddEvent(evt))
+                throw new NotSupportedEventTypeException($"Doesn't exist a events executor is support the 'IPointEvent' event type in the timeline.");
             return evt;
         }
-        public static bool RemovePointEvent(this Timeline timeline, ITimelineEvent evt)
+        public static bool RemovePointEvent(this ITimeline timeline, ITimelineEvent evt)
         {
             if (evt == null)
                 throw new ArgumentNullException(nameof(evt));
-            if (timeline.isRunning)
+            if (timeline.IsRunning)
                 throw new InvalidOperationException($"Can't to add the event, because the timeline is running now.");
-            var executor = timeline.executors.FirstOrDefault(executor => executor is PointEventsExecutor);
-            if (executor == null)
-                throw new NotSupportedEventTypeException($"Doesn't exist a events executor is support the 'IPointEvent' event type in the timeline.");
-            return executor.RemoveEvent(evt);
+            return timeline.RemoveEvent(evt);
         }
     }
 }
