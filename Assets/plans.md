@@ -7,11 +7,11 @@
         -   地面    √
         -   跳跃    √
         -   空中    √
-        -   QB  ×       
-        -   Arm rotation ×  （1）
+        -   QB      √
+        -   Arm rotation √
 -   武器
-    -   直击    ×   （0.5）
-    -   Missile ×   （4~5）
+    -   直击    √
+    -   Missile √
     -   Knief   ×   （待定）
     -   Arts    ×   （待定）
         -   (待定)
