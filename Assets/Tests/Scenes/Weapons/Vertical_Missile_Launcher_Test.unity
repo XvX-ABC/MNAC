@@ -236,9 +236,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 225813019}
-  - component: {fileID: 225813022}
-  - component: {fileID: 225813021}
   - component: {fileID: 225813020}
+  - component: {fileID: 225813021}
   m_Layer: 4
   m_Name: Cube (2)
   m_TagString: Untagged
@@ -274,6 +273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   launchingInterval: 0
+  LaunchingDelay: 0
   ammoQuantityInMagazine: 0
   ammoSpareQuantity: 0
 --- !u!114 &225813021
@@ -285,30 +285,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 225813018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 019204d06a60d0d48ac3cb794b57a433, type: 3}
+  m_Script: {fileID: 11500000, guid: 800d6ea54a87dbc4e9b6d1454fbffa82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _origin: {fileID: 899628074}
   _magazinePosition: {x: 0, y: 0, z: 0}
   _muzzlePosition: {x: 0, y: 0, z: 1}
-  _fireRate: 0
-  _fireDelay: 0
-  _ammoTotalQuantity: 0
-  _ammoQuantityInMagazine: 0
-  _reloadDuration: 4
---- !u!114 &225813022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 225813018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce693b41da53bb34fbff654cc74fd7a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _obj: {fileID: 1360910760}
+  _fireRate: 0.7
+  _ammoTotalQuantity: 10
+  _ammoQuantityInMagazine: 1
+  _reloadDuration: 2
+  _launchDelay: 0.5
 --- !u!1 &899628074
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,9 +486,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 963933036}
-  - component: {fileID: 963933035}
-  - component: {fileID: 963933034}
   - component: {fileID: 963933033}
+  - component: {fileID: 963933037}
   m_Layer: 4
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -522,41 +508,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   launchingInterval: 0
+  LaunchingDelay: 0
   ammoQuantityInMagazine: 0
   ammoSpareQuantity: 0
---- !u!114 &963933034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963933032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 019204d06a60d0d48ac3cb794b57a433, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _origin: {fileID: 899628074}
-  _magazinePosition: {x: 0, y: 0, z: 0}
-  _muzzlePosition: {x: 0, y: 0, z: 1}
-  _fireRate: 1
-  _fireDelay: 0.25
-  _ammoTotalQuantity: 10
-  _ammoQuantityInMagazine: 1
-  _reloadDuration: 4
---- !u!114 &963933035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963933032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce693b41da53bb34fbff654cc74fd7a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _obj: {fileID: 1360910760}
 --- !u!4 &963933036
 Transform:
   m_ObjectHideFlags: 0
@@ -572,6 +526,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1507562988}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &963933037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963933032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 800d6ea54a87dbc4e9b6d1454fbffa82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _origin: {fileID: 899628074}
+  _magazinePosition: {x: 0, y: 0, z: 0}
+  _muzzlePosition: {x: 0, y: 0, z: 1}
+  _fireRate: 0.7
+  _ammoTotalQuantity: 10
+  _ammoQuantityInMagazine: 1
+  _reloadDuration: 2
+  _launchDelay: 0.25
 --- !u!1 &1018797105
 GameObject:
   m_ObjectHideFlags: 0
@@ -830,6 +804,7 @@ GameObject:
   - component: {fileID: 1507562985}
   - component: {fileID: 1507562989}
   - component: {fileID: 1507562990}
+  - component: {fileID: 1507562991}
   m_Layer: 4
   m_Name: Cube
   m_TagString: Untagged
@@ -957,10 +932,22 @@ MonoBehaviour:
   _magazinePosition: {x: 0, y: 0, z: 0}
   _muzzlePosition: {x: 0, y: 0, z: 0}
   _fireRate: 0
-  _fireDelay: 0
   _ammoTotalQuantity: 0
   _ammoQuantityInMagazine: 0
   _reloadDuration: 0.5
+--- !u!114 &1507562991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507562984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce693b41da53bb34fbff654cc74fd7a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _obj: {fileID: 1360910760}
 --- !u!1 &1512211825
 GameObject:
   m_ObjectHideFlags: 0
