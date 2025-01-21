@@ -16,10 +16,10 @@ namespace Tests.Locomotion.Animation
         Context _context;
         void Awake()
         {
-            var ldefines = GetComponent<ILocomotionAnimationDefines>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(ILocomotionAnimationDefines));
+            var ldefines = GetComponent<ILocomotionAnimationDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionAnimationDefines));
             _defines = ldefines.Horizontal ?? throw new NullReferenceException(nameof(ldefines.Horizontal));
-            _bonesDefines = GetComponent<IBonesDefines>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(IBonesDefines));
-            _animator = GetComponent<Animator>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(Animator));
+            _bonesDefines = GetComponent<IBonesDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IBonesDefines));
+            _animator = GetComponent<Animator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(Animator));
         }
         (Vector3, Quaternion) UpdateFootIKPosAndRotation(ushort legNum)
         {

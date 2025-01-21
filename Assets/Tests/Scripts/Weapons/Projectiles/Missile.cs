@@ -30,7 +30,7 @@ namespace Tests.Weapons.Projectiles
         public bool Enabled { get => enabled; set => enabled = value; }
         void Awake()
         {
-            _defines = GetComponent<IMissileDefines>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(IMissileDefines));
+            _defines = GetComponent<IMissileDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IMissileDefines));
             _rb = GetComponent<Rigidbody>();
 
             _target = GetComponent<ITarget>();

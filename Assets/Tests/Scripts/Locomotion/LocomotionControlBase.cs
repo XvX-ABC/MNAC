@@ -60,10 +60,10 @@ namespace Tests.Locomotion
 
         void Awake()
         {
-            _defines = GetComponent<ILocomotionDefine>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(ILocomotionDefine));
-            _groundSampler = GetComponent<IGroundSampler>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(IGroundSampler));
+            _defines = GetComponent<ILocomotionDefine>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionDefine));
+            _groundSampler = GetComponent<IGroundSampler>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IGroundSampler));
             //_animator = GetComponent<ILocomotionAnimator>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(ILocomotionAnimator));
-            _input = GetComponent<IInput>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(IInput));
+            _input = GetComponent<IInput>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IInput));
 
 
             _rb = GetComponent<Rigidbody>();

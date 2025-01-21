@@ -11,9 +11,9 @@ namespace Tests.Locomotion.Animation
 
         private void Awake()
         {
-            _horizontal = GetComponent<HorizontalLocomotionAnimator>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(HorizontalLocomotionAnimator));
-            _jump = GetComponent<JumpLocomotionAnimator>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(JumpLocomotionAnimator));
-            _air = GetComponent<AirLocomotionAnimator>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(AirLocomotionAnimator));
+            _horizontal = GetComponent<HorizontalLocomotionAnimator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(HorizontalLocomotionAnimator));
+            _jump = GetComponent<JumpLocomotionAnimator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(JumpLocomotionAnimator));
+            _air = GetComponent<AirLocomotionAnimator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(AirLocomotionAnimator));
 
             _modules = new IModule[] { _horizontal, _jump, _air };
         }

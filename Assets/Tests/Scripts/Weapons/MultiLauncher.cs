@@ -26,10 +26,14 @@ namespace Assets.Tests.Scripts.Weapons
             if (list.Contains(this))
                 list.Remove(this);
             _subLaunchers = list.ToArray();
-            _defines = GetComponent<ILauncherDefines>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(ILauncherDefines));
+            _defines = GetComponent<IMissileLauncherDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherDefines));
+
 
             foreach (var l in _subLaunchers)
                 l.InitializationAction += launcher => launcher.Supply(-(launcher.Defines.AmmoSpareQuantity - 1));
+
+
+            Target = GetComponent<ITarget>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ITarget));
         }
         void Start()
         {

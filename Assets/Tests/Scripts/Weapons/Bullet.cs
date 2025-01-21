@@ -15,7 +15,7 @@ namespace Tests.Weapons
         public bool Enabled { get => enabled; set => enabled = value; }
         void Awake()
         {
-            _defines = GetComponent<IProjectlieDefines>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(IProjectlieDefines));
+            _defines = GetComponent<IProjectlieDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IProjectlieDefines));
         }
         private void OnTriggerEnter(Collider other)
         {

@@ -11,7 +11,7 @@ namespace Tests.Locomotion
         public Target(Camera camera)
         {
             _camera = camera ?? throw new ArgumentNullException(nameof(camera));
-            _controller = _camera.GetComponent<ThirdPersonCameraController>() ?? throw new ComponentCantFoundException(_camera.gameObject, typeof(ThirdPersonCameraController));
+            _controller = _camera.GetComponent<ThirdPersonCameraController>() ?? throw new ComponentCantFindException(_camera.gameObject, typeof(ThirdPersonCameraController));
         }
 
         public Vector3 Position

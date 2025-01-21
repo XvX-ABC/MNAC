@@ -21,9 +21,9 @@ namespace Assets.Tests.Scripts.Weapons
         public ITarget Target;
         protected override void Awake()
         {
-            base.Awake();
-            if (!defines.AmmoOrigin.TryGetComponent<IMissile>(out _))
-                throw new ComponentCantFoundException(defines.AmmoOrigin, typeof(IMissile));
+            defines = GetComponent<IMissileLauncherDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IMissileLauncherDefines));
+            if (!Defines.AmmoOrigin.TryGetComponent<IMissile>(out _))
+                throw new ComponentCantFindException(Defines.AmmoOrigin, typeof(IMissile));
 
         }
         protected override void OnEnable()

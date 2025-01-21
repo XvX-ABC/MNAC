@@ -10,13 +10,13 @@ namespace Tests.Locomotion.Animation
         JumpLocomotion _jumpLocomotion;
         void Awake()
         {
-            var ldefines = GetComponent<ILocomotionAnimationDefines>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(ILocomotionAnimationDefines));
+            var ldefines = GetComponent<ILocomotionAnimationDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionAnimationDefines));
             _defines = ldefines.Air ?? throw new NullReferenceException(nameof(ldefines.Air));
-            _animator = GetComponent<Animator>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(Animator));
+            _animator = GetComponent<Animator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(Animator));
         }
         void Start()
         {
-            var controlBase = GetComponent<LocomotionControlBase>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(LocomotionControlBase));
+            var controlBase = GetComponent<LocomotionControlBase>() ?? throw new ComponentCantFindException(this.gameObject, typeof(LocomotionControlBase));
             _jumpLocomotion = controlBase.jumpLocomotion ?? throw new NullReferenceException(nameof(controlBase.jumpLocomotion));
         }
         public void OnUpdate(Context context)

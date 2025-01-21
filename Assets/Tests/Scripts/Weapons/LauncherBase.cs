@@ -50,7 +50,8 @@ namespace Tests.Weapons
 
         protected virtual void Awake()
         {
-            defines = GetComponent<ILauncherDefines>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(ILauncherDefines));
+            defines = GetComponent<ILauncherDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherDefines));
+            actionsLock = new();
         }
         protected virtual void OnEnable()
         {
