@@ -28,12 +28,15 @@ namespace Assets.Tests.Scripts.Weapons
         }
         protected override void OnEnable()
         {
-            base.OnEnable();
+            base.Start();
+            delayLaunchTimeline = new Timeline(Defines.LaunchDelay);
+            delayLaunchTimeline.AddPointEvent(0, _ => actionsLock.LockAll());
+            delayLaunchTimeline.AddPointEvent(1, _ => { DoLaunch(); actionsLock.UnlockAll(); });
             Reload();
         }
         protected override void GetAmmo(GameObject obj)
         {
-            obj.transform.localPosition = defines.MagazinePosition;
+            obj.transform.localPosition = Defines.MagazinePosition;
             obj.transform.localRotation = Quaternion.identity;
             obj.SetActive(true);
             var missile = obj.GetComponent<IMissile>();
@@ -51,8 +54,7 @@ namespace Assets.Tests.Scripts.Weapons
             if (missileObj == null)
                 missileObj = ammoPool.Get();
         }
-
-        public override void Launch()
+        protected void DoLaunch()
         {
             if (!enabled || reloadTimeline.isRunning)
                 return;
@@ -63,7 +65,7 @@ namespace Assets.Tests.Scripts.Weapons
             missileObj.transform.SetParent(null);
             var missile = missileObj.GetComponent<IMissile>();
 
-            //missile.Target = Target;
+            missile.Target = Target;
             missile.Enabled = true;
 
             missileObj = null;

@@ -40,8 +40,12 @@ namespace Tests.Weapons
         private Action<ILauncher> initializationAction;
         protected float lastLaunchTime;
         protected float lastReloadTime;
-        protected Timeline reloadTimeline;
-        protected Timeline launchDelayTimeline;
+        private ITimeline reloadTimeline;
+
+
+        protected LauncherActionsLock actionsLock;
+
+
         public ushort SpareCount { get => ammoSpareQuantity; }
         public ushort MagazineCount { get => ammoQuantityInMagazine; set => ammoQuantityInMagazine = value; }
         public ILauncherDefines Defines { get => defines; }
@@ -67,6 +71,9 @@ namespace Tests.Weapons
 
         protected virtual void Start()
         {
+            Debug.Log(this.name + ": " + MethodInfo.GetCurrentMethod().Name);
+            actionsLock = new();
+
             ammoPool = new(
              CreateAmmo,
              GetAmmo,
@@ -136,7 +143,12 @@ namespace Tests.Weapons
         protected virtual Timeline CreateReloadTimeline()
         {
             var timeline = new Timeline(defines.ReloadDuration);
-            timeline.AddPointEvent(1, _ => Reload());
+            timeline.AddPointEvent(0, _ => actionsLock.LockAll());
+            timeline.AddPointEvent(1, _ =>
+            {
+                Reload();
+                actionsLock.UnlockAll();
+            });
             return timeline;
         }
 
@@ -155,7 +167,7 @@ namespace Tests.Weapons
         public int Supply(int num)
         {
             Debug.Log(MethodInfo.GetCurrentMethod().Name);
-            if (!enabled || reloadTimeline.IsRunning || ammoSpareQuantity + num < 0)
+            if (!enabled || actionsLock.IsLocked(ActionsEnum.Supply) || ammoSpareQuantity + num < 0)
                 return 0;
             var suppNum = Mathf.Min(Mathf.Max(0, defines.AmmoSpareQuantity) - ammoSpareQuantity, num);
             ammoSpareQuantity += (ushort)suppNum;
@@ -166,14 +178,16 @@ namespace Tests.Weapons
         {
             if (!enabled)
                 return false;
-            if (Time.time - lastReloadTime <= defines.ReloadDuration || ammoSpareQuantity <= 0 || reloadTimeline.IsRunning)
+            if (Time.time - lastReloadTime <= defines.ReloadDuration
+                || ammoSpareQuantity <= 0
+                || actionsLock.StartReloadIsLocked())
                 return false;
             reloadTimeline.Start();
             return true;
         }
         public virtual bool EndReload()
         {
-            if (!enabled || !reloadTimeline.IsRunning)
+            if (!enabled || actionsLock.EndReloadIsLocked())
                 return false;
             reloadTimeline.Stop();
             return true;
@@ -193,7 +207,7 @@ namespace Tests.Weapons
         public virtual void Launch()
         {
             Debug.Log(MethodInfo.GetCurrentMethod().Name);
-            if (!enabled || reloadTimeline.IsRunning)
+            if (!enabled || actionsLock.LaunchIsLocked())
                 return;
             var time = Time.time;
             if (time - lastLaunchTime <= launchingInterval || ammoQuantityInMagazine <= 0)
