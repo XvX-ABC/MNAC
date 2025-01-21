@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Assets.Scripts.Utilities.Timeline;
+using Assets.Scripts.Utilities.Timeline.Event;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Tests;
 using Tests.Weapons;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.Tests.Scripts.Weapons
@@ -59,7 +63,7 @@ namespace Assets.Tests.Scripts.Weapons
             }
 
             public void Stop()
-    {
+            {
                 foreach (var l in _timelines)
                     l.Stop();
             }

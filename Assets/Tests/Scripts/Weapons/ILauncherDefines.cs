@@ -7,8 +7,7 @@ namespace Tests.Weapons
         public GameObject AmmoOrigin { get; }
         public Vector3 MagazinePosition { get; }
         public Vector3 MuzzlePosition { get; }
-        public float FireDelay { get; }
-        public float FireRate { get; }
+        public float LaunchRate { get; }
         public ushort AmmoTotalQuantity { get; }
         public ushort AmmoSpareQuantity { get; }
         public ushort AmmoQuantityInMagazine { get; }

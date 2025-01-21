@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Reflection;
 using Assets.Scripts.Utilities.Timeline;
 using Assets.Scripts.Utilities.Timeline.Event.Point;
 using NUnit.Framework;
 using TMPro;
+using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Pool;
 using ActionsEnum = Tests.Weapons.ILauncher.ActionsEnum;
 namespace Tests.Weapons
 {
-
     public class LauncherBase : MonoBehaviour, ILauncher
     {
         [Obsolete]
@@ -48,7 +50,7 @@ namespace Tests.Weapons
 
         public ushort SpareCount { get => ammoSpareQuantity; }
         public ushort MagazineCount { get => ammoQuantityInMagazine; set => ammoQuantityInMagazine = value; }
-        public ILauncherDefines Defines { get => defines; }
+        public ILauncherDefines Defines { get => defines; protected set => defines = value; }
         public Vector3 MagazinePosition { get => this.transform.position + this.transform.rotation * defines.MagazinePosition; }
         public Action<ILauncher> InitializationAction { get => initializationAction; set => initializationAction = value; }
         public ITimeline ReloadTimeline { get => reloadTimeline; }
@@ -61,7 +63,7 @@ namespace Tests.Weapons
         protected virtual void OnEnable()
         {
 
-
+            Debug.Log(this.name + ": " + MethodInfo.GetCurrentMethod().Name);
 
             //reloadTimeline = new(defines.ReloadDuration, false, new ReloadCompleted(this, 1));
         }
@@ -83,10 +85,9 @@ namespace Tests.Weapons
                 );
 
             reloadTimeline = CreateReloadTimeline();
-            launchDelayTimeline = CreateLaunchDelayTimeline();
 
-            if (defines.FireRate > 0 && defines.FireDelay > 0)
-                launchingInterval = 1 / defines.FireRate;
+            if (defines.LaunchRate > 0)
+                launchingInterval = 1 / defines.LaunchRate;
             else
                 this.enabled = false;
             ammoQuantityInMagazine = defines.AmmoQuantityInMagazine;
@@ -153,11 +154,6 @@ namespace Tests.Weapons
             return timeline;
         }
 
-        protected virtual Timeline CreateLaunchDelayTimeline()
-        {
-            var timeline = new Timeline(defines.FireDelay);
-            return timeline;
-        }
         protected virtual void ReleaseAmmo(IProjectile ammo, GameObject hitObj)
         {
             if (hitObj == this.gameObject)
@@ -195,7 +191,7 @@ namespace Tests.Weapons
         }
         internal virtual void Reload()
         {
-            Debug.Log(MethodInfo.GetCurrentMethod().Name);
+            Debug.Log(this.name + ": " + MethodInfo.GetCurrentMethod().Name);
             if (!enabled)
                 return;
 

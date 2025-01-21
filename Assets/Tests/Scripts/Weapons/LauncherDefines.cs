@@ -13,8 +13,6 @@ namespace Tests.Weapons
         [SerializeField]
         float _fireRate;
         [SerializeField]
-        float _fireDelay;
-        [SerializeField]
         ushort _ammoTotalQuantity;
         [SerializeField]
         ushort _ammoQuantityInMagazine;
@@ -24,8 +22,7 @@ namespace Tests.Weapons
         public GameObject AmmoOrigin { get => _origin; }
         public Vector3 MagazinePosition { get => _magazinePosition; }
         public Vector3 MuzzlePosition { get => _muzzlePosition; }
-        public float FireRate { get => _fireRate; }
-        public float FireDelay { get => _fireDelay; }
+        public float LaunchRate { get => _fireRate; }
         public ushort AmmoTotalQuantity { get => _ammoTotalQuantity; }
         public ushort AmmoSpareQuantity { get => (ushort)(_ammoTotalQuantity - _ammoQuantityInMagazine); }
         public ushort AmmoQuantityInMagazine { get => _ammoQuantityInMagazine; }

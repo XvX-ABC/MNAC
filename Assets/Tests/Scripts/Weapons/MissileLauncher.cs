@@ -53,12 +53,6 @@ namespace Assets.Tests.Scripts.Weapons
             var missile = obj.GetComponent<IMissile>();
             missile.Enabled = false;
         }
-        protected override Timeline CreateReloadTimeline()
-        {
-            var timeline = new Timeline(defines.ReloadDuration);
-            timeline.AddPointEvent(0, _ => Reload());
-            return timeline;
-        }
         internal override void Reload()
         {
             base.Reload();
@@ -67,12 +61,6 @@ namespace Assets.Tests.Scripts.Weapons
         }
         protected void DoLaunch()
         {
-            if (!enabled || reloadTimeline.isRunning)
-                return;
-
-            if (Time.time - lastLaunchTime <= launchingInterval || ammoQuantityInMagazine <= 0)
-                return;
-
             missileObj.transform.SetParent(null);
             var missile = missileObj.GetComponent<IMissile>();
 
