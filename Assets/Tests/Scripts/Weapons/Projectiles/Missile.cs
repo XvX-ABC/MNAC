@@ -23,16 +23,26 @@ namespace Tests.Weapons.Projectiles
         ITarget _target;
         [SerializeField]
         float _acceleratedAngle;
+        [SerializeField]
+        AnimationCurve _curve;
 
         Action<IProjectile, GameObject> _hitAction;
-        public ITarget Target { get => _target; set => _target = value; }
+        public ITarget Target
+        {
+            get => _target;
+            set
+            {
+                if (!enabled)
+                    _target = value;
+            }
+        }
         public Action<IProjectile, GameObject> HitAction { get => _hitAction; set => _hitAction = value; }
         public bool Enabled { get => enabled; set => enabled = value; }
         void Awake()
         {
             _defines = GetComponent<IMissileDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IMissileDefines));
             _rb = GetComponent<Rigidbody>();
-
+            _rb.useGravity = false;
             _target = GetComponent<ITarget>();
             //_rb.isKinematic = true;
         }
@@ -49,7 +59,10 @@ namespace Tests.Weapons.Projectiles
             _hitAction?.Invoke(this, collision.gameObject);
             var obj = collision.gameObject;
             if (obj == _target?.Obj)
+            {
+                Debug.Log($"Missile {obj.name} hit the targget '{obj.name}'");
                 enabled = false;
+            }
         }
         void Update()
         {
@@ -94,7 +107,7 @@ namespace Tests.Weapons.Projectiles
             {
                 var expectedAngle = Mathf.Min(_acceleratedAngle + Mathf.Min(angle, _defines.AngularSpeed * deltaTime), _defines.MaxAngle);
                 _acceleratedAngle = expectedAngle;
-                return Quaternion.Lerp(rotation, trotation, expectedAngle / angle);
+                return Quaternion.Slerp(rotation, trotation, expectedAngle / angle);
             }
         }
     }

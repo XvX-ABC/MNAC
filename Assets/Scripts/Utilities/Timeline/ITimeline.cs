@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Utilities.Timeline.Event;
+using System;
 
 namespace Assets.Scripts.Utilities.Timeline
 {
@@ -6,7 +7,10 @@ namespace Assets.Scripts.Utilities.Timeline
     {
         bool IsRunning { get; }
         float Time { get; }
-
+        float Length { get; }
+        Action<TimelineContext> StartAction { get;set; }
+        Action<float> UpdateAction { get; set; }
+        Action<TimelineContext> EndAction { get; set; }
         void Continue();
         void OnUpdate(float deltaTime);
         void Start();

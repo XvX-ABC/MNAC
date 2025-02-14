@@ -8,22 +8,25 @@ namespace Tests.Weapons
     [RequireComponent(typeof(Collider))]
     public class Bullet : MonoBehaviour, IProjectile
     {
-        IProjectlieDefines _defines;
-        Action<IProjectile, GameObject> _hitAction;
+        private IProjectlieDefines _defines;
+        private Action<IProjectile, GameObject> _hitAction;
 
         public Action<IProjectile, GameObject> HitAction { get => _hitAction; set => _hitAction = value; }
         public bool Enabled { get => enabled; set => enabled = value; }
-        void Awake()
+
+        private void Awake()
         {
             _defines = GetComponent<IProjectlieDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IProjectlieDefines));
         }
+
         private void OnTriggerEnter(Collider other)
         {
             Debug.Log(MethodInfo.GetCurrentMethod().Name);
             var obj = other.gameObject;
             _hitAction?.Invoke(this, obj);
         }
-        void Update()
+
+        private void Update()
         {
             if (!enabled)
                 return;

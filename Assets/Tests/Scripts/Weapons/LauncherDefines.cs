@@ -13,7 +13,7 @@ namespace Tests.Weapons
         [SerializeField]
         float _fireRate;
         [SerializeField]
-        ushort _ammoTotalQuantity;
+        ushort _ammoSpareQuantity;
         [SerializeField]
         ushort _ammoQuantityInMagazine;
         [SerializeField]
@@ -23,8 +23,8 @@ namespace Tests.Weapons
         public Vector3 MagazinePosition { get => _magazinePosition; }
         public Vector3 MuzzlePosition { get => _muzzlePosition; }
         public float LaunchRate { get => _fireRate; }
-        public ushort AmmoTotalQuantity { get => _ammoTotalQuantity; }
-        public ushort AmmoSpareQuantity { get => (ushort)(_ammoTotalQuantity - _ammoQuantityInMagazine); }
+        public ushort AmmoTotalQuantity { get => (ushort)(_ammoSpareQuantity + _ammoQuantityInMagazine); }
+        public ushort AmmoSpareQuantity { get => _ammoSpareQuantity; }
         public ushort AmmoQuantityInMagazine { get => _ammoQuantityInMagazine; }
         public float ReloadDuration { get => _reloadDuration; }
         void Start()

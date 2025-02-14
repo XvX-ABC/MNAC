@@ -6,22 +6,27 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.Mathematics;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEditor.VersionControl;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Utilities.Timeline
 {
-
     public class Timeline : ITimeline
     {
 
         internal IEventsExecutor[] executors;
         internal float time;
-        internal readonly float duration;
-        internal readonly bool isLoop;
+        internal float duration;
+        internal bool isLoop;
         internal bool isRunning;
+        bool _startActionExecuted;
+
+        internal Action<TimelineContext> startAction;
+        internal Action<float> updateAction;
+        internal Action<TimelineContext> endAction;
         public float Time
         {
             get => time;
@@ -30,6 +35,13 @@ namespace Assets.Scripts.Utilities.Timeline
         {
             get => isRunning;
         }
+        public float Length
+        {
+            get => duration;
+        }
+        public Action<TimelineContext> StartAction { get => startAction; set => startAction = value; }
+        public Action<float> UpdateAction { get => updateAction; set => updateAction = value; }
+        public Action<TimelineContext> EndAction { get => endAction; set => endAction = value; }
         internal Timeline(IEventsExecutor[] executors, float duration, bool isLoop, bool isRunning)
         {
             if (executors == null || executors.Length == 0)
@@ -57,7 +69,8 @@ namespace Assets.Scripts.Utilities.Timeline
         }
         public Timeline(float duration, bool isLoop) : this(new IEventsExecutor[] { new PointEventsExecutor(), new RangeEventsExecutor() }, duration, isLoop, false) { }
         public Timeline(float duration) : this(duration, false) { }
-        public void Start()
+        protected Timeline() : this(0) { }
+        public virtual void Start()
         {
             Reset();
             isRunning = true;
@@ -75,10 +88,21 @@ namespace Assets.Scripts.Utilities.Timeline
             if (!isRunning)
                 return;
             var context = new TimelineContext() { DeltaTime = deltaTime, Time = time, Proportion = time / duration, Duration = duration };
+
+            if (!_startActionExecuted)
+            {
+                startAction?.Invoke(context);
+                _startActionExecuted = true;
+            }
+
+            updateAction?.Invoke(time / duration);
             foreach (var executor in executors)
                 executor.Execute(context);
             if (time >= duration)
+            {
+                endAction?.Invoke(context);
                 Reset();
+            }
             else
                 time += deltaTime;
         }
@@ -89,11 +113,12 @@ namespace Assets.Scripts.Utilities.Timeline
         }
         void Reset()
         {
-            if (time >= duration)
+            if (isLoop && time >= duration)
                 time -= duration;
             else
                 time = 0;
             isRunning = isLoop;
+            _startActionExecuted = false;
             ResetExecutors();
         }
 

@@ -1,17 +1,12 @@
-﻿using Assets.Scripts.Arms.Actions;
-using Assets.Scripts.Utilities.Timeline;
+﻿using Assets.Scripts.Utilities.Timeline;
 using Assets.Scripts.Utilities.Timeline.Event.Point;
+using Assets.Tests.Scripts.Weapons.MVC;
+using FoundationStone.UI.Tests.MVC;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tests;
 using Tests.Weapons;
 using Tests.Weapons.Projectiles;
-using Unity.XR.OpenVR;
 using UnityEngine;
-using UnityEngine.SearchService;
 
 namespace Assets.Tests.Scripts.Weapons
 {
@@ -20,23 +15,36 @@ namespace Assets.Tests.Scripts.Weapons
         protected GameObject missileObj;
         private ITimeline delayLaunchTimeline;
         public ITarget Target;
-        ITarget IMissileLauncher.Target { get => Target; set => Target = value; }
-        public new IMissileLauncherDefines Defines { get => (IMissileLauncherDefines)defines; }
+        private Action<IMissileLauncher, ITarget> targetChangedAction;
+        ITarget IMissileLauncher.Target
+        {
+            get => Target;
+            set
+            {
+                targetChangedAction?.Invoke(this, value);
+                Target = value;
+            }
+        }
+        public new IMissileLauncherDefines Defines
+        {
+            get => (IMissileLauncherDefines)defines;
+        }
         public ITimeline DelayLaunchTimeline { get => delayLaunchTimeline; }
+        public Action<IMissileLauncher, ITarget> TargetChangedAction { get => targetChangedAction; set => targetChangedAction = value; }
 
         protected override void Awake()
         {
             defines = GetComponent<IMissileLauncherDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IMissileLauncherDefines));
             if (!Defines.AmmoOrigin.TryGetComponent<IMissile>(out _))
                 throw new ComponentCantFindException(Defines.AmmoOrigin, typeof(IMissile));
-
         }
         protected override void Start()
         {
-            base.Start();
-            delayLaunchTimeline = new Timeline(Defines.LaunchDelay);
+            //delayLaunchTimeline = new Timeline(Defines.LaunchDelay);
+            delayLaunchTimeline = new RandomLengthTimeline(Defines.LaunchDelay_New);
             delayLaunchTimeline.AddPointEvent(0, _ => actionsLock.LockAll());
             delayLaunchTimeline.AddPointEvent(1, _ => { DoLaunch(); actionsLock.UnlockAll(); });
+            base.Start();
             Reload();
         }
         protected override void Update()
@@ -72,18 +80,27 @@ namespace Assets.Tests.Scripts.Weapons
             ammoQuantityInMagazine--;
             lastLaunchTime = Time.time;
         }
-        public override void Launch()
+        public override bool Launch()
         {
             if (!enabled
                 || Target == null
                 || actionsLock.LaunchIsLocked())
-                return;
+                return false;
 
             if (Time.time - lastLaunchTime <= launchingInterval
                 || ammoQuantityInMagazine <= 0)
-                return;
+                return false;
 
             delayLaunchTimeline.Start();
+
+            return true;
+        }
+
+        [RequestMapping("{c_url}/DelayLaunchTimeline/UpdateEvent/Register")]
+        public void RegisterDelayLaunchTimelineUpdateEvent(IRequest<Action<float>> request, IResponse<object> response)
+        {
+            delayLaunchTimeline.UpdateAction += request.Data;
+            response.Code = (ushort)ResponseCode.Succeeded;
         }
     }
 }

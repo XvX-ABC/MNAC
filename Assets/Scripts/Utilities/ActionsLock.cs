@@ -1,7 +1,8 @@
 ﻿using System;
+using UnityEngine;
 namespace Utilities
 {
-    public class ActionsLock<T> where T : Enum
+    public class ActionsLock<T> : IActionsLock<T> where T : Enum
     {
         byte _lockArray;
         Type _enumType;
@@ -16,7 +17,11 @@ namespace Utilities
         public bool IsLocked(T e)
         {
             var v = Convert.ToByte(e);
-            return (_lockArray & Convert.ToByte(e)) == v;
+            return (_lockArray & v) == v;
+        }
+        public bool AnyLocked()
+        {
+            return _lockArray > 0;
         }
         public void Lock(params T[] es)
         {

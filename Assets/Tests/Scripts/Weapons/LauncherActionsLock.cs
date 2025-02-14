@@ -2,7 +2,7 @@
 using ActionsEnum = Tests.Weapons.ILauncher.ActionsEnum;
 namespace Tests.Weapons
 {
-    public class LauncherActionsLock : ActionsLock<ActionsEnum>
+    public class LauncherActionsLock : ActionsLock<ActionsEnum>, ILauncherActionsLock
     {
         public bool LaunchIsLocked()
         {
@@ -14,7 +14,7 @@ namespace Tests.Weapons
         }
         public bool EndReloadIsLocked()
         {
-            return !IsLocked(ActionsEnum.EndReload);
+            return IsLocked(ActionsEnum.EndReload);
         }
     }
 }

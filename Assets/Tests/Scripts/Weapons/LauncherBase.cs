@@ -1,17 +1,18 @@
 ﻿using System;
-using System.Collections;
 using System.Reflection;
+using System.Threading.Tasks.Sources;
 using Assets.Scripts.Utilities.Timeline;
 using Assets.Scripts.Utilities.Timeline.Event.Point;
-using NUnit.Framework;
-using TMPro;
-using Unity.Mathematics;
-using UnityEditor;
+using FoundationStone.UI.Tests.MVC;
+using NUnit.Framework.Internal;
+using Unity.VisualScripting;
+using UnityEditor.Compilation;
 using UnityEngine;
 using UnityEngine.Pool;
 using ActionsEnum = Tests.Weapons.ILauncher.ActionsEnum;
 namespace Tests.Weapons
 {
+    [DisallowMultipleComponent]
     public class LauncherBase : MonoBehaviour, ILauncher
     {
         [Obsolete]
@@ -41,8 +42,11 @@ namespace Tests.Weapons
 
         private Action<ILauncher> initializationAction;
         protected float lastLaunchTime;
-        protected float lastReloadTime;
+        //protected float lastReloadTime;
+
+
         private ITimeline reloadTimeline;
+
 
 
         protected LauncherActionsLock actionsLock;
@@ -54,16 +58,16 @@ namespace Tests.Weapons
         public Vector3 MagazinePosition { get => this.transform.position + this.transform.rotation * defines.MagazinePosition; }
         public Action<ILauncher> InitializationAction { get => initializationAction; set => initializationAction = value; }
         public ITimeline ReloadTimeline { get => reloadTimeline; }
+        ILauncherActionsLock ILauncher.actionsLock { get => actionsLock; }
 
         protected virtual void Awake()
         {
             defines = GetComponent<ILauncherDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherDefines));
             actionsLock = new();
+
         }
         protected virtual void OnEnable()
         {
-
-            Debug.Log(this.name + ": " + MethodInfo.GetCurrentMethod().Name);
 
             //reloadTimeline = new(defines.ReloadDuration, false, new ReloadCompleted(this, 1));
         }
@@ -74,7 +78,6 @@ namespace Tests.Weapons
 
         protected virtual void Start()
         {
-            Debug.Log(this.name + ": " + MethodInfo.GetCurrentMethod().Name);
             actionsLock = new();
 
             ammoPool = new(
@@ -93,6 +96,7 @@ namespace Tests.Weapons
             ammoQuantityInMagazine = defines.AmmoQuantityInMagazine;
             ammoSpareQuantity = defines.AmmoSpareQuantity;
             initializationAction?.Invoke(this);
+            InitializationAction = null;
         }
         protected virtual void Update()
         {
@@ -163,10 +167,13 @@ namespace Tests.Weapons
         }
         public int Supply(int num)
         {
-            Debug.Log(MethodInfo.GetCurrentMethod().Name);
-            if (!enabled || actionsLock.IsLocked(ActionsEnum.Supply) || ammoSpareQuantity + num < 0)
+            if (!enabled || actionsLock.IsLocked(ActionsEnum.Supply) || num == 0)
                 return 0;
-            var suppNum = Mathf.Min(Mathf.Max(0, defines.AmmoSpareQuantity) - ammoSpareQuantity, num);
+            var suppNum = 0;
+            if (num > 0)
+                suppNum = Mathf.Min(defines.AmmoSpareQuantity - ammoSpareQuantity, num);
+            else
+                suppNum = Mathf.Min(-(defines.AmmoSpareQuantity - ammoSpareQuantity), num);
             ammoSpareQuantity += (ushort)suppNum;
             //remainingCount =(ushort) Mathf.Min(defines.AmmoTotalNum - defines.AmmoTotalNumInMagazine, remainingCount + num);
             return suppNum;
@@ -175,9 +182,9 @@ namespace Tests.Weapons
         {
             if (!enabled)
                 return false;
-            if (Time.time - lastReloadTime <= defines.ReloadDuration
-                || ammoSpareQuantity <= 0
-                || actionsLock.StartReloadIsLocked())
+            if (actionsLock.StartReloadIsLocked()
+                || ammoQuantityInMagazine == defines.AmmoQuantityInMagazine
+                || ammoSpareQuantity <= 0)
                 return false;
             reloadTimeline.Start();
             return true;
@@ -191,31 +198,40 @@ namespace Tests.Weapons
         }
         internal virtual void Reload()
         {
-            Debug.Log(this.name + ": " + MethodInfo.GetCurrentMethod().Name);
             if (!enabled)
                 return;
 
             var num = (ushort)Mathf.Min(ammoSpareQuantity, defines.AmmoQuantityInMagazine - ammoQuantityInMagazine);
             ammoQuantityInMagazine += num;
             ammoSpareQuantity -= num;
-            lastReloadTime = Time.time;
+            //lastReloadTime = Time.time;
             return;
         }
-        public virtual void Launch()
+        public virtual bool Launch()
         {
             Debug.Log(MethodInfo.GetCurrentMethod().Name);
             if (!enabled || actionsLock.LaunchIsLocked())
-                return;
+                return false;
             var time = Time.time;
             if (time - lastLaunchTime <= launchingInterval || ammoQuantityInMagazine <= 0)
-                return;
+                return false;
 
 
             var obj = ammoPool.Get();
             ammoQuantityInMagazine--;
             lastLaunchTime = Time.time;
+
+            return true;
         }
-
-
+        [RequestMapping("{c_url}/ReloadTimeline/UpdateEvent/Register", RequestMethod.GET)]
+        public void RegisterReloadTimelineUpdateEvent(IRequest<(bool, Action<float>)> request, IResponse response)
+        {
+            var register = request.Data.Item1;
+            if (register)
+                reloadTimeline.UpdateAction += request.Data.Item2;
+            else
+                reloadTimeline.UpdateAction -= request.Data.Item2;
+            response.Code = (ushort)ResponseCode.Succeeded;
+        }
     }
 }
