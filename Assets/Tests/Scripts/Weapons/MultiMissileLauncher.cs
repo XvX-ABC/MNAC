@@ -13,22 +13,6 @@ using UnityEngine;
 
 namespace Assets.Tests.Scripts.Weapons
 {
-    public interface ILauncherAnimatorDefines
-    {
-        public string CoverCloseClipName { get; }
-        public string CoverCloseSpeedMultiplierName { get; }
-
-        public string CoverOpenParamName { get; }
-        public string CoverOpenClipName { get; }
-        public string CoverOpenSpeedMultiplierName { get; }
-
-        public string MagazineFullClipName { get; }
-        public string MagazineEmptyParamName { get; }
-        public string MagazineFullSpeedMultiplierName { get; }
-
-        public string MagazineEmptyClipName { get; }
-        public string MagazineEmptySpeedMultiplierName { get; }
-    }
     [Serializable]
     public struct PrepareLaunch
     {
@@ -54,13 +38,61 @@ namespace Assets.Tests.Scripts.Weapons
     {
         public float EmptyOrFullDuration;
     }
-    public interface ILauncherAnimatorActionDefines
-    {
-        public PrepareLaunch PrepareLaunch { get; }
-        public Reload Reload { get; }
-        public Cover Cover { get; }
-        public MagazineModule Magazine { get; }
-    }
+    //public class X0_MissileLauncherDefines : IMissileLauncherDefines, ILauncherAnimatorActionDefines
+    //{
+    //    [SerializeField]
+    //    float _coverOpenOrCloseDuration;
+    //    [SerializeField]
+    //    float _magazineFullOrEmptyDuration;
+    //    [SerializeField]
+    //    GameObject _origin;
+    //    [SerializeField]
+    //    Vector3 _magazinePosition;
+    //    [SerializeField]
+    //    Vector3 _muzzlePosition;
+    //    [SerializeField]
+    //    float _launchRate;
+    //    [SerializeField]
+    //    ushort _ammoSpareQuantity;
+    //    [SerializeField]
+    //    ushort _ammoQuantityInMagazine;
+    //    [SerializeField]
+    //    float _reloadDuration;
+    //    [SerializeField]
+    //    Vector2 _launchDelay_New;
+    //    [SerializeField]
+    //    Reload _reloadAction;
+
+    //    public float LaunchDelay => throw new NotImplementedException();
+
+    //    public Vector2 LaunchDelay_New => _launchDelay_New;
+
+    //    public GameObject AmmoOrigin => _origin;
+
+    //    public Vector3 MagazinePosition => _magazinePosition;
+
+    //    public Vector3 MuzzlePosition => _muzzlePosition;
+
+    //    public float LaunchRate
+    //    {
+    //        get => Mathf.Max(_launchRate, ReloadDuration);
+    //    }
+
+    //    public ushort AmmoTotalQuantity => (ushort)(_ammoSpareQuantity + _ammoQuantityInMagazine);
+
+    //    public ushort AmmoSpareQuantity => _ammoSpareQuantity;
+
+    //    public ushort AmmoQuantityInMagazine => _ammoQuantityInMagazine;
+
+    //    public float ReloadDuration
+    //    {
+    //        get
+    //        {
+    //            return _coverOpenOrCloseDuration + _reloadDuration;
+    //        }
+    //    }
+    //    public Reload Reload { get => _reloadAction; }
+    //}
     public class MultiMissileLauncher : MonoBehaviour, IMissileLauncher
     {
         class TimelinesGroup : ITimeline
@@ -203,9 +235,7 @@ namespace Assets.Tests.Scripts.Weapons
             }
         }
         internal IMissileLauncher[] subLaunchers;
-        [SerializeField]
         ushort _ammoSpareQuantity;
-        [SerializeField]
         ushort _ammoQuantityInMagazine;
         IMissileLauncherDefines _defines;
         Action<ILauncher> _initializationAction;
@@ -282,7 +312,7 @@ namespace Assets.Tests.Scripts.Weapons
 
 
         }
-
+        
         protected void InitializeSubLauncher(IMissileLauncher l)
         {
             l.InitializationAction += launcher =>

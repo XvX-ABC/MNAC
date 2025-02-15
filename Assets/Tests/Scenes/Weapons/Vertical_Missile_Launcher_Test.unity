@@ -1736,7 +1736,7 @@ Animator:
   m_GameObject: {fileID: 1626064187}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d2610491134ec2a449d475116ca9f034, type: 2}
+  m_Controller: {fileID: 9100000, guid: aed706f48d17108439af7272dc6e2c2d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1808,27 +1808,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 494d798705c037b469cf9daa5c403640, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1626064195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1626064187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b10a1b83f8b29214180f11e44ce3c967, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _prepareLaunch:
-    CoverOpenDuration: 1
-  _reload:
-    CoverCloseProportion: {x: 0, y: 1}
-    MagazineEmptyProportion: {x: 0, y: 0.5}
-    MagazineFullProportion: {x: 0.5, y: 1}
-    CoverCloseTriggerProportion: 0
-    MagazineEmptyTriggerProportion: 0
-    MagazineFullTriggerProportion: 0
 --- !u!114 &1626064196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1844,13 +1823,37 @@ MonoBehaviour:
   _coverCloseClipName: "\u9AA8\u67B6_Covers_Close"
   _coverCloseSpeedMultiplierName: CoversCloseSpeedMultiplier
   _coverOpenClipName: "\u9AA8\u67B6_Covers_Open"
-  _coverOpenParamName: Covers_To_Open
   _coverOpenSpeedMultiplierName: CoversOpenSpeedMultiplier
   _magazineFullClipName: "\u9AA8\u67B6_Module_Full"
   _magazineFullSpeedMultiplierName: MagazineFullSpeedMultiplier
   _magazineEmptyClipName: "\u9AA8\u67B6_Module_Empty"
-  _magazineEmptyParamName: Magazine_To_Empty
   _magazineEmptySpeedMultiplierName: MagazineEmptySpeedMutliplier
+  _targetLockedParamName: TargetLocked
+  _reloadingParamName: Reloading
+--- !u!114 &1626064197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626064187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aea88b119606824389fbd5c90ea2f12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ammo:
+    Origin: {fileID: 0}
+    SpareQuantity: 0
+    InMagazineQuantity: 0
+  _mountPoints:
+    MagazinePosition: {x: 0, y: 0, z: 0}
+    MuzzlePosition: {x: 0, y: 0, z: 0}
+  _actionNumbers:
+    LaunchDelay: {x: 0, y: 0}
+    LaunchRate: 0
+    CoverOpenOrCloseDuration: 1
+    MagazineFullOrEmptyDuration: 0.5
 --- !u!4 &1638018874 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3723345814900933657, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f,
@@ -2066,15 +2069,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1626064195}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1626064194}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1626064193}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1626064197}
   m_SourcePrefab: {fileID: 100100000, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f, type: 3}
 --- !u!1 &1845034341 stripped
 GameObject:
