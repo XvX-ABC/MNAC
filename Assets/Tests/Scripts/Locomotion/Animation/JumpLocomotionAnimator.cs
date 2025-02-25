@@ -7,7 +7,7 @@ namespace Tests.Locomotion.Animation
 {
     public class JumpLocomotionAnimator : MonoBehaviour, IModule
     {
-        IJumpLocomotionAnimationDefines _defines;
+        IJumpLocomotionAnimationDefinitions _definition;
         JumpLocomotion _jumpLocomotion;
         Animator _animator;
         JState _oldState;
@@ -15,8 +15,8 @@ namespace Tests.Locomotion.Animation
         float _maxHeight;
         void Awake()
         {
-            var ldefines = GetComponent<ILocomotionAnimationDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionAnimationDefines));
-            _defines = ldefines.Jump ?? throw new NullReferenceException(nameof(ldefines.Jump));
+            var ldefinition = GetComponent<ILocomotionAnimationDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionAnimationDefinitions));
+            _definition = ldefinition.Jump ?? throw new NullReferenceException(nameof(ldefinition.Jump));
 
             _animator = GetComponent<Animator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(Animator));
             _sampler = GetComponent<IGroundSampler>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IGroundSampler));
@@ -28,13 +28,13 @@ namespace Tests.Locomotion.Animation
             _jumpLocomotion = controlBase.jumpLocomotion ?? throw new NullReferenceException(nameof(controlBase.jumpLocomotion));
 
 
-            var clipLength = _defines.AscendingClipLength;
+            var clipLength = _definition.AscendingClipLength;
             var length = _jumpLocomotion.AscendingDuration;
-            _animator.SetFloat(_defines.AscendingMultiplierName, clipLength / length);
+            _animator.SetFloat(_definition.AscendingMultiplierName, clipLength / length);
 
-            clipLength = _defines.DescendingClipLength;
-            length = _jumpLocomotion.Defines.LandingDuration;
-            _animator.SetFloat(_defines.LandingMultiplierName, clipLength / length);
+            clipLength = _definition.DescendingClipLength;
+            length = _jumpLocomotion.Definition.LandingDuration;
+            _animator.SetFloat(_definition.LandingMultiplierName, clipLength / length);
 
         }
         void Landing()
@@ -43,7 +43,7 @@ namespace Tests.Locomotion.Animation
             var groundHeight = point.y;
             var currentHeight = _sampler.CurrentHeight;
             var v = currentHeight / (_maxHeight - groundHeight);
-            _animator.Play(_defines.DescendingClipName, 0, Mathf.Clamp01(1 - v));
+            _animator.Play(_definition.DescendingClipName, 0, Mathf.Clamp01(1 - v));
         }
         public void OnUpdate(Context context)
         {
@@ -55,13 +55,13 @@ namespace Tests.Locomotion.Animation
             if (_oldState == JState.Idle)
             {
                 var pos = context.Position;
-                _animator.SetBool(_defines.EnterParamName, true);
-                _maxHeight = pos.y + _jumpLocomotion.Defines.Height;
+                _animator.SetBool(_definition.EnterParamName, true);
+                _maxHeight = pos.y + _jumpLocomotion.Definition.Height;
                 _oldState = currentState;
             }
             else if (currentState == JState.Idle)
             {
-                _animator.SetBool(_defines.EnterParamName, false);
+                _animator.SetBool(_definition.EnterParamName, false);
                 _oldState = currentState;
             }
 

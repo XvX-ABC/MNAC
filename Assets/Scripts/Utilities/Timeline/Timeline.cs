@@ -1,16 +1,7 @@
 ﻿using Assets.Scripts.Utilities.Timeline.Event;
 using Assets.Scripts.Utilities.Timeline.Event.Point;
 using Assets.Scripts.Utilities.Timeline.Event.Range;
-using Mono.Cecil;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Unity.Mathematics;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Antlr3.Runtime;
-using UnityEditor.VersionControl;
-using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Utilities.Timeline
 {
@@ -106,12 +97,12 @@ namespace Assets.Scripts.Utilities.Timeline
             else
                 time += deltaTime;
         }
-        void ResetExecutors()
+        protected virtual void ResetExecutors()
         {
             foreach (var executor in executors)
                 executor.Reset();
         }
-        void Reset()
+        protected virtual void Reset()
         {
             if (isLoop && time >= duration)
                 time -= duration;

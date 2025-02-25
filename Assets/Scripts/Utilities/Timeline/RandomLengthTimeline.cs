@@ -19,5 +19,10 @@ namespace Assets.Scripts.Utilities.Timeline
                 duration = _timeGeneration.Time;
             base.Start();
         }
+        protected override void Reset()
+        {
+            base.Reset();
+            time = 0;
+        }
     }
 }

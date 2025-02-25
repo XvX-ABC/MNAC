@@ -7,18 +7,18 @@ namespace Tests.Locomotion
     class AirLocomotion : IModule
     {
 
-        IBaseDefines _defines;
+        IBaseDefinition _definition;
         JumpLocomotion _jump;
-        public AirLocomotion(IBaseDefines defines, JumpLocomotion jumpLocomotion)
+        public AirLocomotion(IBaseDefinition definition, JumpLocomotion jumpLocomotion)
         {
-            _defines = defines ?? throw new ArgumentNullException(nameof(defines));
+            _definition = definition ?? throw new ArgumentNullException(nameof(definition));
             _jump = jumpLocomotion ?? throw new ArgumentNullException(nameof(jumpLocomotion));
         }
 
         Vector3 CalculateVelocity(Vector3 currentVelocity)
         {
             var result = currentVelocity;
-            result.y = _defines.AscendingSpeed;
+            result.y = _definition.AscendingSpeed;
             return result;
         }
         public void OnUpdate(Context context)

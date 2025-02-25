@@ -1,24 +1,20 @@
 using System;
 using Locomotion.Animation;
-using TMPro;
-using TMPro.EditorUtilities;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 namespace Tests.Locomotion.Animation
 {
     public class HorizontalLocomotionAnimator : MonoBehaviour, IModule
     {
         const float BottomHeight = 0.8f;
-        IHorizontalLocomotionAnimationDefines _defines;
-        IBonesDefines _bonesDefines;
+        IHorizontalLocomotionAnimationDefinitions _definition;
+        IBonesDefinitions _bonesDefinition;
         Animator _animator;
         Context _context;
         void Awake()
         {
-            var ldefines = GetComponent<ILocomotionAnimationDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionAnimationDefines));
-            _defines = ldefines.Horizontal ?? throw new NullReferenceException(nameof(ldefines.Horizontal));
-            _bonesDefines = GetComponent<IBonesDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IBonesDefines));
+            var ldefinition = GetComponent<ILocomotionAnimationDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionAnimationDefinitions));
+            _definition = ldefinition.Horizontal ?? throw new NullReferenceException(nameof(ldefinition.Horizontal));
+            _bonesDefinition = GetComponent<IBonesDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IBonesDefinitions));
             _animator = GetComponent<Animator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(Animator));
         }
         (Vector3, Quaternion) UpdateFootIKPosAndRotation(ushort legNum)
@@ -57,7 +53,7 @@ namespace Tests.Locomotion.Animation
             var ground = _context.Ground;
             if (!ground.Touched)
                 return;
-            var legLength = _bonesDefines.LegLength;
+            var legLength = _bonesDefinition.LegLength;
             var (newPosLeft, _) = UpdateFootIKPosAndRotation(0);
             var (newPosRight, _) = UpdateFootIKPosAndRotation(1);
             var (v_l, length_l) = CalculateVectorAndLength(0, newPosLeft, legLength);
@@ -105,8 +101,8 @@ namespace Tests.Locomotion.Animation
             var rotation = context.Rotation;
             var velocity = context.Velocity;
             var v = Quaternion.Inverse(context.Rotation) * velocity * 0.05f;
-            _animator.SetFloat(_defines.XParamName, v.x);
-            _animator.SetFloat(_defines.YParamName, v.z);
+            _animator.SetFloat(_definition.XParamName, v.x);
+            _animator.SetFloat(_definition.YParamName, v.z);
         }
     }
 }

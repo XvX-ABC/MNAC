@@ -10,20 +10,20 @@ using UnityEngine;
 
 namespace Assets.Tests.Scripts.Weapons
 {
-    [RequireComponent(typeof(X0_MultiMissileLauncherDefines))]
+    [RequireComponent(typeof(X0_MultiMissileLauncherDefinitions))]
     [RequireComponent(typeof(Animator))]
     public class X0_Animator : MonoBehaviour
     {
         Animator _animator;
-        ILauncherAnimatorDefines _defines;
-        ILauncherAnimatorActionDefines _actionDefines;
+        ILauncherAnimatorDefinitions _definition;
+        ILauncherAnimatorActionDefinitions _actionDefinition;
         X0_MultiMissileLauncher _launcher;
         ITimeline _prepareLaunchTimeline;
         void Awake()
         {
             _animator = GetComponent<Animator>();
-            _defines = GetComponent<ILauncherAnimatorDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherAnimatorDefines));
-            _actionDefines = GetComponent<X0_MultiMissileLauncherDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherAnimatorActionDefines));
+            _definition = GetComponent<ILauncherAnimatorDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherAnimatorDefinitions));
+            _actionDefinition = GetComponent<X0_MultiMissileLauncherDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherAnimatorActionDefinitions));
             _launcher = GetComponent<X0_MultiMissileLauncher>() ?? throw new ComponentCantFindException(this.gameObject, typeof(X0_MultiMissileLauncher));
 
 
@@ -50,17 +50,17 @@ namespace Assets.Tests.Scripts.Weapons
 
             ActionInitialize_Reload();
 
-            InitializeSpeedMultiplierForClip(FindClip(clips, _defines.CoverOpenClipName), _defines.CoverOpenSpeedMultiplierName, _actionDefines.CoverOpenOrCloseDuration);
-            InitializeSpeedMultiplierForClip(FindClip(clips, _defines.CoverCloseClipName), _defines.CoverCloseSpeedMultiplierName, _actionDefines.CoverOpenOrCloseDuration);
-            InitializeSpeedMultiplierForClip(FindClip(clips, _defines.MagazineFullClipName), _defines.MagazineFullSpeedMultiplierName, _actionDefines.MagazineFullOrEmptyDuration);
-            InitializeSpeedMultiplierForClip(FindClip(clips, _defines.MagazineEmptyClipName), _defines.MagazineEmptySpeedMultiplierName, _actionDefines.MagazineFullOrEmptyDuration);
+            InitializeSpeedMultiplierForClip(FindClip(clips, _definition.CoverOpenClipName), _definition.CoverOpenSpeedMultiplierName, _actionDefinition.CoverOpenOrCloseDuration);
+            InitializeSpeedMultiplierForClip(FindClip(clips, _definition.CoverCloseClipName), _definition.CoverCloseSpeedMultiplierName, _actionDefinition.CoverOpenOrCloseDuration);
+            InitializeSpeedMultiplierForClip(FindClip(clips, _definition.MagazineFullClipName), _definition.MagazineFullSpeedMultiplierName, _actionDefinition.MagazineFullOrEmptyDuration);
+            InitializeSpeedMultiplierForClip(FindClip(clips, _definition.MagazineEmptyClipName), _definition.MagazineEmptySpeedMultiplierName, _actionDefinition.MagazineFullOrEmptyDuration);
             var ml = (IMissileLauncher)l;
             var target = ml.Target;
             var quantity = ml.MagazineCount;
             var reloadTimeline = ml.ReloadTimeline;
             var delayLaunchTimeline = ml.DelayLaunchTimeline;
 
-            ml.TargetChangedAction += TargetChange;
+            ml.TargetChangeAction += TargetChange;
 
 
             void InitializeSpeedMultiplierForClip(AnimationClip clip, string multiplierName, float expectedLength)
@@ -74,13 +74,15 @@ namespace Assets.Tests.Scripts.Weapons
         }
         void LockTarget()
         {
-            _animator.SetBool(_defines.TargetLockedParamName, true);
+            _animator.SetBool(_definition.TargetLockedParamName, true);
             _prepareLaunchTimeline.Start();
         }
         void UnlockTarget()
         {
-            _animator.SetBool(_defines.TargetLockedParamName, false);
-            _prepareLaunchTimeline.Stop();
+            _animator.SetBool(_definition.TargetLockedParamName, false);
+            if (_prepareLaunchTimeline.IsRunning)
+                _prepareLaunchTimeline.Stop();
+
         }
         void TargetChange(IMissileLauncher launcher, ITarget newTarget)
         {
@@ -88,30 +90,31 @@ namespace Assets.Tests.Scripts.Weapons
             var currentTarget = launcher.Target;
             if (currentTarget == null && newTarget != null)
             {
-                if (actionsLock.LaunchIsLocked())
-                {
-                    var timeline = launcher.ReloadTimeline;
-                    timeline.EndAction += _ => { LockTarget(); };
-
-                }
-                else
-                    LockTarget();
+                LockTarget();
             }
             else if (currentTarget != null && newTarget == null)
             {
-                if (actionsLock.AnyLocked())
+                if (actionsLock.AnyLocked() && !_prepareLaunchTimeline.IsRunning)
                 {
-                    var timelines = new ITimeline[] { launcher.ReloadTimeline, launcher.DelayLaunchTimeline };
+                    var timelines = new ITimeline[] { launcher.DelayLaunchTimeline };
                     foreach (var t in timelines)
+                    {
                         if (t.IsRunning)
                         {
-                            t.EndAction += _ => { UnlockTarget(); };
+                            t.EndAction += EndAction;
                             break;
+                            void EndAction(TimelineContext _)
+                            {
+                                UnlockTarget();
+                                t.EndAction -= EndAction;
+                            }
                         }
+                    }
                 }
                 else
                     UnlockTarget();
             }
+
         }
 
         AnimationClip FindClip(AnimationClip[] clips, string name)
@@ -123,14 +126,13 @@ namespace Assets.Tests.Scripts.Weapons
         }
         void Initialize()
         {
-            _animator.Play(_defines.CoverCloseClipName, 0, 1);
-            _animator.Play(_defines.MagazineFullClipName, 1, 1);
+            _animator.Play(_definition.CoverCloseClipName, 0, 1);
 
             var launcher = (IMissileLauncher)_launcher;
 
 
 
-            _prepareLaunchTimeline = new Timeline(_actionDefines.CoverOpenOrCloseDuration);
+            _prepareLaunchTimeline = new Timeline(_actionDefinition.CoverOpenOrCloseDuration);
             _prepareLaunchTimeline.AddPointEvent(0, _ => launcher.actionsLock.LockAll());
             _prepareLaunchTimeline.AddPointEvent(1, _ => launcher.actionsLock.UnlockAll());
         }
@@ -139,7 +141,7 @@ namespace Assets.Tests.Scripts.Weapons
         void ActionInitialize_Reload()
         {
             var reloadTimeline = _launcher.ReloadTimeline;
-            reloadTimeline.AddPointEvent(0, _ => _animator.SetBool(_defines.ReloadingParamName, true));
+            reloadTimeline.AddPointEvent(0, _ => { _animator.SetTrigger(_definition.ReloadingParamName); Debug.Log("Enter the reload trigger"); });
         }
     }
 }

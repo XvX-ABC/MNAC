@@ -17,11 +17,11 @@ namespace Assets.Tests.Scripts.Weapons.Editor
             var i = target as MultiMissileLauncher;
             _subLaunchers = (IMissileLauncher[])typeof(MultiMissileLauncher).GetField("subLaunchers", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(i);
         }
-        void ShowDefinesOfSubLaunchers()
+        void ShowDefinitionOfSubLaunchers()
         {
             foreach(var l in _subLaunchers)
             {
-                var defines = l.Defines;
+                var definition = l.Definitions;
 
             }
         }

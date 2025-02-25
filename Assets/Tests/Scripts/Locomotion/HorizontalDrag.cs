@@ -5,16 +5,16 @@ namespace Tests.Locomotion
 {
     public class HorizontalDrag : IModule
     {
-        IBaseDefines _defines;
+        IBaseDefinition _definition;
 
-        public HorizontalDrag(IBaseDefines defines)
+        public HorizontalDrag(IBaseDefinition definition)
         {
-            _defines = defines ?? throw new ArgumentNullException(nameof(defines));
+            _definition = definition ?? throw new ArgumentNullException(nameof(definition));
         }
 
         Vector3 CalculateVelocityWithDrag(Vector3 velocity, float deltaTime)
         {
-            var result = velocity * (1 - deltaTime * _defines.Drag);
+            var result = velocity * (1 - deltaTime * _definition.Drag);
             return result;
 
 

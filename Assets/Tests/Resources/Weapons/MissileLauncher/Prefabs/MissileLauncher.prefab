@@ -53,7 +53,7 @@ MonoBehaviour:
   _ammoQuantityInMagazine: 10
   _reloadDuration: 2
   _launchDelay: 1
-  _launchDelay_New: {x: 0.1, y: 1}
+  _launchDelay_New: {x: 0.1, y: 2}
 --- !u!114 &5884404251870632140
 MonoBehaviour:
   m_ObjectHideFlags: 0

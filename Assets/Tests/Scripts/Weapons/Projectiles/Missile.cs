@@ -1,5 +1,4 @@
 using System;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace Tests.Weapons.Projectiles
@@ -8,7 +7,7 @@ namespace Tests.Weapons.Projectiles
     {
         public ITarget Target { get; set; }
     }
-    public interface IMissileDefines : IProjectlieDefines
+    public interface IMissileDefinitions : IProjectileDefinitions
     {
         public float AngularSpeed { get; }
         public float MaxAngle { get; }
@@ -19,7 +18,7 @@ namespace Tests.Weapons.Projectiles
     {
         //public GameObject Object => this.gameObject;
         Rigidbody _rb;
-        IMissileDefines _defines;
+        IMissileDefinitions _definition;
         ITarget _target;
         [SerializeField]
         float _acceleratedAngle;
@@ -32,7 +31,6 @@ namespace Tests.Weapons.Projectiles
             get => _target;
             set
             {
-                if (!enabled)
                     _target = value;
             }
         }
@@ -40,7 +38,7 @@ namespace Tests.Weapons.Projectiles
         public bool Enabled { get => enabled; set => enabled = value; }
         void Awake()
         {
-            _defines = GetComponent<IMissileDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IMissileDefines));
+            _definition = GetComponent<IMissileDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IMissileDefinitions));
             _rb = GetComponent<Rigidbody>();
             _rb.useGravity = false;
             _target = GetComponent<ITarget>();
@@ -60,7 +58,7 @@ namespace Tests.Weapons.Projectiles
             var obj = collision.gameObject;
             if (obj == _target?.Obj)
             {
-                Debug.Log($"Missile {obj.name} hit the targget '{obj.name}'");
+                //Debug.Log($"Missile {obj.name} hit the targget '{obj.name}'");
                 enabled = false;
             }
         }
@@ -84,7 +82,7 @@ namespace Tests.Weapons.Projectiles
         }
         Vector3 CalculateNextPosition(float deltaTime)
         {
-            return this.transform.position += this.transform.forward * _defines.Speed * deltaTime;
+            return this.transform.position += this.transform.forward * _definition.Speed * deltaTime;
         }
         Quaternion CalculateNextRotation(float deltaTime)
         {
@@ -105,7 +103,7 @@ namespace Tests.Weapons.Projectiles
             }
             else
             {
-                var expectedAngle = Mathf.Min(_acceleratedAngle + Mathf.Min(angle, _defines.AngularSpeed * deltaTime), _defines.MaxAngle);
+                var expectedAngle = Mathf.Min(_acceleratedAngle + Mathf.Min(angle, _definition.AngularSpeed * deltaTime), _definition.MaxAngle);
                 _acceleratedAngle = expectedAngle;
                 return Quaternion.Slerp(rotation, trotation, expectedAngle / angle);
             }

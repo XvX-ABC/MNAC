@@ -75,7 +75,7 @@ namespace Tests.Locomotion
         Vector3 _startVelocity;
         Vector3 _currentVelocity;
         float _ascendingDuration;
-        IJumpDefines _defines;
+        IJumpDefinition _definition;
         //State __currentState { get => _context.State; set => _context.State = value; }
         State _currentState;
         Timeline _timeline;
@@ -86,21 +86,21 @@ namespace Tests.Locomotion
             get => _currentState;
         }
         public float AscendingDuration { get => _ascendingDuration; }
-        public IJumpDefines Defines { get => _defines; }
-        public JumpLocomotion(IJumpDefines defines)
+        public IJumpDefinition Definition { get => _definition; }
+        public JumpLocomotion(IJumpDefinition definition)
         {
-            _defines = defines ?? throw new ArgumentNullException(nameof(defines));
+            _definition = definition ?? throw new ArgumentNullException(nameof(definition));
             Initialize();
         }
 
         void Initialize()
         {
-            _startVelocity.y = Mathf.Sqrt(-2 * Physics.gravity.y * _defines.Height);
+            _startVelocity.y = Mathf.Sqrt(-2 * Physics.gravity.y * _definition.Height);
             _ascendingDuration = _startVelocity.y / -Physics.gravity.y;
 
-            var t0 = _defines.PreparationDuration / _ascendingDuration;
+            var t0 = _definition.PreparationDuration / _ascendingDuration;
             var t1 = (1 - t0);
-            _timeline = new(_ascendingDuration + _defines.PreparationDuration, false, new PrepareCompleted(t0, this), new Ascending(t0, t1, this), new AscendingEnd(1, this));
+            _timeline = new(_ascendingDuration + _definition.PreparationDuration, false, new PrepareCompleted(t0, this), new Ascending(t0, t1, this), new AscendingEnd(1, this));
 
         }
         public void StartJump()

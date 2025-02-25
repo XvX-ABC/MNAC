@@ -8,7 +8,7 @@ namespace Tests.Weapons
     [RequireComponent(typeof(Collider))]
     public class Bullet : MonoBehaviour, IProjectile
     {
-        private IProjectlieDefines _defines;
+        private IProjectileDefinitions _definition;
         private Action<IProjectile, GameObject> _hitAction;
 
         public Action<IProjectile, GameObject> HitAction { get => _hitAction; set => _hitAction = value; }
@@ -16,7 +16,7 @@ namespace Tests.Weapons
 
         private void Awake()
         {
-            _defines = GetComponent<IProjectlieDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IProjectlieDefines));
+            _definition = GetComponent<IProjectileDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IProjectileDefinitions));
         }
 
         private void OnTriggerEnter(Collider other)
@@ -30,7 +30,7 @@ namespace Tests.Weapons
         {
             if (!enabled)
                 return;
-            this.transform.position += this.transform.forward * _defines.Speed * Time.deltaTime;
+            this.transform.position += this.transform.forward * _definition.Speed * Time.deltaTime;
         }
     }
 }

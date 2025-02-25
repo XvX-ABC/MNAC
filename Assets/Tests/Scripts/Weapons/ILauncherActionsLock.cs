@@ -5,8 +5,9 @@ namespace Tests.Weapons
 {
     public interface ILauncherActionsLock:IActionsLock<ActionsEnum>
     {
-        bool EndReloadIsLocked();
-        bool LaunchIsLocked();
-        bool StartReloadIsLocked();
+        bool StartReloadLocked();
+        bool EndReloadLocked();
+        bool LaunchLocked();
+        bool SupplyLocked();
     }
 }

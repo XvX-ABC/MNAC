@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace Locomotion.Animation
 {
-    public interface IBonesDefines
+    public interface IBonesDefinitions
     {
         public float LegLength { get; }
     }
@@ -15,22 +15,22 @@ namespace Locomotion.Animation
     public class LocomotionAnimator : MonoBehaviour, ILocomotionAnimator
     {
         const float BottomHeight = 0.8f;
-        class HorizontalLocomotionAnimatorDefines
+        class HorizontalLocomotionAnimatorDefinition
         {
             public string XParamName;
             public string YParamName;
         }
         [Serializable]
-        class GroundLocomotionAnimationDefines : HorizontalLocomotionAnimatorDefines
+        class GroundLocomotionAnimationDefinition : HorizontalLocomotionAnimatorDefinition
         {
         }
         [Serializable]
-        class InAirLocomotionAnimatorDefines : HorizontalLocomotionAnimatorDefines
+        class InAirLocomotionAnimatorDefinition : HorizontalLocomotionAnimatorDefinition
         {
             public string EnterParamName;
         }
         [Serializable]
-        class JumpAnimatorDefines
+        class JumpAnimatorDefinition
         {
             public float AscendingClipLength;
             public string AscendingMultiplierName;
@@ -52,20 +52,20 @@ namespace Locomotion.Animation
         {
             public float ScaleFactor;
             LocomotionControlBase.JumpLocomotion _locomotion;
-            JumpAnimatorDefines _animatorDefines;
-            IJumpDefines _defines;
+            JumpAnimatorDefinition _animatorDefinition;
+            IJumpDefinition _definition;
             IGroundSampler _sampler;
             Animator _animator;
             Transform _trans;
             float _maxHeight;
 
 
-            public JumpAnimator(LocomotionControlBase.JumpLocomotion locomotion, JumpAnimatorDefines animatorDefines, IJumpDefines defines, Animator animator, Transform trans, IGroundSampler sampler)
+            public JumpAnimator(LocomotionControlBase.JumpLocomotion locomotion, JumpAnimatorDefinition animatorDefinition, IJumpDefinition definition, Animator animator, Transform trans, IGroundSampler sampler)
             {
                 _locomotion = locomotion;
-                _animatorDefines = animatorDefines;
+                _animatorDefinition = animatorDefinition;
                 _animator = animator;
-                _defines = defines;
+                _definition = definition;
                 _trans = trans;
                 _sampler = sampler;
                 _locomotion.RegisterStartAction(locomotion => UpdateMaxHeight());
@@ -75,13 +75,13 @@ namespace Locomotion.Animation
 
             float CalculateAscendingMultiplier()
             {
-                var clipLength = _animatorDefines.AscendingClipLength;
+                var clipLength = _animatorDefinition.AscendingClipLength;
                 var length = _locomotion.AscendingDuration;
                 return clipLength / length;
             }
             void UpdateAscendingMultiplier(float multiplier)
             {
-                _animator.SetFloat(_animatorDefines.AscendingMultiplierName, multiplier);
+                _animator.SetFloat(_animatorDefinition.AscendingMultiplierName, multiplier);
             }
             public void UpdateAscendingMultiplier()
             {
@@ -89,13 +89,13 @@ namespace Locomotion.Animation
             }
             float CalculateLandingMultiplier()
             {
-                var clipLength = _animatorDefines.LandingClipLength;
-                var length = _defines.LandingDuration;
+                var clipLength = _animatorDefinition.LandingClipLength;
+                var length = _definition.LandingDuration;
                 return clipLength / length;
             }
             void UpdateLandingMultiplier(float multiplier)
             {
-                _animator.SetFloat(_animatorDefines.LandingMultiplierName, multiplier);
+                _animator.SetFloat(_animatorDefinition.LandingMultiplierName, multiplier);
             }
             public void UpdateLandingMultiplier()
             {
@@ -104,7 +104,7 @@ namespace Locomotion.Animation
             void UpdateMaxHeight()
             {
                 var worldY = _trans.position.y;
-                _maxHeight = worldY + _defines.Height;
+                _maxHeight = worldY + _definition.Height;
             }
             void UpdateInLanding()
             {
@@ -115,12 +115,12 @@ namespace Locomotion.Animation
                 var currentHeight = _sampler.CurrentHeight;
                 var v = currentHeight / (maxWorldHeight - groundWorldHeight);
                 //Debug.Log("dv: " + (maxWorldHeight - groundWorldHeight) + ", groundWorldHeight: " + groundWorldHeight + ", " + maxWorldHeight + ", point: " + point + ", currentheight: " + currentHeight + ", v: " + v);
-                //_animator.SetFloat(_animatorDefines.LandingValueParamName, 1f - v);
-                _animator.Play(_animatorDefines.DescendingClipName, 0, Mathf.Clamp01(1 - v));
+                //_animator.SetFloat(_animatorDefinition.LandingValueParamName, 1f - v);
+                _animator.Play(_animatorDefinition.DescendingClipName, 0, Mathf.Clamp01(1 - v));
             }
             public void OnFixedUpdate()
             {
-                _animator.SetBool(_animatorDefines.EnterParamName, _locomotion.InJumping);
+                _animator.SetBool(_animatorDefinition.EnterParamName, _locomotion.InJumping);
                 if (_locomotion.StepNum == 3)
                 {
                     UpdateInLanding();
@@ -129,14 +129,14 @@ namespace Locomotion.Animation
         }
         Animator _animator;
         [SerializeField]
-        GroundLocomotionAnimationDefines _groundLocomotionDefines;
+        GroundLocomotionAnimationDefinition _groundLocomotionDefinition;
         [SerializeField]
-        InAirLocomotionAnimatorDefines _inAirLocomotionAnimatorDefines;
+        InAirLocomotionAnimatorDefinition _inAirLocomotionAnimatorDefinition;
         [SerializeField]
-        JumpAnimatorDefines _jumpAnimatorDefines;
+        JumpAnimatorDefinition _jumpAnimatorDefinition;
         JumpAnimator _jumpAnimator;
         IGroundSampler _groundSampler;
-        IBonesDefines _bonesDefines;
+        IBonesDefinitions _bonesDefinition;
         LocomotionControlBase.JumpLocomotion _jumpLocomotion;
         protected bool _isOnGround
         {
@@ -145,14 +145,14 @@ namespace Locomotion.Animation
         void Awake()
         {
             _animator = GetComponent<Animator>();
-            _bonesDefines = GetComponent<IBonesDefines>();
+            _bonesDefinition = GetComponent<IBonesDefinitions>();
             _groundSampler = GetComponent<IGroundSampler>();
         }
         void Start()
         {
             //var locomotionControl = GetComponent<LocomotionControlBase>();
             //_jumpLocomotion = locomotionControl.jumpLocomotion;
-            //_jumpAnimator = new(_jumpLocomotion, _jumpAnimatorDefines, locomotionControl.locomotionDefines.Jump, _animator, this.transform, _groundSampler);
+            //_jumpAnimator = new(_jumpLocomotion, _jumpAnimatorDefinition, locomotionControl.locomotionDefinition.Jump, _animator, this.transform, _groundSampler);
 
 
             //_jumpAnimator.UpdateAscendingMultiplier();
@@ -191,7 +191,7 @@ namespace Locomotion.Animation
         {
             if (!_isOnGround)
                 return;
-            var legLength = _bonesDefines.LegLength;
+            var legLength = _bonesDefinition.LegLength;
             var (newPosLeft, _) = UpdateFootIKPosAndRotation(0);
             var (newPosRight, _) = UpdateFootIKPosAndRotation(1);
             var (v_l, length_l) = CalculateVectorAndLength(0, newPosLeft, legLength);
@@ -232,12 +232,12 @@ namespace Locomotion.Animation
             //if (!_isOnGround && !_jumpLocomotion.InJumping)
             if (!_isOnGround)
             {
-                _animator.SetBool(_inAirLocomotionAnimatorDefines.EnterParamName, true);
+                _animator.SetBool(_inAirLocomotionAnimatorDefinition.EnterParamName, true);
                 UpdateAnimationInAir(velocity);
             }
             else if (_isOnGround)
             {
-                _animator.SetBool(_inAirLocomotionAnimatorDefines.EnterParamName, false);
+                _animator.SetBool(_inAirLocomotionAnimatorDefinition.EnterParamName, false);
                 UpdateAnimationOnGround(velocity);
             }
             //UpdateAnimationInJump();
@@ -251,16 +251,16 @@ namespace Locomotion.Animation
         }
         public void UpdateAnimationOnGround(Vector3 currentVelocity)
         {
-            UpdateAnimationOfHorizontalMovement(currentVelocity, _groundLocomotionDefines.XParamName, _groundLocomotionDefines.YParamName);
+            UpdateAnimationOfHorizontalMovement(currentVelocity, _groundLocomotionDefinition.XParamName, _groundLocomotionDefinition.YParamName);
         }
         public void UpdateAnimationInAir(Vector3 currentVelocity)
         {
-            UpdateAnimationOfHorizontalMovement(currentVelocity, _inAirLocomotionAnimatorDefines.XParamName, _inAirLocomotionAnimatorDefines.YParamName);
+            UpdateAnimationOfHorizontalMovement(currentVelocity, _inAirLocomotionAnimatorDefinition.XParamName, _inAirLocomotionAnimatorDefinition.YParamName);
         }
         public void UpdateAnimationInJump()
         {
             var inJumping = _jumpLocomotion.InJumping;
-            _animator.SetBool(_jumpAnimatorDefines.EnterParamName, inJumping);
+            _animator.SetBool(_jumpAnimatorDefinition.EnterParamName, inJumping);
         }
     }
 }

@@ -1,14 +1,9 @@
 ﻿using Assets.Scripts.Utilities.Timeline;
 using Assets.Scripts.Utilities.Timeline.Event;
-using Assets.Scripts.Utilities.Timeline.Event.Range;
-using FoundationStone.UI.Tests.MVC;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Tests;
 using Tests.Weapons;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.Tests.Scripts.Weapons
@@ -38,69 +33,22 @@ namespace Assets.Tests.Scripts.Weapons
     {
         public float EmptyOrFullDuration;
     }
-    //public class X0_MissileLauncherDefines : IMissileLauncherDefines, ILauncherAnimatorActionDefines
-    //{
-    //    [SerializeField]
-    //    float _coverOpenOrCloseDuration;
-    //    [SerializeField]
-    //    float _magazineFullOrEmptyDuration;
-    //    [SerializeField]
-    //    GameObject _origin;
-    //    [SerializeField]
-    //    Vector3 _magazinePosition;
-    //    [SerializeField]
-    //    Vector3 _muzzlePosition;
-    //    [SerializeField]
-    //    float _launchRate;
-    //    [SerializeField]
-    //    ushort _ammoSpareQuantity;
-    //    [SerializeField]
-    //    ushort _ammoQuantityInMagazine;
-    //    [SerializeField]
-    //    float _reloadDuration;
-    //    [SerializeField]
-    //    Vector2 _launchDelay_New;
-    //    [SerializeField]
-    //    Reload _reloadAction;
 
-    //    public float LaunchDelay => throw new NotImplementedException();
-
-    //    public Vector2 LaunchDelay_New => _launchDelay_New;
-
-    //    public GameObject AmmoOrigin => _origin;
-
-    //    public Vector3 MagazinePosition => _magazinePosition;
-
-    //    public Vector3 MuzzlePosition => _muzzlePosition;
-
-    //    public float LaunchRate
-    //    {
-    //        get => Mathf.Max(_launchRate, ReloadDuration);
-    //    }
-
-    //    public ushort AmmoTotalQuantity => (ushort)(_ammoSpareQuantity + _ammoQuantityInMagazine);
-
-    //    public ushort AmmoSpareQuantity => _ammoSpareQuantity;
-
-    //    public ushort AmmoQuantityInMagazine => _ammoQuantityInMagazine;
-
-    //    public float ReloadDuration
-    //    {
-    //        get
-    //        {
-    //            return _coverOpenOrCloseDuration + _reloadDuration;
-    //        }
-    //    }
-    //    public Reload Reload { get => _reloadAction; }
-    //}
     public class MultiMissileLauncher : MonoBehaviour, IMissileLauncher
     {
         class TimelinesGroup : ITimeline
         {
             ITimeline[] _timelines;
+            ITimeline _lastEndTimeline;
             ILauncher[] _launchers;
             Func<ILauncher, ITimeline> _timelineGetFunc;
-
+            internal ITimeline lastEndTimeline
+            {
+                get
+                {
+                    return _lastEndTimeline;
+                }
+            }
             internal ITimeline[] timelines
             {
                 get
@@ -122,9 +70,9 @@ namespace Assets.Tests.Scripts.Weapons
             {
                 for (int i = 0; i < timelines.Length; i++)
                 {
-                    if (timelines[i] == null)
+                    var t = timelines[i];
+                    if (t == null)
                         throw new ArgumentNullException($"timelines[{i}]");
-
                 }
                 _timelines = timelines;
             }
@@ -136,69 +84,65 @@ namespace Assets.Tests.Scripts.Weapons
                 this._timelineGetFunc = getFunc ?? throw new NullReferenceException(nameof(getFunc));
             }
 
-            public bool IsRunning => timelines.Any(t => t.IsRunning);
+            public bool IsRunning => lastEndTimeline.IsRunning;
 
-            public float Time => throw new NotImplementedException();
+            public float Time => lastEndTimeline.Time;
             public float Length
             {
                 get
                 {
-                    if (timelines == null || timelines.Length == 0)
+                    if (timelines.Length == 0)
                         return 0;
-                    return timelines[0].Length;
+                    return lastEndTimeline.Length;
                 }
             }
             public Action<TimelineContext> StartAction
             {
                 get
                 {
-                    if (timelines == null || timelines.Length == 0)
+                    if (timelines.Length == 0)
                         return null;
-                    return timelines[0].StartAction;
+                    return lastEndTimeline.StartAction;
                 }
                 set
                 {
-                    foreach (var t in timelines)
-                        t.StartAction = value;
+                    lastEndTimeline.StartAction = value;
                 }
             }
             public Action<float> UpdateAction
             {
                 get
                 {
-                    if (timelines == null || timelines.Length == 0)
+                    if (timelines.Length == 0)
                         return null;
-                    return timelines[0].UpdateAction;
+                    return lastEndTimeline.UpdateAction;
                 }
                 set
                 {
-                    foreach (var t in timelines)
-                        t.UpdateAction = value;
+                    lastEndTimeline.UpdateAction = value;
                 }
             }
             public Action<TimelineContext> EndAction
             {
                 get
                 {
-                    if (timelines == null || timelines.Length == 0)
+                    if (timelines.Length == 0)
                         return null;
-                    return timelines[0].EndAction;
+                    return lastEndTimeline.EndAction;
                 }
                 set
                 {
-                    foreach (var t in timelines)
-                        t.EndAction = value;
+                    lastEndTimeline.EndAction = value;
                 }
             }
-
             public bool AddEvent(ITimelineEvent evt)
             {
-                foreach (var t in timelines)
-                    if (!t.AddEvent(evt))
-                    {
-                        RemoveEvent(evt);
-                        return false;
-                    }
+                var t = lastEndTimeline;
+                if (!t.AddEvent(evt))
+                {
+                    RemoveEvent(evt);
+                    return false;
+                }
                 return true;
             }
 
@@ -216,14 +160,15 @@ namespace Assets.Tests.Scripts.Weapons
 
             public bool RemoveEvent(ITimelineEvent evt)
             {
-                foreach (var t in timelines)
-                    if (!t.RemoveEvent(evt))
-                        return false;
+                var t = lastEndTimeline;
+                if (!t.RemoveEvent(evt))
+                    return false;
                 return true;
             }
 
             public void Start()
             {
+                _lastEndTimeline = timelines.OrderByDescending(t => t.Length).First();
                 foreach (var l in timelines)
                     l.Start();
             }
@@ -237,22 +182,24 @@ namespace Assets.Tests.Scripts.Weapons
         internal IMissileLauncher[] subLaunchers;
         ushort _ammoSpareQuantity;
         ushort _ammoQuantityInMagazine;
-        IMissileLauncherDefines _defines;
+        IMissileLauncherDefinitions _definition;
         Action<ILauncher> _initializationAction;
+        Action<IMissileLauncher, ITarget> _targetChangeAction;
         ITarget _target;
         ILauncherActionsLock _actionsLock;
         ITimeline _reloadTimeline;
         ITimeline _delayLaunchTimeline;
         public ushort SpareCount { get => _ammoSpareQuantity; }
         public ushort MagazineCount { get => _ammoQuantityInMagazine; }
-        public ILauncherDefines Defines { get => _defines; }
-        IMissileLauncherDefines IMissileLauncher.Defines => _defines;
+        public ILauncherDefinitions Definition { get => _definition; }
+        IMissileLauncherDefinitions IMissileLauncher.Definitions => _definition;
         public Action<ILauncher> InitializationAction { get => _initializationAction; set => _initializationAction = value; }
         public ITarget Target
         {
             get => _target;
             set
             {
+                _targetChangeAction?.Invoke(this, value);
                 _target = value;
                 foreach (var l in subLaunchers)
                     l.Target = value;
@@ -262,18 +209,15 @@ namespace Assets.Tests.Scripts.Weapons
 
         public ITimeline ReloadTimeline { get => _reloadTimeline; }
         public ITimeline DelayLaunchTimeline { get => _delayLaunchTimeline; }
-        public Action<IMissileLauncher, ITarget> TargetChangedAction
+        public Action<IMissileLauncher, ITarget> TargetChangeAction
         {
             get
             {
-                if (subLaunchers == null || subLaunchers.Length == 0)
-                    return null;
-                return subLaunchers[0].TargetChangedAction;
+                return _targetChangeAction;
             }
             set
             {
-                foreach (var l in subLaunchers)
-                    l.TargetChangedAction = value;
+                _targetChangeAction = value;
             }
         }
 
@@ -297,12 +241,8 @@ namespace Assets.Tests.Scripts.Weapons
 
         void Awake()
         {
-            var list = GetComponentsInChildren<IMissileLauncher>().ToList();
-            if (list.Contains(this))
-                list.Remove(this);
-            subLaunchers = list.ToArray();
-            _defines = GetComponent<IMissileLauncherDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherDefines));
-
+            _definition = GetComponent<IMissileLauncherDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherDefinitions));
+            LoadSubLaunchers();
 
             foreach (var l in subLaunchers)
                 InitializeSubLauncher(l);
@@ -312,18 +252,24 @@ namespace Assets.Tests.Scripts.Weapons
 
 
         }
-        
+        protected void LoadSubLaunchers()
+        {
+            var list = GetComponentsInChildren<IMissileLauncher>().ToList();
+            if (list.Contains(this))
+                list.Remove(this);
+            subLaunchers = list.ToArray();
+        }
         protected void InitializeSubLauncher(IMissileLauncher l)
         {
             l.InitializationAction += launcher =>
             {
-                launcher.Supply(-(launcher.Defines.AmmoSpareQuantity));
+                launcher.Supply(-(launcher.Definition.AmmoSpareQuantity));
                 if (launcher is not IMissileLauncher mlauncher)
                     throw new Exception($"The sublaunchers of the type '{this.GetType().Name}' must to implement the interface '{typeof(IMissileLauncher).Name}'");
 
 
-                var defines = mlauncher.Defines;
-                if (defines.AmmoSpareQuantity == 0)
+                var definition = mlauncher.Definitions;
+                if (definition.AmmoSpareQuantity == 0)
                 {
                     if ((object)mlauncher is GameObject obj)
                         throw new Exception($"The parameter 'AmmoSpareQuantity' of the subluncher '{obj.name}' can't less than or equals to zero.");
@@ -341,7 +287,7 @@ namespace Assets.Tests.Scripts.Weapons
         }
         protected void Start()
         {
-            _ammoSpareQuantity = (ushort)(_defines.AmmoTotalQuantity - subLaunchers.Length);
+            _ammoSpareQuantity = (ushort)(_definition.AmmoTotalQuantity - subLaunchers.Length);
 
 
             var quantity = subLaunchers.Length;
@@ -390,7 +336,7 @@ namespace Assets.Tests.Scripts.Weapons
         }
         public bool Launch()
         {
-            if (!enabled || _ammoQuantityInMagazine <= 0)
+            if (!enabled || _actionsLock.LaunchLocked() || _ammoQuantityInMagazine <= 0)
                 return false;
 
 
@@ -406,7 +352,7 @@ namespace Assets.Tests.Scripts.Weapons
 
         public bool StartReload()
         {
-            if (!enabled)
+            if (!enabled || _actionsLock.StartReloadLocked())
                 return false;
 
             foreach (var l in subLaunchers)
@@ -438,7 +384,7 @@ namespace Assets.Tests.Scripts.Weapons
         }
         public bool EndReload()
         {
-            if (!enabled)
+            if (!enabled || _actionsLock.EndReloadLocked())
                 return false;
             foreach (var l in subLaunchers)
             {
@@ -449,9 +395,9 @@ namespace Assets.Tests.Scripts.Weapons
 
         public int Supply(int num)
         {
-            if (_ammoSpareQuantity + num < 0)
+            if (_ammoSpareQuantity + num < 0 || _actionsLock.SupplyLocked())
                 return 0;
-            var suppNum = Mathf.Min(_defines.AmmoTotalQuantity - subLaunchers.Length - _ammoSpareQuantity, num);
+            var suppNum = Mathf.Min(_definition.AmmoTotalQuantity - subLaunchers.Length - _ammoSpareQuantity, num);
             _ammoSpareQuantity += (ushort)suppNum;
             return suppNum;
         }

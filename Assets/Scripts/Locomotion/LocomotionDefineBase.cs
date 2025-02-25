@@ -6,7 +6,7 @@ namespace Locomotion
     public class LocomotionDefineBase : MonoBehaviour, ILocomotionDefine
     {
         [Serializable]
-        class BaseDefines : IBaseDefines
+        class BaseDefinition : IBaseDefinition
         {
             [SerializeField]
             float _speed;
@@ -24,7 +24,7 @@ namespace Locomotion
             public float Drag => _drag;
         }
         [Serializable]
-        class JumpDefinesBase : IJumpDefines
+        class JumpDefinitionBase : IJumpDefinition
         {
             [SerializeField]
             float _height;
@@ -39,7 +39,7 @@ namespace Locomotion
 
         }
         [Serializable]
-        class QuickBoostDefinesBase : IQuickBoostDefines
+        class QuickBoostDefinitionBase : IQuickBoostDefinition
         {
             [SerializeField]
             float _duration;
@@ -53,14 +53,14 @@ namespace Locomotion
             public float Interval => _interval;
         }
         [SerializeField]
-        BaseDefines _base;
+        BaseDefinition _base;
         [SerializeField]
-        JumpDefinesBase _jump;
+        JumpDefinitionBase _jump;
         [SerializeField]
-        QuickBoostDefinesBase _quickBoost;
-        public IBaseDefines Base => _base;
+        QuickBoostDefinitionBase _quickBoost;
+        public IBaseDefinition Base => _base;
 
-        public IJumpDefines Jump => _jump;
-        public IQuickBoostDefines QuickBoost => _quickBoost;
+        public IJumpDefinition Jump => _jump;
+        public IQuickBoostDefinition QuickBoost => _quickBoost;
     }
 }

@@ -36,17 +36,17 @@ namespace Tests.Locomotion
                 _locomotion.EndBoost();
             }
         }
-        IQuickBoostDefines _defines;
+        IQuickBoostDefinition _definition;
         JumpLocomotion _jumpLocomotion;
         Timeline _timeline;
         bool _boosting;
         Context _context;
         Vector3 _velocity;
         float _lastTime;
-        public QuickBoostLocomotion(IQuickBoostDefines defines, JumpLocomotion jumpLocomotion)
+        public QuickBoostLocomotion(IQuickBoostDefinition definition, JumpLocomotion jumpLocomotion)
         {
-            _defines = defines ?? throw new ArgumentNullException(nameof(defines));
-            _timeline = new(_defines.Duration, false, new Boosting(0f, 1f, this), new EndBoostEvent(1f, this));
+            _definition = definition ?? throw new ArgumentNullException(nameof(definition));
+            _timeline = new(_definition.Duration, false, new Boosting(0f, 1f, this), new EndBoostEvent(1f, this));
             _jumpLocomotion = jumpLocomotion;
         }
         public void StartBoost()
@@ -55,7 +55,7 @@ namespace Tests.Locomotion
                 return;
 
             var currentTime = Time.unscaledTime;
-            if (Mathf.Abs(currentTime - _lastTime) < _defines.Interval)
+            if (Mathf.Abs(currentTime - _lastTime) < _definition.Interval)
                 return;
 
 
@@ -81,7 +81,7 @@ namespace Tests.Locomotion
         public Vector3 CalculateVelocity(Vector3 direction, Vector3 currentVelocity)
         {
             direction = direction.normalized;
-            var velocity = direction * _defines.Velocity;
+            var velocity = direction * _definition.Velocity;
             velocity.y = currentVelocity.y;
             return velocity;
         }

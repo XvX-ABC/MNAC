@@ -1,9 +1,6 @@
 using Assets.Scripts.Utilities.Timeline;
 using Assets.Tests.Scripts.Weapons;
 using System;
-using TMPro.EditorUtilities;
-using Unity.VisualScripting;
-using Utilities;
 
 namespace Tests.Weapons
 {
@@ -22,7 +19,7 @@ namespace Tests.Weapons
 
 
         public ITimeline ReloadTimeline { get; }
-        public ILauncherDefines Defines { get; }
+        public ILauncherDefinitions Definition { get; }
         public ushort SpareCount { get; }
         public ushort MagazineCount { get; }
         internal ILauncherActionsLock actionsLock { get; }
@@ -34,8 +31,8 @@ namespace Tests.Weapons
     public interface IMissileLauncher : ILauncher
     {
         public ITarget Target { get; set; }
-        public Action<IMissileLauncher,ITarget> TargetChangedAction { get; set; }
-        public new IMissileLauncherDefines Defines { get; }
+        public Action<IMissileLauncher,ITarget> TargetChangeAction { get; set; }
+        public new IMissileLauncherDefinitions Definitions { get; }
         public ITimeline DelayLaunchTimeline { get; }
     }
 }

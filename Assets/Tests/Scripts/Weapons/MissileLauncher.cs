@@ -13,6 +13,7 @@ namespace Assets.Tests.Scripts.Weapons
     public class MissileLauncher : LauncherBase, IMissileLauncher
     {
         protected GameObject missileObj;
+        protected IMissile missile;
         private ITimeline delayLaunchTimeline;
         public ITarget Target;
         private Action<IMissileLauncher, ITarget> targetChangedAction;
@@ -25,24 +26,28 @@ namespace Assets.Tests.Scripts.Weapons
                 Target = value;
             }
         }
-        public new IMissileLauncherDefines Defines
+        public new IMissileLauncherDefinitions Definitions
         {
-            get => (IMissileLauncherDefines)defines;
+            get => (IMissileLauncherDefinitions)definition;
         }
         public ITimeline DelayLaunchTimeline { get => delayLaunchTimeline; }
-        public Action<IMissileLauncher, ITarget> TargetChangedAction { get => targetChangedAction; set => targetChangedAction = value; }
+        public Action<IMissileLauncher, ITarget> TargetChangeAction { get => targetChangedAction; set => targetChangedAction = value; }
 
         protected override void Awake()
         {
-            defines = GetComponent<IMissileLauncherDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IMissileLauncherDefines));
-            if (!Defines.AmmoOrigin.TryGetComponent<IMissile>(out _))
-                throw new ComponentCantFindException(Defines.AmmoOrigin, typeof(IMissile));
+            definition = GetComponent<IMissileLauncherDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IMissileLauncherDefinitions));
+            if (!Definitions.AmmoOrigin.TryGetComponent<IMissile>(out _))
+                throw new ComponentCantFindException(Definitions.AmmoOrigin, typeof(IMissile));
         }
         protected override void Start()
         {
-            //delayLaunchTimeline = new Timeline(Defines.LaunchDelay);
-            delayLaunchTimeline = new RandomLengthTimeline(Defines.LaunchDelay_New);
-            delayLaunchTimeline.AddPointEvent(0, _ => actionsLock.LockAll());
+            //delayLaunchTimeline = new Timeline(Definition.LaunchDelay);
+            delayLaunchTimeline = new RandomLengthTimeline(Definitions.LaunchDelay_New);
+            delayLaunchTimeline.AddPointEvent(0, _ =>
+            {
+                missile.Target = Target;
+                actionsLock.LockAll();
+            });
             delayLaunchTimeline.AddPointEvent(1, _ => { DoLaunch(); actionsLock.UnlockAll(); });
             base.Start();
             Reload();
@@ -55,7 +60,7 @@ namespace Assets.Tests.Scripts.Weapons
         }
         protected override void GetAmmo(GameObject obj)
         {
-            obj.transform.localPosition = Defines.MagazinePosition;
+            obj.transform.localPosition = Definitions.MagazinePosition;
             obj.transform.localRotation = Quaternion.identity;
             obj.SetActive(true);
             var missile = obj.GetComponent<IMissile>();
@@ -65,14 +70,16 @@ namespace Assets.Tests.Scripts.Weapons
         {
             base.Reload();
             if (missileObj == null)
+            {
                 missileObj = ammoPool.Get();
+                missile = missileObj.GetComponent<IMissile>();
+            }
         }
         protected void DoLaunch()
         {
             missileObj.transform.SetParent(null);
-            var missile = missileObj.GetComponent<IMissile>();
+            var missile = this.missile;
 
-            missile.Target = Target;
             missile.Enabled = true;
 
             missileObj = null;
@@ -84,7 +91,7 @@ namespace Assets.Tests.Scripts.Weapons
         {
             if (!enabled
                 || Target == null
-                || actionsLock.LaunchIsLocked())
+                || actionsLock.LaunchLocked())
                 return false;
 
             if (Time.time - lastLaunchTime <= launchingInterval

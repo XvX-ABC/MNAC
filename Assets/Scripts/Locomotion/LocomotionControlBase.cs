@@ -2,32 +2,25 @@
 using Assets.Scripts.Utilities.Timeline.Event.Point;
 using Assets.Scripts.Utilities.Timeline.Event.Range;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Locomotion
 {
-    public interface IBaseDefines
+    public interface IBaseDefinition
     {
         public float Speed { get; }
         public float Drag { get; }
         public float AccelerationSpeed { get; }
         public float AscendingSpeed { get; }
     }
-    public interface IJumpDefines
+    public interface IJumpDefinition
     {
         public float Height { get; }
         public float PreparationDuration { get; }
         public float LandingDuration { get; }
 
     }
-    public interface IQuickBoostDefines
+    public interface IQuickBoostDefinition
     {
         public float Duration { get; }
         public float Velocity { get; }
@@ -35,9 +28,9 @@ namespace Locomotion
     }
     public interface ILocomotionDefine
     {
-        IBaseDefines Base { get; }
-        IJumpDefines Jump { get; }
-        IQuickBoostDefines QuickBoost { get; }
+        IBaseDefinition Base { get; }
+        IJumpDefinition Jump { get; }
+        IQuickBoostDefinition QuickBoost { get; }
     }
     public interface IRayCollisionDetector
     {
@@ -159,7 +152,7 @@ namespace Locomotion
             float _time;
             float _startVelocity;
             public bool InJumping;
-            IJumpDefines _defines;
+            IJumpDefinition _definition;
             IGroundSampler _groundSampler;
             float _currentVelocity;
             byte _stepNum;
@@ -168,13 +161,13 @@ namespace Locomotion
             float _contraryDragVelocity;
             Action<JumpLocomotion> _jumpStartActions;
             Action<JumpLocomotion> _jumpEndActions;
-            public JumpLocomotion(IJumpDefines defines, IGroundSampler groundSampler, GravityLocomotion gravityLocomotion)
+            public JumpLocomotion(IJumpDefinition definition, IGroundSampler groundSampler, GravityLocomotion gravityLocomotion)
             {
-                _defines = defines;
+                _definition = definition;
                 _groundSampler = groundSampler;
                 _gravityLocomotion = gravityLocomotion;
                 Initialize();
-                var p0 = _defines.PreparationDuration / _ascendingDuration;
+                var p0 = _definition.PreparationDuration / _ascendingDuration;
                 var p1 = (1 - p0);
                 _timeline = new(_ascendingDuration, false, new PrepareCompleted(p0, this), new AscendingEvent(p0, p1, this), new AscendingStageEndEvent(1, this));
             }
@@ -193,8 +186,8 @@ namespace Locomotion
             public Timeline Timeline { get => _timeline; }
             public void Initialize()
             {
-                _startVelocity = Mathf.Sqrt(-2 * Physics.gravity.y * _defines.Height);
-                _ascendingDuration = _startVelocity / -Physics.gravity.y + _defines.PreparationDuration;
+                _startVelocity = Mathf.Sqrt(-2 * Physics.gravity.y * _definition.Height);
+                _ascendingDuration = _startVelocity / -Physics.gravity.y + _definition.PreparationDuration;
                 _duration = _ascendingDuration * 2;
             }
             public void RegisterStartAction(Action<JumpLocomotion> action)
@@ -258,7 +251,7 @@ namespace Locomotion
         protected internal class BaseLocomotion
         {
             IGroundSampler _groundSampler;
-            IBaseDefines _defines;
+            IBaseDefinition _definition;
             GravityLocomotion _gravityLocomotion;
             bool _isAscending;
             bool _inAir;
@@ -283,11 +276,11 @@ namespace Locomotion
                 get => _inAir;
                 set => _inAir = value;
             }
-            public BaseLocomotion(IGroundSampler groundSampler, IBaseDefines defines, Transform trans, GravityLocomotion gravityLocomotion)
+            public BaseLocomotion(IGroundSampler groundSampler, IBaseDefinition definition, Transform trans, GravityLocomotion gravityLocomotion)
             {
                 _groundSampler = groundSampler;
-                _defines = defines;
-                _ascendingVelocity = defines.AscendingSpeed;
+                _definition = definition;
+                _ascendingVelocity = definition.AscendingSpeed;
                 _trans = trans;
                 _gravityLocomotion = gravityLocomotion;
             }
@@ -304,8 +297,8 @@ namespace Locomotion
             {
                 direction = direction.normalized;
                 Vector3 velocity;
-                var speed = _defines.Speed;
-                var accelerationSpeed = _defines.AccelerationSpeed;
+                var speed = _definition.Speed;
+                var accelerationSpeed = _definition.AccelerationSpeed;
                 if (planeNormal != Vector3.zero)
                     direction = Vector3.ProjectOnPlane(direction, planeNormal);
                 //velocity.x = Mathf.MoveTowards(currentVelocity.x, direction.x * speed, accelerationSpeed);
@@ -365,7 +358,7 @@ namespace Locomotion
         }
         protected internal class QuickBoostLocomotion
         {
-            IQuickBoostDefines _defines;
+            IQuickBoostDefinition _definition;
             class EndBoostEvent : PointEvent
             {
                 QuickBoostLocomotion _locomotion;
@@ -379,11 +372,11 @@ namespace Locomotion
                     _locomotion.EndBoost();
                 }
             }
-            public QuickBoostLocomotion(IQuickBoostDefines defines)
+            public QuickBoostLocomotion(IQuickBoostDefinition definition)
             {
-                _defines = defines;
+                _definition = definition;
                 _lastBoostTime = float.MaxValue;
-                _timeline = new Timeline(_defines.Duration, false, new EndBoostEvent(1f, this));
+                _timeline = new Timeline(_definition.Duration, false, new EndBoostEvent(1f, this));
             }
 
             bool _boosting;
@@ -410,7 +403,7 @@ namespace Locomotion
                 {
                     _timer = 0;
                     var currentTime = Time.unscaledTime;
-                    _boosting = Mathf.Abs(currentTime - _lastBoostTime) >= _defines.Interval;
+                    _boosting = Mathf.Abs(currentTime - _lastBoostTime) >= _definition.Interval;
                     if (_boosting)
                         _timeline.Start();
                 }
@@ -428,20 +421,20 @@ namespace Locomotion
             public Vector3 CalculateVelocity()
             {
                 var hvelocity = _startVelocity;
-                hvelocity *= _defines.Velocity;
+                hvelocity *= _definition.Velocity;
                 hvelocity.y = 0;
                 return hvelocity;
             }
             public Vector3 CalculateVelocity(Vector3 direction, Vector3 currentVelocity)
             {
                 direction = direction.normalized;
-                var velocity = direction * _defines.Velocity;
+                var velocity = direction * _definition.Velocity;
                 velocity.y = currentVelocity.y;
                 return velocity;
             }
             public void OnFixedUpdate()
             {
-                if (_timer != 0 && _timer >= _defines.Duration)
+                if (_timer != 0 && _timer >= _definition.Duration)
                     EndBoost();
                 else if (_boosting)
                     _timer += Time.fixedDeltaTime;
@@ -457,7 +450,7 @@ namespace Locomotion
         protected internal BaseLocomotion baseLocomotion;
         protected internal QuickBoostLocomotion boostLocomotion;
         protected internal GravityLocomotion gravityLocomotion;
-        internal ILocomotionDefine locomotionDefines;
+        internal ILocomotionDefine locomotionDefinition;
         IGroundSampler _groundSampler;
         ILocomotionAnimator _animator;
         bool _isOnGround { get => _groundSampler.IsOnGround; }
@@ -479,7 +472,7 @@ namespace Locomotion
         }
         protected void LoadRequirementComponents()
         {
-            locomotionDefines = GetComponent<ILocomotionDefine>() ?? throw new NullReferenceException("");
+            locomotionDefinition = GetComponent<ILocomotionDefine>() ?? throw new NullReferenceException("");
             _groundSampler = GetComponent<IGroundSampler>() ?? throw new NullReferenceException("");
             _animator = GetComponent<ILocomotionAnimator>() ?? throw new NullReferenceException("");
             _groundSampler.AutoSample = false;
@@ -490,10 +483,10 @@ namespace Locomotion
         protected void InitializeLocomotionObjs()
         {
             gravityLocomotion = new(rb);
-            jumpLocomotion = new(locomotionDefines.Jump, _groundSampler, gravityLocomotion);
-            baseLocomotion = new(_groundSampler, locomotionDefines.Base, this.transform, gravityLocomotion);
+            jumpLocomotion = new(locomotionDefinition.Jump, _groundSampler, gravityLocomotion);
+            baseLocomotion = new(_groundSampler, locomotionDefinition.Base, this.transform, gravityLocomotion);
             rotation = new(CurrentFrameContext, rb, this.gameObject);
-            boostLocomotion = new(locomotionDefines.QuickBoost);
+            boostLocomotion = new(locomotionDefinition.QuickBoost);
         }
         protected void Update()
         {
@@ -574,7 +567,7 @@ namespace Locomotion
 
             if (expectedVelocity.x == 0 && expectedVelocity.z == 0)
             {
-                //rb.velocity = currentVelocity * (1 - Time.fixedDeltaTime * locomotionDefines.Base.Drag);
+                //rb.velocity = currentVelocity * (1 - Time.fixedDeltaTime * locomotionDefinition.Base.Drag);
                 expectedVelocity.x = CalculateDefaultVelocityWithDrag(currentVelocity.x);
                 expectedVelocity.z = CalculateDefaultVelocityWithDrag(currentVelocity.z);
             }
@@ -584,7 +577,7 @@ namespace Locomotion
             rb.velocity = expectedVelocity;
             float CalculateDefaultVelocityWithDrag(float currentVelocity)
             {
-                return currentVelocity * (1 - Time.fixedDeltaTime * locomotionDefines.Base.Drag);
+                return currentVelocity * (1 - Time.fixedDeltaTime * locomotionDefinition.Base.Drag);
             }
 
             var context = new LocomotionContext()

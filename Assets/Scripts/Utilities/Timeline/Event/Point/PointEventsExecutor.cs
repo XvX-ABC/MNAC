@@ -25,15 +25,34 @@ namespace Assets.Scripts.Utilities.Timeline.Event.Point
             _events = list.OrderBy(evt => evt.TriggeredProportion).ToArray();
             return true;
         }
+        int FindIndexByTriggerProportion(float triggerProportion)
+        {
+            for (var i = 0; i < _events.Length; i++)
+            {
+                var t = _events[i].TriggeredProportion;
+                if (t > triggerProportion)
+                    return i;
+            }
+            return -1;
+        }
         public bool AddEvent(ITimelineEvent evt)
         {
             if (evt == null || evt is not IPointEvent pevt)
                 return false;
-            if (_events != null)
-                Array.Resize(ref _events, _events.Length + 1);
+            if (_events == null)
+                _events = new IPointEvent[] { pevt };
             else
-                _events = new IPointEvent[1];
-            _events[^1] = pevt;
+            {
+                var index = FindIndexByTriggerProportion(pevt.TriggeredProportion);
+                Array.Resize(ref _events, _events.Length + 1);
+                if (index == -1)
+                    _events[^1] = pevt;
+                else
+                {
+                    Array.Copy(_events, index, _events, index + 1, _events.Length - 1 - index);
+                    _events[index] = pevt;
+                }
+            }
             return true;
         }
         public ushort AddEvents(Span<ITimelineEvent> events)

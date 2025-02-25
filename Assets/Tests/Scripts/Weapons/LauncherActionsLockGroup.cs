@@ -10,20 +10,24 @@ namespace Tests.Weapons
         {
 
         }
-        public bool EndReloadIsLocked()
-        {
-            return IsLocked(ActionsEnum.Launch);
-
-        }
-
-        public bool LaunchIsLocked()
-        {
-            return IsLocked(ActionsEnum.Launch);
-        }
-
-        public bool StartReloadIsLocked()
+        public bool StartReloadLocked()
         {
             return IsLocked(ActionsEnum.StartReload);
         }
+        public bool EndReloadLocked()
+        {
+            return IsLocked(ActionsEnum.Launch);
+
+        }
+
+        public bool LaunchLocked()
+        {
+            return IsLocked(ActionsEnum.Launch);
+        }
+        public bool SupplyLocked()
+        {
+            return IsLocked(ActionsEnum.Supply);
+        }
+
     }
 }

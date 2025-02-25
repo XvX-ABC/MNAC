@@ -1,12 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor.Rendering;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 public class MoveWithAnimationBlendTree : MonoBehaviour
 {
     const float BottomHeight = 0.8f;

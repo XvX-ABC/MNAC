@@ -50,7 +50,7 @@ namespace Tests.Locomotion
 
         LocomotionAnimator _locomotionAnimator;
 
-        ILocomotionDefine _defines;
+        ILocomotionDefine _definition;
         IGroundSampler _groundSampler;
         ILocomotionAnimator _animator;
         IInput _input;
@@ -60,7 +60,7 @@ namespace Tests.Locomotion
 
         void Awake()
         {
-            _defines = GetComponent<ILocomotionDefine>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionDefine));
+            _definition = GetComponent<ILocomotionDefine>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionDefine));
             _groundSampler = GetComponent<IGroundSampler>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IGroundSampler));
             //_animator = GetComponent<ILocomotionAnimator>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(ILocomotionAnimator));
             _input = GetComponent<IInput>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IInput));
@@ -69,11 +69,11 @@ namespace Tests.Locomotion
             _rb = GetComponent<Rigidbody>();
 
 
-            horizontalLocomotion = new(_defines.Base);
-            horizontalDrag = new(_defines.Base);
-            jumpLocomotion = new(_defines.Jump);
-            quickBoostLocomotion = new(_defines.QuickBoost, jumpLocomotion);
-            airLocomotion = new(_defines.Base, jumpLocomotion);
+            horizontalLocomotion = new(_definition.Base);
+            horizontalDrag = new(_definition.Base);
+            jumpLocomotion = new(_definition.Jump);
+            quickBoostLocomotion = new(_definition.QuickBoost, jumpLocomotion);
+            airLocomotion = new(_definition.Base, jumpLocomotion);
             gravity = new();
             rotation = new(this.gameObject);
 

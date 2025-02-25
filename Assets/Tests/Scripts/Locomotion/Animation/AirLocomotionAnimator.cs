@@ -5,13 +5,13 @@ namespace Tests.Locomotion.Animation
 {
     public class AirLocomotionAnimator : MonoBehaviour, IModule
     {
-        IAirLocomotionAnimationDefines _defines;
+        IAirLocomotionAnimationDefinitions _definition;
         Animator _animator;
         JumpLocomotion _jumpLocomotion;
         void Awake()
         {
-            var ldefines = GetComponent<ILocomotionAnimationDefines>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionAnimationDefines));
-            _defines = ldefines.Air ?? throw new NullReferenceException(nameof(ldefines.Air));
+            var ldefinition = GetComponent<ILocomotionAnimationDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionAnimationDefinitions));
+            _definition = ldefinition.Air ?? throw new NullReferenceException(nameof(ldefinition.Air));
             _animator = GetComponent<Animator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(Animator));
         }
         void Start()
@@ -24,8 +24,8 @@ namespace Tests.Locomotion.Animation
             var ground = context.Ground;
             if (ground.Touched)
             {
-                if (_animator.GetBool(_defines.EnterParamName))
-                    _animator.SetBool(_defines.EnterParamName, false);
+                if (_animator.GetBool(_definition.EnterParamName))
+                    _animator.SetBool(_definition.EnterParamName, false);
                 return;
             }
             if (_jumpLocomotion.CurrentState > JState.Idle && _jumpLocomotion.CurrentState <= JState.Ascending)
@@ -36,12 +36,12 @@ namespace Tests.Locomotion.Animation
                 return;
 
 
-            _animator.SetBool(_defines.EnterParamName, true);
+            _animator.SetBool(_definition.EnterParamName, true);
 
 
             var velocity = context.Velocity * 0.05f;
-            _animator.SetFloat(_defines.XParamName, velocity.x);
-            _animator.SetFloat(_defines.YParamName, velocity.z);
+            _animator.SetFloat(_definition.XParamName, velocity.x);
+            _animator.SetFloat(_definition.YParamName, velocity.z);
         }
     }
 }
