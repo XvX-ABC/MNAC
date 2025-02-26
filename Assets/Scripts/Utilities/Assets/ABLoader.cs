@@ -103,9 +103,9 @@ namespace Assets.Scripts.Utilities.Assets
             else
             {
                 var path = basePath + abName;
-                if (File.Exists(path))
+                //if (File.Exists(path))
                 {
-                    ab = AssetBundle.LoadFromFile(basePath + abName);
+                    ab = AssetBundle.LoadFromFile(path);
                     abCache.Add(abName, ab);
                 }
                 return ab;

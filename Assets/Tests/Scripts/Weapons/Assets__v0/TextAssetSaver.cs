@@ -4,16 +4,9 @@ using UnityEditor;
 using UnityEngine;
 namespace Assets.Tests.Scripts.Weapons.Assets__v0
 {
+#if UNITY_EDITOR
     public class TextAssetSaver : AssetSaverBase<string>
     {
-        public override string SavePath
-        {
-            get => base.savePath;
-            set
-            {
-                savePath = Path.Join(Application.dataPath, value);
-            }
-        }
         public override bool Save(string text)
         {
             return SaveImpl(text);
@@ -45,11 +38,12 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
         }
         protected virtual void AddBundleTag()
         {
-            var path = Path.Combine("Assets", Path.GetRelativePath(Application.dataPath, savePath));
-            AssetImporter importer = AssetImporter.GetAtPath(path);
-            importer.assetBundleName = abPath;
+            //var path = Path.Combine("Assets", Path.GetRelativePath(Application.dataPath, savePath));
+            AssetImporter importer = AssetImporter.GetAtPath(savePath);
+            importer.assetBundleName = Path.GetDirectoryName(abPath);
             if (abPath.Length > 0)
                 importer.assetBundleVariant = "";
         }
     }
+#endif
 }

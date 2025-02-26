@@ -26,11 +26,13 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
             if (Path == null || Path.Length == 0)
                 return null;
             var obj = _loader.Load();
+#if UNITY_EDITOR
             if (obj != null)
             {
                 var path = AssetDatabase.GetAssetPath(obj);
                 _loader.Path = path;
             }
+#endif
             return obj;
         }
 

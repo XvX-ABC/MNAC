@@ -4,8 +4,10 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using ath = System.IO.Path;
 namespace Assets.Tests.Scripts.Weapons.Assets__v0
 {
+#if UNITY_EDITOR
     [Serializable]
     public class EditorAssetLoader<T> : IAssetLoader<T> where T : Object
     {
@@ -17,6 +19,10 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
             get => loadPath;
             set
             {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+                if (value == "")
+                    throw new Exception("The value assign to the load path can't is empty.");
                 loadPath = value;
             }
         }
@@ -27,10 +33,10 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
                 Debug.LogWarning($"Can't to load the asset, because the load path is null.");
                 return null;
             }
-            var path = System.IO.Path.Join("Assets", loadPath);
-            var asset = AssetDatabase.LoadAssetAtPath<T>(path);
+            //var path = System.IO.Path.Join("Assets", loadPath);
+            var asset = AssetDatabase.LoadAssetAtPath<T>(loadPath);
             if (asset == null)
-                Debug.LogWarning($"Load asset at path '{path}' failed.");
+                Debug.LogWarning($"Load asset at path '{loadPath}' failed.");
             return asset;
         }
 
@@ -39,4 +45,5 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
             return Load();
         }
     }
+#endif
 }

@@ -1,5 +1,4 @@
-﻿using Assets.Tests.Scripts.Weapons.Assets;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Tests.Weapons
@@ -30,7 +29,7 @@ namespace Tests.Weapons
         public ushort AmmoQuantityInMagazine { get => _ammoQuantityInMagazine; }
         public float ReloadDuration { get => _reloadDuration; }
 
-        public Dictionary<ushort, IABAssetSaver> AssetSavers => throw new System.NotImplementedException();
+        //public Dictionary<ushort, IABAssetSaver> AssetSavers => throw new System.NotImplementedException();
 
         void Start()
         {

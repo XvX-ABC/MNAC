@@ -1,4 +1,5 @@
-﻿using Assets.Tests.Scripts.Weapons.Assets__0;
+﻿using Assets.Scripts.Utilities.Assets;
+using Assets.Tests.Scripts.Weapons.Assets__0;
 using Assets.Tests.Scripts.Weapons.Assets__v0;
 using System;
 using System.Collections.Generic;
@@ -101,12 +102,12 @@ namespace Assets.Tests.Scripts.Weapons.Editor.Asset_0
             DrawDefinitions();
 
             EditorGUILayout.PropertyField(_definitionsAssetAgent);
-            if (GUILayout.Button("Save Definitions"))
+            if (GUILayout.Button("Save Asset"))
             {
 
                 _definitionsAssetAgentObj.Save(_definitionsObj);
             }
-            if (GUILayout.Button("Loaders Initialize"))
+            if (GUILayout.Button("Load Asset"))
             {
                 LoadDefinitions();
             }
@@ -114,16 +115,20 @@ namespace Assets.Tests.Scripts.Weapons.Editor.Asset_0
 
             _originObj = EditorGUILayout.ObjectField(_originObj, typeof(GameObject), false) as GameObject;
             EditorGUILayout.PropertyField(_originAssetAgent);
-            if (GUILayout.Button("Save Origin"))
+            if (GUILayout.Button("Save Asset"))
             {
                 _originAssetAgentObj.Save(_originObj);
             }
-            if (GUILayout.Button("Load Origin"))
+            if (GUILayout.Button("Load Asset"))
             {
                 LoadOrigin();
             }
 
             serializedObject.ApplyModifiedProperties();
+        }
+        private void OnDisable()
+        {
+            ABLoader.Instance.UnLoadAll();
         }
     }
 }

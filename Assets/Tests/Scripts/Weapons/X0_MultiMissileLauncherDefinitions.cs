@@ -1,5 +1,4 @@
-﻿using Assets.Tests.Scripts.Weapons.Assets;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -61,6 +60,6 @@ namespace Assets.Tests.Scripts.Weapons
 
         public float MagazineFullOrEmptyDuration => _durations.MagazineFullOrEmptyDuration;
 
-        public Dictionary<ushort, IABAssetSaver> AssetSavers => throw new NotImplementedException();
+        //public Dictionary<ushort, IABAssetSaver> AssetSavers => throw new NotImplementedException();
     }
 }

@@ -1,10 +1,8 @@
-﻿using Assets.Tests.Scripts.Weapons.Assets;
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using Tests.Weapons;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -41,8 +39,8 @@ namespace Assets.Tests.Scripts.Weapons
         public class DefinitionsEditor
         {
             IMissileLauncherDefinitions _definition;
-            JsonAssetSaver _definitionsSaver;
-            ObjectAssetSaver _originAssetSaver;
+            //JsonAssetSaver _definitionsSaver;
+            //ObjectAssetSaver _originAssetSaver;
             GameObject _origin;
             bool _foldout;
             public DefinitionsEditor(IMissileLauncherDefinitions definition)

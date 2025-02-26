@@ -2417,6 +2417,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5884404251870632140, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: LaunchingDelay
+      value: 0.06
+      objectReference: {fileID: 0}
     - target: {fileID: 6753725934006483729, guid: 222bc8d80467b304d9f112ed176e47b8,
         type: 3}
       propertyPath: m_Name
@@ -2449,16 +2454,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e9c2d630973664ab3826b213545792, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  definitionsAssetDefinitions:
-    BundleName: ab/c
-    FilePath: /bundles/test/t_0
-  _definitions:
-    MagazinePosition: {x: 0, y: 0, z: 0}
-    MuzzlePosition: {x: 0, y: 0, z: 0}
-    LaunchRate: 12
-    AmmoSpareQuantity: 0
-    AmmoQuantityInMagazine: 0
-    ReloadDuration: 0
+  definitionsAssetAgent:
+    definitions:
+      ABPath: test_0/numeral_info/
+      FilePath: Assets/bundles/test/t_1.json
+  originAssetAgent:
+    definitions:
+      ABPath: test_0/origin_test_0
+      FilePath: Assets/Tests/Resources/Weapons/MissileLauncher/Prefabs/MissileLauncher.prefab
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

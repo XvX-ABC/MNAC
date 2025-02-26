@@ -1,0 +1,11 @@
+ManifestFileVersion: 0
+UnityVersion: 2023.2.20f1c1
+CRC: 648816447
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: test_0/numeral_info
+      Dependencies: {}
+    Info_1:
+      Name: test_0/origin_test_0
+      Dependencies: {}

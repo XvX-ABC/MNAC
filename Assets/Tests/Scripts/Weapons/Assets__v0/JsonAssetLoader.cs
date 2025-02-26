@@ -17,8 +17,10 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
             set
             {
                 var p = value;
+#if UNITY_EDITOR && EDITOR_ASSET_LOAD
                 if (ath.GetExtension(p) != "json")
                     p = ath.ChangeExtension(p, "json");
+#endif
                 loader.Path = p;
             }
         }

@@ -2,6 +2,7 @@
 using Assets.Tests.Scripts.Weapons.Assets__v0;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Assets.Tests.Scripts.Weapons.Assets__0
     [Serializable]
     public class AssetDefinitions
     {
-        public string BundleName;
+        public string ABPath;
 #if UNITY_EDITOR
         public string FilePath;
 #endif
@@ -25,7 +26,7 @@ namespace Assets.Tests.Scripts.Weapons.Assets__0
 #if UNITY_EDITOR && EDITOR_ASSET_LOAD
             return FilePath;
 #else
-            return BundleName;
+            return Path.Combine(ABPath, Path.GetFileNameWithoutExtension(FilePath));
 #endif
         }
     }
@@ -45,6 +46,8 @@ namespace Assets.Tests.Scripts.Weapons.Assets__0
 
         [SerializeField]
         protected JsonAssetAgent<Definitions> definitionsAssetAgent;
+
+
         [SerializeField]
         protected GameObjectAssetAgent originAssetAgent;
 

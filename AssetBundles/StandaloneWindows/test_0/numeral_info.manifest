@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+UnityVersion: 2023.2.20f1c1
+CRC: 3934613238
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 435527981b73f32e0d9e75df64743098
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5ad585dd02dfb5016c0dad519eab8f49
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: b48182a36b55a12414a694d251ba44ee
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/bundles/test/t_1.json
+- Assets/bundles/test/test.json
+Dependencies: []

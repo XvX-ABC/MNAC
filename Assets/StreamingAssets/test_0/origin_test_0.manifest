@@ -1,0 +1,47 @@
+ManifestFileVersion: 0
+UnityVersion: 2023.2.20f1c1
+CRC: 2510544000
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: e2dda466ee3c231f0516d57980d57da6
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 29e6badc35ccca634fd6f8868dd971d7
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 5a579c0ad22720dc50662a41879d3ad3
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 71c89d994f7e7ec459e7efe68e234415, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2d2731585f93cb44ca76fc02cbe3147b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c5da6996437c3af4294d6aee0a184190, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 800d6ea54a87dbc4e9b6d1454fbffa82, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Tests/Resources/Weapons/MissileLauncher/Prefabs/MissileLauncher.prefab
+Dependencies: []

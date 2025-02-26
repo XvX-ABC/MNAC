@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
-using TMPro.EditorUtilities;
 using UnityEditor;
-using UnityEngine;
 namespace Assets.Tests.Scripts.Weapons.Assets__v0
 {
+#if UNITY_EDITOR
     public class JsonAssetSaver<T> : AssetSaverBase<T>
     {
         TextAssetSaver _saver;
@@ -47,9 +45,10 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
         {
             if (obj == null)
                 throw new ArgumentNullException(nameof(obj));
-            var text = EditorJsonUtility.ToJson(obj,true);
+            var text = EditorJsonUtility.ToJson(obj, true);
             return _saver.Save(text);
         }
 
     }
+#endif
 }

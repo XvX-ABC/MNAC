@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 namespace Assets.Tests.Scripts.Weapons.Assets__v0
 {
+#if UNITY_EDITOR
     public class GameObjectAssetSaver : AssetSaverBase<GameObject>
     {
         public override bool Save(GameObject obj)
@@ -24,10 +25,11 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
             savePath = filePath;
             var path = Path.Combine("Assets", Path.GetRelativePath(Application.dataPath, savePath));
             var importer = AssetImporter.GetAtPath(path);
-            importer.assetBundleName = abPath;
+            importer.assetBundleName = Path.GetDirectoryName(abPath);
             if (abPath.Length > 0)
                 importer.assetBundleVariant = "";
             return true;
         }
     }
+#endif
 }

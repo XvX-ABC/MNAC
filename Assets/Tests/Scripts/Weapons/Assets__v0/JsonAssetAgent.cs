@@ -11,15 +11,13 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
     public class JsonAssetAgent<T> : AssetAgentBase<T>
     {
 #if UNITY_EDITOR
-        JsonAssetAgent() : base(null, null)
+        JsonAssetAgent() : base(new JsonAssetLoader<T>(), new JsonAssetSaver<T>())
         {
         }
 
-        public JsonAssetAgent();
 #else
         public JsonAssetAgent() : base(new JsonAssetLoader<T>())
         {
-            _loader = new();
         }
 #endif
 

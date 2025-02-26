@@ -1,7 +1,6 @@
-﻿using Assets.Tests.Scripts.Weapons.Assets;
+﻿using System;
 namespace Assets.Tests.Scripts.Weapons.Assets__v0
 {
-#if UNITY_EDITOR
     public interface IAssetSaver
     {
         public string SavePath { get; set; }
@@ -24,11 +23,27 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
     {
         protected string savePath;
         protected string abPath;
-        public virtual string SavePath { get => savePath; set => savePath = value; }
-        public virtual string ABPath { get => abPath; set => abPath = value; }
+        public virtual string SavePath
+        {
+            get => savePath;
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+                if (value.Length == 0)
+                    throw new Exception("The value to assign to the save path can't is empty.");
+                savePath = value;
+            }
+        }
+        public virtual string ABPath
+        {
+            get => abPath;
+            set => abPath = value;
+
+
+        }
 
         public abstract bool Save(T obj);
         public abstract bool Save(object obj);
     }
-#endif
 }
