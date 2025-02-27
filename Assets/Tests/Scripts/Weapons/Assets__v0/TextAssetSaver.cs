@@ -7,6 +7,11 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
 #if UNITY_EDITOR
     public class TextAssetSaver : AssetSaverBase<string>
     {
+        static string s_basePath;
+        static TextAssetSaver()
+        {
+            s_basePath = Application.dataPath;
+        }
         public override bool Save(string text)
         {
             return SaveImpl(text);
@@ -27,21 +32,24 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
 
         protected void WriteTextToFile(string text)
         {
-            if (Directory.Exists(savePath))
-                throw new FileNotFoundException($"The path '{savePath}' is a directory.");
-            var d = Path.GetDirectoryName(savePath);
+            var path = Path.Join(s_basePath, savePath);
+            if (Directory.Exists(path))
+                throw new FileNotFoundException($"The path '{path}' is a directory.");
+            var d = Path.GetDirectoryName(path);
             if (!Directory.Exists(d))
                 Directory.CreateDirectory(d);
-            using (var writer = new StreamWriter(File.Open(savePath, FileMode.OpenOrCreate)))
+            using (var writer = new StreamWriter(File.Open(path, FileMode.OpenOrCreate)))
                 writer.Write(text);
             AssetDatabase.Refresh();
         }
         protected virtual void AddBundleTag()
         {
             //var path = Path.Combine("Assets", Path.GetRelativePath(Application.dataPath, savePath));
-            AssetImporter importer = AssetImporter.GetAtPath(savePath);
-            importer.assetBundleName = Path.GetDirectoryName(abPath);
-            if (abPath.Length > 0)
+            //Debug.Log("savePath: " + savePath);
+            var path = Path.Join("Assets", savePath);
+            AssetImporter importer = AssetImporter.GetAtPath(path);
+            importer.assetBundleName = bundleName;
+            if (bundleName.Length > 0)
                 importer.assetBundleVariant = "";
         }
     }

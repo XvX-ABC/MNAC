@@ -20,10 +20,10 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
                 _saver.SavePath = p;
             }
         }
-        public override string ABPath
+        public override string BundleName
         {
-            get => _saver.ABPath;
-            set => _saver.ABPath = value;
+            get => _saver.BundleName;
+            set => _saver.BundleName = value;
         }
         public JsonAssetSaver()
         {

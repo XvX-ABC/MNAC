@@ -22,7 +22,7 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
                 if (value == null)
                     throw new ArgumentNullException(nameof(value));
                 if (value == "")
-                    throw new Exception("The value assign to the load path can't is empty.");
+                    Debug.LogWarning("The value assign to the load path can't is empty.");
                 loadPath = value;
             }
         }
@@ -33,10 +33,10 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
                 Debug.LogWarning($"Can't to load the asset, because the load path is null.");
                 return null;
             }
-            //var path = System.IO.Path.Join("Assets", loadPath);
-            var asset = AssetDatabase.LoadAssetAtPath<T>(loadPath);
+            var path = System.IO.Path.Join("Assets", loadPath);
+            var asset = AssetDatabase.LoadAssetAtPath<T>(path);
             if (asset == null)
-                Debug.LogWarning($"Load asset at path '{loadPath}' failed.");
+                Debug.LogWarning($"Load asset at path '{path}' failed.");
             return asset;
         }
 

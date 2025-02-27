@@ -4,9 +4,21 @@ namespace Tests.Weapons
 {
     public class LauncherActionsLock : ActionsLock<ActionsEnum>, ILauncherActionsLock
     {
-        public bool LaunchLocked()
+        public void LockStartLaunch()
         {
-            return IsLocked(ActionsEnum.Launch);
+            Lock(ActionsEnum.All ^ ActionsEnum.EndLaunch);
+        }
+        public void LockStartReload()
+        {
+            Lock(ActionsEnum.All ^ ActionsEnum.EndReload);
+        }
+        public bool StartLaunchLocked()
+        {
+            return IsLocked(ActionsEnum.StartLaunch);
+        }
+        public bool EndLaunchLocked()
+        {
+            return IsLocked(ActionsEnum.EndLaunch);
         }
         public bool SupplyLocked()
         {

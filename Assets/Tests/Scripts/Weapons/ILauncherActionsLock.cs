@@ -7,7 +7,7 @@ namespace Tests.Weapons
     {
         bool StartReloadLocked();
         bool EndReloadLocked();
-        bool LaunchLocked();
+        bool StartLaunchLocked();
         bool SupplyLocked();
     }
 }

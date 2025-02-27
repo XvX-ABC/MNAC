@@ -16,13 +16,13 @@ namespace Tests.Weapons
         }
         public bool EndReloadLocked()
         {
-            return IsLocked(ActionsEnum.Launch);
+            return IsLocked(ActionsEnum.StartLaunch);
 
         }
 
-        public bool LaunchLocked()
+        public bool StartLaunchLocked()
         {
-            return IsLocked(ActionsEnum.Launch);
+            return IsLocked(ActionsEnum.StartLaunch);
         }
         public bool SupplyLocked()
         {

@@ -1,10 +1,11 @@
 ﻿using System;
+using UnityEngine;
 namespace Assets.Tests.Scripts.Weapons.Assets__v0
 {
     public interface IAssetSaver
     {
         public string SavePath { get; set; }
-        public string ABPath { get; set; }
+        public string BundleName { get; set; }
         public bool Save(object obj);
     }
     public interface IAssetSaver<T> : IAssetSaver
@@ -13,7 +14,6 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
     }
     public interface IABAssetSaver : IAssetSaver
     {
-        public string ABPath { get; set; }
     }
     public interface IABAssetSaver<T> : IAssetSaver<T>, IABAssetSaver
     {
@@ -22,7 +22,7 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
     public abstract class AssetSaverBase<T> : IABAssetSaver<T>
     {
         protected string savePath;
-        protected string abPath;
+        protected string bundleName;
         public virtual string SavePath
         {
             get => savePath;
@@ -31,14 +31,14 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
                 if (value == null)
                     throw new ArgumentNullException(nameof(value));
                 if (value.Length == 0)
-                    throw new Exception("The value to assign to the save path can't is empty.");
+                    Debug.LogWarning("The value to assign to the save path can't is empty.");
                 savePath = value;
             }
         }
-        public virtual string ABPath
+        public virtual string BundleName
         {
-            get => abPath;
-            set => abPath = value;
+            get => bundleName;
+            set => bundleName = value;
 
 
         }

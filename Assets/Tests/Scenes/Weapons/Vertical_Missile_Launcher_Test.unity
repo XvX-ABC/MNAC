@@ -285,7 +285,6 @@ MonoBehaviour:
   _ammoSpareQuantity: 19
   _ammoQuantityInMagazine: 1
   _reloadDuration: 2
-  _launchDelay: 0.5
   _launchDelay_New: {x: 0, y: 0}
 --- !u!114 &225813022
 MonoBehaviour:
@@ -668,7 +667,6 @@ MonoBehaviour:
   _ammoSpareQuantity: 1
   _ammoQuantityInMagazine: 2
   _reloadDuration: 2
-  _launchDelay: 0.25
   _launchDelay_New: {x: 0, y: 0}
 --- !u!1 &1018797105
 GameObject:
@@ -1269,7 +1267,6 @@ MonoBehaviour:
   _ammoSpareQuantity: 10
   _ammoQuantityInMagazine: 0
   _reloadDuration: 0
-  _launchDelay: 0
   _launchDelay_New: {x: 0, y: 0}
 --- !u!114 &1507562993
 MonoBehaviour:
@@ -1765,7 +1762,6 @@ MonoBehaviour:
   _ammoSpareQuantity: 60
   _ammoQuantityInMagazine: 0
   _reloadDuration: 0
-  _launchDelay: 0
   _launchDelay_New: {x: 0, y: 0}
 --- !u!114 &1626064192
 MonoBehaviour:
@@ -2420,7 +2416,7 @@ PrefabInstance:
     - target: {fileID: 5884404251870632140, guid: 222bc8d80467b304d9f112ed176e47b8,
         type: 3}
       propertyPath: LaunchingDelay
-      value: 0.06
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6753725934006483729, guid: 222bc8d80467b304d9f112ed176e47b8,
         type: 3}
@@ -2456,12 +2452,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   definitionsAssetAgent:
     definitions:
-      ABPath: test_0/numeral_info/
-      FilePath: Assets/bundles/test/t_1.json
+      Name: t_2
+      BundleName: test_0/a
+      DirPath: bundles/test
   originAssetAgent:
     definitions:
-      ABPath: test_0/origin_test_0
-      FilePath: Assets/Tests/Resources/Weapons/MissileLauncher/Prefabs/MissileLauncher.prefab
+      Name: MissileLauncher
+      BundleName: 
+      DirPath: Tests\Resources\Weapons\MissileLauncher\Prefabs
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

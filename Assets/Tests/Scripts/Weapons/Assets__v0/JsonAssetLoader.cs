@@ -6,7 +6,7 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
     [Serializable]
     public class JsonAssetLoader<T> : IAssetLoader<T>
     {
-     internal   TextAssetLoader loader;
+        internal TextAssetLoader loader;
         public JsonAssetLoader()
         {
             loader = new TextAssetLoader();

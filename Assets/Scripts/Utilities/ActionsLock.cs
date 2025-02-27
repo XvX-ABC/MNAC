@@ -37,7 +37,6 @@ namespace Utilities
                     _lockArray ^= v;
             }
         }
-
         public void LockAll()
         {
             _lockArray = byte.MaxValue;

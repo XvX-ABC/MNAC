@@ -20,13 +20,10 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
             _loader = loader;
             _saver = saver;
         }
-        public void Save(T obj)
+        public virtual void Save(T obj)
         {
-            _saver.SavePath = definitions.FilePath;
-            var fileName = Path.GetFileNameWithoutExtension(definitions.FilePath);
-
-
-            _saver.ABPath = Path.Join(definitions.ABPath, fileName);
+            _saver.SavePath = definitions.GetPath();
+            _saver.BundleName = definitions.BundleName;
             _saver.Save(obj);
         }
 
@@ -43,8 +40,8 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
 
             _loader.Path = definitions.GetPath();
 #if UNITY_EDITOR && EDITOR_ASSET_LOAD
-            definitions.FilePath = _loader.Path;
-            var importer = AssetImporter.GetAtPath(_loader.Path);
+            var path = Path.Join("Assets", _loader.Path);
+            var importer = AssetImporter.GetAtPath(path);
             if (importer != null)
                 definitions.BundleName = importer.assetBundleName;
 #endif
