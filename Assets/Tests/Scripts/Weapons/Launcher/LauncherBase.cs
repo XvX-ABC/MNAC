@@ -2,6 +2,7 @@
 using System.Reflection;
 using Assets.Scripts.Utilities.Timeline;
 using Assets.Scripts.Utilities.Timeline.Event.Point;
+using Assets.Tests.Scripts.Weapons;
 using FoundationStone.UI.Tests.MVC;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -11,24 +12,8 @@ namespace Tests.Weapons
     [DisallowMultipleComponent]
     public class LauncherBase : MonoBehaviour, ILauncher
     {
-        [Obsolete]
-        protected class ReloadCompleted : PointEvent
-        {
-            LauncherBase _gun;
-            public ReloadCompleted(LauncherBase gun, float triggeredProportion) : base(triggeredProportion)
-            {
-                _gun = gun;
-            }
-
-            public override void Execute(TimelineContext context)
-            {
-                _gun.DoReload();
-            }
-        }
         protected ObjectPool<GameObject> ammoPool;
         protected ILauncherDefinitions definitions;
-        [SerializeField]
-        protected float LaunchingDelay;
         [SerializeField]
         protected ushort ammoInMagazineQuantity;
         [SerializeField]
@@ -52,6 +37,7 @@ namespace Tests.Weapons
         public ushort MagazineCount { get => ammoInMagazineQuantity; set => ammoInMagazineQuantity = value; }
         public ILauncherDefinitions Definitions { get => definitions; protected set => definitions = value; }
         public Vector3 MagazinePosition { get => this.transform.position + this.transform.rotation * definitions.MagazinePosition; }
+        public Vector3 MuzzlePosition { get => this.transform.position + this.transform.rotation * definitions.MuzzlePosition; }
         public Action<ILauncher> InitializationAction { get => initializationAction; set => initializationAction = value; }
         public ITimeline DelayLaunchTimeline { get => delayLaunchTimeline; }
         public ITimeline LaunchDurationTimeline { get => launchDurationTimeline; }
@@ -63,15 +49,6 @@ namespace Tests.Weapons
             definitions = GetComponent<ILauncherDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherDefinitions));
             actionsLock = new();
 
-        }
-        protected virtual void OnEnable()
-        {
-
-            //reloadTimeline = new(definition.ReloadDuration, false, new ReloadCompleted(this, 1));
-        }
-        protected virtual void OnDisable()
-        {
-            ammoPool.Dispose();
         }
 
         protected virtual void Start()
@@ -97,8 +74,16 @@ namespace Tests.Weapons
         }
         protected virtual void Update()
         {
+            if (delayLaunchTimeline.IsRunning)
+                delayLaunchTimeline.OnUpdate(Time.deltaTime);
+            if (launchDurationTimeline.IsRunning)
+                launchDurationTimeline.OnUpdate(Time.deltaTime);
             if (reloadTimeline.IsRunning)
                 reloadTimeline.OnUpdate(Time.deltaTime);
+        }
+        protected void OnDestroy()
+        {
+            ammoPool.Dispose();
         }
         protected virtual GameObject CreateAmmo()
         {
@@ -238,21 +223,32 @@ namespace Tests.Weapons
             }
             else if (launchDurationTimeline.IsRunning)
                 return false;
+            return true;
         }
         internal virtual void DoLaunch()
         {
             var obj = ammoPool.Get();
             ammoInMagazineQuantity--;
         }
-        [RequestMapping("{c_url}/ReloadTimeline/UpdateEvent/Register", RequestMethod.GET)]
-        public void RegisterReloadTimelineUpdateEvent(IRequest<(bool, Action<float>)> request, IResponse response)
+#if UNITY_EDITOR
+        IMissileLauncherDefinitionsEditor _definitionsEditor;
+        protected virtual void OnDrawGizmos()
         {
-            var register = request.Data.Item1;
-            if (register)
-                reloadTimeline.UpdateAction += request.Data.Item2;
-            else
-                reloadTimeline.UpdateAction -= request.Data.Item2;
-            response.Code = (ushort)ResponseCode.Succeeded;
+            if (definitions == null)
+            {
+                definitions = GetComponent<IMissileLauncherDefinitions>();
+                _definitionsEditor = definitions as IMissileLauncherDefinitionsEditor;
+                _definitionsEditor?.Load();
+            }
+            if (definitions != null)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawSphere(MuzzlePosition, 0.1f);
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawSphere(MagazinePosition, 0.1f);
+            }
         }
+#endif
+
     }
 }

@@ -8,7 +8,7 @@ namespace Assets.Tests.Scripts.Weapons.Assets__0
         public Vector3 MagazinePosition;
         public Vector3 MuzzlePosition;
         public ushort AmmoSpareQuantity;
-        public ushort AmmoQuantityInMagazine;
+        public ushort AmmoInMagazineQuantity;
         public float ReloadDuration;
         public float LaunchDurationTime;
         public Vector2 LaunchDelayRange;

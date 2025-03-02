@@ -17,6 +17,8 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
             set
             {
                 var p = value;
+                if (p == null || p.Length == 0)
+                    throw new ArgumentException("The load path can't assign a empty value.");
 #if UNITY_EDITOR && EDITOR_ASSET_LOAD
                 if (ath.GetExtension(p) != "json")
                     p = ath.ChangeExtension(p, "json");

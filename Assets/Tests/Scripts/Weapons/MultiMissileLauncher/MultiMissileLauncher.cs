@@ -45,10 +45,8 @@ namespace Assets.Tests.Scripts.Weapons
             return list.ToArray();
         }
 
-        internal IMissileLauncher[] subLaunchers;
         ushort _ammoSpareQuantity;
-        ushort _ammoQuantityInMagazine;
-        IMissileLauncherDefinitions _definitions;
+        ushort _ammoInMagazineQuantity;
         Action<ILauncher> _initializationAction;
         Action<IMissileLauncher, ITarget> _targetChangeAction;
         ITarget _target;
@@ -56,10 +54,12 @@ namespace Assets.Tests.Scripts.Weapons
         ITimeline _reloadTimeline;
         ITimeline _delayLaunchTimeline;
         ITimeline _launchDurationTimeline;
+        protected IMissileLauncherDefinitions definitions;
+        internal IMissileLauncher[] subLaunchers;
         public ushort SpareCount { get => _ammoSpareQuantity; }
-        public ushort MagazineCount { get => _ammoQuantityInMagazine; }
-        public ILauncherDefinitions Definitions { get => _definitions; }
-        IMissileLauncherDefinitions IMissileLauncher.Definitions => _definitions;
+        public ushort MagazineCount { get => _ammoInMagazineQuantity; }
+        public ILauncherDefinitions Definitions { get => definitions; }
+        IMissileLauncherDefinitions IMissileLauncher.Definitions => definitions;
         public Action<ILauncher> InitializationAction { get => _initializationAction; set => _initializationAction = value; }
         public ITarget Target
         {
@@ -73,7 +73,7 @@ namespace Assets.Tests.Scripts.Weapons
             }
         }
 
-
+        public ITimeline LaunchDurationTimeline { get => _launchDurationTimeline; }
         public ITimeline ReloadTimeline { get => _reloadTimeline; }
         public ITimeline DelayLaunchTimeline { get => _delayLaunchTimeline; }
         public Action<IMissileLauncher, ITarget> TargetChangeAction
@@ -108,7 +108,7 @@ namespace Assets.Tests.Scripts.Weapons
 
         void Awake()
         {
-            _definitions = GetComponent<IMissileLauncherDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherDefinitions));
+            definitions = GetComponent<IMissileLauncherDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherDefinitions));
             LoadSubLaunchers();
 
             foreach (var l in subLaunchers)
@@ -157,11 +157,11 @@ namespace Assets.Tests.Scripts.Weapons
         }
         protected void Start()
         {
-            _ammoSpareQuantity = (ushort)(_definitions.AmmoTotalQuantity - subLaunchers.Length);
+            _ammoSpareQuantity = (ushort)(definitions.AmmoTotalQuantity - subLaunchers.Length);
 
 
             var quantity = subLaunchers.Length;
-            _ammoQuantityInMagazine = (ushort)quantity;
+            _ammoInMagazineQuantity = (ushort)quantity;
 
             //var reloadTimelines = new ITimeline[quantity];
             //var delayLaunchTimelines = new ITimeline[quantity];
@@ -175,9 +175,9 @@ namespace Assets.Tests.Scripts.Weapons
 
             //_reloadTimeline = new TimelinesGroup(reloadTimelines);
             //_delayLaunchTimeline = new TimelinesGroup(delayLaunchTimelines);
-            _reloadTimeline = new TimelinesGroup(l => ((IMissileLauncher)l).ReloadTimeline, subLaunchers);
-            _delayLaunchTimeline = new TimelinesGroup(l => ((IMissileLauncher)l).DelayLaunchTimeline, subLaunchers);
-            _launchDurationTimeline = new TimelinesGroup(l => l.LaunchDurationTimeline, subLaunchers);
+            _reloadTimeline = CreateReloadTimeline();
+            _delayLaunchTimeline = CreateDelayLaunchTimeline();
+            _launchDurationTimeline = CreateLaunchDurationTimeline();
             var actionsLocks = subLaunchers.Select(launcher => launcher.actionsLock).ToArray();
             _actionsLock = new LauncherActionsLockGroup(actionsLocks);
 
@@ -204,18 +204,30 @@ namespace Assets.Tests.Scripts.Weapons
             }
 
         }
+        protected virtual ITimeline CreateDelayLaunchTimeline()
+        {
+            return new TimelinesGroup(l => l.DelayLaunchTimeline, subLaunchers);
+        }
+        protected virtual ITimeline CreateLaunchDurationTimeline()
+        {
+            return new TimelinesGroup(l => l.LaunchDurationTimeline, subLaunchers);
+        }
+        protected virtual ITimeline CreateReloadTimeline()
+        {
+            return new TimelinesGroup(l => l.ReloadTimeline, subLaunchers);
+        }
         public bool StartLaunch()
         {
-            if (!enabled || _actionsLock.StartLaunchLocked() || _ammoQuantityInMagazine <= 0)
+            if (!enabled || _actionsLock.StartLaunchLocked() || _ammoInMagazineQuantity <= 0)
                 return false;
 
 
             foreach (var l in subLaunchers)
             {
-                if (_ammoQuantityInMagazine <= 0)
+                if (_ammoInMagazineQuantity <= 0)
                     break;
                 if (l.StartLaunch())
-                    _ammoQuantityInMagazine--;
+                    _ammoInMagazineQuantity--;
             }
             return true;
         }
@@ -226,8 +238,12 @@ namespace Assets.Tests.Scripts.Weapons
 
             foreach (var l in subLaunchers)
             {
-                if(_ammo)
+                if (l.EndLaunch())
+                    _ammoInMagazineQuantity++;
+                else
+                    return false;
             }
+            return true;
         }
 
         public bool StartReload()
@@ -255,7 +271,7 @@ namespace Assets.Tests.Scripts.Weapons
         {
             if (launcher.EndReload())
             {
-                _ammoQuantityInMagazine++;
+                _ammoInMagazineQuantity++;
                 return true;
             }
             launcher.Supply(-1);
@@ -277,7 +293,7 @@ namespace Assets.Tests.Scripts.Weapons
         {
             if (_ammoSpareQuantity + num < 0 || _actionsLock.SupplyLocked())
                 return 0;
-            var suppNum = Mathf.Min(_definitions.AmmoTotalQuantity - subLaunchers.Length - _ammoSpareQuantity, num);
+            var suppNum = Mathf.Min(definitions.AmmoTotalQuantity - subLaunchers.Length - _ammoSpareQuantity, num);
             _ammoSpareQuantity += (ushort)suppNum;
             return suppNum;
         }
@@ -288,7 +304,7 @@ namespace Assets.Tests.Scripts.Weapons
             style.fontSize = 32;
             style.alignment = TextAnchor.MiddleCenter;
             GUI.Label(new Rect(0, 0, 100, 100), _ammoSpareQuantity.ToString(), style);
-            GUI.Label(new Rect(0, 100, 100, 100), _ammoQuantityInMagazine.ToString(), style);
+            GUI.Label(new Rect(0, 100, 100, 100), _ammoInMagazineQuantity.ToString(), style);
             if (Target == null)
                 GUI.Label(new Rect(0, 200, 100, 100), "NULL", style);
             else

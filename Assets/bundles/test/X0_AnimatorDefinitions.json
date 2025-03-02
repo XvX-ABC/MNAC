@@ -1,0 +1,14 @@
+{
+    "TargetLockedParamName": "abc",
+    "ReloadingParamName": "",
+    "CoverCloseClipName": "",
+    "CoverCloseSpeedMultiplierName": "",
+    "CoverOpenParamName": "",
+    "CoverOpenClipName": "",
+    "CoverOpenSpeedMultiplierName": "",
+    "MagazineFullClipName": "",
+    "MagazineEmptyParamName": "",
+    "MagazineFullSpeedMultiplierName": "",
+    "MagazineEmptyClipName": "",
+    "MagazineEmptySpeedMultiplierName": ""
+}

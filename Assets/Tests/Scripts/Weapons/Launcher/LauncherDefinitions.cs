@@ -31,6 +31,12 @@ namespace Tests.Weapons
         public ushort AmmoInMagazineQuantity { get => _ammoQuantityInMagazine; }
         public float ReloadDuration { get => _reloadDuration; }
 
+        public float LaunchDurationTime => throw new NotImplementedException();
+
+        public Vector2 LaunchDelayRange => throw new NotImplementedException();
+
+    
+
         //public Dictionary<ushort, IABAssetSaver> AssetSavers => throw new System.NotImplementedException();
 
         void Start()

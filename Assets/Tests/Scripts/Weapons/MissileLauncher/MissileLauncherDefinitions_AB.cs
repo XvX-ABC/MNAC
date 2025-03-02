@@ -3,9 +3,8 @@ using UnityEngine;
 
 namespace Assets.Tests.Scripts.Weapons.Assets__0
 {
-    public partial class MissileLauncherDefinitions_AB : LauncherDefinitions_AB, IMissileLauncherDefinitions
+    public partial class MissileLauncherDefinitions_AB : LauncherDefinitions_AB, IMissileLauncherDefinitions,IMissileLauncherDefinitionsEditor
     {
-        MissileLauncherNumericalDefinitions _definitions;
 
 
 

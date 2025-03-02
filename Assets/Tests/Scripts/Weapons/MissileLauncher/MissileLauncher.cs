@@ -55,12 +55,6 @@ namespace Assets.Tests.Scripts.Weapons
             base.Start();
             DoReload();
         }
-        protected override void Update()
-        {
-            base.Update();
-            if (delayLaunchTimeline.IsRunning)
-                delayLaunchTimeline.OnUpdate(Time.deltaTime);
-        }
         protected override ITimeline CreateDelayLaunchTimeline()
         {
             var timeline = new RandomLengthTimeline(definitions.LaunchDelayRange);
@@ -73,6 +67,7 @@ namespace Assets.Tests.Scripts.Weapons
             {
                 DoLaunch();
                 actionsLock.UnlockAll();
+                launchDurationTimeline.Start();
             });
             return timeline;
         }
@@ -117,12 +112,6 @@ namespace Assets.Tests.Scripts.Weapons
             delayLaunchTimeline.Start();
 
             return true;
-        }
-        [RequestMapping("{c_url}/DelayLaunchTimeline/UpdateEvent/Register")]
-        public void RegisterDelayLaunchTimelineUpdateEvent(IRequest<Action<float>> request, IResponse<object> response)
-        {
-            delayLaunchTimeline.UpdateAction += request.Data;
-            response.Code = (ushort)ResponseCode.Succeeded;
         }
     }
 }

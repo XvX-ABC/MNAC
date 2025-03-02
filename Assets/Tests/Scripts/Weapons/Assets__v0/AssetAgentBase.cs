@@ -1,4 +1,5 @@
 ﻿using Assets.Tests.Scripts.Weapons.Assets__0;
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -15,6 +16,15 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
 
         protected IAssetSaver<T> _saver;
         public IAssetSaver Saver { get => _saver; }
+        public AssetDefinitions Definitions
+        {
+            get => definitions;
+            set
+            {
+                if (value != null)
+                    definitions = value;
+            }
+        }
         protected AssetAgentBase(IAssetLoader<T> loader, IAssetSaver<T> saver)
         {
             _loader = loader;
@@ -22,7 +32,8 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
         }
         public virtual void Save(T obj)
         {
-            _saver.SavePath = definitions.GetPath();
+            var path = definitions.GetPath();
+            _saver.SavePath = path;
             _saver.BundleName = definitions.BundleName;
             _saver.Save(obj);
         }
@@ -36,16 +47,24 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
 
         public virtual T Load()
         {
+            try
+            {
 
-
-            _loader.Path = definitions.GetPath();
+            var path = definitions.GetPath();
+            _loader.Path = path;
 #if UNITY_EDITOR && EDITOR_ASSET_LOAD
-            var path = Path.Join("Assets", _loader.Path);
+            path = Path.Join("Assets", _loader.Path);
             var importer = AssetImporter.GetAtPath(path);
             if (importer != null)
                 definitions.BundleName = importer.assetBundleName;
 #endif
             return _loader.Load();
+            }
+            catch(Exception e)
+            {
+                Debug.LogWarning(e);
+                return default;
+            }
         }
 
     }

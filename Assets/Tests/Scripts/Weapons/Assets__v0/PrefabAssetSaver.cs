@@ -13,8 +13,8 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
             get => savePath;
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException(nameof(value));
+                if (value == null || value.Length == 0)
+                    throw new ArgumentException("The save path can't assign a empty value.");
                 var p = value;
                 if (Path.GetExtension(p) != "prefab")
                     p = Path.ChangeExtension(p, "prefab");

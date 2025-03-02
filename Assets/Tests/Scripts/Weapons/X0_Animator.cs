@@ -10,20 +10,19 @@ using UnityEngine;
 
 namespace Assets.Tests.Scripts.Weapons
 {
-    [RequireComponent(typeof(X0_MultiMissileLauncherDefinitions))]
     [RequireComponent(typeof(Animator))]
     public class X0_Animator : MonoBehaviour
     {
         Animator _animator;
         ILauncherAnimatorDefinitions _definition;
-        ILauncherAnimatorActionDefinitions _actionDefinition;
+        ILauncherActionDefinitions _actionDefinition;
         X0_MultiMissileLauncher _launcher;
         ITimeline _prepareLaunchTimeline;
         void Awake()
         {
             _animator = GetComponent<Animator>();
             _definition = GetComponent<ILauncherAnimatorDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherAnimatorDefinitions));
-            _actionDefinition = GetComponent<X0_MultiMissileLauncherDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherAnimatorActionDefinitions));
+            _actionDefinition = GetComponent<ILauncherActionDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherActionDefinitions));
             _launcher = GetComponent<X0_MultiMissileLauncher>() ?? throw new ComponentCantFindException(this.gameObject, typeof(X0_MultiMissileLauncher));
 
 
@@ -132,9 +131,9 @@ namespace Assets.Tests.Scripts.Weapons
 
 
 
-            _prepareLaunchTimeline = new Timeline(_actionDefinition.CoverOpenOrCloseDuration);
-            _prepareLaunchTimeline.AddPointEvent(0, _ => launcher.actionsLock.LockAll());
-            _prepareLaunchTimeline.AddPointEvent(1, _ => launcher.actionsLock.UnlockAll());
+            //_prepareLaunchTimeline = new Timeline(_actionDefinition.CoverOpenOrCloseDuration);
+            //_prepareLaunchTimeline.AddPointEvent(0, _ => launcher.actionsLock.LockAll());
+            //_prepareLaunchTimeline.AddPointEvent(1, _ => launcher.actionsLock.UnlockAll());
         }
 
 

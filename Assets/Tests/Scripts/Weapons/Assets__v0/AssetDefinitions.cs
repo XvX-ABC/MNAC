@@ -16,8 +16,12 @@ namespace Assets.Tests.Scripts.Weapons.Assets__0
         public string GetPath()
         {
 #if UNITY_EDITOR && EDITOR_ASSET_LOAD
+            if (Name == null || Name.Length == 0)
+                return null;
             return Path.Join(DirPath, Name);
 #else
+            if(Name==null || Name.Length==0)
+                return null;
             return Path.Join(BundleName,Name);
 #endif
         }

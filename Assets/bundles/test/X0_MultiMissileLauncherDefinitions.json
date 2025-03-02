@@ -1,0 +1,20 @@
+{
+    "MagazinePosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MuzzlePosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "AmmoSpareQuantity": 0,
+    "AmmoInMagazineQuantity": 0,
+    "ReloadDuration": 1.0,
+    "LaunchDurationTime": 0.0,
+    "LaunchDelayRange": {
+        "x": 0.0,
+        "y": 0.0
+    }
+}

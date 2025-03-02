@@ -1,5 +1,6 @@
 ﻿//#define EDITOR_ASSET_LOAD
 using Assets.Tests.Scripts.Weapons.Assets__v0;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,29 +16,36 @@ namespace Assets.Tests.Scripts.Weapons.Assets__0
     public class LauncherDefinitions_AB : MonoBehaviour, ILauncherDefinitions, ILauncherDefinitionsEditor
     {
         [SerializeField]
-        protected JsonAssetAgent<LauncherNumericalDefinitions> definitionsAssetAgent;
+        protected JsonAssetAgent<LauncherNumericalDefinitions> numericalAssetAgent;
 
 
         [SerializeField]
         protected GameObjectAssetAgent originAssetAgent;
 
-        LauncherNumericalDefinitions _numericalDefinitions;
+        protected LauncherNumericalDefinitions numericalDefinitions;
         protected GameObject origin;
-        void Awake()
+
+        protected virtual void Awake()
         {
-            LoadOrigin();
-            LoadNumericalDefinitions();
+            Load();
         }
         public GameObject AmmoOrigin { get => origin; set => origin = value; }
-        public Vector3 MagazinePosition { get => _numericalDefinitions.MagazinePosition; set => _numericalDefinitions.MagazinePosition = value; }
-        public Vector3 MuzzlePosition { get => _numericalDefinitions.MuzzlePosition; set => _numericalDefinitions.MuzzlePosition = value; }
+        public Vector3 MagazinePosition { get => numericalDefinitions.MagazinePosition; set => numericalDefinitions.MagazinePosition = value; }
+        public Vector3 MuzzlePosition
+        {
+            get => numericalDefinitions.MuzzlePosition;
+            set => numericalDefinitions.MuzzlePosition = value;
+        }
         public ushort AmmoTotalQuantity { get => (ushort)(AmmoSpareQuantity + AmmoInMagazineQuantity); }
 
-        public ushort AmmoSpareQuantity { get => _numericalDefinitions.AmmoSpareQuantity; set => _numericalDefinitions.AmmoSpareQuantity = value; }
-        public ushort AmmoInMagazineQuantity { get => _numericalDefinitions.AmmoQuantityInMagazine; set => _numericalDefinitions.AmmoQuantityInMagazine = value; }
-        public float ReloadDuration { get => _numericalDefinitions.ReloadDuration; set => _numericalDefinitions.ReloadDuration = value; }
-        public float LaunchDurationTime { get => _numericalDefinitions.LaunchDurationTime; set => _numericalDefinitions.LaunchDurationTime = value; }
-        public Vector2 LaunchDelayRange { get => _numericalDefinitions.LaunchDelayRange; set => _numericalDefinitions.LaunchDelayRange = value; }
+        public ushort AmmoSpareQuantity { get => numericalDefinitions.AmmoSpareQuantity; set => numericalDefinitions.AmmoSpareQuantity = value; }
+        public ushort AmmoInMagazineQuantity { get => numericalDefinitions.AmmoInMagazineQuantity; set => numericalDefinitions.AmmoInMagazineQuantity = value; }
+        public float ReloadDuration { get => numericalDefinitions.ReloadDuration; set => numericalDefinitions.ReloadDuration = value; }
+        public float LaunchDurationTime { get => numericalDefinitions.LaunchDurationTime; set => numericalDefinitions.LaunchDurationTime = value; }
+        public Vector2 LaunchDelayRange { get => numericalDefinitions.LaunchDelayRange; set => numericalDefinitions.LaunchDelayRange = value; }
+        public Dictionary<string, AssetDefinitions> AssetDefinitionsMap { get => throw new NotImplementedException(); }
+        public AssetDefinitions OriginAssetDefinitions { get => originAssetAgent.Definitions; set => originAssetAgent.Definitions = value; }
+        public AssetDefinitions NumericalAssetDefinitions { get => numericalAssetAgent.Definitions; set => numericalAssetAgent.Definitions = value; }
 
         protected virtual void LoadOrigin()
         {
@@ -46,19 +54,19 @@ namespace Assets.Tests.Scripts.Weapons.Assets__0
         protected virtual void LoadNumericalDefinitions()
         {
             //_definitions = definitionsAssetLoader.Load();
-            _numericalDefinitions = definitionsAssetAgent.Load();
+            numericalDefinitions = numericalAssetAgent.Load() ?? new();
         }
         protected void TryLoadDefinitions()
         {
-            if (_numericalDefinitions == null)
+            if (numericalDefinitions == null)
                 LoadNumericalDefinitions();
         }
-        public void Save()
+        public virtual void Save()
         {
-            definitionsAssetAgent.Save(_numericalDefinitions == null ? new() : _numericalDefinitions);
+            numericalAssetAgent.Save(numericalDefinitions);
             originAssetAgent.Save(origin);
         }
-        public void Load()
+        public virtual void Load()
         {
             LoadNumericalDefinitions();
             LoadOrigin();

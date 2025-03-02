@@ -17,6 +17,7 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
             _saver.BundleName = definitions.BundleName;
             _saver.Save(obj);
             definitions.DirPath = Path.GetDirectoryName(Path.GetRelativePath(Application.dataPath, _saver.SavePath));
+            definitions.Name = obj.name;
 
         }
 #else

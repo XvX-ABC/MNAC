@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3358836607337861011}
-  - component: {fileID: 4299795340017320259}
-  - component: {fileID: 5884404251870632140}
+  - component: {fileID: 7548555049634436683}
+  - component: {fileID: 3729245623594989840}
   m_Layer: 0
   m_Name: MissileLauncher
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4299795340017320259
+--- !u!114 &7548555049634436683
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,31 +42,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 6753725934006483729}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 800d6ea54a87dbc4e9b6d1454fbffa82, type: 3}
+  m_Script: {fileID: 11500000, guid: 2257418b897399f468d21e9a751dbebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _origin: {fileID: 7221182628622969125, guid: 470b6b4c0db47604a8c06ae9caf05d16, type: 3}
-  _magazinePosition: {x: 0, y: 0, z: 0}
-  _muzzlePosition: {x: 0, y: 1, z: 0}
-  _fireRate: 1
-  _ammoSpareQuantity: 10
-  _ammoQuantityInMagazine: 10
-  _reloadDuration: 2
-  _launchDelay: 1
-  _launchDelay_New: {x: 0.1, y: 2}
---- !u!114 &5884404251870632140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6753725934006483729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d2731585f93cb44ca76fc02cbe3147b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  launchingInterval: 0
-  LaunchingDelay: 0
-  ammoQuantityInMagazine: 0
+  ammoInMagazineQuantity: 0
   ammoSpareQuantity: 0
+--- !u!114 &3729245623594989840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6753725934006483729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37bb1333bf73dc1439f853b460647d01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  definitionsAssetAgent:
+    definitions:
+      Name: MissileLaunchDefinitions
+      BundleName: 
+      DirPath: bundles/test
+  originAssetAgent:
+    definitions:
+      Name: Missile_V0
+      BundleName: 
+      DirPath: Tests/Resources/Weapons/MissileLauncher/Prefabs

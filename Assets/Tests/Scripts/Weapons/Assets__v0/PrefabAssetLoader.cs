@@ -25,6 +25,8 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
             get => _loader.Path;
             set
             {
+                if (value == null || value.Length == 0)
+                    throw new ArgumentException("The load path can't assign a empty value. ");
                 var p = value;
 #if UNITY_EDITOR && EDITOR_ASSET_LOAD
                 if (ath.GetExtension(p) != "prefab")

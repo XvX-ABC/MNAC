@@ -278,14 +278,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 800d6ea54a87dbc4e9b6d1454fbffa82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _origin: {fileID: 899628074}
-  _magazinePosition: {x: 0, y: 0, z: 0}
-  _muzzlePosition: {x: 0, y: 0, z: 1}
-  _launchRate: 0
-  _ammoSpareQuantity: 19
-  _ammoQuantityInMagazine: 1
-  _reloadDuration: 2
-  _launchDelay_New: {x: 0, y: 0}
 --- !u!114 &225813022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,10 +290,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d2731585f93cb44ca76fc02cbe3147b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchingInterval: 0
-  LaunchingDelay: 0
-  ammoQuantityInMagazine: 0
-  ammoSpareQuantity: 0
 --- !u!1 &323350520 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6753725934006483729, guid: 222bc8d80467b304d9f112ed176e47b8,
@@ -365,6 +353,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: numericalAssetAgent.definitions.Name
+      value: X0_SubLauncher
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: originAssetAgent.definitions.DirPath
+      value: Tests\Resources\Weapons\MissileLauncher\Prefabs
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: numericalAssetAgent.definitions.DirPath
+      value: bundles/test
       objectReference: {fileID: 0}
     - target: {fileID: 6753725934006483729, guid: 222bc8d80467b304d9f112ed176e47b8,
         type: 3}
@@ -629,10 +632,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d2731585f93cb44ca76fc02cbe3147b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchingInterval: 0
-  LaunchingDelay: 0
-  ammoQuantityInMagazine: 0
-  ammoSpareQuantity: 0
 --- !u!4 &963933036
 Transform:
   m_ObjectHideFlags: 0
@@ -660,14 +659,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 800d6ea54a87dbc4e9b6d1454fbffa82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _origin: {fileID: 899628074}
-  _magazinePosition: {x: 0, y: 0, z: 0}
-  _muzzlePosition: {x: 0, y: 0, z: 1}
-  _launchRate: 0
-  _ammoSpareQuantity: 1
-  _ammoQuantityInMagazine: 2
-  _reloadDuration: 2
-  _launchDelay_New: {x: 0, y: 0}
 --- !u!1 &1018797105
 GameObject:
   m_ObjectHideFlags: 0
@@ -863,6 +854,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: numericalAssetAgent.definitions.Name
+      value: X0_SubLauncher
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: originAssetAgent.definitions.DirPath
+      value: Tests\Resources\Weapons\MissileLauncher\Prefabs
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: numericalAssetAgent.definitions.DirPath
+      value: bundles/test
+      objectReference: {fileID: 0}
     - target: {fileID: 4299795340017320259, guid: 222bc8d80467b304d9f112ed176e47b8,
         type: 3}
       propertyPath: _ammoQuantityInMagazine
@@ -876,11 +882,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6753725934006483729, guid: 222bc8d80467b304d9f112ed176e47b8,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1845034344}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 222bc8d80467b304d9f112ed176e47b8, type: 3}
 --- !u!4 &1180586733 stripped
 Transform:
@@ -1064,6 +1066,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: numericalAssetAgent.definitions.Name
+      value: X0_SubLauncher
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: originAssetAgent.definitions.DirPath
+      value: Tests\Resources\Weapons\MissileLauncher\Prefabs
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: numericalAssetAgent.definitions.DirPath
+      value: bundles/test
       objectReference: {fileID: 0}
     - target: {fileID: 6753725934006483729, guid: 222bc8d80467b304d9f112ed176e47b8,
         type: 3}
@@ -1260,14 +1277,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 800d6ea54a87dbc4e9b6d1454fbffa82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _origin: {fileID: 899628074}
-  _magazinePosition: {x: 0, y: 0, z: 0}
-  _muzzlePosition: {x: 0, y: 0, z: 0}
-  _launchRate: 0
-  _ammoSpareQuantity: 10
-  _ammoQuantityInMagazine: 0
-  _reloadDuration: 0
-  _launchDelay_New: {x: 0, y: 0}
 --- !u!114 &1507562993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1524,6 +1533,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: numericalAssetAgent.definitions.Name
+      value: X0_SubLauncher
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: originAssetAgent.definitions.DirPath
+      value: Tests\Resources\Weapons\MissileLauncher\Prefabs
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: numericalAssetAgent.definitions.DirPath
+      value: bundles/test
+      objectReference: {fileID: 0}
     - target: {fileID: 6753725934006483729, guid: 222bc8d80467b304d9f112ed176e47b8,
         type: 3}
       propertyPath: m_Name
@@ -1743,26 +1767,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1626064190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1626064187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 800d6ea54a87dbc4e9b6d1454fbffa82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _origin: {fileID: 7221182628622969125, guid: 470b6b4c0db47604a8c06ae9caf05d16, type: 3}
-  _magazinePosition: {x: 0, y: 0, z: 0}
-  _muzzlePosition: {x: 0, y: 0, z: 0}
-  _launchRate: 0
-  _ammoSpareQuantity: 60
-  _ammoQuantityInMagazine: 0
-  _reloadDuration: 0
-  _launchDelay_New: {x: 0, y: 0}
 --- !u!114 &1626064192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1776,18 +1780,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _obj: {fileID: 1360910760}
---- !u!114 &1626064193
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1626064187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dfae652b03028e4bb7f0a646b953041, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1626064194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1809,19 +1801,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 1626064187}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 248aa11ccf56c4041816e7b23b6630ec, type: 3}
+  m_Script: {fileID: 11500000, guid: c9fabe5d091dc5d43b3b5142285a9ec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coverCloseClipName: "\u9AA8\u67B6_Covers_Close"
-  _coverCloseSpeedMultiplierName: CoversCloseSpeedMultiplier
-  _coverOpenClipName: "\u9AA8\u67B6_Covers_Open"
-  _coverOpenSpeedMultiplierName: CoversOpenSpeedMultiplier
-  _magazineFullClipName: "\u9AA8\u67B6_Module_Full"
-  _magazineFullSpeedMultiplierName: MagazineFullSpeedMultiplier
-  _magazineEmptyClipName: "\u9AA8\u67B6_Module_Empty"
-  _magazineEmptySpeedMultiplierName: MagazineEmptySpeedMutliplier
-  _targetLockedParamName: TargetLocked
-  _reloadingParamName: Reloading
+  numericalAssetAgent:
+    definitions:
+      Name: X0_MultiMissileLauncherDefinitions
+      BundleName: 
+      DirPath: bundles/test
+  originAssetAgent:
+    definitions:
+      Name: Missile_V0
+      BundleName: 
+      DirPath: Tests\Resources\Weapons\MissileLauncher\Prefabs
+  actionNumericalDefinitionsAssetAgent:
+    definitions:
+      Name: X0_MultiMissileLauncherActionDefinitions
+      BundleName: 
+      DirPath: bundles/test
+  _subNumericalAssetAgent:
+    definitions:
+      Name: X0_SubLauncher
+      BundleName: 
+      DirPath: bundles/test
 --- !u!114 &1626064197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1831,21 +1833,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1626064187}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0aea88b119606824389fbd5c90ea2f12, type: 3}
+  m_Script: {fileID: 11500000, guid: 34c80546b90675545a64c1f3d206d4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ammo:
-    Origin: {fileID: 0}
-    SpareQuantity: 0
-    InMagazineQuantity: 0
-  _mountPoints:
-    MagazinePosition: {x: 0, y: 0, z: 0}
-    MuzzlePosition: {x: 0, y: 0, z: 0}
-  _durations:
-    LaunchDelay: {x: 0, y: 0}
-    LaunchRate: 0
-    CoverOpenOrCloseDuration: 0
-    MagazineFullOrEmptyDuration: 0
+--- !u!114 &1626064198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626064187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19ccb09bd6d6c1e44a40e539284d7d23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _definitionsAssetAgent:
+    definitions:
+      Name: X0_AnimatorDefinitions
+      BundleName: 
+      DirPath: bundles/test
 --- !u!4 &1638018874 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3723345814900933657, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f,
@@ -2058,7 +2065,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1626064190}
+      addedObject: {fileID: 1626064194}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1626064198}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f,
         type: 3}
       insertIndex: -1
@@ -2066,35 +2077,8 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1626064194}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1626064193}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1626064197}
   m_SourcePrefab: {fileID: 100100000, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f, type: 3}
---- !u!1 &1845034341 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6753725934006483729, guid: 222bc8d80467b304d9f112ed176e47b8,
-    type: 3}
-  m_PrefabInstance: {fileID: 1180586732}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1845034344
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1845034341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b658ab6c7a16c1e448dab1d53762a0f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  url: Cube
 --- !u!4 &1848646190 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3797103115725584365, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f,
@@ -2158,6 +2142,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: numericalAssetAgent.definitions.Name
+      value: X0_SubLauncher
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: originAssetAgent.definitions.DirPath
+      value: Tests\Resources\Weapons\MissileLauncher\Prefabs
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: numericalAssetAgent.definitions.DirPath
+      value: bundles/test
       objectReference: {fileID: 0}
     - target: {fileID: 6753725934006483729, guid: 222bc8d80467b304d9f112ed176e47b8,
         type: 3}
@@ -2403,6 +2402,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: numericalAssetAgent.definitions.Name
+      value: X0_SubLauncher
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: originAssetAgent.definitions.DirPath
+      value: Tests\Resources\Weapons\MissileLauncher\Prefabs
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729245623594989840, guid: 222bc8d80467b304d9f112ed176e47b8,
+        type: 3}
+      propertyPath: numericalAssetAgent.definitions.DirPath
+      value: bundles/test
+      objectReference: {fileID: 0}
     - target: {fileID: 4299795340017320259, guid: 222bc8d80467b304d9f112ed176e47b8,
         type: 3}
       propertyPath: _launchDelay
@@ -2426,40 +2440,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6753725934006483729, guid: 222bc8d80467b304d9f112ed176e47b8,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7386403831337832906}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 222bc8d80467b304d9f112ed176e47b8, type: 3}
---- !u!1 &7386403831337832905 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6753725934006483729, guid: 222bc8d80467b304d9f112ed176e47b8,
-    type: 3}
-  m_PrefabInstance: {fileID: 7386403831337832904}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7386403831337832906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7386403831337832905}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45e9c2d630973664ab3826b213545792, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  definitionsAssetAgent:
-    definitions:
-      Name: t_2
-      BundleName: test_0/a
-      DirPath: bundles/test
-  originAssetAgent:
-    definitions:
-      Name: MissileLauncher
-      BundleName: 
-      DirPath: Tests\Resources\Weapons\MissileLauncher\Prefabs
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

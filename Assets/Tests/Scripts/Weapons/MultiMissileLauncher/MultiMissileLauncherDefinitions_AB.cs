@@ -14,37 +14,42 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
     {
 
         [SerializeField]
-        JsonAssetAgent<MissileLauncherNumericalDefinitions> _numericalDefinitionsAssetAgent;
-        MissileLauncherNumericalDefinitions _numericalDefinitions;
+        protected JsonAssetAgent<MissileLauncherNumericalDefinitions> numericalDefinitionsAssetAgent;
+        protected MissileLauncherNumericalDefinitions numericalDefinitions;
 
         [SerializeField]
-        GameObjectAssetAgent _originAssetAgent;
-        GameObject _origin;
-        public GameObject AmmoOrigin { get => _origin; set => _origin = value; }
-        public float LaunchDurationTime { get => _numericalDefinitions.LaunchDurationTime; set => _numericalDefinitions.LaunchDurationTime = value; }
+        protected GameObjectAssetAgent originAssetAgent;
+        protected GameObject origin;
+        public GameObject AmmoOrigin { get => origin; set => origin = value; }
+        public virtual float LaunchDurationTime { get => numericalDefinitions.LaunchDurationTime; set => numericalDefinitions.LaunchDurationTime = value; }
 
-        public Vector2 LaunchDelayRange { get => _numericalDefinitions.LaunchDelayRange; set => _numericalDefinitions.LaunchDelayRange = value; }
+        public virtual Vector2 LaunchDelayRange { get => numericalDefinitions.LaunchDelayRange; set => numericalDefinitions.LaunchDelayRange = value; }
 
 
-        public Vector3 MagazinePosition { get => _numericalDefinitions.MagazinePosition; set => _numericalDefinitions.MagazinePosition = value; }
+        public virtual Vector3 MagazinePosition { get => numericalDefinitions.MagazinePosition; set => numericalDefinitions.MagazinePosition = value; }
 
-        public Vector3 MuzzlePosition { get => _numericalDefinitions.MuzzlePosition; set => _numericalDefinitions.MuzzlePosition = value; }
+        public virtual Vector3 MuzzlePosition { get => numericalDefinitions.MuzzlePosition; set => numericalDefinitions.MuzzlePosition = value; }
 
-        public ushort AmmoTotalQuantity { get => (ushort)(_numericalDefinitions.AmmoSpareQuantity + _numericalDefinitions.AmmoQuantityInMagazine); }
+        public virtual ushort AmmoTotalQuantity { get => (ushort)(numericalDefinitions.AmmoSpareQuantity + numericalDefinitions.AmmoInMagazineQuantity); }
 
-        public ushort AmmoSpareQuantity { get => _numericalDefinitions.AmmoSpareQuantity; set => _numericalDefinitions.AmmoSpareQuantity = value; }
+        public virtual ushort AmmoSpareQuantity { get => numericalDefinitions.AmmoSpareQuantity; set => numericalDefinitions.AmmoSpareQuantity = value; }
 
-        public ushort AmmoInMagazineQuantity { get => _numericalDefinitions.AmmoQuantityInMagazine; set => _numericalDefinitions.AmmoQuantityInMagazine = value; }
+        public virtual ushort AmmoInMagazineQuantity { get => numericalDefinitions.AmmoInMagazineQuantity; set => numericalDefinitions.AmmoInMagazineQuantity = value; }
 
-        public float ReloadDuration { get => _numericalDefinitions.ReloadDuration; set => _numericalDefinitions.ReloadDuration = value; }
+        public virtual float ReloadDuration { get => numericalDefinitions.ReloadDuration; set => numericalDefinitions.ReloadDuration = value; }
+
+        public Dictionary<string, AssetDefinitions> AssetDefinitionsMap => throw new NotImplementedException();
+
+        public AssetDefinitions OriginAssetDefinitions { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public AssetDefinitions NumericalAssetDefinitions { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public void LoadOrigin()
         {
-            _origin = _originAssetAgent.Load();
+            origin = originAssetAgent.Load();
         }
         public void LoadNumericalDefinitions()
         {
-            _numericalDefinitions = _numericalDefinitionsAssetAgent.Load();
+            numericalDefinitions = numericalDefinitionsAssetAgent.Load();
         }
 #if UNITY_EDITOR
         IMissileLauncherDefinitionsEditor[] _subEditors;
@@ -62,27 +67,34 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
         }
         protected void ApplyDefinitionsForSubEditor(IMissileLauncherDefinitionsEditor editor)
         {
-            editor.AmmoOrigin = _origin;
-            editor.MagazinePosition = _numericalDefinitions.MagazinePosition;
-            editor.MuzzlePosition = _numericalDefinitions.MuzzlePosition;
-            editor.LaunchDurationTime = _numericalDefinitions.LaunchDurationTime;
+            editor.AmmoOrigin = origin;
+            editor.MagazinePosition = numericalDefinitions.MagazinePosition;
+            editor.MuzzlePosition = numericalDefinitions.MuzzlePosition;
+            editor.LaunchDurationTime = numericalDefinitions.LaunchDurationTime;
 
             editor.AmmoSpareQuantity = 1;
             editor.AmmoInMagazineQuantity = 1;
-            editor.ReloadDuration = _numericalDefinitions.ReloadDuration;
-            editor.LaunchDelayRange = _numericalDefinitions.LaunchDelayRange;
+            editor.ReloadDuration = numericalDefinitions.ReloadDuration;
+            editor.LaunchDelayRange = numericalDefinitions.LaunchDelayRange;
         }
 
         public void Save()
         {
-            _originAssetAgent.Save(_origin);
-            _numericalDefinitionsAssetAgent.Save(_numericalDefinitions);
+            originAssetAgent.Save(origin);
+            numericalDefinitionsAssetAgent.Save(numericalDefinitions);
+            foreach(var e in _subEditors)
+            {
+                ApplyDefinitionsForSubEditor(e);
+                e.Save();
+            }
         }
 
         public void Load()
         {
             LoadOrigin();
             LoadNumericalDefinitions();
+            foreach (var e in _subEditors)
+                e.Load();
         }
 #endif
     }

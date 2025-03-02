@@ -12,8 +12,8 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
             get => _saver.SavePath;
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException(nameof(value));
+                if (value == null || value.Length == 0)
+                    throw new ArgumentException("The save path can't assign a empty value. ");
                 var p = value;
                 if (Path.GetExtension(p) != "json")
                     p = Path.ChangeExtension(p, "json");

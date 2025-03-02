@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using Assets.Tests.Scripts.Weapons.Assets__0;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Tests.Weapons
 {
@@ -13,6 +16,10 @@ namespace Tests.Weapons
         public float ReloadDuration { get; set; }
         public float LaunchDurationTime { get; set; }
         public Vector2 LaunchDelayRange { get; set; }
+        public AssetDefinitions OriginAssetDefinitions { get; set; }
+        public AssetDefinitions NumericalAssetDefinitions { get; set; }
+        [Obsolete]
+        public Dictionary<string, AssetDefinitions> AssetDefinitionsMap { get; }
         public void Save();
         public void Load();
 #endif
