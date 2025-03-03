@@ -2,6 +2,7 @@
 using Assets.Scripts.Utilities.Timeline.Event.Point;
 using Assets.Scripts.Utilities.Timeline.Event.Range;
 using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Utilities.Timeline
 {
@@ -130,6 +131,18 @@ namespace Assets.Scripts.Utilities.Timeline
                 if (e.RemoveEvent(evt))
                     return true;
             return false;
+        }
+        public bool UpdateLength(float newLength)
+        {
+            if (isRunning)
+            {
+                Debug.LogWarning("The timeline can't update length now. because it's running");
+                return false;
+            }
+            if (newLength < 0)
+                Debug.LogWarning(new ArgumentException(nameof(newLength)));
+            this.duration = newLength;
+            return true;
         }
         public override string ToString()
         {

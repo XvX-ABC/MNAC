@@ -18,8 +18,6 @@ namespace Tests.Weapons
         public Vector2 LaunchDelayRange { get; set; }
         public AssetDefinitions OriginAssetDefinitions { get; set; }
         public AssetDefinitions NumericalAssetDefinitions { get; set; }
-        [Obsolete]
-        public Dictionary<string, AssetDefinitions> AssetDefinitionsMap { get; }
         public void Save();
         public void Load();
 #endif

@@ -36,7 +36,7 @@ namespace Assets.Tests.Scripts.Weapons.Editor.Asset_0
             d.MagazinePosition = EditorGUILayout.Vector3Field(nameof(d.MagazinePosition), d.MagazinePosition);
             d.MuzzlePosition = EditorGUILayout.Vector3Field(nameof(d.MuzzlePosition), d.MuzzlePosition);
 
-            d.AmmoInMagazineQuantity = (ushort)EditorGUILayout.IntField(nameof(d.AmmoInMagazineQuantity), d.AmmoInMagazineQuantity);
+            d.AmmoSpareQuantity = (ushort)EditorGUILayout.IntField(nameof(d.AmmoSpareQuantity), d.AmmoSpareQuantity);
 
             d.ReloadDuration = EditorGUILayout.FloatField(nameof(d.ReloadDuration), d.ReloadDuration);
             d.LaunchDelayRange = EditorGUILayout.Vector2Field(nameof(d.LaunchDelayRange), d.LaunchDelayRange);

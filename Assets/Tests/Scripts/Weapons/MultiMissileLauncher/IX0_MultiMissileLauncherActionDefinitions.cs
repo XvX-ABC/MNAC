@@ -9,7 +9,7 @@
         public void Load();
 #endif
     }
-    public interface ILauncherActionDefinitions
+    public interface IX0_MultiMissileLauncherActionDefinitions
     {
         public float CoverOpenOrCloseDuration { get; }
         public float MagazineFullOrEmptyDuration { get; }

@@ -2,13 +2,14 @@
 using Assets.Tests.Scripts.Weapons.Assets__v0;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.Tests.Scripts.Weapons
 {
-    public class X0_MultiMissileLauncherDefinitions : MissileLauncherDefinitions_AB, ILauncherActionDefinitions, ILauncherActionDefinitionsEditor
+    public class X0_MultiMissileLauncherDefinitions : MissileLauncherDefinitions_AB, IX0_MultiMissileLauncherActionDefinitions, ILauncherActionDefinitionsEditor
     {
         [SerializeField]
         protected JsonAssetAgent<X0_ActionNumericalDefinitions> actionNumericalDefinitionsAssetAgent;
@@ -18,11 +19,29 @@ namespace Assets.Tests.Scripts.Weapons
             get => actionNumericalDefinitions.CoverOpenOrCloseDurationTime;
             set => actionNumericalDefinitions.CoverOpenOrCloseDurationTime = value;
         }
-        
+
         public float MagazineFullOrEmptyDuration
         {
             get => actionNumericalDefinitions.MagazineFullOrEmptyDurationTime;
             set => actionNumericalDefinitions.MagazineFullOrEmptyDurationTime = value;
+        }
+        public override float ReloadDuration
+        {
+            get
+            {
+                return actionNumericalDefinitions.CoverOpenOrCloseDurationTime + actionNumericalDefinitions.MagazineFullOrEmptyDurationTime * 2 + numericalDefinitions.ReloadDuration;
+            }
+            set => throw new NotImplementedException();
+        }
+        public override Vector2 LaunchDelayRange
+        {
+            get
+            {
+                var x = actionNumericalDefinitions.CoverOpenOrCloseDurationTime + numericalDefinitions.LaunchDelayRange.x;
+                var y = Mathf.Max(actionNumericalDefinitions.CoverOpenOrCloseDurationTime + numericalDefinitions.LaunchDelayRange.y, x);
+                return new Vector2(x, y);
+            }
+            set => throw new NotImplementedException();
         }
 #if UNITY_EDITOR
         LauncherNumericalDefinitions _subNumericalDefinitions;
@@ -89,7 +108,10 @@ namespace Assets.Tests.Scripts.Weapons
             _subNumericalDefinitions.AmmoInMagazineQuantity = 1;
             _subNumericalDefinitions.ReloadDuration = actionNumericalDefinitions.CoverOpenOrCloseDurationTime + actionNumericalDefinitions.MagazineFullOrEmptyDurationTime * 2 + numericalDefinitions.ReloadDuration;
             _subNumericalDefinitions.LaunchDurationTime = numericalDefinitions.LaunchDurationTime;
-            _subNumericalDefinitions.LaunchDelayRange = new Vector2(actionNumericalDefinitions.CoverOpenOrCloseDurationTime + numericalDefinitions.LaunchDelayRange.x, numericalDefinitions.LaunchDelayRange.y);
+
+            var x = actionNumericalDefinitions.CoverOpenOrCloseDurationTime + numericalDefinitions.LaunchDelayRange.x;
+            var y = Mathf.Max(actionNumericalDefinitions.CoverOpenOrCloseDurationTime + numericalDefinitions.LaunchDelayRange.y, x);
+            _subNumericalDefinitions.LaunchDelayRange = new Vector2(x, y);
         }
 #endif
     }

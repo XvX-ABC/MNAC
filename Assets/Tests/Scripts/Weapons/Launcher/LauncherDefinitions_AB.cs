@@ -29,20 +29,30 @@ namespace Assets.Tests.Scripts.Weapons.Assets__0
         {
             Load();
         }
-        public GameObject AmmoOrigin { get => origin; set => origin = value; }
-        public Vector3 MagazinePosition { get => numericalDefinitions.MagazinePosition; set => numericalDefinitions.MagazinePosition = value; }
-        public Vector3 MuzzlePosition
+        public virtual GameObject AmmoOrigin { get => origin; set => origin = value; }
+        public virtual Vector3 MagazinePosition { get => numericalDefinitions.MagazinePosition; set => numericalDefinitions.MagazinePosition = value; }
+        public virtual Vector3 MuzzlePosition
         {
             get => numericalDefinitions.MuzzlePosition;
             set => numericalDefinitions.MuzzlePosition = value;
         }
         public ushort AmmoTotalQuantity { get => (ushort)(AmmoSpareQuantity + AmmoInMagazineQuantity); }
 
-        public ushort AmmoSpareQuantity { get => numericalDefinitions.AmmoSpareQuantity; set => numericalDefinitions.AmmoSpareQuantity = value; }
-        public ushort AmmoInMagazineQuantity { get => numericalDefinitions.AmmoInMagazineQuantity; set => numericalDefinitions.AmmoInMagazineQuantity = value; }
-        public float ReloadDuration { get => numericalDefinitions.ReloadDuration; set => numericalDefinitions.ReloadDuration = value; }
-        public float LaunchDurationTime { get => numericalDefinitions.LaunchDurationTime; set => numericalDefinitions.LaunchDurationTime = value; }
-        public Vector2 LaunchDelayRange { get => numericalDefinitions.LaunchDelayRange; set => numericalDefinitions.LaunchDelayRange = value; }
+        public virtual ushort AmmoSpareQuantity { get => numericalDefinitions.AmmoSpareQuantity; set => numericalDefinitions.AmmoSpareQuantity = value; }
+        public virtual ushort AmmoInMagazineQuantity { get => numericalDefinitions.AmmoInMagazineQuantity; set => numericalDefinitions.AmmoInMagazineQuantity = value; }
+        public virtual float ReloadDuration { get => numericalDefinitions.ReloadDuration; set => numericalDefinitions.ReloadDuration = value; }
+        public virtual float LaunchDurationTime { get => numericalDefinitions.LaunchDurationTime; set => numericalDefinitions.LaunchDurationTime = value; }
+        public virtual Vector2 LaunchDelayRange
+        {
+            get => numericalDefinitions.LaunchDelayRange;
+            //set => numericalDefinitions.LaunchDelayRange = value;
+            set
+            {
+                var x = value.x;
+                var y = Mathf.Max(x, value.y);
+                numericalDefinitions.LaunchDelayRange = new Vector2(x, y);
+            }
+        }
         public Dictionary<string, AssetDefinitions> AssetDefinitionsMap { get => throw new NotImplementedException(); }
         public AssetDefinitions OriginAssetDefinitions { get => originAssetAgent.Definitions; set => originAssetAgent.Definitions = value; }
         public AssetDefinitions NumericalAssetDefinitions { get => numericalAssetAgent.Definitions; set => numericalAssetAgent.Definitions = value; }

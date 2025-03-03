@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Tests.Scripts.Weapons
 {
-    public class LauncherAnimatorDefinitions : MonoBehaviour, ILauncherAnimatorDefinitions
+    public class X0_AnimatorDefinitions : MonoBehaviour, IX0_MutiMissileLauncherAnimatorDefinitions
     {
         [SerializeField]
         string _coverCloseClipName;

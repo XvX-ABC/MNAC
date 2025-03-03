@@ -29,5 +29,19 @@ namespace Tests.Weapons
             return IsLocked(ActionsEnum.Supply);
         }
 
+        public void LockStartLaunch()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void LockStartReload()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool EndLaunchLocked()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

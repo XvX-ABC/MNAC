@@ -11,10 +11,10 @@
     },
     "AmmoSpareQuantity": 1,
     "AmmoInMagazineQuantity": 1,
-    "ReloadDuration": 7.0,
-    "LaunchDurationTime": 0.0,
+    "ReloadDuration": 6.0,
+    "LaunchDurationTime": 1.0,
     "LaunchDelayRange": {
         "x": 2.0,
-        "y": 0.0
+        "y": 2.0
     }
 }

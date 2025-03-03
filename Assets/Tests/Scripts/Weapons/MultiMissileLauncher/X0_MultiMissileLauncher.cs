@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Utilities.Timeline;
+using Assets.Scripts.Utilities.Timeline.Event.Point;
 using System;
 using System.IO;
 using System.Reflection;
@@ -90,6 +91,12 @@ namespace Assets.Tests.Scripts.Weapons
                 currentTrans = currentTrans.parent;
             }
             return result.ToString();
+        }
+        protected override ITimeline CreateLaunchDurationTimeline()
+        {
+            var timeline = base.CreateLaunchDurationTimeline();
+            timeline.EndAction += _ => { StartReload();Debug.Log("Start reload"); };
+            return timeline;
         }
 #endif
     }

@@ -1845,14 +1845,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 1626064187}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19ccb09bd6d6c1e44a40e539284d7d23, type: 3}
+  m_Script: {fileID: 11500000, guid: 6629fa60eb061cf4ea1eed98f102d052, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _definitionsAssetAgent:
-    definitions:
-      Name: X0_AnimatorDefinitions
-      BundleName: 
-      DirPath: bundles/test
+  _coverCloseClipName: "\u9AA8\u67B6_Covers_Close"
+  _coverCloseSpeedMultiplierName: CoversCloseSpeedMultiplier
+  _coverOpenClipName: "\u9AA8\u67B6_Covers_Open"
+  _coverOpenSpeedMultiplierName: CoversOpenSpeedMultiplier
+  _magazineFullClipName: "\u9AA8\u67B6_Module_Full"
+  _magazineFullSpeedMultiplierName: MagazineFullSpeedMultiplier
+  _magazineEmptyClipName: "\u9AA8\u67B6_Module_Empty"
+  _magazineEmptySpeedMultiplierName: MagazineEmptySpeedMutliplier
+  _targetLockedParamName: TargetLocked
+  _reloadingParamName: Reloading
+--- !u!114 &1626064199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626064187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce693b41da53bb34fbff654cc74fd7a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _obj: {fileID: 1360910760}
 --- !u!4 &1638018874 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3723345814900933657, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f,
@@ -2078,6 +2096,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1626064197}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1626064199}
   m_SourcePrefab: {fileID: 100100000, guid: 72d5a5b4fc87dfd41abbe9aaf367d53f, type: 3}
 --- !u!4 &1848646190 stripped
 Transform:

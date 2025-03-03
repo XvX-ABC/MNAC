@@ -2,7 +2,7 @@
 
 namespace Assets.Tests.Scripts.Weapons
 {
-    public interface ILauncherAnimatorDefinitions
+    public interface IX0_MutiMissileLauncherAnimatorDefinitions
     {
 
         public string TargetLockedParamName { get; }
@@ -23,12 +23,5 @@ namespace Assets.Tests.Scripts.Weapons
 
         public string MagazineEmptyClipName { get; }
         public string MagazineEmptySpeedMultiplierName { get; }
-    }
-    public interface ILauncherAnimatorDefinitionsEditor
-    {
-#if UNITY_EDITOR
-        public void Save();
-        public void Load();
-#endif
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tests.Weapons;
+using Unity.VisualScripting;
 
 namespace Assets.Scripts.Utilities.Timeline
 {
@@ -18,6 +19,8 @@ namespace Assets.Scripts.Utilities.Timeline
         {
             get
             {
+                if (_lastEndTimeline == null)
+                    _lastEndTimeline = timelines.OrderByDescending(t => t.Length).First();
                 return _lastEndTimeline;
             }
         }
@@ -149,6 +152,10 @@ namespace Assets.Scripts.Utilities.Timeline
         {
             foreach (var l in timelines)
                 l.Stop();
+        }
+        public bool UpdateLength(float newLength)
+        {
+            throw new NotImplementedException();
         }
     }
 }

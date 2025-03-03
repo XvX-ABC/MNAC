@@ -8,7 +8,7 @@ namespace Assets.Scripts.Utilities.Timeline
         bool IsRunning { get; }
         float Time { get; }
         float Length { get; }
-        Action<TimelineContext> StartAction { get;set; }
+        Action<TimelineContext> StartAction { get; set; }
         Action<float> UpdateAction { get; set; }
         Action<TimelineContext> EndAction { get; set; }
         void Continue();
@@ -18,5 +18,6 @@ namespace Assets.Scripts.Utilities.Timeline
         string ToString();
         bool AddEvent(ITimelineEvent evt);
         bool RemoveEvent(ITimelineEvent evt);
+        bool UpdateLength(float newLength);
     }
 }

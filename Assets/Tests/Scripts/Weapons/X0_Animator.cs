@@ -14,15 +14,15 @@ namespace Assets.Tests.Scripts.Weapons
     public class X0_Animator : MonoBehaviour
     {
         Animator _animator;
-        ILauncherAnimatorDefinitions _definition;
-        ILauncherActionDefinitions _actionDefinition;
+        IX0_MutiMissileLauncherAnimatorDefinitions _definition;
+        IX0_MultiMissileLauncherActionDefinitions _actionDefinition;
         X0_MultiMissileLauncher _launcher;
-        ITimeline _prepareLaunchTimeline;
+        //ITimeline _prepareLaunchTimeline;
         void Awake()
         {
             _animator = GetComponent<Animator>();
-            _definition = GetComponent<ILauncherAnimatorDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherAnimatorDefinitions));
-            _actionDefinition = GetComponent<ILauncherActionDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherActionDefinitions));
+            _definition = GetComponent<IX0_MutiMissileLauncherAnimatorDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IX0_MutiMissileLauncherAnimatorDefinitions));
+            _actionDefinition = GetComponent<IX0_MultiMissileLauncherActionDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IX0_MultiMissileLauncherActionDefinitions));
             _launcher = GetComponent<X0_MultiMissileLauncher>() ?? throw new ComponentCantFindException(this.gameObject, typeof(X0_MultiMissileLauncher));
 
 
@@ -39,7 +39,7 @@ namespace Assets.Tests.Scripts.Weapons
         }
         private void Update()
         {
-            _prepareLaunchTimeline.OnUpdate(Time.deltaTime);
+            //_prepareLaunchTimeline.OnUpdate(Time.deltaTime);
         }
         void LauncherInitializeAction(ILauncher l)
         {
@@ -74,13 +74,13 @@ namespace Assets.Tests.Scripts.Weapons
         void LockTarget()
         {
             _animator.SetBool(_definition.TargetLockedParamName, true);
-            _prepareLaunchTimeline.Start();
+            //_prepareLaunchTimeline.Start();
         }
         void UnlockTarget()
         {
             _animator.SetBool(_definition.TargetLockedParamName, false);
-            if (_prepareLaunchTimeline.IsRunning)
-                _prepareLaunchTimeline.Stop();
+            //if (_prepareLaunchTimeline.IsRunning)
+            //    _prepareLaunchTimeline.Stop();
 
         }
         void TargetChange(IMissileLauncher launcher, ITarget newTarget)
@@ -93,21 +93,17 @@ namespace Assets.Tests.Scripts.Weapons
             }
             else if (currentTarget != null && newTarget == null)
             {
-                if (actionsLock.AnyLocked() && !_prepareLaunchTimeline.IsRunning)
+                //if (actionsLock.AnyLocked() && !_prepareLaunchTimeline.IsRunning)
+                var ltimeline = launcher.LaunchDurationTimeline;
+                var dtimeline = launcher.DelayLaunchTimeline;
+                if (ltimeline.IsRunning || dtimeline.IsRunning)
                 {
-                    var timelines = new ITimeline[] { launcher.DelayLaunchTimeline };
-                    foreach (var t in timelines)
+                    ltimeline.EndAction += EndAction;
+                    void EndAction(TimelineContext _)
                     {
-                        if (t.IsRunning)
-                        {
-                            t.EndAction += EndAction;
-                            break;
-                            void EndAction(TimelineContext _)
-                            {
-                                UnlockTarget();
-                                t.EndAction -= EndAction;
-                            }
-                        }
+                        Debug.Log("Unlocked the target");
+                        UnlockTarget();
+                        ltimeline.EndAction -= EndAction;
                     }
                 }
                 else
@@ -127,7 +123,7 @@ namespace Assets.Tests.Scripts.Weapons
         {
             _animator.Play(_definition.CoverCloseClipName, 0, 1);
 
-            var launcher = (IMissileLauncher)_launcher;
+            //var launcher = (IMissileLauncher)_launcher;
 
 
 

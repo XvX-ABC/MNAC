@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Utilities.Timeline;
 using Assets.Scripts.Utilities.Timeline.Event;
+using Assets.Scripts.Utilities.Timeline.Event.Point;
 using System;
 using System.Linq;
 using Tests;
@@ -8,31 +9,6 @@ using UnityEngine;
 
 namespace Assets.Tests.Scripts.Weapons
 {
-    [Serializable]
-    public struct PrepareLaunch
-    {
-        public float CoverOpenDuration;
-    }
-    [Serializable]
-    public struct Reload
-    {
-        public Vector2 CoverCloseProportion;
-        public Vector2 MagazineEmptyProportion;
-        public Vector2 MagazineFullProportion;
-        public float CoverCloseTriggerProportion;
-        public float MagazineEmptyTriggerProportion;
-        public float MagazineFullTriggerProportion;
-    }
-    [Serializable]
-    public struct Cover
-    {
-        public float OpenOrCloseDuration;
-    }
-    [Serializable]
-    public struct MagazineModule
-    {
-        public float EmptyOrFullDuration;
-    }
 
     public class MultiMissileLauncher : MonoBehaviour, IMissileLauncher
     {
@@ -154,11 +130,12 @@ namespace Assets.Tests.Scripts.Weapons
                 };
 
             };
+
+
         }
         protected void Start()
         {
-            _ammoSpareQuantity = (ushort)(definitions.AmmoTotalQuantity - subLaunchers.Length);
-
+            _ammoSpareQuantity = (ushort)(Mathf.Max(0, definitions.AmmoSpareQuantity - subLaunchers.Length));
 
             var quantity = subLaunchers.Length;
             _ammoInMagazineQuantity = (ushort)quantity;
@@ -179,21 +156,34 @@ namespace Assets.Tests.Scripts.Weapons
             _delayLaunchTimeline = CreateDelayLaunchTimeline();
             _launchDurationTimeline = CreateLaunchDurationTimeline();
             var actionsLocks = subLaunchers.Select(launcher => launcher.actionsLock).ToArray();
-            _actionsLock = new LauncherActionsLockGroup(actionsLocks);
+            //_actionsLock = new LauncherActionsLockGroup(actionsLocks);
+            _actionsLock = new LauncherActionsLock();
 
             _initializationAction?.Invoke(this);
         }
         protected void Update()
         {
+            if (_delayLaunchTimeline.IsRunning)
+                _delayLaunchTimeline.OnUpdate(Time.deltaTime);
+            if (_launchDurationTimeline.IsRunning)
+                _launchDurationTimeline.OnUpdate(Time.deltaTime);
+            if (_reloadTimeline.IsRunning)
+                _reloadTimeline.OnUpdate(Time.deltaTime);
             if (Input.GetKey(KeyCode.Mouse0))
+            {
+                Debug.Log("StartLaunch");
                 StartLaunch();
+            }
             if (Input.GetKeyDown(KeyCode.R))
             {
                 var result = StartReload();
                 Debug.Log("Start reload result: " + result);
             }
             if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Debug.Log("Supply");
                 Supply(10);
+            }
 
             if (Input.GetKeyDown(KeyCode.S))
             {
@@ -206,22 +196,34 @@ namespace Assets.Tests.Scripts.Weapons
         }
         protected virtual ITimeline CreateDelayLaunchTimeline()
         {
-            return new TimelinesGroup(l => l.DelayLaunchTimeline, subLaunchers);
+            //return new TimelinesGroup(l => l.DelayLaunchTimeline, subLaunchers);
+            var timeline = new Timeline(definitions.LaunchDelayRange.y);
+            timeline.AddPointEvent(0, _ => _actionsLock.LockAll());
+            timeline.AddPointEvent(1, _ => { _actionsLock.UnlockAll(); _launchDurationTimeline.Start(); });
+            return timeline;
         }
         protected virtual ITimeline CreateLaunchDurationTimeline()
         {
-            return new TimelinesGroup(l => l.LaunchDurationTimeline, subLaunchers);
+            //return new TimelinesGroup(l => l.LaunchDurationTimeline, subLaunchers);
+            var timeline = new Timeline(definitions.LaunchDurationTime);
+            timeline.AddPointEvent(0, _ => _actionsLock.LockAll());
+            timeline.AddPointEvent(1, _ => _actionsLock.UnlockAll());
+            return timeline;
         }
         protected virtual ITimeline CreateReloadTimeline()
         {
-            return new TimelinesGroup(l => l.ReloadTimeline, subLaunchers);
+            //return new TimelinesGroup(l => l.ReloadTimeline, subLaunchers);
+            var timeline = new Timeline(definitions.ReloadDuration);
+            timeline.AddPointEvent(0, _ => _actionsLock.LockAll());
+            timeline.AddPointEvent(1, _ => _actionsLock.UnlockAll());
+            return timeline;
         }
         public bool StartLaunch()
         {
             if (!enabled || _actionsLock.StartLaunchLocked() || _ammoInMagazineQuantity <= 0)
                 return false;
 
-
+            var v = _ammoInMagazineQuantity;
             foreach (var l in subLaunchers)
             {
                 if (_ammoInMagazineQuantity <= 0)
@@ -229,6 +231,8 @@ namespace Assets.Tests.Scripts.Weapons
                 if (l.StartLaunch())
                     _ammoInMagazineQuantity--;
             }
+            if (_ammoInMagazineQuantity != v)
+                _delayLaunchTimeline.Start();
             return true;
         }
         public bool EndLaunch()
@@ -238,19 +242,23 @@ namespace Assets.Tests.Scripts.Weapons
 
             foreach (var l in subLaunchers)
             {
-                if (l.EndLaunch())
-                    _ammoInMagazineQuantity++;
-                else
-                    return false;
+                var al = l.actionsLock;
+                if (al.StartLaunchLocked())
+                    if (l.EndLaunch())
+                        _ammoInMagazineQuantity++;
+                    else
+                        return false;
             }
+            _delayLaunchTimeline.Stop();
             return true;
         }
 
-        public bool StartReload()
+        public virtual bool StartReload()
         {
             if (!enabled || _actionsLock.StartReloadLocked())
                 return false;
 
+            var v = _ammoSpareQuantity;
             foreach (var l in subLaunchers)
             {
                 if (_ammoSpareQuantity <= 0)
@@ -265,6 +273,8 @@ namespace Assets.Tests.Scripts.Weapons
                     return false;
                 }
             }
+            if (_ammoSpareQuantity != v)
+                _reloadTimeline.Start();
             return true;
         }
         internal bool EndReloadForSubLauncher(IMissileLauncher launcher)
@@ -278,14 +288,16 @@ namespace Assets.Tests.Scripts.Weapons
             _ammoSpareQuantity++;
             return false;
         }
-        public bool EndReload()
+        public virtual bool EndReload()
         {
             if (!enabled || _actionsLock.EndReloadLocked())
                 return false;
             foreach (var l in subLaunchers)
             {
-                EndReloadForSubLauncher(l);
+                if (!EndReloadForSubLauncher(l))
+                    return false;
             }
+            _reloadTimeline.Stop();
             return true;
         }
 
@@ -293,7 +305,8 @@ namespace Assets.Tests.Scripts.Weapons
         {
             if (_ammoSpareQuantity + num < 0 || _actionsLock.SupplyLocked())
                 return 0;
-            var suppNum = Mathf.Min(definitions.AmmoTotalQuantity - subLaunchers.Length - _ammoSpareQuantity, num);
+            //var suppNum = Mathf.Min(definitions.AmmoTotalQuantity - subLaunchers.Length - _ammoSpareQuantity, num);
+            var suppNum = Mathf.Min(definitions.AmmoSpareQuantity - _ammoSpareQuantity, num);
             _ammoSpareQuantity += (ushort)suppNum;
             return suppNum;
         }
