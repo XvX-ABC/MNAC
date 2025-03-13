@@ -12,19 +12,18 @@ namespace Locomotion
         LayerMask _groundMask;
         [SerializeField]
         float _maxSlope;
-        GameObject _groundObj;
-        Vector3 _groundNormal;
         Ground_New _ground;
         List<ContactPoint> _contactPoints;
         Rigidbody _rb;
         float _currentHeight;
-        bool _collided;
-        public IGround Ground
+        //float _currentGroundHeight;
+        public IGround CollidedGround
         {
-            get => _collided ? _ground : null;
+            get => _ground.collided ? _ground : null;
         }
-        public bool Collided { get => _collided; }
-        float IGroundDetector.CurrentHeight => _collided ? 0 : _currentHeight;
+        public bool Collided { get => _ground.collided; }
+        float IGroundDetector.Height => _ground.collided ? 0 : _currentHeight;
+        public float GroundHeight => _ground.height;
         bool IGroundDetector.AutoSample { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         bool IGroundDetector.TouchedGround => throw new System.NotImplementedException();
@@ -81,19 +80,20 @@ namespace Locomotion
             var layer = obj.layer;
             if (((1 << layer) & _groundMask) == 0)
                 return;
+
+            _ground.height = obj.transform.position.y;
+
             collision.GetContacts(_contactPoints);
             var quantity = FilterNormals();
             if (quantity <= 0)
             {
-                _collided = false;
+                _ground.collided = false;
                 return;
             }
 
-            _groundNormal = CalculateGroundNormal();
-            _groundObj = obj;
-            _collided = true;
-            _ground.normal = _groundNormal;
-            _ground.obj = _groundObj;
+            _ground.normal = CalculateGroundNormal();
+            _ground.obj = obj;
+            _ground.collided = true;
         }
         private void OnCollisionStay(Collision collision)
         {
@@ -101,18 +101,22 @@ namespace Locomotion
             var layer = obj.layer;
             if (((1 << layer) & _groundMask) == 0)
                 return;
+
+            _ground.height = obj.transform.position.y;
+
             collision.GetContacts(_contactPoints);
             var quantity = FilterNormals();
             if (quantity <= 0)
             {
-                _collided = false;
+                _ground.collided = false;
                 return;
             }
             else
-                _collided = true;
+                _ground.collided = true;
 
-            _groundNormal = CalculateGroundNormal();
-            _groundObj = obj;
+            _ground.normal = CalculateGroundNormal();
+            _ground.obj = obj;
+
         }
         private void OnCollisionExit(Collision collision)
         {
@@ -120,21 +124,21 @@ namespace Locomotion
             var layer = obj.layer;
             if (((1 << layer) & _groundMask) == 0)
                 return;
-            _groundObj = null;
-            _groundNormal = Vector3.zero;
-            _collided = false;
+            _ground.normal = Vector3.zero;
+            _ground.collided = false;
 
-            _ground.obj = null;
         }
         void FixedUpdate()
         {
-            if (_collided)
+            if (_ground.collided)
                 return;
             if (Physics.Raycast(this.transform.position, -World_Up, out var hitInfo, Mathf.Infinity, _groundMask))
             {
+                var obj = hitInfo.collider.gameObject;
                 var pos = _rb.position;
                 var point = hitInfo.point;
                 _currentHeight = pos.y - point.y;
+                _ground.height = obj.transform.position.y;
             }
         }
         void IGroundDetector.Sample()

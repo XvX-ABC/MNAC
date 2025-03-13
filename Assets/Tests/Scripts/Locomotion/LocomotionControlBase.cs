@@ -115,7 +115,7 @@ namespace Tests.Locomotion
         }
         void UpdateContext()
         {
-            _context.Ground = _groundDetector.Ground;
+            _context.Ground = _groundDetector.CollidedGround;
             _context.Locomotion = new()
             {
                 Position = _rb.position,

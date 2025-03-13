@@ -6,9 +6,9 @@ namespace Locomotion
 {
     public interface IGroundDetector : IRayCollisionDetector
     {
-        public IGround Ground { get; }
-        public float CurrentHeight { get; }
-
+        public IGround CollidedGround { get; }
+        public float Height { get; }
+        public float GroundHeight { get; }
 
         [Obsolete]
         public bool AutoSample { get; set; }

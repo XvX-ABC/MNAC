@@ -112,7 +112,7 @@ namespace Locomotion.Animation
                 Debug.DrawLine(point, point + Vector3.right * 3, Color.green);
                 var groundWorldHeight = point.y;
                 var maxWorldHeight = _maxHeight;
-                var currentHeight = _sampler.CurrentHeight;
+                var currentHeight = _sampler.Height;
                 var v = currentHeight / (maxWorldHeight - groundWorldHeight);
                 //Debug.Log("dv: " + (maxWorldHeight - groundWorldHeight) + ", groundWorldHeight: " + groundWorldHeight + ", " + maxWorldHeight + ", point: " + point + ", currentheight: " + currentHeight + ", v: " + v);
                 //_animator.SetFloat(_animatorDefinition.LandingValueParamName, 1f - v);

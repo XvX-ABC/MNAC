@@ -40,9 +40,8 @@ namespace Tests.Locomotion.Animation
         [Obsolete]
         void Landing()
         {
-            var point = _detector.Point;
-            var groundHeight = point.y;
-            var currentHeight = _detector.CurrentHeight;
+            var groundHeight = _detector.GroundHeight;
+            var currentHeight = _detector.Height;
             var v = currentHeight / (_maxHeight - groundHeight);
             _animator.Play(_definition.DescendingClipName, 0, Mathf.Clamp01(1 - v));
         }
@@ -68,7 +67,7 @@ namespace Tests.Locomotion.Animation
 
             if (currentState == JState.Descending)
             {
-                //Landing();
+                Landing();
             }
         }
     }
