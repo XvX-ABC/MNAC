@@ -1,4 +1,4 @@
-﻿namespace Assets.Tests.Scripts.Weapons
+﻿namespace Tests.Weapons.MultiMissileLauncher
 {
     public class X0_ActionNumericalDefinitions
     {

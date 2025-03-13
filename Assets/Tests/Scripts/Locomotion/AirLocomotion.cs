@@ -7,9 +7,9 @@ namespace Tests.Locomotion
     class AirLocomotion : IModule
     {
 
-        IBaseDefinition _definition;
+        IBaseDefinitions _definition;
         JumpLocomotion _jump;
-        public AirLocomotion(IBaseDefinition definition, JumpLocomotion jumpLocomotion)
+        public AirLocomotion(IBaseDefinitions definition, JumpLocomotion jumpLocomotion)
         {
             _definition = definition ?? throw new ArgumentNullException(nameof(definition));
             _jump = jumpLocomotion ?? throw new ArgumentNullException(nameof(jumpLocomotion));
@@ -24,7 +24,6 @@ namespace Tests.Locomotion
         public void OnUpdate(Context context)
         {
             var input = context.Input;
-            var ground = context.Ground;
             var state = context.State;
 
 

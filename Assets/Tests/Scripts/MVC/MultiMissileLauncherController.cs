@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tests.Weapons;
+using Tests.Weapons.MultiMissileLauncher;
 using UnityEngine;
 
 namespace Assets.Tests.Scripts.Weapons.MVC

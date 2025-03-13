@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using UnityEngine;
 
-namespace Assets.Tests.Scripts.Weapons
+namespace Tests.Weapons.MultiMissileLauncher.Animation
 {
-    public class X0_AnimatorDefinitions : MonoBehaviour, IX0_MutiMissileLauncherAnimatorDefinitions
+    public class X0_AnimatorDefinitions : MonoBehaviour, IX0_MultiMissileLauncherAnimatorDefinitions
     {
         [SerializeField]
         string _coverCloseClipName;

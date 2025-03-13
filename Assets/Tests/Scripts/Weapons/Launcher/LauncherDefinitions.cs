@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tests.Weapons
+namespace Tests.Weapons.Launcher
 {
     [Obsolete]
     public class LauncherDefinitions : MonoBehaviour, ILauncherDefinitions
@@ -35,7 +35,7 @@ namespace Tests.Weapons
 
         public Vector2 LaunchDelayRange => throw new NotImplementedException();
 
-    
+
 
         //public Dictionary<ushort, IABAssetSaver> AssetSavers => throw new System.NotImplementedException();
 
@@ -46,16 +46,16 @@ namespace Tests.Weapons
         }
         private void OnDrawGizmosSelected()
         {
-            var pos = this.transform.position;
-            var rotation = this.transform.rotation;
+            var pos = transform.position;
+            var rotation = transform.rotation;
             Gizmos.color = Color.yellow;
             var magazinePos = pos + rotation * _magazinePosition;
             Gizmos.DrawCube(magazinePos, Vector3.one * 0.3f);
-            Gizmos.DrawLine(magazinePos, magazinePos + this.transform.forward);
+            Gizmos.DrawLine(magazinePos, magazinePos + transform.forward);
             Gizmos.color = Color.red;
             var muzzlePos = pos + rotation * _muzzlePosition;
             Gizmos.DrawCube(muzzlePos, Vector3.one * 0.3f);
-            Gizmos.DrawLine(muzzlePos, muzzlePos + this.transform.forward);
+            Gizmos.DrawLine(muzzlePos, muzzlePos + transform.forward);
         }
     }
 }

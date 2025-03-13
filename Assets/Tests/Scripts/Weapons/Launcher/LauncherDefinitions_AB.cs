@@ -1,17 +1,16 @@
 ﻿//#define EDITOR_ASSET_LOAD
-using Assets.Tests.Scripts.Weapons.Assets__v0;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tests.Weapons;
+using Tests.Assets;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Assets.Tests.Scripts.Weapons.Assets__0
+namespace Tests.Weapons.Launcher
 {
     public class LauncherDefinitions_AB : MonoBehaviour, ILauncherDefinitions, ILauncherDefinitionsEditor
     {

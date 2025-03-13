@@ -1,13 +1,14 @@
-﻿using Assets.Tests.Scripts.Weapons.Assets__0;
-using Assets.Tests.Scripts.Weapons.Assets__v0;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Tests.Assets;
+using Tests.Weapons.Launcher;
+using Tests.Weapons.MissileLauncher;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Assets.Tests.Scripts.Weapons
+namespace Tests.Weapons.MultiMissileLauncher
 {
     public class X0_MultiMissileLauncherDefinitions : MissileLauncherDefinitions_AB, IX0_MultiMissileLauncherActionDefinitions, ILauncherActionDefinitionsEditor
     {
@@ -83,7 +84,7 @@ namespace Assets.Tests.Scripts.Weapons
         IMissileLauncherDefinitionsEditor[] _subEditors;
         protected void LoadSubEditors()
         {
-            var list = this.gameObject.GetComponentsInChildren<IMissileLauncherDefinitionsEditor>().ToList();
+            var list = gameObject.GetComponentsInChildren<IMissileLauncherDefinitionsEditor>().ToList();
             if (list.Contains(this))
                 list.Remove(this);
             _subEditors = list.ToArray();

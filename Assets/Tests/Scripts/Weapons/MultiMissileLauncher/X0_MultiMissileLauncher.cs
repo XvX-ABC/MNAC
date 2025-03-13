@@ -4,11 +4,11 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Tests.Weapons;
+using Tests.Weapons.MissileLauncher;
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Tests.Scripts.Weapons
+namespace Tests.Weapons.MultiMissileLauncher
 {
 
     public class X0_MultiMissileLauncher : MultiMissileLauncher
@@ -95,7 +95,7 @@ namespace Assets.Tests.Scripts.Weapons
         protected override ITimeline CreateLaunchDurationTimeline()
         {
             var timeline = base.CreateLaunchDurationTimeline();
-            timeline.EndAction += _ => { StartReload();Debug.Log("Start reload"); };
+            timeline.EndAction += _ => { StartReload(); Debug.Log("Start reload"); };
             return timeline;
         }
 #endif

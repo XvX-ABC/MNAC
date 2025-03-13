@@ -5,9 +5,9 @@ namespace Tests.Locomotion
 {
     public class HorizontalDrag : IModule
     {
-        IBaseDefinition _definition;
+        IBaseDefinitions _definition;
 
-        public HorizontalDrag(IBaseDefinition definition)
+        public HorizontalDrag(IBaseDefinitions definition)
         {
             _definition = definition ?? throw new ArgumentNullException(nameof(definition));
         }

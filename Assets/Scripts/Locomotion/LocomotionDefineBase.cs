@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace Locomotion
 {
-    public class LocomotionDefineBase : MonoBehaviour, ILocomotionDefine
+    public class LocomotionDefineBase : MonoBehaviour, ILocomotionDefinitions
     {
         [Serializable]
-        class BaseDefinition : IBaseDefinition
+        class BaseDefinitions : IBaseDefinitions
         {
             [SerializeField]
             float _speed;
@@ -24,7 +24,7 @@ namespace Locomotion
             public float Drag => _drag;
         }
         [Serializable]
-        class JumpDefinitionBase : IJumpDefinition
+        class JumpDefinitionsBase : IJumpDefinitions
         {
             [SerializeField]
             float _height;
@@ -39,7 +39,7 @@ namespace Locomotion
 
         }
         [Serializable]
-        class QuickBoostDefinitionBase : IQuickBoostDefinition
+        class QuickBoostDefinitionsBase : IQuickBoostDefinitions
         {
             [SerializeField]
             float _duration;
@@ -53,14 +53,14 @@ namespace Locomotion
             public float Interval => _interval;
         }
         [SerializeField]
-        BaseDefinition _base;
+        BaseDefinitions _base;
         [SerializeField]
-        JumpDefinitionBase _jump;
+        JumpDefinitionsBase _jump;
         [SerializeField]
-        QuickBoostDefinitionBase _quickBoost;
-        public IBaseDefinition Base => _base;
+        QuickBoostDefinitionsBase _quickBoost;
+        public IBaseDefinitions Base => _base;
 
-        public IJumpDefinition Jump => _jump;
-        public IQuickBoostDefinition QuickBoost => _quickBoost;
+        public IJumpDefinitions Jump => _jump;
+        public IQuickBoostDefinitions QuickBoost => _quickBoost;
     }
 }

@@ -51,7 +51,7 @@ namespace Tests.Locomotion.Animation
             if (_context == null)
                 return;
             var ground = _context.Ground;
-            if (!ground.Touched)
+            if (ground==null)
                 return;
             var legLength = _bonesDefinition.LegLength;
             var (newPosLeft, _) = UpdateFootIKPosAndRotation(0);
@@ -92,7 +92,7 @@ namespace Tests.Locomotion.Animation
         {
             _context = context;
             var ground = context.Ground;
-            if (!ground.Touched)
+            if (ground == null)
                 return;
             UpdateAnimation(context);
         }

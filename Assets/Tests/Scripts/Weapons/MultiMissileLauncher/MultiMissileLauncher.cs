@@ -4,10 +4,12 @@ using Assets.Scripts.Utilities.Timeline.Event.Point;
 using System;
 using System.Linq;
 using Tests;
-using Tests.Weapons;
+using Tests.Utilities;
+using Tests.Weapons.Launcher;
+using Tests.Weapons.MissileLauncher;
 using UnityEngine;
 
-namespace Assets.Tests.Scripts.Weapons
+namespace Tests.Weapons.MultiMissileLauncher
 {
 
     public class MultiMissileLauncher : MonoBehaviour, IMissileLauncher
@@ -84,7 +86,7 @@ namespace Assets.Tests.Scripts.Weapons
 
         void Awake()
         {
-            definitions = GetComponent<IMissileLauncherDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherDefinitions));
+            definitions = GetComponent<IMissileLauncherDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(ILauncherDefinitions));
             LoadSubLaunchers();
 
             foreach (var l in subLaunchers)
@@ -103,15 +105,15 @@ namespace Assets.Tests.Scripts.Weapons
             //if (list.Contains(this))
             //    list.Remove(this);
             //subLaunchers = list.ToArray();
-            subLaunchers = GetSubLaunchers(this.gameObject);
+            subLaunchers = GetSubLaunchers(gameObject);
         }
         protected void InitializeSubLauncher(IMissileLauncher l)
         {
             l.InitializationAction += launcher =>
             {
-                launcher.Supply(-(launcher.Definitions.AmmoSpareQuantity));
+                launcher.Supply(-launcher.Definitions.AmmoSpareQuantity);
                 if (launcher is not IMissileLauncher mlauncher)
-                    throw new Exception($"The sublaunchers of the type '{this.GetType().Name}' must to implement the interface '{typeof(IMissileLauncher).Name}'");
+                    throw new Exception($"The sublaunchers of the type '{GetType().Name}' must to implement the interface '{typeof(IMissileLauncher).Name}'");
 
 
                 var definition = mlauncher.Definitions;
@@ -135,7 +137,7 @@ namespace Assets.Tests.Scripts.Weapons
         }
         protected void Start()
         {
-            _ammoSpareQuantity = (ushort)(Mathf.Max(0, definitions.AmmoSpareQuantity - subLaunchers.Length));
+            _ammoSpareQuantity = (ushort)Mathf.Max(0, definitions.AmmoSpareQuantity - subLaunchers.Length);
 
             var quantity = subLaunchers.Length;
             _ammoInMagazineQuantity = (ushort)quantity;
@@ -188,7 +190,7 @@ namespace Assets.Tests.Scripts.Weapons
             if (Input.GetKeyDown(KeyCode.S))
             {
                 if (Target == null)
-                    Target = GetComponent<ITarget>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ITarget));
+                    Target = GetComponent<ITarget>() ?? throw new ComponentCantFindException(gameObject, typeof(ITarget));
                 else
                     Target = null;
             }

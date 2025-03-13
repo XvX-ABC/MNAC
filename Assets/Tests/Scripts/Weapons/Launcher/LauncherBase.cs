@@ -2,12 +2,13 @@
 using System.Reflection;
 using Assets.Scripts.Utilities.Timeline;
 using Assets.Scripts.Utilities.Timeline.Event.Point;
-using Assets.Tests.Scripts.Weapons;
 using FoundationStone.UI.Tests.MVC;
+using Tests.Utilities;
+using Tests.Weapons.MissileLauncher;
 using UnityEngine;
 using UnityEngine.Pool;
-using ActionsEnum = Tests.Weapons.ILauncher.ActionsEnum;
-namespace Tests.Weapons
+using ActionsEnum = Tests.Weapons.Launcher.ILauncher.ActionsEnum;
+namespace Tests.Weapons.Launcher
 {
     [DisallowMultipleComponent]
     public class LauncherBase : MonoBehaviour, ILauncher
@@ -36,8 +37,8 @@ namespace Tests.Weapons
         public ushort SpareCount { get => ammoSpareQuantity; }
         public ushort MagazineCount { get => ammoInMagazineQuantity; set => ammoInMagazineQuantity = value; }
         public ILauncherDefinitions Definitions { get => definitions; protected set => definitions = value; }
-        public Vector3 MagazinePosition { get => this.transform.position + this.transform.rotation * definitions.MagazinePosition; }
-        public Vector3 MuzzlePosition { get => this.transform.position + this.transform.rotation * definitions.MuzzlePosition; }
+        public Vector3 MagazinePosition { get => transform.position + transform.rotation * definitions.MagazinePosition; }
+        public Vector3 MuzzlePosition { get => transform.position + transform.rotation * definitions.MuzzlePosition; }
         public Action<ILauncher> InitializationAction { get => initializationAction; set => initializationAction = value; }
         public ITimeline DelayLaunchTimeline { get => delayLaunchTimeline; }
         public ITimeline LaunchDurationTimeline { get => launchDurationTimeline; }
@@ -46,7 +47,7 @@ namespace Tests.Weapons
 
         protected virtual void Awake()
         {
-            definitions = GetComponent<ILauncherDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherDefinitions));
+            definitions = GetComponent<ILauncherDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(ILauncherDefinitions));
             actionsLock = new();
 
         }
@@ -88,7 +89,7 @@ namespace Tests.Weapons
         protected virtual GameObject CreateAmmo()
         {
             var origin = definitions.AmmoOrigin;
-            var obj = Instantiate(origin, this.transform);
+            var obj = Instantiate(origin, transform);
             obj.name = origin.name + "_" + ammoPool.CountAll;
 
             obj.SetActive(false);
@@ -110,7 +111,7 @@ namespace Tests.Weapons
         protected virtual void ReleaseAmmo(GameObject obj)
         {
             obj.SetActive(false);
-            obj.transform.SetParent(this.transform);
+            obj.transform.SetParent(transform);
             obj.transform.localPosition = definitions.MagazinePosition;
             obj.transform.localRotation = Quaternion.identity;
             if (obj.TryGetComponent<IProjectile>(out var p))
@@ -118,7 +119,7 @@ namespace Tests.Weapons
         }
         protected virtual void ReleaseAmmo(IProjectile ammo, GameObject hitObj)
         {
-            if (hitObj == this.gameObject)
+            if (hitObj == gameObject)
                 return;
             if (ammo is Component pobj)
                 ammoPool.Release(pobj.gameObject);

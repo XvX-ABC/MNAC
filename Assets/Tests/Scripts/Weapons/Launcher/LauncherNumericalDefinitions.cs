@@ -1,7 +1,7 @@
 ﻿//#define EDITOR_ASSET_LOAD
 using UnityEngine;
 
-namespace Assets.Tests.Scripts.Weapons.Assets__0
+namespace Tests.Weapons.Launcher
 {
     public class LauncherNumericalDefinitions
     {

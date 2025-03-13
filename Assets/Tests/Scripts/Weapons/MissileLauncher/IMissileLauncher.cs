@@ -1,7 +1,7 @@
-﻿using Assets.Tests.Scripts.Weapons;
-using System;
+﻿using System;
+using Tests.Weapons.Launcher;
 
-namespace Tests.Weapons
+namespace Tests.Weapons.MissileLauncher
 {
     public interface IMissileLauncher : ILauncher
     {

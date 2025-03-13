@@ -1,6 +1,5 @@
 ﻿using Locomotion;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +24,7 @@ namespace Tests.Locomotion
         public float DeltaTime;
         public IInput Input;
         public IGround Ground;
+        public IGroundDetector GroundDetector;
         public State State;
         public override string ToString()
         {
@@ -46,12 +46,13 @@ namespace Tests.Locomotion
         internal AirLocomotion airLocomotion;
         internal Gravity gravity;
         internal QuarterViewRotation rotation;
+        internal PlatformLocomotion platformLocomotion;
 
 
         LocomotionAnimator _locomotionAnimator;
 
-        ILocomotionDefine _definition;
-        IGroundSampler _groundSampler;
+        ILocomotionDefinitions _definition;
+        IGroundDetector _groundDetector;
         ILocomotionAnimator _animator;
         IInput _input;
         Context _context;
@@ -60,14 +61,16 @@ namespace Tests.Locomotion
 
         void Awake()
         {
-            _definition = GetComponent<ILocomotionDefine>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionDefine));
-            _groundSampler = GetComponent<IGroundSampler>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IGroundSampler));
+            _definition = GetComponent<ILocomotionDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionDefinitions));
+            _groundDetector = GetComponent<IGroundDetector>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IGroundDetector));
             //_animator = GetComponent<ILocomotionAnimator>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(ILocomotionAnimator));
             _input = GetComponent<IInput>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IInput));
 
 
             _rb = GetComponent<Rigidbody>();
 
+
+            platformLocomotion = GetComponent<PlatformLocomotion>() ?? throw new ComponentCantFindException(this.gameObject, typeof(PlatformLocomotion));
 
             horizontalLocomotion = new(_definition.Base);
             horizontalDrag = new(_definition.Base);
@@ -78,11 +81,11 @@ namespace Tests.Locomotion
             rotation = new(this.gameObject);
 
 
-            var ground = new Ground(_groundSampler);
+            var ground = new Ground(_groundDetector);
             var target = new Target(_camera);
             _context = new()
             {
-                Ground = ground,
+                //Ground = ground,
                 Input = _input,
                 Target = target,
             };
@@ -91,13 +94,15 @@ namespace Tests.Locomotion
 
             _modules = new IModule[]
             {
+                platformLocomotion.AM,
                 rotation,
                 horizontalLocomotion,
                 quickBoostLocomotion,
                 horizontalDrag,
                 jumpLocomotion,
-                airLocomotion,
+                //airLocomotion,
                 gravity,
+                platformLocomotion.BM
             };
 
 
@@ -110,6 +115,7 @@ namespace Tests.Locomotion
         }
         void UpdateContext()
         {
+            _context.Ground = _groundDetector.Ground;
             _context.Locomotion = new()
             {
                 Position = _rb.position,
@@ -118,9 +124,9 @@ namespace Tests.Locomotion
             };
             var ground = _context.Ground;
             var state = _context.State;
-            if (ground.Touched && _rb.velocity.y <= 0)
+            if (ground != null && _rb.velocity.y <= 0)
                 _context.State = State.OnGround;
-            else if (!ground.Touched && state != State.Ascending)
+            else if (ground == null && state != State.Ascending)
                 _context.State = State.Descending;
             _context.DeltaTime = Time.fixedDeltaTime;
 
@@ -129,6 +135,7 @@ namespace Tests.Locomotion
         void ApplyContext()
         {
             _rb.velocity = _context.Velocity;
+            _rb.MovePosition(_context.Position);
             _rb.MoveRotation(_context.Rotation);
         }
         void DebugRun()
@@ -152,7 +159,6 @@ namespace Tests.Locomotion
         }
         void FixedUpdate()
         {
-            _groundSampler.Sample();
             UpdateContext();
             //for (int i = 0; i < _modules.Length; i++)
             //{

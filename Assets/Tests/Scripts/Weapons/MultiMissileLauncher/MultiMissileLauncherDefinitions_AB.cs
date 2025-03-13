@@ -1,14 +1,15 @@
-﻿using Assets.Tests.Scripts.Weapons.Assets__0;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tests.Assets;
 using Tests.Weapons;
+using Tests.Weapons.MissileLauncher;
 using UnityEngine;
 
-namespace Assets.Tests.Scripts.Weapons.Assets__v0
+namespace Tests.Weapons.MultiMissileLauncher
 {
     public class MultiMissileLauncherDefinitions_AB : MonoBehaviour, IMissileLauncherDefinitions, IMissileLauncherDefinitionsEditor
     {
@@ -59,7 +60,7 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
 
         protected void LoadSubEditors()
         {
-            var list = this.gameObject.GetComponentsInChildren<IMissileLauncherDefinitionsEditor>().ToList();
+            var list = gameObject.GetComponentsInChildren<IMissileLauncherDefinitionsEditor>().ToList();
             if (list.Contains(this))
                 list.Remove(this);
             _subEditors = list.ToArray();
@@ -82,7 +83,7 @@ namespace Assets.Tests.Scripts.Weapons.Assets__v0
         {
             originAssetAgent.Save(origin);
             numericalDefinitionsAssetAgent.Save(numericalDefinitions);
-            foreach(var e in _subEditors)
+            foreach (var e in _subEditors)
             {
                 ApplyDefinitionsForSubEditor(e);
                 e.Save();

@@ -11,7 +11,7 @@ namespace Tests.Locomotion.Animation
         JumpLocomotion _jumpLocomotion;
         Animator _animator;
         JState _oldState;
-        IGroundSampler _sampler;
+        IGroundDetector _detector;
         float _maxHeight;
         void Awake()
         {
@@ -19,7 +19,7 @@ namespace Tests.Locomotion.Animation
             _definition = ldefinition.Jump ?? throw new NullReferenceException(nameof(ldefinition.Jump));
 
             _animator = GetComponent<Animator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(Animator));
-            _sampler = GetComponent<IGroundSampler>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IGroundSampler));
+            _detector = GetComponent<IGroundDetector>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IGroundDetector));
 
         }
         void Start()
@@ -37,11 +37,12 @@ namespace Tests.Locomotion.Animation
             _animator.SetFloat(_definition.LandingMultiplierName, clipLength / length);
 
         }
+        [Obsolete]
         void Landing()
         {
-            var point = _sampler.Point;
+            var point = _detector.Point;
             var groundHeight = point.y;
-            var currentHeight = _sampler.CurrentHeight;
+            var currentHeight = _detector.CurrentHeight;
             var v = currentHeight / (_maxHeight - groundHeight);
             _animator.Play(_definition.DescendingClipName, 0, Mathf.Clamp01(1 - v));
         }
@@ -67,7 +68,7 @@ namespace Tests.Locomotion.Animation
 
             if (currentState == JState.Descending)
             {
-                Landing();
+                //Landing();
             }
         }
     }

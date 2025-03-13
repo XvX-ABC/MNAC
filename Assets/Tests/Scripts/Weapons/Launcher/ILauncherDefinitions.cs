@@ -1,9 +1,9 @@
-﻿using Assets.Tests.Scripts.Weapons.Assets__0;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Tests.Assets;
 using UnityEngine;
 
-namespace Tests.Weapons
+namespace Tests.Weapons.Launcher
 {
     public interface ILauncherDefinitionsEditor
     {

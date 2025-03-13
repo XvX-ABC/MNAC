@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Tests.Weapons.Launcher;
+using UnityEngine;
 
-namespace Assets.Tests.Scripts.Weapons.Assets__0
+namespace Tests.Weapons.MissileLauncher
 {
     public class MissileLauncherNumericalDefinitions : LauncherNumericalDefinitions
     {

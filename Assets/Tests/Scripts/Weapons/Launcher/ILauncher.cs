@@ -1,7 +1,8 @@
 using Assets.Scripts.Utilities.Timeline;
 using System;
+using Tests.Utilities;
 
-namespace Tests.Weapons
+namespace Tests.Weapons.Launcher
 {
     public interface ILauncher : IWeapon
     {
@@ -18,8 +19,8 @@ namespace Tests.Weapons
         public Action<ILauncher> InitializationAction { get; set; }
 
 
-        public ITimeline DelayLaunchTimeline { get;  }
-        public ITimeline LaunchDurationTimeline { get;  }
+        public ITimeline DelayLaunchTimeline { get; }
+        public ITimeline LaunchDurationTimeline { get; }
         public ITimeline ReloadTimeline { get; }
         public ILauncherDefinitions Definitions { get; }
         public ushort SpareCount { get; }

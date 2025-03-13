@@ -5,10 +5,10 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Tests;
-using Tests.Weapons;
+using Tests.Weapons.MissileLauncher;
 using UnityEngine;
 
-namespace Assets.Tests.Scripts.Weapons.Launcher
+namespace Tests.Weapons.Launcher
 {
     public class LauncherActionController : MonoBehaviour
     {

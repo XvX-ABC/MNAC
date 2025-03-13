@@ -6,47 +6,31 @@ using UnityEngine;
 
 namespace Locomotion
 {
-    public interface IBaseDefinition
+    public interface IBaseDefinitions
     {
         public float Speed { get; }
         public float Drag { get; }
         public float AccelerationSpeed { get; }
         public float AscendingSpeed { get; }
     }
-    public interface IJumpDefinition
+    public interface IJumpDefinitions
     {
         public float Height { get; }
         public float PreparationDuration { get; }
         public float LandingDuration { get; }
 
     }
-    public interface IQuickBoostDefinition
+    public interface IQuickBoostDefinitions
     {
         public float Duration { get; }
         public float Velocity { get; }
         public float Interval { get; }
     }
-    public interface ILocomotionDefine
+    public interface ILocomotionDefinitions
     {
-        IBaseDefinition Base { get; }
-        IJumpDefinition Jump { get; }
-        IQuickBoostDefinition QuickBoost { get; }
-    }
-    public interface IRayCollisionDetector
-    {
-        public LayerMask TargetLayerMask { get; set; }
-        public float Length { get; set; }
-        public Vector3 RelativeDirection { get; set; }
-        public Vector3 OriginOffset { get; set; }
-    }
-    public interface IGroundSampler : IRayCollisionDetector
-    {
-        public bool AutoSample { get; set; }
-        public bool IsOnGround { get; }
-        public float CurrentHeight { get; }
-        public Vector3 Normal { get; }
-        public Vector3 Point { get; }
-        public void Sample();
+        IBaseDefinitions Base { get; }
+        IJumpDefinitions Jump { get; }
+        IQuickBoostDefinitions QuickBoost { get; }
     }
     public interface IFrameContext
     {
@@ -71,6 +55,7 @@ namespace Locomotion
             return $"Position: {Position}, Velocity: {Velocity}";
         }
     }
+    [Obsolete]
     public abstract class LocomotionControlBase : MonoBehaviour
     {
         protected internal class GravityLocomotion
@@ -152,8 +137,8 @@ namespace Locomotion
             float _time;
             float _startVelocity;
             public bool InJumping;
-            IJumpDefinition _definition;
-            IGroundSampler _groundSampler;
+            IJumpDefinitions _definition;
+            IGroundDetector _groundSampler;
             float _currentVelocity;
             byte _stepNum;
             Timeline _timeline;
@@ -161,7 +146,7 @@ namespace Locomotion
             float _contraryDragVelocity;
             Action<JumpLocomotion> _jumpStartActions;
             Action<JumpLocomotion> _jumpEndActions;
-            public JumpLocomotion(IJumpDefinition definition, IGroundSampler groundSampler, GravityLocomotion gravityLocomotion)
+            public JumpLocomotion(IJumpDefinitions definition, IGroundDetector groundSampler, GravityLocomotion gravityLocomotion)
             {
                 _definition = definition;
                 _groundSampler = groundSampler;
@@ -172,7 +157,7 @@ namespace Locomotion
                 _timeline = new(_ascendingDuration, false, new PrepareCompleted(p0, this), new AscendingEvent(p0, p1, this), new AscendingStageEndEvent(1, this));
             }
 
-            bool _isOnGround => _groundSampler.IsOnGround;
+            bool _isOnGround => _groundSampler.TouchedGround;
 
 
             public float AscendingDuration { get => _ascendingDuration; }
@@ -250,8 +235,8 @@ namespace Locomotion
         }
         protected internal class BaseLocomotion
         {
-            IGroundSampler _groundSampler;
-            IBaseDefinition _definition;
+            IGroundDetector _groundSampler;
+            IBaseDefinitions _definition;
             GravityLocomotion _gravityLocomotion;
             bool _isAscending;
             bool _inAir;
@@ -276,7 +261,7 @@ namespace Locomotion
                 get => _inAir;
                 set => _inAir = value;
             }
-            public BaseLocomotion(IGroundSampler groundSampler, IBaseDefinition definition, Transform trans, GravityLocomotion gravityLocomotion)
+            public BaseLocomotion(IGroundDetector groundSampler, IBaseDefinitions definition, Transform trans, GravityLocomotion gravityLocomotion)
             {
                 _groundSampler = groundSampler;
                 _definition = definition;
@@ -358,7 +343,7 @@ namespace Locomotion
         }
         protected internal class QuickBoostLocomotion
         {
-            IQuickBoostDefinition _definition;
+            IQuickBoostDefinitions _definition;
             class EndBoostEvent : PointEvent
             {
                 QuickBoostLocomotion _locomotion;
@@ -372,7 +357,7 @@ namespace Locomotion
                     _locomotion.EndBoost();
                 }
             }
-            public QuickBoostLocomotion(IQuickBoostDefinition definition)
+            public QuickBoostLocomotion(IQuickBoostDefinitions definition)
             {
                 _definition = definition;
                 _lastBoostTime = float.MaxValue;
@@ -450,10 +435,10 @@ namespace Locomotion
         protected internal BaseLocomotion baseLocomotion;
         protected internal QuickBoostLocomotion boostLocomotion;
         protected internal GravityLocomotion gravityLocomotion;
-        internal ILocomotionDefine locomotionDefinition;
-        IGroundSampler _groundSampler;
+        internal ILocomotionDefinitions locomotionDefinition;
+        IGroundDetector _groundSampler;
         ILocomotionAnimator _animator;
-        bool _isOnGround { get => _groundSampler.IsOnGround; }
+        bool _isOnGround { get => _groundSampler.TouchedGround; }
         internal abstract IFrameContext CurrentFrameContext { get; }
         internal abstract bool IsForward { get; }
         internal abstract bool IsBack { get; }
@@ -472,10 +457,10 @@ namespace Locomotion
         }
         protected void LoadRequirementComponents()
         {
-            locomotionDefinition = GetComponent<ILocomotionDefine>() ?? throw new NullReferenceException("");
-            _groundSampler = GetComponent<IGroundSampler>() ?? throw new NullReferenceException("");
+            locomotionDefinition = GetComponent<ILocomotionDefinitions>() ?? throw new NullReferenceException("");
+            _groundSampler = GetComponent<IGroundDetector>() ?? throw new NullReferenceException("");
             _animator = GetComponent<ILocomotionAnimator>() ?? throw new NullReferenceException("");
-            _groundSampler.AutoSample = false;
+            //_groundSampler.AutoSample = false;
             rb = GetComponent<Rigidbody>();
             rb.drag = 0;
             rb.useGravity = true;

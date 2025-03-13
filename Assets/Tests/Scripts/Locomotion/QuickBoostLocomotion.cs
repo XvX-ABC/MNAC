@@ -9,49 +9,51 @@ namespace Tests.Locomotion
 {
     class QuickBoostLocomotion : IModule
     {
-        class Boosting : RangeEvent
-        {
-            QuickBoostLocomotion _locomotion;
-            public Boosting(float triggeredProportion, float durationProportion, QuickBoostLocomotion locomotion) : base(durationProportion, triggeredProportion)
-            {
-                _locomotion = locomotion;
-            }
-            public override void Execute(TimelineContext _)
-            {
-                Debug.Log("Boosting: " + _locomotion._velocity);
-                _locomotion._context.Velocity = _locomotion._velocity;
-            }
-        }
-        class EndBoostEvent : PointEvent
-        {
-            QuickBoostLocomotion _locomotion;
+        //class Boosting : RangeEvent
+        //{
+        //    QuickBoostLocomotion _locomotion;
+        //    public Boosting(float triggeredProportion, float durationProportion, QuickBoostLocomotion locomotion) : base(durationProportion, triggeredProportion)
+        //    {
+        //        _locomotion = locomotion;
+        //    }
+        //    public override void Execute(TimelineContext _)
+        //    {
+        //        Debug.Log("Boosting: " + _locomotion._velocity);
+        //        _locomotion._context.Velocity = _locomotion._velocity;
+        //    }
+        //}
+        //class EndBoostEvent : PointEvent
+        //{
+        //    QuickBoostLocomotion _locomotion;
 
-            public EndBoostEvent(float triggeredProportion, QuickBoostLocomotion locomotion) : base(triggeredProportion)
-            {
-                _locomotion = locomotion;
-            }
+        //    public EndBoostEvent(float triggeredProportion, QuickBoostLocomotion locomotion) : base(triggeredProportion)
+        //    {
+        //        _locomotion = locomotion;
+        //    }
 
-            public override void Execute(TimelineContext context)
-            {
-                _locomotion.EndBoost();
-            }
-        }
-        IQuickBoostDefinition _definition;
+        //    public override void Execute(TimelineContext context)
+        //    {
+        //        _locomotion.EndBoost();
+        //    }
+        //}
+        IQuickBoostDefinitions _definition;
         JumpLocomotion _jumpLocomotion;
         Timeline _timeline;
-        bool _boosting;
         Context _context;
         Vector3 _velocity;
         float _lastTime;
-        public QuickBoostLocomotion(IQuickBoostDefinition definition, JumpLocomotion jumpLocomotion)
+        public QuickBoostLocomotion(IQuickBoostDefinitions definition, JumpLocomotion jumpLocomotion)
         {
             _definition = definition ?? throw new ArgumentNullException(nameof(definition));
-            _timeline = new(_definition.Duration, false, new Boosting(0f, 1f, this), new EndBoostEvent(1f, this));
+            //_timeline = new(_definition.Duration, false, new Boosting(0f, 1f, this), new EndBoostEvent(1f, this));
+            _timeline = new(_definition.Duration);
+            _timeline.AddRangeEvent(0f, 1f, _ => _context.Velocity = _velocity);
+            _timeline.AddPointEvent(1f, _ => EndBoost());
             _jumpLocomotion = jumpLocomotion;
         }
         public void StartBoost()
         {
-            if (_boosting)
+            if (_timeline.isRunning)
                 return;
 
             var currentTime = Time.unscaledTime;
@@ -67,14 +69,12 @@ namespace Tests.Locomotion
 
             _timeline.Start();
 
-            _boosting = true;
         }
         public void EndBoost()
         {
-            if (!_boosting)
+            if (!_timeline.isRunning)
                 return;
             _timeline.Stop();
-            _boosting = false;
             _lastTime = Time.unscaledTime;
             _velocity = Vector3.zero;
         }

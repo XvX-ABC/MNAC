@@ -1,9 +1,10 @@
 ﻿using System;
+using Tests.Weapons.Launcher;
 using UnityEngine;
 
-namespace Assets.Tests.Scripts.Weapons.Assets__0
+namespace Tests.Weapons.MissileLauncher
 {
-    public partial class MissileLauncherDefinitions_AB : LauncherDefinitions_AB, IMissileLauncherDefinitions,IMissileLauncherDefinitionsEditor
+    public partial class MissileLauncherDefinitions_AB : LauncherDefinitions_AB, IMissileLauncherDefinitions, IMissileLauncherDefinitionsEditor
     {
 
 

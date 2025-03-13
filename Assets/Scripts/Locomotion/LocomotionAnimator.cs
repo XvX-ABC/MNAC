@@ -53,14 +53,14 @@ namespace Locomotion.Animation
             public float ScaleFactor;
             LocomotionControlBase.JumpLocomotion _locomotion;
             JumpAnimatorDefinition _animatorDefinition;
-            IJumpDefinition _definition;
-            IGroundSampler _sampler;
+            IJumpDefinitions _definition;
+            IGroundDetector _sampler;
             Animator _animator;
             Transform _trans;
             float _maxHeight;
 
 
-            public JumpAnimator(LocomotionControlBase.JumpLocomotion locomotion, JumpAnimatorDefinition animatorDefinition, IJumpDefinition definition, Animator animator, Transform trans, IGroundSampler sampler)
+            public JumpAnimator(LocomotionControlBase.JumpLocomotion locomotion, JumpAnimatorDefinition animatorDefinition, IJumpDefinitions definition, Animator animator, Transform trans, IGroundDetector sampler)
             {
                 _locomotion = locomotion;
                 _animatorDefinition = animatorDefinition;
@@ -135,18 +135,18 @@ namespace Locomotion.Animation
         [SerializeField]
         JumpAnimatorDefinition _jumpAnimatorDefinition;
         JumpAnimator _jumpAnimator;
-        IGroundSampler _groundSampler;
+        IGroundDetector _groundSampler;
         IBonesDefinitions _bonesDefinition;
         LocomotionControlBase.JumpLocomotion _jumpLocomotion;
         protected bool _isOnGround
         {
-            get => _groundSampler.IsOnGround;
+            get => _groundSampler.TouchedGround;
         }
         void Awake()
         {
             _animator = GetComponent<Animator>();
             _bonesDefinition = GetComponent<IBonesDefinitions>();
-            _groundSampler = GetComponent<IGroundSampler>();
+            _groundSampler = GetComponent<IGroundDetector>();
         }
         void Start()
         {

@@ -4,8 +4,8 @@ namespace Tests.Locomotion
 {
     class HorizontalLocomotion : IModule
     {
-        IBaseDefinition _definition;
-        public HorizontalLocomotion(IBaseDefinition definition)
+        IBaseDefinitions _definition;
+        public HorizontalLocomotion(IBaseDefinitions definition)
         {
             _definition = definition;
         }
@@ -17,12 +17,12 @@ namespace Tests.Locomotion
                 return;
             var currentVelocity = context.Velocity;
             var ground = context.Ground;
-            var normal = ground.Normal;
-            var touched = ground.Touched;
-            if (touched)
+            if (ground != null)
+            {
+                var normal = ground.Normal;
                 direction = Vector3.ProjectOnPlane(direction, normal);
+            }
             var velocity = Vector3.MoveTowards(currentVelocity, direction * _definition.Speed, _definition.AscendingSpeed);
-            //velocity.y = currentVelocity.y;
             context.Velocity = velocity;
         }
     }

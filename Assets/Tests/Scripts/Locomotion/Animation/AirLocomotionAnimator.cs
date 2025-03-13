@@ -22,7 +22,7 @@ namespace Tests.Locomotion.Animation
         public void OnUpdate(Context context)
         {
             var ground = context.Ground;
-            if (ground.Touched)
+            if (ground!=null)
             {
                 if (_animator.GetBool(_definition.EnterParamName))
                     _animator.SetBool(_definition.EnterParamName, false);

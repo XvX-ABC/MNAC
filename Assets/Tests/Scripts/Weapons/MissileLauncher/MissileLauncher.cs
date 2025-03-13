@@ -4,11 +4,11 @@ using Assets.Tests.Scripts.Weapons.MVC;
 using FoundationStone.UI.Tests.MVC;
 using System;
 using Tests;
-using Tests.Weapons;
+using Tests.Weapons.Launcher;
 using Tests.Weapons.Projectiles;
 using UnityEngine;
 
-namespace Assets.Tests.Scripts.Weapons
+namespace Tests.Weapons.MissileLauncher
 {
     public class MissileLauncher : LauncherBase, IMissileLauncher
     {
@@ -35,7 +35,7 @@ namespace Assets.Tests.Scripts.Weapons
 
         protected override void Awake()
         {
-            definitions = GetComponent<IMissileLauncherDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IMissileLauncherDefinitions));
+            definitions = GetComponent<IMissileLauncherDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IMissileLauncherDefinitions));
             if (!Definitions.AmmoOrigin.TryGetComponent<IMissile>(out _))
                 throw new ComponentCantFindException(Definitions.AmmoOrigin, typeof(IMissile));
         }
