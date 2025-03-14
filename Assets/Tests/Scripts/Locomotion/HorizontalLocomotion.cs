@@ -21,9 +21,12 @@ namespace Tests.Locomotion
             {
                 var normal = ground.Normal;
                 direction = Vector3.ProjectOnPlane(direction, normal);
+                currentVelocity = Vector3.ProjectOnPlane(currentVelocity, normal);
             }
-            var velocity = Vector3.MoveTowards(currentVelocity, direction * _definition.Speed, _definition.AscendingSpeed);
-            context.Velocity = velocity;
+            else
+                currentVelocity = Vector3.ProjectOnPlane(currentVelocity, Vector3.up);
+            var velocity = Vector3.MoveTowards(currentVelocity, direction * _definition.Speed, _definition.AscendingSpeed) - currentVelocity;
+            context.Velocity += velocity;
         }
     }
 }

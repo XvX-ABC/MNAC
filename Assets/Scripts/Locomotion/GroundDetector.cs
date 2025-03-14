@@ -44,7 +44,7 @@ namespace Locomotion
         public bool TouchedGround { get => _touchedGround; }
         public Vector3 Normal { get => _normal; }
         public Vector3 Point { get => _point; }
-        public float Height { get => _height; }
+        public float Distance { get => _height; }
 
         public IGround CollidedGround => throw new NotImplementedException();
 

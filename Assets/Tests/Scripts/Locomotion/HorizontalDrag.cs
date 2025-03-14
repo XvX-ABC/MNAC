@@ -23,7 +23,13 @@ namespace Tests.Locomotion
         {
             var direction = context.Input.HorizontalDirection;
             if (direction == Vector3.zero)
-                context.Velocity = CalculateVelocityWithDrag(context.Velocity, context.DeltaTime);
+            {
+                var ground = context.Ground;
+                var normal = ground == null ? Vector3.up : ground.Normal;
+                var currentVelocity = Vector3.ProjectOnPlane(context.Velocity, normal);
+
+                context.Velocity += CalculateVelocityWithDrag(currentVelocity, context.DeltaTime) - currentVelocity;
+            }
         }
     }
 }

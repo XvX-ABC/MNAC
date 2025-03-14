@@ -108,11 +108,12 @@ namespace Locomotion.Animation
             }
             void UpdateInLanding()
             {
-                var point = _sampler.Point;
+                //var point = _sampler.Point;
+                var point = Vector3.zero;
                 Debug.DrawLine(point, point + Vector3.right * 3, Color.green);
                 var groundWorldHeight = point.y;
                 var maxWorldHeight = _maxHeight;
-                var currentHeight = _sampler.Height;
+                var currentHeight = _sampler.Distance;
                 var v = currentHeight / (maxWorldHeight - groundWorldHeight);
                 //Debug.Log("dv: " + (maxWorldHeight - groundWorldHeight) + ", groundWorldHeight: " + groundWorldHeight + ", " + maxWorldHeight + ", point: " + point + ", currentheight: " + currentHeight + ", v: " + v);
                 //_animator.SetFloat(_animatorDefinition.LandingValueParamName, 1f - v);
@@ -140,7 +141,8 @@ namespace Locomotion.Animation
         LocomotionControlBase.JumpLocomotion _jumpLocomotion;
         protected bool _isOnGround
         {
-            get => _groundSampler.TouchedGround;
+            //get => _groundSampler.TouchedGround;
+            get => false;
         }
         void Awake()
         {

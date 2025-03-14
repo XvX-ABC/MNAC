@@ -2,6 +2,7 @@
 using Assets.Scripts.Utilities.Timeline.Event.Point;
 using Assets.Scripts.Utilities.Timeline.Event.Range;
 using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts.Utilities.Timeline
@@ -74,6 +75,12 @@ namespace Assets.Scripts.Utilities.Timeline
         public void Stop()
         {
             isRunning = false;
+        }
+        public void EarlyEnd()
+        {
+            if (isLoop)
+                throw new NotSupportedException("The loop timeline was not supported early end.");
+            time = duration;
         }
         public void OnUpdate(float deltaTime)
         {

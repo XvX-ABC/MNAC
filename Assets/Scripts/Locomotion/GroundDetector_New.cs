@@ -22,22 +22,8 @@ namespace Locomotion
             get => _ground.collided ? _ground : null;
         }
         public bool Collided { get => _ground.collided; }
-        float IGroundDetector.Height => _ground.collided ? 0 : _currentHeight;
+        float IGroundDetector.Distance => _ground.collided ? 0 : _currentHeight;
         public float GroundHeight => _ground.height;
-        bool IGroundDetector.AutoSample { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
-        bool IGroundDetector.TouchedGround => throw new System.NotImplementedException();
-
-
-        Vector3 IGroundDetector.Normal => throw new System.NotImplementedException();
-
-        Vector3 IGroundDetector.Point => throw new System.NotImplementedException();
-
-        LayerMask IRayCollisionDetector.TargetLayerMask { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        float IRayCollisionDetector.Length { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        Vector3 IRayCollisionDetector.RelativeDirection { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        Vector3 IRayCollisionDetector.OriginOffset { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
         public GroundDetector_New()
         {
             _contactPoints = new();
@@ -140,9 +126,6 @@ namespace Locomotion
                 _currentHeight = pos.y - point.y;
                 _ground.height = obj.transform.position.y;
             }
-        }
-        void IGroundDetector.Sample()
-        {
         }
     }
 }

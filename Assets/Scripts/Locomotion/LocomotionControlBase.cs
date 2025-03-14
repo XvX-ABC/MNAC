@@ -157,7 +157,7 @@ namespace Locomotion
                 _timeline = new(_ascendingDuration, false, new PrepareCompleted(p0, this), new AscendingEvent(p0, p1, this), new AscendingStageEndEvent(1, this));
             }
 
-            bool _isOnGround => _groundSampler.TouchedGround;
+            //bool _isOnGround => _groundSampler.TouchedGround;
 
 
             public float AscendingDuration { get => _ascendingDuration; }
@@ -212,7 +212,8 @@ namespace Locomotion
             }
             public bool ShouldEndJump()
             {
-                return _isOnGround && ReachedMaxHeight;
+                //return _isOnGround && ReachedMaxHeight;
+                return false;
             }
             float CalculateVelocityInAscendingStage(float time)
             {
@@ -272,7 +273,8 @@ namespace Locomotion
 
             public Vector3 CalculateHorizontalVelocityOnGround(Vector3 direction, Vector3 currentVelocity)
             {
-                return CalculateHorizontalVelocity(direction, currentVelocity, _groundSampler.Normal);
+                //return CalculateHorizontalVelocity(direction, currentVelocity, _groundSampler.Normal);
+                return default;
             }
             public Vector3 CalculateHorizontalVelocityInAir(Vector3 direction, Vector3 currentVelocity)
             {
@@ -438,7 +440,7 @@ namespace Locomotion
         internal ILocomotionDefinitions locomotionDefinition;
         IGroundDetector _groundSampler;
         ILocomotionAnimator _animator;
-        bool _isOnGround { get => _groundSampler.TouchedGround; }
+        //bool _isOnGround { get => _groundSampler.TouchedGround; }
         internal abstract IFrameContext CurrentFrameContext { get; }
         internal abstract bool IsForward { get; }
         internal abstract bool IsBack { get; }
@@ -479,7 +481,7 @@ namespace Locomotion
         }
         protected void FixedUpdate()
         {
-            _groundSampler.Sample();
+            //_groundSampler.Sample();
 
             rb.MoveRotation(rotation.Rotate());
             var currentVelocity = rb.velocity;
@@ -497,7 +499,8 @@ namespace Locomotion
                 {
                     if (!jumpLocomotion.InJumping)
                     {
-                        if (_isOnGround)
+                        //if (_isOnGround)
+                        if(false)
                         {
                             jumpLocomotion.StartJump();
                         }
@@ -516,7 +519,8 @@ namespace Locomotion
                     baseLocomotion.StopAscending();
                 }
             }
-            if (_isOnGround)
+            //if (_isOnGround)
+            if(false)
             {
                 if (direction != Vector3.zero)
                     //expectedVelocity = baseLocomotion.CalculateHorizontalVelocityOnGround(direction, currentVelocity);
@@ -594,7 +598,8 @@ namespace Locomotion
                 return;
             var pos = this.transform.position;
             var velocity = rb.velocity;
-            var normal = _groundSampler.Normal;
+            //var normal = _groundSampler.Normal;
+            var normal = Vector3.zero;
             Gizmos.DrawLine(pos, pos + this.transform.forward * 3);
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(pos, pos + velocity.normalized * 3);

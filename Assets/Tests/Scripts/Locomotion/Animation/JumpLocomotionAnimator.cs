@@ -41,7 +41,7 @@ namespace Tests.Locomotion.Animation
         void Landing()
         {
             var groundHeight = _detector.GroundHeight;
-            var currentHeight = _detector.Height;
+            var currentHeight = _detector.Distance;
             var v = currentHeight / (_maxHeight - groundHeight);
             _animator.Play(_definition.DescendingClipName, 0, Mathf.Clamp01(1 - v));
         }

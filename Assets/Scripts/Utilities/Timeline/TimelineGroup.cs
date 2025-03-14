@@ -157,5 +157,10 @@ namespace Assets.Scripts.Utilities.Timeline
         {
             throw new NotImplementedException();
         }
+
+        public void EarlyEnd()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 namespace Tests.Locomotion
 {
+    [Serializable]
     public class CustomPlayerInput : MonoBehaviour, IInput
     {
         [SerializeField]

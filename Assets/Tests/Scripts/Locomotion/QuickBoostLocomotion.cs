@@ -74,6 +74,7 @@ namespace Tests.Locomotion
         {
             if (!_timeline.isRunning)
                 return;
+            Debug.Log("End boost");
             _timeline.Stop();
             _lastTime = Time.unscaledTime;
             _velocity = Vector3.zero;
@@ -89,10 +90,13 @@ namespace Tests.Locomotion
         {
             _context = context;
             var input = context.Input;
-            if (input.IsBoosting)
+            if (input.IsBoosting && !_timeline.IsRunning)
             {
                 if (_jumpLocomotion.CurrentState > JState.Idle && _jumpLocomotion.CurrentState <= JState.Ascending)
+                {
+                    _context.State = State.Descending;
                     _jumpLocomotion.EndJump();
+                }
 
                 StartBoost();
             }

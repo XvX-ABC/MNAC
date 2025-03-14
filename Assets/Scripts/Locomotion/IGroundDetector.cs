@@ -4,21 +4,10 @@ using UnityEngine;
 
 namespace Locomotion
 {
-    public interface IGroundDetector : IRayCollisionDetector
+    public interface IGroundDetector 
     {
         public IGround CollidedGround { get; }
-        public float Height { get; }
+        public float Distance { get; }
         public float GroundHeight { get; }
-
-        [Obsolete]
-        public bool AutoSample { get; set; }
-        [Obsolete]
-        public bool TouchedGround { get; }
-        [Obsolete]
-        public Vector3 Normal { get; }
-        [Obsolete]
-        public Vector3 Point { get; }
-        [Obsolete]
-        public void Sample();
     }
 }

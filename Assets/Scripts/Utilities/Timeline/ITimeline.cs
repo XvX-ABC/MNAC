@@ -15,6 +15,7 @@ namespace Assets.Scripts.Utilities.Timeline
         void OnUpdate(float deltaTime);
         void Start();
         void Stop();
+        void EarlyEnd();
         string ToString();
         bool AddEvent(ITimelineEvent evt);
         bool RemoveEvent(ITimelineEvent evt);

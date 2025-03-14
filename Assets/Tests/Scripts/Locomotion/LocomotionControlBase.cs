@@ -17,12 +17,13 @@ namespace Tests.Locomotion
     public class Context
     {
         public LocomotionContext Locomotion;
+        public Rigidbody RigidBody;
         public Vector3 Velocity { get => Locomotion.Velocity; set => Locomotion.Velocity = value; }
         public Quaternion Rotation { get => Locomotion.Rotation; set => Locomotion.Rotation = value; }
         public Vector3 Position { get => Locomotion.Position; set => Locomotion.Position = value; }
         public ITarget Target;
         public float DeltaTime;
-        public IInput Input;
+        public IHybridInput Input;
         public IGround Ground;
         public IGroundDetector GroundDetector;
         public State State;
@@ -43,6 +44,7 @@ namespace Tests.Locomotion
         internal QuickBoostLocomotion quickBoostLocomotion;
         internal HorizontalDrag horizontalDrag;
         internal JumpLocomotion jumpLocomotion;
+        internal JumpLocomotion_New jumpLocomotion_New;
         internal AirLocomotion airLocomotion;
         internal Gravity gravity;
         internal QuarterViewRotation rotation;
@@ -54,7 +56,7 @@ namespace Tests.Locomotion
         ILocomotionDefinitions _definition;
         IGroundDetector _groundDetector;
         ILocomotionAnimator _animator;
-        IInput _input;
+        IHybridInput _input;
         Context _context;
 
         IModule[] _modules;
@@ -64,7 +66,7 @@ namespace Tests.Locomotion
             _definition = GetComponent<ILocomotionDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionDefinitions));
             _groundDetector = GetComponent<IGroundDetector>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IGroundDetector));
             //_animator = GetComponent<ILocomotionAnimator>() ?? throw new ComponentCantFoundException(this.gameObject, typeof(ILocomotionAnimator));
-            _input = GetComponent<IInput>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IInput));
+            _input = GetComponent<IHybridInput>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IInput));
 
 
             _rb = GetComponent<Rigidbody>();
@@ -75,6 +77,7 @@ namespace Tests.Locomotion
             horizontalLocomotion = new(_definition.Base);
             horizontalDrag = new(_definition.Base);
             jumpLocomotion = new(_definition.Jump);
+            jumpLocomotion_New = new(_definition.Jump);
             quickBoostLocomotion = new(_definition.QuickBoost, jumpLocomotion);
             airLocomotion = new(_definition.Base, jumpLocomotion);
             gravity = new();
@@ -86,6 +89,7 @@ namespace Tests.Locomotion
             _context = new()
             {
                 //Ground = ground,
+                RigidBody = _rb,
                 Input = _input,
                 Target = target,
             };
@@ -94,15 +98,16 @@ namespace Tests.Locomotion
 
             _modules = new IModule[]
             {
-                platformLocomotion.AM,
+                //platformLocomotion.AM,
                 rotation,
                 horizontalLocomotion,
-                quickBoostLocomotion,
+                //quickBoostLocomotion,
                 horizontalDrag,
-                jumpLocomotion,
+                jumpLocomotion_New,
+                //jumpLocomotion,
                 //airLocomotion,
-                gravity,
-                platformLocomotion.BM
+                //gravity,
+                //platformLocomotion.BM
             };
 
 
@@ -127,7 +132,9 @@ namespace Tests.Locomotion
             if (ground != null && _rb.velocity.y <= 0)
                 _context.State = State.OnGround;
             else if (ground == null && state != State.Ascending)
+            {
                 _context.State = State.Descending;
+            }
             _context.DeltaTime = Time.fixedDeltaTime;
 
         }
