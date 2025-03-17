@@ -92,5 +92,25 @@ namespace Locomotion
             Gizmos.color = Color.magenta;
             Gizmos.DrawLine(pos, pos + (rotation * _relativeDirection) * Length);
         }
+
+        void ICollisionDetector.OnFixedUpdate()
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICollisionDetector.OnColliderEnter(CollisionContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICollisionDetector.OnColliderStay(CollisionContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICollisionDetector.OnColliderExit(CollisionContext context)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

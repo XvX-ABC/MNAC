@@ -1,5 +1,4 @@
 ﻿using System;
-using Locomotion;
 using NUnit.Framework.Constraints;
 using UnityEngine;
 using JState = Tests.Locomotion.JumpLocomotion.State;

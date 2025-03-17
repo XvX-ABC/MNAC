@@ -1,10 +1,9 @@
 ﻿using System;
-using Tests.Locomotion;
 using UnityEngine;
 
-namespace Locomotion
+namespace Tests.Locomotion
 {
-    public interface IGroundDetector 
+    public interface IGroundDetector : ICollisionDetector
     {
         public IGround CollidedGround { get; }
         public float Distance { get; }

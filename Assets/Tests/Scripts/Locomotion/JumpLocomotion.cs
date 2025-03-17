@@ -3,15 +3,17 @@ using Assets.Scripts.Utilities.Timeline;
 using Assets.Scripts.Utilities.Timeline.Event.Point;
 using Assets.Scripts.Utilities.Timeline.Event.Range;
 using Locomotion;
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using TMPro.EditorUtilities;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using LState = Tests.Locomotion.State;
 namespace Tests.Locomotion
 {
-
     class JumpLocomotion_New : IModule
     {
         public enum State
@@ -21,6 +23,7 @@ namespace Tests.Locomotion
             Ascending,
             Descending
         }
+        JumpCollision _collision;
         Vector3 _startVelocity;
         float _ascendingDurationTime;
         ITimeline _ascendingTimeline;
@@ -28,10 +31,12 @@ namespace Tests.Locomotion
         State _state;
         IHybridInput.Mode _oldMode;
 
-        public JumpLocomotion_New(IJumpDefinitions jumpDefinitions)
+        public JumpLocomotion_New(IJumpDefinitions jumpDefinitions, JumpCollision collision)
         {
             if (jumpDefinitions == null)
                 throw new ArgumentNullException(nameof(jumpDefinitions));
+
+            _collision = collision;
             _startVelocity.y = Mathf.Sqrt(-2 * Physics.gravity.y * jumpDefinitions.Height);
             _ascendingDurationTime = _startVelocity.y / -Physics.gravity.y;
             _state = State.OnGround;
@@ -51,8 +56,9 @@ namespace Tests.Locomotion
 
         void EndJumpImpl(Context context)
         {
+            Debug.Log("End jump: " + _state);
             if (_ascendingTimeline.IsRunning)
-                _ascendingTimeline.EarlyEnd();
+                _ascendingTimeline.Stop();
             _state = State.OnGround;
             _directionCache = Vector3.zero;
 
@@ -65,6 +71,55 @@ namespace Tests.Locomotion
                 input.CurrentMode = IHybridInput.Mode.Virtual;
             input.HorizontalDirection = _directionCache;
         }
+        bool CollisionHandle(Context context)
+        {
+            var extents = context.Collider.bounds.extents;
+            var distance = Mathf.Max(extents.x, extents.z) * 1.6f;
+            var velocity = context.Velocity;
+            var direction = context.Input.HorizontalDirection;
+            var pos = context.Position;
+            //pos.y -= extents.y;
+            Debug.DrawLine(pos, pos + direction.normalized * distance * 3, Color.blue);
+            if (Physics.Raycast(pos, new Vector3(direction.x, 0, 0), out var hitInfo, distance))
+            {
+                context.Velocity = new Vector3(0, velocity.y, velocity.z);
+                return true;
+            }
+            if (Physics.Raycast(pos, new Vector3(direction.z, 0, 0), out hitInfo, distance))
+            {
+                context.Velocity = new Vector3(velocity.x, velocity.y, 0);
+                return true;
+            }
+            return false;
+        }
+        void CollisionHandle_0(Context context)
+        {
+            if (!_collision.CollidedObstacle)
+            {
+                Debug.Log("a");
+                return;
+            }
+            var list = new List<ContactPoint>();
+            foreach (var o in _collision.Obstacles)
+            {
+                list.AddRange(o.ContactPoints);
+            }
+
+            var velociy = context.Velocity;
+            var pos = context.Position;
+            var d = Vector3.zero;
+            var sb = new StringBuilder();
+            foreach (var p in list)
+            {
+             var v=Vector3.ProjectOnPlane(p.point - pos, Vector3.up).normalized;
+                d += v;
+                sb.AppendLine(v.ToString());
+            }
+            d /= list.Count;
+            Debug.Log("d: " + d + ", sb: " + sb.ToString());
+            velociy = new Vector3(0, velociy.y, 0);
+            context.Velocity = velociy;
+        }
         public void OnUpdate(Context context)
         {
             var input = context.Input;
@@ -74,7 +129,10 @@ namespace Tests.Locomotion
                 if (ground != null)
                     EndJumpImpl(context);
                 else
-                    KeepDirection(input);
+                    CollisionHandle(context);
+                //CollisionHandle_0(context);
+                //else
+                //    KeepDirection(input);
             }
 
 
@@ -206,15 +264,17 @@ namespace Tests.Locomotion
         {
             return _startVelocity + Physics.gravity * time;
         }
-        //StringBuilder builder = new StringBuilder();
 
         public void OnUpdate(Context context)
         {
             var input = context.Input;
             var ground = context.Ground;
             var state = context.State;
+
+
             if (_context != context)
                 _context = context;
+
             //if (_currentState == State.Idle && state == LState.OnGround && input.IsAscending)
             if (_currentState == State.Idle && ground != null && input.IsAscending)
                 StartJump();
@@ -224,7 +284,6 @@ namespace Tests.Locomotion
                 EndJump();
                 return;
             }
-
 
             if (_timeline.IsRunning)
                 _timeline.OnUpdate(Time.fixedDeltaTime);

@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts;
 using NUnit.Framework.Constraints;
 using System;
+using Tests.Locomotion;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;

@@ -2,6 +2,7 @@
 using Assets.Scripts.Utilities.Timeline.Event.Point;
 using Assets.Scripts.Utilities.Timeline.Event.Range;
 using System;
+using Tests.Locomotion;
 using UnityEngine;
 
 namespace Locomotion
