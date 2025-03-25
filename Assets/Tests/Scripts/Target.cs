@@ -19,9 +19,5 @@ namespace Tests
             }
             set => _context = value;
         }
-        void Start()
-        {
-            _context = new();
-        }
     }
 }

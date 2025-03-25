@@ -1,10 +1,7 @@
 ﻿using Locomotion;
 using System;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Tests.Locomotion.Animation;
-using Unity.VisualScripting;
 using UnityEngine;
 namespace Tests.Locomotion
 {
@@ -13,26 +10,6 @@ namespace Tests.Locomotion
         OnGround,
         Ascending,
         Descending
-    }
-    public class Context
-    {
-        public LocomotionContext Locomotion;
-        public Rigidbody RigidBody;
-        public Collider Collider;
-        public Vector3 Velocity { get => Locomotion.Velocity; set => Locomotion.Velocity = value; }
-        public Quaternion Rotation { get => Locomotion.Rotation; set => Locomotion.Rotation = value; }
-        public Vector3 Position { get => Locomotion.Position; set => Locomotion.Position = value; }
-        public ITarget Target;
-        public float DeltaTime;
-        public IHybridInput Input;
-        public IGround Ground;
-        public IGroundDetector GroundDetector;
-        public State State;
-        public override string ToString()
-        {
-            return $"State: {State},\nGround: {{ {Ground} }}, \nLocomotionContext: {{ {Locomotion} }}";
-        }
-
     }
     [RequireComponent(typeof(Rigidbody))]
     public class LocomotionControlBase : MonoBehaviour
@@ -44,7 +21,6 @@ namespace Tests.Locomotion
         internal HorizontalLocomotion horizontalLocomotion;
         internal QuickBoostLocomotion quickBoostLocomotion;
         internal HorizontalDrag horizontalDrag;
-        internal JumpLocomotion jumpLocomotion;
         internal JumpLocomotion_New jumpLocomotion_New;
         internal AirLocomotion airLocomotion;
         internal Gravity gravity;
@@ -75,27 +51,27 @@ namespace Tests.Locomotion
 
             platformLocomotion = GetComponent<PlatformLocomotion>() ?? throw new ComponentCantFindException(this.gameObject, typeof(PlatformLocomotion));
 
-            horizontalLocomotion = new(_definition.Base);
-            horizontalDrag = new(_definition.Base);
-            jumpLocomotion = new(_definition.Jump);
-            jumpLocomotion_New = new(_definition.Jump, GetComponent<JumpCollision>());
-            quickBoostLocomotion = new(_definition.QuickBoost, jumpLocomotion);
-            airLocomotion = new(_definition.Base, jumpLocomotion);
+            horizontalDrag = new(_definition.Base, _rb);
+            jumpLocomotion_New = new(_definition.Jump);
+            horizontalLocomotion = new(_definition.Base, jumpLocomotion_New);
+            quickBoostLocomotion = new(_definition.Base, _definition.QuickBoost, jumpLocomotion_New);
+            airLocomotion = new(_definition.Base, jumpLocomotion_New);
             gravity = new();
             rotation = new(this.gameObject);
             var collider = GetComponent<Collider>();
-            Debug.Log("Bounds: " + collider.bounds);
 
-            var ground = new Ground(_groundDetector);
+            //var ground = new Ground(_groundDetector);
             var target = new Target(_camera);
-            _context = new()
-            {
-                //Ground = ground,
-                RigidBody = _rb,
-                Collider = GetComponent<Collider>(),
-                Input = _input,
-                Target = target,
-            };
+            //_context = new()
+            //{
+            //    //Ground = ground,
+            //    RigidBody = _rb,
+            //    Collider = GetComponent<Collider>(),
+            //    Input = _input,
+            //    Target = target,
+            //};
+
+            _context = new(_rb, _input, target, collider, _groundDetector);
             target.context = _context;
 
 
@@ -110,11 +86,11 @@ namespace Tests.Locomotion
                 //platformLocomotion.AM,
                 rotation,
                 horizontalLocomotion,
-                //quickBoostLocomotion,
+                quickBoostLocomotion,
                 horizontalDrag,
                 jumpLocomotion_New,
                 //jumpLocomotion,
-                //airLocomotion,
+                airLocomotion,
                 //gravity,
                 //platformLocomotion.BM
             };
@@ -134,30 +110,44 @@ namespace Tests.Locomotion
         }
         void UpdateContext()
         {
-            _context.Ground = _groundDetector.CollidedGround;
-            _context.Locomotion = new()
-            {
-                Position = _rb.position,
-                Rotation = _rb.rotation,
-                Velocity = _rb.velocity,
-            };
+            //_context.Ground = _groundDetector.CollidedGround;
+            //_context.Locomotion = new()
+            //{
+            //    Position = _rb.position,
+            //    Rotation = _rb.rotation,
+            //    Velocity = _rb.velocity,
+            //};
+            //var ground = _context.Ground;
+            //var state = _context.State;
+
+            //_context.World = ground == null ? World.Default : World.NewTranslation(ground.Normal);
+
+            _context.OnUpdate(_groundDetector.CollidedGround);
+
+
             var ground = _context.Ground;
             var state = _context.State;
-            if (ground != null && _rb.velocity.y <= 0)
-                _context.State = State.OnGround;
+
+            if (ground != null)
+            {
+                if (_rb.velocity.y <= 0)
+                    _context.State = State.OnGround;
+            }
             else if (ground == null && state != State.Ascending)
             {
                 _context.State = State.Descending;
             }
-            _context.DeltaTime = Time.fixedDeltaTime;
+
 
         }
 
         void ApplyContext()
         {
             _rb.velocity = _context.Velocity;
+            Debug.Log("context.speed :" + Vector3.ProjectOnPlane(_context.Velocity, Vector3.up).magnitude);
             _rb.MovePosition(_context.Position);
             _rb.MoveRotation(_context.Rotation);
+            //_rb.MoveRotation(_context.Rotation * Quaternion.Euler(0, 35 * Time.deltaTime, 0));
         }
         void DebugRun()
         {
@@ -181,43 +171,9 @@ namespace Tests.Locomotion
         void FixedUpdate()
         {
             UpdateContext();
-            //for (int i = 0; i < _modules.Length; i++)
-            //{
-            //    var module = _modules[i];
-            //    module.OnUpdate(_context);
-            //}
             Run();
             //DebugRun();
             ApplyContext();
-        }
-        void CollisionContextInitialize(Collision collision)
-        {
-            _collisionContext.Collision = collision;
-            collision.GetContacts(_collisionContext.ContactPoints);
-        }
-        private void OnCollisionEnter(Collision collision)
-        {
-            CollisionContextInitialize(collision);
-            foreach (var c in _collisionModules)
-            {
-                c.OnColliderEnter(_collisionContext);
-            }
-        }
-        private void OnCollisionStay(Collision collision)
-        {
-            CollisionContextInitialize(collision);
-            foreach (var c in _collisionModules)
-            {
-                c.OnColliderStay(_collisionContext);
-            }
-        }
-        private void OnCollisionExit(Collision collision)
-        {
-            CollisionContextInitialize(collision);
-            foreach (var c in _collisionModules)
-            {
-                c.OnColliderExit(_collisionContext);
-            }
         }
         private void OnDrawGizmos()
         {
@@ -225,7 +181,7 @@ namespace Tests.Locomotion
                 return;
             var velocity = _rb.velocity;
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(_rb.position, velocity);
+            Gizmos.DrawLine(_rb.position, _rb.position + velocity);
         }
     }
 }

@@ -1,52 +1,38 @@
 ﻿using Locomotion;
 using System;
 using UnityEngine;
-using JState = Tests.Locomotion.JumpLocomotion.State;
+using JState = Tests.Locomotion.JumpLocomotion_New.State;
 namespace Tests.Locomotion
 {
     class AirLocomotion : IModule
     {
 
-        IBaseDefinitions _definition;
-        JumpLocomotion _jump;
-        public AirLocomotion(IBaseDefinitions definition, JumpLocomotion jumpLocomotion)
+        IBaseDefinitions _definitions;
+        JumpLocomotion_New _jumpLocomotion;
+        public AirLocomotion(IBaseDefinitions definition, JumpLocomotion_New jumpLocomotion)
         {
-            _definition = definition ?? throw new ArgumentNullException(nameof(definition));
-            _jump = jumpLocomotion ?? throw new ArgumentNullException(nameof(jumpLocomotion));
+            _definitions = definition ?? throw new ArgumentNullException(nameof(definition));
+            _jumpLocomotion = jumpLocomotion ?? throw new ArgumentNullException(nameof(jumpLocomotion));
         }
 
-        Vector3 CalculateVelocity(Vector3 currentVelocity)
-        {
-            var result = currentVelocity;
-            result.y = _definition.AscendingSpeed;
-            return result;
-        }
         public void OnUpdate(Context context)
         {
             var input = context.Input;
-            var state = context.State;
-
-
-            if (_jump.CurrentState > JState.Idle
-                && _jump.CurrentState <= JState.Ascending)
+            var ground = context.Ground;
+            if (ground != null || !input.IsAscending)
                 return;
 
 
-            if (!input.IsAscending)
-            {
-                if (state == State.Ascending)
-                    context.State = State.Descending;
+            if (_jumpLocomotion.CurrentState > JState.OnGround && _jumpLocomotion.CurrentState <= JState.Ascending)
                 return;
-            }
+            else if (_jumpLocomotion.CurrentState == JState.Descending)
+                _jumpLocomotion.EndJump(context);
 
-
-            if (_jump.CurrentState == JState.Descending)
-                _jump.EndJump();
-
-
-            if (state != State.Ascending)
-                context.State = State.Ascending;
-            context.Velocity = CalculateVelocity(context.Velocity);
+            var velocity = context.Velocity;
+            var y = velocity.y;
+            if (y <= _definitions.AscendingSpeed)
+                velocity.y = _definitions.AscendingSpeed;
+            context.Velocity = velocity;
 
         }
     }

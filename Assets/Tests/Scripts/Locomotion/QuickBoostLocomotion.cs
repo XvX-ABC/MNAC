@@ -4,71 +4,42 @@ using Assets.Scripts.Utilities.Timeline.Event.Point;
 using Assets.Scripts.Utilities.Timeline.Event.Range;
 using Locomotion;
 using UnityEngine;
-using JState = Tests.Locomotion.JumpLocomotion.State;
 namespace Tests.Locomotion
 {
     class QuickBoostLocomotion : IModule
     {
-        //class Boosting : RangeEvent
-        //{
-        //    QuickBoostLocomotion _locomotion;
-        //    public Boosting(float triggeredProportion, float durationProportion, QuickBoostLocomotion locomotion) : base(durationProportion, triggeredProportion)
-        //    {
-        //        _locomotion = locomotion;
-        //    }
-        //    public override void Execute(TimelineContext _)
-        //    {
-        //        Debug.Log("Boosting: " + _locomotion._velocity);
-        //        _locomotion._context.Velocity = _locomotion._velocity;
-        //    }
-        //}
-        //class EndBoostEvent : PointEvent
-        //{
-        //    QuickBoostLocomotion _locomotion;
-
-        //    public EndBoostEvent(float triggeredProportion, QuickBoostLocomotion locomotion) : base(triggeredProportion)
-        //    {
-        //        _locomotion = locomotion;
-        //    }
-
-        //    public override void Execute(TimelineContext context)
-        //    {
-        //        _locomotion.EndBoost();
-        //    }
-        //}
-        IQuickBoostDefinitions _definition;
-        JumpLocomotion _jumpLocomotion;
+        IQuickBoostDefinitions _definitions;
+        IBaseDefinitions _baseDefinitions;
+        JumpLocomotion_New _jumpLocomotion;
         Timeline _timeline;
         Context _context;
         Vector3 _velocity;
         float _lastTime;
-        public QuickBoostLocomotion(IQuickBoostDefinitions definition, JumpLocomotion jumpLocomotion)
+        public QuickBoostLocomotion(IBaseDefinitions baseDefinitions, IQuickBoostDefinitions definitions, JumpLocomotion_New jumpLocomotion)
         {
-            _definition = definition ?? throw new ArgumentNullException(nameof(definition));
+            _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
             //_timeline = new(_definition.Duration, false, new Boosting(0f, 1f, this), new EndBoostEvent(1f, this));
-            _timeline = new(_definition.Duration);
+            _timeline = new(_definitions.Duration);
             _timeline.AddRangeEvent(0f, 1f, _ => _context.Velocity = _velocity);
             _timeline.AddPointEvent(1f, _ => EndBoost());
             _jumpLocomotion = jumpLocomotion;
+            _baseDefinitions = baseDefinitions;
         }
-        public void StartBoost()
+        public void StartBoost(Context context)
         {
-            if (_timeline.isRunning)
+            if (_timeline.IsRunning)
                 return;
-
             var currentTime = Time.unscaledTime;
-            if (Mathf.Abs(currentTime - _lastTime) < _definition.Interval)
+            if (Mathf.Abs(currentTime - _lastTime) < _definitions.Interval)
                 return;
-
-
-            var context = _context;
-            var direction = context.Input.HorizontalDirection;
-            var velocity = context.Velocity;
-
-            _velocity = CalculateVelocity(direction, velocity);
-
+            var direction = context.World.Input.HorizontalDirection;
+            if (direction == Vector3.zero)
+                return;
+            var speed = _baseDefinitions.Speed * _definitions.Power;
+            var expectedVelocity = direction * speed;
+            _velocity = expectedVelocity;
+            _context = context;
             _timeline.Start();
-
         }
         public void EndBoost()
         {
@@ -82,7 +53,7 @@ namespace Tests.Locomotion
         public Vector3 CalculateVelocity(Vector3 direction, Vector3 currentVelocity)
         {
             direction = direction.normalized;
-            var velocity = direction * _definition.Velocity;
+            var velocity = direction * _definitions.Velocity;
             velocity.y = currentVelocity.y;
             return velocity;
         }
@@ -92,13 +63,10 @@ namespace Tests.Locomotion
             var input = context.Input;
             if (input.IsBoosting && !_timeline.IsRunning)
             {
-                if (_jumpLocomotion.CurrentState > JState.Idle && _jumpLocomotion.CurrentState <= JState.Ascending)
-                {
-                    _context.State = State.Descending;
-                    _jumpLocomotion.EndJump();
-                }
+                if (_jumpLocomotion.CurrentState > JumpLocomotion_New.State.OnGround)
+                    _jumpLocomotion.EndJump(context);
 
-                StartBoost();
+                StartBoost(context);
             }
             if (_timeline.IsRunning)
                 _timeline.OnUpdate(context.DeltaTime);

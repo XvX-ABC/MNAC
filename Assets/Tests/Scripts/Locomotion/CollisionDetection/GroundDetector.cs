@@ -26,12 +26,14 @@ namespace Tests.Locomotion
         public float GroundHeight => _ground.height;
         public GroundDetector()
         {
-            _contactPoints = new();
             _ground = new Ground_New();
+            _contactPoints = new();
         }
         void Awake()
         {
+
             _rb = GetComponent<Rigidbody>();
+            //_rb = GetComponent<Collider>().attachedRigidbody;
         }
         int FilterNormals()
         {
@@ -67,7 +69,6 @@ namespace Tests.Locomotion
         }
         private void OnCollisionEnter(Collision collision)
         {
-            return;
             var obj = collision.gameObject;
             var layer = obj.layer;
             if ((1 << layer & _groundMask) == 0)
@@ -82,14 +83,12 @@ namespace Tests.Locomotion
                 _ground.collided = false;
                 return;
             }
-
             _ground.normal = CalculateGroundNormal();
             _ground.obj = obj;
             _ground.collided = true;
         }
         private void OnCollisionStay(Collision collision)
         {
-            return;
             var obj = collision.gameObject;
             var layer = obj.layer;
             if ((1 << layer & _groundMask) == 0)
@@ -113,7 +112,6 @@ namespace Tests.Locomotion
         }
         private void OnCollisionExit(Collision collision)
         {
-            return;
             var obj = collision.gameObject;
             var layer = obj.layer;
             if ((1 << layer & _groundMask) == 0)
@@ -124,7 +122,7 @@ namespace Tests.Locomotion
         }
         void FixedUpdate()
         {
-            return;
+            //Debug.Log("collided: " + _ground.collided);
             if (_ground.collided)
                 return;
             if (Physics.Raycast(transform.position, -World_Up, out var hitInfo, Mathf.Infinity, _groundMask))
@@ -137,77 +135,91 @@ namespace Tests.Locomotion
             }
         }
 
+        private void OnDrawGizmos()
+        {
+            if (!Application.isPlaying)
+                return;
+            Gizmos.color = Color.yellow;
+            foreach (var p in _contactPoints)
+            {
+                Gizmos.DrawSphere(p.point, 0.3f);
+            }
+        }
         public void OnFixedUpdate()
         {
-            if (_ground.collided)
-                return;
-            if (Physics.Raycast(transform.position, -World_Up, out var hitInfo, Mathf.Infinity, _groundMask))
-            {
-                var obj = hitInfo.collider.gameObject;
-                var pos = _rb.position;
-                var point = hitInfo.point;
-                _currentHeight = pos.y - point.y;
-                _ground.height = obj.transform.position.y;
-            }
+            return;
+            //if (_ground.collided)
+            //    return;
+            //if (Physics.Raycast(transform.position, -World_Up, out var hitInfo, Mathf.Infinity, _groundMask))
+            //{
+            //    var obj = hitInfo.collider.gameObject;
+            //    var pos = _rb.position;
+            //    var point = hitInfo.point;
+            //    _currentHeight = pos.y - point.y;
+            //    _ground.height = obj.transform.position.y;
+            //}
         }
 
         public void OnColliderEnter(CollisionContext context)
         {
-            var collision = context.Collision;
-            var obj = collision.gameObject;
-            var layer = obj.layer;
-            if ((1 << layer & _groundMask) == 0)
-                return;
+            return;
+            //var collision = context.Collision;
+            //var obj = collision.gameObject;
+            //var layer = obj.layer;
+            //if ((1 << layer & _groundMask) == 0)
+            //    return;
 
-            _ground.height = obj.transform.position.y;
+            //_ground.height = obj.transform.position.y;
 
-            collision.GetContacts(_contactPoints);
-            var quantity = FilterNormals();
-            if (quantity <= 0)
-            {
-                _ground.collided = false;
-                return;
-            }
+            //collision.GetContacts(_contactPoints);
+            //var quantity = FilterNormals();
+            //if (quantity <= 0)
+            //{
+            //    _ground.collided = false;
+            //    return;
+            //}
 
-            _ground.normal = CalculateGroundNormal();
-            _ground.obj = obj;
-            _ground.collided = true;
+            //_ground.normal = CalculateGroundNormal();
+            //_ground.obj = obj;
+            //_ground.collided = true;
         }
 
         public void OnColliderStay(CollisionContext context)
         {
-            var collision = context.Collision;
-            var obj = collision.gameObject;
-            var layer = obj.layer;
-            if ((1 << layer & _groundMask) == 0)
-                return;
+            return;
+            //var collision = context.Collision;
+            //var obj = collision.gameObject;
+            //var layer = obj.layer;
+            //if ((1 << layer & _groundMask) == 0)
+            //    return;
 
-            _ground.height = obj.transform.position.y;
+            //_ground.height = obj.transform.position.y;
 
-            collision.GetContacts(_contactPoints);
-            var quantity = FilterNormals();
-            if (quantity <= 0)
-            {
-                _ground.collided = false;
-                return;
-            }
-            else
-                _ground.collided = true;
+            //collision.GetContacts(_contactPoints);
+            //var quantity = FilterNormals();
+            //if (quantity <= 0)
+            //{
+            //    _ground.collided = false;
+            //    return;
+            //}
+            //else
+            //    _ground.collided = true;
 
-            _ground.normal = CalculateGroundNormal();
-            _ground.obj = obj;
+            //_ground.normal = CalculateGroundNormal();
+            //_ground.obj = obj;
 
         }
 
         public void OnColliderExit(CollisionContext context)
         {
-            var collision = context.Collision;
-            var obj = collision.gameObject;
-            var layer = obj.layer;
-            if ((1 << layer & _groundMask) == 0)
-                return;
-            _ground.normal = Vector3.zero;
-            _ground.collided = false;
+            return;
+            //var collision = context.Collision;
+            //var obj = collision.gameObject;
+            //var layer = obj.layer;
+            //if ((1 << layer & _groundMask) == 0)
+            //    return;
+            //_ground.normal = Vector3.zero;
+            //_ground.collided = false;
         }
     }
 }

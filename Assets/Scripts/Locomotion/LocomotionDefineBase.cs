@@ -47,10 +47,13 @@ namespace Locomotion
             float _interval;
             [SerializeField]
             float _velocity;
+            [SerializeField]
+            float _power;
             public float Duration => _duration;
 
             public float Velocity => _velocity;
             public float Interval => _interval;
+            public float Power => _power;
         }
         [SerializeField]
         BaseDefinitions _base;

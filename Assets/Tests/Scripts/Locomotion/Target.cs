@@ -18,9 +18,10 @@ namespace Tests.Locomotion
         {
             get
             {
-                _controller.UpdatePos(context.Locomotion.Position);
+                _controller.UpdatePos(context.Position);
                 var ray = _camera.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out var hitInfo))
+                var layer = LayerMask.NameToLayer("Terrain");
+                if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, (1 << layer)))
                     return hitInfo.point;
                 return default;
             }

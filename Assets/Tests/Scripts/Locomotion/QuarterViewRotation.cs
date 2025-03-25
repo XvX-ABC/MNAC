@@ -18,12 +18,10 @@ namespace Tests.Locomotion
             var targetPos = target.Position;
 
             var towards = (targetPos - currentPos);
-            towards.y = 0;
-            towards = towards.normalized;
-            var currentRotation = context.Rotation;
-            //towards.y = 0;
-            var finalVector = Quaternion.Inverse(currentRotation) * towards;
-            var newRotation = currentRotation * Quaternion.LookRotation(finalVector, _obj.transform.up);
+            towards = Vector3.ProjectOnPlane(towards, Vector3.up).normalized;
+            var currentRotation = Quaternion.LookRotation(_obj.transform.forward);
+            var finalVector = Quaternion.Inverse(currentRotation) * towards;    
+            var newRotation = currentRotation * Quaternion.LookRotation(finalVector, Vector3.up);
             context.Rotation = newRotation;
         }
         public void OnUpdate(Context context)

@@ -31,7 +31,7 @@ namespace Tests.Locomotion
                     direction -= Vector3.right;
                 else if (Input.GetKey(_right))
                     direction += Vector3.right;
-                return direction;
+                return direction.normalized;
             }
         }
 

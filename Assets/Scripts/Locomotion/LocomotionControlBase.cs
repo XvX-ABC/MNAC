@@ -25,6 +25,7 @@ namespace Locomotion
     {
         public float Duration { get; }
         public float Velocity { get; }
+        public float Power { get; }
         public float Interval { get; }
     }
     public interface ILocomotionDefinitions

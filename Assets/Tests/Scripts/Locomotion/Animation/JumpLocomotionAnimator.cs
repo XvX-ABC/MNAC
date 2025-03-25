@@ -24,16 +24,16 @@ namespace Tests.Locomotion.Animation
         void Start()
         {
             var controlBase = GetComponent<LocomotionControlBase>() ?? throw new ComponentCantFindException(this.gameObject, typeof(LocomotionControlBase));
-            _jumpLocomotion = controlBase.jumpLocomotion ?? throw new NullReferenceException(nameof(controlBase.jumpLocomotion));
+            //_jumpLocomotion = controlBase.jumpLocomotion ?? throw new NullReferenceException(nameof(controlBase.jumpLocomotion));
 
 
-            var clipLength = _definition.AscendingClipLength;
-            var length = _jumpLocomotion.AscendingDuration;
-            _animator.SetFloat(_definition.AscendingMultiplierName, clipLength / length);
+            //var clipLength = _definition.AscendingClipLength;
+            //var length = _jumpLocomotion.AscendingDuration;
+            //_animator.SetFloat(_definition.AscendingMultiplierName, clipLength / length);
 
-            clipLength = _definition.DescendingClipLength;
-            length = _jumpLocomotion.Definition.LandingDuration;
-            _animator.SetFloat(_definition.LandingMultiplierName, clipLength / length);
+            //clipLength = _definition.DescendingClipLength;
+            //length = _jumpLocomotion.Definition.LandingDuration;
+            //_animator.SetFloat(_definition.LandingMultiplierName, clipLength / length);
 
         }
         [Obsolete]
@@ -46,28 +46,28 @@ namespace Tests.Locomotion.Animation
         }
         public void OnUpdate(Context context)
         {
-            var currentState = _jumpLocomotion.CurrentState;
-            if (currentState == _oldState)
-                return;
+            //var currentState = _jumpLocomotion.CurrentState;
+            //if (currentState == _oldState)
+            //    return;
 
 
-            if (_oldState == JState.Idle)
-            {
-                var pos = context.Position;
-                _animator.SetBool(_definition.EnterParamName, true);
-                _maxHeight = pos.y + _jumpLocomotion.Definition.Height;
-                _oldState = currentState;
-            }
-            else if (currentState == JState.Idle)
-            {
-                _animator.SetBool(_definition.EnterParamName, false);
-                _oldState = currentState;
-            }
+            //if (_oldState == JState.Idle)
+            //{
+            //    var pos = context.Position;
+            //    _animator.SetBool(_definition.EnterParamName, true);
+            //    _maxHeight = pos.y + _jumpLocomotion.Definition.Height;
+            //    _oldState = currentState;
+            //}
+            //else if (currentState == JState.Idle)
+            //{
+            //    _animator.SetBool(_definition.EnterParamName, false);
+            //    _oldState = currentState;
+            //}
 
-            if (currentState == JState.Descending)
-            {
-                Landing();
-            }
+            //if (currentState == JState.Descending)
+            //{
+            //    Landing();
+            //}
         }
     }
 }

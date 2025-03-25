@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 namespace Tests.Locomotion
 {
@@ -23,14 +24,29 @@ namespace Tests.Locomotion
             //    _obstacles.Clear();
             //    _shouldFlush = false;
             //}
-            if (_obstacles.FindIndex(ctx => ctx.Collision == collision) > -1)
-                return;
-            var context = new CollisionContext() { Collision = collision, ContactPoints = new List<ContactPoint>() };
+            var index = _obstacles.FindIndex(ctx => ctx.Collision == collision);
+            var context = default(CollisionContext);
+            if (index == -1)
+            {
+                context = new CollisionContext() { Collision = collision, ContactPoints = new List<ContactPoint>() };
+                _obstacles.Add(context);
+            }
+            else
+                context = _obstacles[index];
             collision.GetContacts(context.ContactPoints);
-            _obstacles.Add(context);
         }
         private void OnCollisionStay(Collision collision)
         {
+            var index = _obstacles.FindIndex(ctx => ctx.Collision == collision);
+            var context = default(CollisionContext);
+            if (index == -1)
+            {
+                context = new CollisionContext() { Collision = collision, ContactPoints = new List<ContactPoint>() };
+                _obstacles.Add(context);
+            }
+            else
+                context = _obstacles[index];
+            collision.GetContacts(context.ContactPoints);
 
         }
         private void OnCollisionExit(Collision collision)

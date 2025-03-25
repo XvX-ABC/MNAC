@@ -6,10 +6,12 @@ namespace Tests.Locomotion
     public class HorizontalDrag : IModule
     {
         IBaseDefinitions _definition;
+        Rigidbody _rb;
 
-        public HorizontalDrag(IBaseDefinitions definition)
+        public HorizontalDrag(IBaseDefinitions definitions, Rigidbody rbody)
         {
-            _definition = definition ?? throw new ArgumentNullException(nameof(definition));
+            _definition = definitions ?? throw new ArgumentNullException(nameof(definitions));
+            _rb = rbody ?? throw new ArgumentNullException(nameof(rbody));
         }
 
         Vector3 CalculateVelocityWithDrag(Vector3 velocity, float deltaTime)
@@ -22,7 +24,10 @@ namespace Tests.Locomotion
         public void OnUpdate(Context context)
         {
             var direction = context.Input.HorizontalDirection;
-            if (direction == Vector3.zero)
+            var expectedSpeed = context.ExpectedLocomotion.SquareSpeed;
+            var currentSpeed = _rb.velocity.sqrMagnitude;
+            //if (direction == Vector3.zero)
+            if (currentSpeed > expectedSpeed)
             {
                 var ground = context.Ground;
                 var normal = ground == null ? Vector3.up : ground.Normal;

@@ -17,7 +17,7 @@ namespace Tests.Locomotion.Animation
             _bonesDefinition = GetComponent<IBonesDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IBonesDefinitions));
             _animator = GetComponent<Animator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(Animator));
         }
-        (Vector3, Quaternion) UpdateFootIKPosAndRotation(ushort legNum)
+        (Vector3, Quaternion) CalculateFootIKPosAndRotation(ushort legNum)
         {
             var goalIK = default(AvatarIKGoal);
             var bottomHeight = BottomHeight;
@@ -54,8 +54,8 @@ namespace Tests.Locomotion.Animation
             if (ground==null)
                 return;
             var legLength = _bonesDefinition.LegLength;
-            var (newPosLeft, _) = UpdateFootIKPosAndRotation(0);
-            var (newPosRight, _) = UpdateFootIKPosAndRotation(1);
+            var (newPosLeft, _) = CalculateFootIKPosAndRotation(0);
+            var (newPosRight, _) = CalculateFootIKPosAndRotation(1);
             var (v_l, length_l) = CalculateVectorAndLength(0, newPosLeft, legLength);
             var (v_r, length_r) = CalculateVectorAndLength(1, newPosRight, legLength);
 
