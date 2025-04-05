@@ -22,7 +22,7 @@ namespace Tests.Locomotion
             get => _ground.collided ? _ground : null;
         }
         public bool Collided { get => _ground.collided; }
-        float IGroundDetector.Distance => _ground.collided ? 0 : _currentHeight;
+        float IGroundDetector.Distance => _currentHeight;
         public float GroundHeight => _ground.height;
         public GroundDetector()
         {
@@ -86,6 +86,8 @@ namespace Tests.Locomotion
             _ground.normal = CalculateGroundNormal();
             _ground.obj = obj;
             _ground.collided = true;
+
+            _currentHeight = 0;
         }
         private void OnCollisionStay(Collision collision)
         {

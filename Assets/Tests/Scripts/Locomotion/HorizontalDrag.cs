@@ -21,7 +21,7 @@ namespace Tests.Locomotion
 
 
         }
-        public void OnUpdate(Context context)
+        public void OnFixedUpdate(Context context)
         {
             var direction = context.Input.HorizontalDirection;
             var expectedSpeed = context.ExpectedLocomotion.SquareSpeed;

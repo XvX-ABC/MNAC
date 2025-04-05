@@ -10,7 +10,7 @@ namespace Tests.Locomotion
         {
         }
 
-        public void OnUpdate(Context context)
+        public void OnFixedUpdate(Context context)
         {
             //if (context.State == State.Descending)
             //{

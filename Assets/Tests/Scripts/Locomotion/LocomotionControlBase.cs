@@ -90,7 +90,7 @@ namespace Tests.Locomotion
                 horizontalDrag,
                 jumpLocomotion_New,
                 //jumpLocomotion,
-                airLocomotion,
+                //airLocomotion,
                 //gravity,
                 //platformLocomotion.BM
             };
@@ -110,18 +110,6 @@ namespace Tests.Locomotion
         }
         void UpdateContext()
         {
-            //_context.Ground = _groundDetector.CollidedGround;
-            //_context.Locomotion = new()
-            //{
-            //    Position = _rb.position,
-            //    Rotation = _rb.rotation,
-            //    Velocity = _rb.velocity,
-            //};
-            //var ground = _context.Ground;
-            //var state = _context.State;
-
-            //_context.World = ground == null ? World.Default : World.NewTranslation(ground.Normal);
-
             _context.OnUpdate(_groundDetector.CollidedGround);
 
 
@@ -144,10 +132,10 @@ namespace Tests.Locomotion
         void ApplyContext()
         {
             _rb.velocity = _context.Velocity;
-            Debug.Log("context.speed :" + Vector3.ProjectOnPlane(_context.Velocity, Vector3.up).magnitude);
+            //Debug.Log("context.speed :" + Vector3.ProjectOnPlane(_context.Velocity, Vector3.up).magnitude);
             _rb.MovePosition(_context.Position);
-            _rb.MoveRotation(_context.Rotation);
-            //_rb.MoveRotation(_context.Rotation * Quaternion.Euler(0, 35 * Time.deltaTime, 0));
+            if (_context.Rotation != Quaternion.identity)
+                _rb.MoveRotation(_context.Rotation);
         }
         void DebugRun()
         {
@@ -155,23 +143,31 @@ namespace Tests.Locomotion
             for (int i = 0; i < _modules.Length; i++)
             {
                 var module = _modules[i];
-                module.OnUpdate(_context);
+                module.OnFixedUpdate(_context);
                 sbuilder.AppendLine($"[{module.GetType().Name}]->{_context}\t");
             }
             Debug.Log(sbuilder.ToString());
         }
-        void Run()
+        void OnFixedUpdateOfChildrenModules()
         {
             for (int i = 0; i < _modules.Length; i++)
             {
                 var module = _modules[i];
-                module.OnUpdate(_context);
+                module.OnFixedUpdate(_context);
+            }
+        }
+        void OnUpdateOfChildrenModules()
+        {
+            for (int i = 0; i < _modules.Length; i++)
+            {
+                var m = _modules[i];
+                m.OnUpdate(_context);
             }
         }
         void FixedUpdate()
         {
             UpdateContext();
-            Run();
+            OnFixedUpdateOfChildrenModules();
             //DebugRun();
             ApplyContext();
         }

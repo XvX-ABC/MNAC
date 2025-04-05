@@ -127,7 +127,7 @@ namespace Tests.Locomotion
             return _startVelocity + Physics.gravity * time;
         }
 
-        public void OnUpdate(Context context)
+        public void OnFixedUpdate(Context context)
         {
             var input = context.Input;
             var ground = context.Ground;

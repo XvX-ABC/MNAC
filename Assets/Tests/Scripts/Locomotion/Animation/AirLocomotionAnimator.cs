@@ -19,7 +19,7 @@ namespace Tests.Locomotion.Animation
             var controlBase = GetComponent<LocomotionControlBase>() ?? throw new ComponentCantFindException(this.gameObject, typeof(LocomotionControlBase));
             //_jumpLocomotion = controlBase.jumpLocomotion ?? throw new NullReferenceException(nameof(controlBase.jumpLocomotion));
         }
-        public void OnUpdate(Context context)
+        public void OnFixedUpdate(Context context)
         {
             //var ground = context.Ground;
             //if (ground!=null)

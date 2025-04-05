@@ -5,5 +5,6 @@
         public IHorizontalLocomotionAnimationDefinitions Horizontal { get; }
         public IJumpLocomotionAnimationDefinitions Jump { get; }
         public IAirLocomotionAnimationDefinitions Air { get; }
+        public IBoostingLocomotionAnimatorDefinitions Boosting { get; }
     }
 }

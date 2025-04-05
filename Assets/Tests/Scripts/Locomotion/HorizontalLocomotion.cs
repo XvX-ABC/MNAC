@@ -16,7 +16,7 @@ namespace Tests.Locomotion
 
         }
 
-        public void OnUpdate(Context context)
+        public void OnFixedUpdate(Context context)
         {
             var world = context.World;
             var direction = world.Input.HorizontalDirection;
@@ -27,19 +27,17 @@ namespace Tests.Locomotion
 
 
             var ground = context.Ground;
-            if (ground == null || _jump.CurrentState > JumpLocomotion_New.State.OnGround)
+            if (_jump.CurrentState > JumpLocomotion_New.State.OnGround || ground == null)
+            //if (_jump.CurrentState > JumpLocomotion_New.State.OnGround)
             {
                 currentVelocity = Vector3.ProjectOnPlane(currentVelocity, world.Up);
                 currentSpeed = currentVelocity.magnitude;
             }
 
-
             var speed = _definitions.Speed;
             if (currentSpeed <= _definitions.Speed)
                 //var velocity = Vector3.MoveTowards(currentVelocity, direction * _definitions.Speed, _definitions.AscendingSpeed) - currentVelocity;
                 speed = Mathf.MoveTowards(currentSpeed, _definitions.Speed, _definitions.AccelerationSpeed);
-            //else
-            //    speed = currentSpeed * (1 - context.DeltaTime * _definitions.Drag);
             var velocity = direction.normalized * speed - currentVelocity;
             context.Velocity += velocity;
         }

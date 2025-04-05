@@ -11,15 +11,15 @@ namespace Tests.Locomotion.Animation
         float _ascendingClipLength;
         [SerializeField]
         string _ascendingMultiplierName;
-        [SerializeField]
+        //[SerializeField]
         float _landingClipLength;
-        [SerializeField]
+        //[SerializeField]
         string _landingMultiplierName;
         [SerializeField]
         string _landingValueParamName;
         [SerializeField]
         string _descendingClipName;
-        [SerializeField]
+        //[SerializeField]
         float _descendingClipLength;
         [SerializeField]
         string _enterParamName;

@@ -15,7 +15,7 @@ namespace Tests.Locomotion
             _jumpLocomotion = jumpLocomotion ?? throw new ArgumentNullException(nameof(jumpLocomotion));
         }
 
-        public void OnUpdate(Context context)
+        public void OnFixedUpdate(Context context)
         {
             var input = context.Input;
             var ground = context.Ground;

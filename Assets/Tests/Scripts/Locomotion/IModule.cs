@@ -2,7 +2,8 @@
 {
     public interface IModule
     {
-        public void OnUpdate(Context context);
+        public void OnUpdate(Context context) { }
+        public void OnFixedUpdate(Context context);
     }
 
 }

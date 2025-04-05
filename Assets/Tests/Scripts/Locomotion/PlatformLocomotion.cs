@@ -19,7 +19,7 @@ namespace Tests.Locomotion
                 _l = l;
             }
 
-            public void OnUpdate(Context context)
+            public void OnFixedUpdate(Context context)
             {
                 if (_l._parentConstraint.constraintActive)
                 {
@@ -48,7 +48,7 @@ namespace Tests.Locomotion
                 _l = l;
             }
 
-            public void OnUpdate(Context context)
+            public void OnFixedUpdate(Context context)
             {
                 if (_l._parentConstraint.constraintActive)
                 {

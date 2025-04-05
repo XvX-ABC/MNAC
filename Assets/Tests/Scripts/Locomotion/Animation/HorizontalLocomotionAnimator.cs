@@ -1,21 +1,31 @@
 using System;
+using Locomotion;
 using Locomotion.Animation;
+using Tests.Weapons.MultiMissileLauncher.Animation;
 using UnityEngine;
 namespace Tests.Locomotion.Animation
 {
     public class HorizontalLocomotionAnimator : MonoBehaviour, IModule
     {
         const float BottomHeight = 0.8f;
-        IHorizontalLocomotionAnimationDefinitions _definition;
+        IHorizontalLocomotionAnimationDefinitions _definitions;
+        ILocomotionDefinitions _locomotionDefinitions;
         IBonesDefinitions _bonesDefinition;
+        JumpLocomotion_New _jumpLocomotion;
         Animator _animator;
         Context _context;
         void Awake()
         {
             var ldefinition = GetComponent<ILocomotionAnimationDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionAnimationDefinitions));
-            _definition = ldefinition.Horizontal ?? throw new NullReferenceException(nameof(ldefinition.Horizontal));
+            _definitions = ldefinition.Horizontal ?? throw new NullReferenceException(nameof(ldefinition.Horizontal));
+            _locomotionDefinitions = GetComponent<ILocomotionDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionDefinitions));
             _bonesDefinition = GetComponent<IBonesDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IBonesDefinitions));
             _animator = GetComponent<Animator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(Animator));
+
+        }
+        void Start()
+        {
+            _jumpLocomotion = GetComponent<LocomotionControlBase>().jumpLocomotion_New;
         }
         (Vector3, Quaternion) CalculateFootIKPosAndRotation(ushort legNum)
         {
@@ -51,7 +61,9 @@ namespace Tests.Locomotion.Animation
             if (_context == null)
                 return;
             var ground = _context.Ground;
-            if (ground==null)
+            if (ground == null)
+                return;
+            if (_jumpLocomotion.CurrentState > JumpLocomotion_New.State.InPreparation)
                 return;
             var legLength = _bonesDefinition.LegLength;
             var (newPosLeft, _) = CalculateFootIKPosAndRotation(0);
@@ -88,7 +100,7 @@ namespace Tests.Locomotion.Animation
         {
             UpdateFootIKOnGround();
         }
-        public void OnUpdate(Context context)
+        public void OnFixedUpdate(Context context)
         {
             _context = context;
             var ground = context.Ground;
@@ -100,9 +112,9 @@ namespace Tests.Locomotion.Animation
         {
             var rotation = context.Rotation;
             var velocity = context.Velocity;
-            var v = Quaternion.Inverse(context.Rotation) * velocity * 0.05f;
-            _animator.SetFloat(_definition.XParamName, v.x);
-            _animator.SetFloat(_definition.YParamName, v.z);
+            var v = Quaternion.Inverse(rotation) * velocity * 0.05f;
+            _animator.SetFloat(_definitions.XParamName, v.x);
+            _animator.SetFloat(_definitions.YParamName, v.z);
         }
     }
 }
