@@ -5,14 +5,14 @@ namespace Tests.Locomotion.Animation
     class LocomotionAnimationDefinitions : MonoBehaviour, ILocomotionAnimationDefinitions
     {
         [SerializeField]
-        HorizontalLocomotionAnimationDefinitions _horizontal;
+        GroundLocomotionAnimatorDefinitions _ground;
         [SerializeField]
         JumpLocomotionAnimationDefinitions _jump;
         [SerializeField]
         AirLocomotionAnimationDefinitions _air;
         [SerializeField]
         BoostingLocomotionAnimatorDefinitions _boosting;
-        public IHorizontalLocomotionAnimationDefinitions Horizontal => _horizontal;
+        public IGroundLocomotionAnimatorDefinitions Ground => _ground;
         public IJumpLocomotionAnimationDefinitions Jump => _jump;
 
         public IAirLocomotionAnimationDefinitions Air => _air;

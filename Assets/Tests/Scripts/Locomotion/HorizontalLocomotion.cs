@@ -1,5 +1,7 @@
 ﻿using Locomotion;
+using Tests.Environment;
 using TMPro.EditorUtilities;
+using UnityEditor.Networking.PlayerConnection;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 namespace Tests.Locomotion
@@ -7,9 +9,9 @@ namespace Tests.Locomotion
     class HorizontalLocomotion : IModule
     {
         IBaseDefinitions _definitions;
-        JumpLocomotion_New _jump;
+        JumpLocomotion _jump;
 
-        public HorizontalLocomotion(IBaseDefinitions definitions, JumpLocomotion_New jump)
+        public HorizontalLocomotion(IBaseDefinitions definitions, JumpLocomotion jump)
         {
             _definitions = definitions;
             _jump = jump;
@@ -27,8 +29,7 @@ namespace Tests.Locomotion
 
 
             var ground = context.Ground;
-            if (_jump.CurrentState > JumpLocomotion_New.State.OnGround || ground == null)
-            //if (_jump.CurrentState > JumpLocomotion_New.State.OnGround)
+            if (_jump.CurrentState > JumpLocomotion.State.OnGround || ground == null)
             {
                 currentVelocity = Vector3.ProjectOnPlane(currentVelocity, world.Up);
                 currentSpeed = currentVelocity.magnitude;
@@ -36,7 +37,6 @@ namespace Tests.Locomotion
 
             var speed = _definitions.Speed;
             if (currentSpeed <= _definitions.Speed)
-                //var velocity = Vector3.MoveTowards(currentVelocity, direction * _definitions.Speed, _definitions.AscendingSpeed) - currentVelocity;
                 speed = Mathf.MoveTowards(currentSpeed, _definitions.Speed, _definitions.AccelerationSpeed);
             var velocity = direction.normalized * speed - currentVelocity;
             context.Velocity += velocity;

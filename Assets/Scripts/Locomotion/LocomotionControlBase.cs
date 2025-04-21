@@ -2,38 +2,11 @@
 using Assets.Scripts.Utilities.Timeline.Event.Point;
 using Assets.Scripts.Utilities.Timeline.Event.Range;
 using System;
-using Tests.Locomotion;
+using Tests.Environment;
 using UnityEngine;
 
 namespace Locomotion
 {
-    public interface IBaseDefinitions
-    {
-        public float Speed { get; }
-        public float Drag { get; }
-        public float AccelerationSpeed { get; }
-        public float AscendingSpeed { get; }
-    }
-    public interface IJumpDefinitions
-    {
-        public float Height { get; }
-        public float PreparationDuration { get; }
-        public float LandingDuration { get; }
-
-    }
-    public interface IQuickBoostDefinitions
-    {
-        public float Duration { get; }
-        public float Velocity { get; }
-        public float Power { get; }
-        public float Interval { get; }
-    }
-    public interface ILocomotionDefinitions
-    {
-        IBaseDefinitions Base { get; }
-        IJumpDefinitions Jump { get; }
-        IQuickBoostDefinitions QuickBoost { get; }
-    }
     public interface IFrameContext
     {
         public Vector3 TargetPos { get; }
@@ -347,7 +320,7 @@ namespace Locomotion
         }
         protected internal class QuickBoostLocomotion
         {
-            IQuickBoostDefinitions _definition;
+            IBoostingDefinitions _definition;
             class EndBoostEvent : PointEvent
             {
                 QuickBoostLocomotion _locomotion;
@@ -361,7 +334,7 @@ namespace Locomotion
                     _locomotion.EndBoost();
                 }
             }
-            public QuickBoostLocomotion(IQuickBoostDefinitions definition)
+            public QuickBoostLocomotion(IBoostingDefinitions definition)
             {
                 _definition = definition;
                 _lastBoostTime = float.MaxValue;
@@ -410,14 +383,15 @@ namespace Locomotion
             public Vector3 CalculateVelocity()
             {
                 var hvelocity = _startVelocity;
-                hvelocity *= _definition.Velocity;
+                //hvelocity *= _definition.Velocity;
                 hvelocity.y = 0;
                 return hvelocity;
             }
             public Vector3 CalculateVelocity(Vector3 direction, Vector3 currentVelocity)
             {
                 direction = direction.normalized;
-                var velocity = direction * _definition.Velocity;
+                //var velocity = direction * _definition.Velocity;
+                var velocity = Vector3.zero;
                 velocity.y = currentVelocity.y;
                 return velocity;
             }
@@ -475,7 +449,7 @@ namespace Locomotion
             jumpLocomotion = new(locomotionDefinition.Jump, _groundSampler, gravityLocomotion);
             baseLocomotion = new(_groundSampler, locomotionDefinition.Base, this.transform, gravityLocomotion);
             rotation = new(CurrentFrameContext, rb, this.gameObject);
-            boostLocomotion = new(locomotionDefinition.QuickBoost);
+            boostLocomotion = new(locomotionDefinition.Boosting);
         }
         protected void Update()
         {

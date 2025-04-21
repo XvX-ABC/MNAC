@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts;
 using NUnit.Framework.Constraints;
 using System;
-using Tests.Locomotion;
+using Tests.Environment;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
@@ -88,16 +88,20 @@ namespace Locomotion.Animation
             {
                 UpdateAscendingMultiplier(CalculateAscendingMultiplier());
             }
+            [Obsolete]
             float CalculateLandingMultiplier()
             {
                 var clipLength = _animatorDefinition.LandingClipLength;
                 var length = _definition.LandingDuration;
                 return clipLength / length;
             }
+
+            [Obsolete]
             void UpdateLandingMultiplier(float multiplier)
             {
                 _animator.SetFloat(_animatorDefinition.LandingMultiplierName, multiplier);
             }
+            [Obsolete]
             public void UpdateLandingMultiplier()
             {
                 UpdateLandingMultiplier(CalculateLandingMultiplier());

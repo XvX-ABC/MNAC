@@ -1,4 +1,6 @@
-﻿namespace Tests.Locomotion
+﻿using Tests.Locomotion;
+
+namespace Tests.Environment
 {
     public interface IModule
     {

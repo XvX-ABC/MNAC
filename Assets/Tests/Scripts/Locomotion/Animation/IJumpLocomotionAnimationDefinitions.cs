@@ -16,5 +16,6 @@ namespace Tests.Locomotion.Animation
         [Obsolete]
         public float DescendingClipLength { get; }
         public string EnterParamName { get; }
+        public string StateHoldingParamName { get; }
     }
 }

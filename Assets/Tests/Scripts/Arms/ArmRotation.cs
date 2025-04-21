@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Tests.Arms
 {
+    [Obsolete]
     public class ArmRotation : MonoBehaviour
     {
         [SerializeField]
@@ -48,9 +49,9 @@ namespace Assets.Scripts.Tests.Arms
 
         void SwapTarget()
         {
-            if(Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                _currentTarget=_currentTarget == _target_0 ? _target_1 : _target_0;
+                _currentTarget = _currentTarget == _target_0 ? _target_1 : _target_0;
             }
         }
         void CalculateNewForwardOfShoulder()

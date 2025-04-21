@@ -1,23 +1,25 @@
 ﻿using System;
 using Assets.Scripts.Utilities;
 using Locomotion;
+using Tests.Environment;
 using UnityEngine;
-using JState = Tests.Locomotion.JumpLocomotion_New.State;
+using JState = Tests.Locomotion.JumpLocomotion.State;
 namespace Tests.Locomotion.Animation
 {
     public class BoostingLocomotionAnimator : MonoBehaviour, IModule
     {
         IBoostingLocomotionAnimatorDefinitions _definitions;
-        QuickBoostLocomotion _locomotion;
+        BoostingLocomotion _locomotion;
         Animator _animator;
-        JumpLocomotion_New _jumpLocomotion;
+        JumpLocomotion _jumpLocomotion;
         SingleEvent _startEvent;
         SingleEvent _endEvent;
+        [Obsolete]
         bool _toJump;
         void Awake()
         {
             _definitions = GetComponent<ILocomotionAnimationDefinitions>()?.Boosting ?? throw new ComponentCantFindException(this.gameObject, typeof(IBoostingLocomotionAnimatorDefinitions));
-       
+
             _animator = GetComponent<Animator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(Animator));
 
             _startEvent = new(() => _animator.SetTrigger(_definitions.EnterParamName));
@@ -28,20 +30,26 @@ namespace Tests.Locomotion.Animation
         {
 
 
-            _locomotion = GetComponent<LocomotionControlBase>()?.quickBoostLocomotion ?? throw new NullReferenceException(nameof(QuickBoostLocomotion));
+            _locomotion = GetComponent<LocomotionCore>()?.boostingLocomotion ?? throw new NullReferenceException(nameof(BoostingLocomotion));
 
 
 
             var ld = _locomotion.Definitions;
-            var length = ld.Duration;
             var clipLength = _definitions.BoostingClipLength;
-            var v = length == 0 ? 0 : clipLength / length;
-            _animator.SetFloat(_definitions.SpeedMultiplierParamName, v);
+
+
+            var plength = ld.Duration * _definitions.PreparatoryProportion;
+            var v = plength == 0 ? 0 : clipLength / plength;
+            _animator.SetFloat(_definitions.PreparationMultiplierParamName, v);
+
+            var dlength = ld.Duration * (1 - _definitions.PreparatoryProportion);
+            v = dlength == 0 ? 0 : clipLength / dlength;
+            _animator.SetFloat(_definitions.DurationMultiplierParamName, v);
 
             _locomotion.StartAction += _ => _startEvent.Enabled = true;
             _locomotion.EndAction += _ => _endEvent.Enabled = true;
 
-            _jumpLocomotion = GetComponent<LocomotionControlBase>()?.jumpLocomotion_New ?? throw new NullReferenceException(nameof(_jumpLocomotion));
+            _jumpLocomotion = GetComponent<LocomotionCore>()?.jumpLocomotion ?? throw new NullReferenceException(nameof(_jumpLocomotion));
 
         }
         public void OnFixedUpdate(Context context)

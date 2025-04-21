@@ -3,12 +3,12 @@ using Assets.Scripts.Utilities.Timeline.Event;
 using Assets.Scripts.Utilities.Timeline.Event.Point;
 using System;
 using System.Linq;
-using Tests;
+using Tests.BodyBehaviour.Arm;
 using Tests.Utilities;
 using Tests.Weapons.Launcher;
 using Tests.Weapons.MissileLauncher;
 using UnityEngine;
-
+using UInput = UnityEngine.Input;
 namespace Tests.Weapons.MultiMissileLauncher
 {
 
@@ -65,8 +65,12 @@ namespace Tests.Weapons.MultiMissileLauncher
                 _targetChangeAction = value;
             }
         }
-
         ILauncherActionsLock ILauncher.actionsLock => _actionsLock;
+
+
+        string IWeapon.Name => this.gameObject.name;
+
+        WeaponType IWeapon.Type => WeaponType.Launcher;
 
         public IMissileLauncher this[int index]
         {
@@ -111,7 +115,7 @@ namespace Tests.Weapons.MultiMissileLauncher
         {
             l.InitializationAction += launcher =>
             {
-                launcher.Supply(-launcher.Definitions.AmmoSpareQuantity);
+                launcher.Fill(-launcher.Definitions.AmmoSpareQuantity);
                 if (launcher is not IMissileLauncher mlauncher)
                     throw new Exception($"The sublaunchers of the type '{GetType().Name}' must to implement the interface '{typeof(IMissileLauncher).Name}'");
 
@@ -171,23 +175,23 @@ namespace Tests.Weapons.MultiMissileLauncher
                 _launchDurationTimeline.OnUpdate(Time.deltaTime);
             if (_reloadTimeline.IsRunning)
                 _reloadTimeline.OnUpdate(Time.deltaTime);
-            if (Input.GetKey(KeyCode.Mouse0))
+            if (UInput.GetKey(KeyCode.Mouse0))
             {
                 Debug.Log("StartLaunch");
                 StartLaunch();
             }
-            if (Input.GetKeyDown(KeyCode.R))
+            if (UInput.GetKeyDown(KeyCode.R))
             {
                 var result = StartReload();
                 Debug.Log("Start reload result: " + result);
             }
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (UInput.GetKeyDown(KeyCode.Space))
             {
                 Debug.Log("Supply");
-                Supply(10);
+                Fill(10);
             }
 
-            if (Input.GetKeyDown(KeyCode.S))
+            if (UInput.GetKeyDown(KeyCode.S))
             {
                 if (Target == null)
                     Target = GetComponent<ITarget>() ?? throw new ComponentCantFindException(gameObject, typeof(ITarget));
@@ -266,11 +270,11 @@ namespace Tests.Weapons.MultiMissileLauncher
                 if (_ammoSpareQuantity <= 0)
                     return false;
 
-                l.Supply(1);
+                l.Fill(1);
                 _ammoSpareQuantity--;
                 if (!l.StartReload())
                 {
-                    l.Supply(-1);
+                    l.Fill(-1);
                     _ammoSpareQuantity++;
                     return false;
                 }
@@ -286,7 +290,7 @@ namespace Tests.Weapons.MultiMissileLauncher
                 _ammoInMagazineQuantity++;
                 return true;
             }
-            launcher.Supply(-1);
+            launcher.Fill(-1);
             _ammoSpareQuantity++;
             return false;
         }
@@ -303,7 +307,7 @@ namespace Tests.Weapons.MultiMissileLauncher
             return true;
         }
 
-        public int Supply(int num)
+        public int Fill(int num)
         {
             if (_ammoSpareQuantity + num < 0 || _actionsLock.SupplyLocked())
                 return 0;

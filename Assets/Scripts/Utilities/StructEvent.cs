@@ -6,6 +6,27 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Utilities
 {
+    public class StateEvent<TState, TArg>
+    {
+        TState _oldState;
+        Action<TState, TState, TArg> _action;
+        public StateEvent(Action<TState, TState, TArg> action)
+        {
+            _action = action ?? throw new NullReferenceException(nameof(action));
+        }
+        bool TryExecuteWhenStateChanged(TState currentState, TArg arg)
+        {
+            if (_oldState.Equals(currentState))
+                return false;
+            _action(_oldState, currentState, arg);
+            _oldState = currentState;
+            return true;
+        }
+        public bool TryExecute(TState currentState, TArg arg)
+        {
+            return TryExecuteWhenStateChanged(currentState, arg);
+        }
+    }
     public struct SingleEvent
     {
         Action _action;

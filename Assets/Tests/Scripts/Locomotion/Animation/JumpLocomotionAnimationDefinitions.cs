@@ -15,7 +15,7 @@ namespace Tests.Locomotion.Animation
         float _landingClipLength;
         //[SerializeField]
         string _landingMultiplierName;
-        [SerializeField]
+        [Obsolete]
         string _landingValueParamName;
         [SerializeField]
         string _descendingClipName;
@@ -23,6 +23,8 @@ namespace Tests.Locomotion.Animation
         float _descendingClipLength;
         [SerializeField]
         string _enterParamName;
+        [SerializeField]
+        string _stateHoldingParamName;
 
         public float AscendingClipLength { get => _ascendingClipLength; }
         public string AscendingMultiplierName { get => _ascendingMultiplierName; }
@@ -32,5 +34,6 @@ namespace Tests.Locomotion.Animation
         public string DescendingClipName { get => _descendingClipName; }
         public float DescendingClipLength { get => _descendingClipLength; }
         public string EnterParamName { get => _enterParamName; }
+        public string StateHoldingParamName { get => _stateHoldingParamName; }
     }
 }

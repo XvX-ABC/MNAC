@@ -19,5 +19,6 @@ namespace Tests
             }
             set => _context = value;
         }
+        public Vector3 Position { get => _obj.transform.position; set => _obj.transform.position = value; }
     }
 }

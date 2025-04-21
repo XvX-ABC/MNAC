@@ -1,7 +1,10 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
+using Tests.Environment;
 using UnityEngine;
 namespace Tests.Locomotion
 {
+    [Obsolete]
     public class Gravity : IModule
     {
         float _time;
@@ -12,14 +15,6 @@ namespace Tests.Locomotion
 
         public void OnFixedUpdate(Context context)
         {
-            //if (context.State == State.Descending)
-            //{
-            //    Debug.Log("Gravit working");
-            //    var currentVelocity = context.Velocity;
-
-            //    currentVelocity.y += Physics.gravity.y * context.DeltaTime;
-            //    context.Velocity = currentVelocity;
-            //}
 
             if (context.State == State.Descending)
             {

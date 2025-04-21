@@ -1,4 +1,6 @@
 ﻿using System;
+using Tests.Environment;
+using Tests.Input;
 using UnityEngine;
 namespace Tests.Locomotion
 {
@@ -6,8 +8,6 @@ namespace Tests.Locomotion
     {
         LocomotionContext _originalLocomotion;
         LocomotionContext _expectedLocomotion;
-        Rigidbody _rbody;
-        Collider _collider;
         public World World;
         public Vector3 Velocity
         {
@@ -43,11 +43,9 @@ _expectedLocomotion.SquareSpeed;
         {
             _originalLocomotion = new(rb);
             _expectedLocomotion = new(null);
-            _rbody = rb;
             World = new(input);
             Input = input;
             Target = target;
-            _collider = collider;
             GroundDetector = groundDetector;
 
         }

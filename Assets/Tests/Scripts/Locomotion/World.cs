@@ -1,4 +1,6 @@
 ﻿using System;
+using Tests.Environment;
+using Tests.Input;
 using UnityEngine;
 namespace Tests.Locomotion
 {
@@ -24,6 +26,13 @@ namespace Tests.Locomotion
             public Vector3 HorizontalDirection { get => _horizontalDirection; set => _horizontalDirection = value; }
             public bool IsAscending { get => _input.IsAscending; set => _input.IsAscending = value; }
             public bool IsBoosting { get => _input.IsBoosting; set => _input.IsBoosting = value; }
+
+            bool IInput.Fire => throw new NotImplementedException();
+
+            bool IInput.Reload => throw new NotImplementedException();
+
+            bool IInput.Supply => throw new NotImplementedException();
+
             public void OnUpdate(IGround? ground)
             {
                 var direction = _input.HorizontalDirection;

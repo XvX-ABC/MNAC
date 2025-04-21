@@ -18,7 +18,6 @@ namespace Tests.Weapons.Launcher
         }
         public Action<ILauncher> InitializationAction { get; set; }
 
-
         public ITimeline DelayLaunchTimeline { get; }
         public ITimeline LaunchDurationTimeline { get; }
         public ITimeline ReloadTimeline { get; }
@@ -26,7 +25,7 @@ namespace Tests.Weapons.Launcher
         public ushort SpareCount { get; }
         public ushort MagazineCount { get; }
         internal ILauncherActionsLock actionsLock { get; }
-        public int Supply(int num);
+        public int Fill(int num);
         public bool StartReload();
         public bool EndReload();
         public bool StartLaunch();

@@ -3,7 +3,6 @@ using Assets.Scripts.Utilities.Timeline.Event.Point;
 using Assets.Tests.Scripts.Weapons.MVC;
 using FoundationStone.UI.Tests.MVC;
 using System;
-using Tests;
 using Tests.Weapons.Launcher;
 using Tests.Weapons.Projectiles;
 using UnityEngine;

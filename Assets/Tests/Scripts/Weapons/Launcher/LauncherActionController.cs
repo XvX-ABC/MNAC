@@ -4,9 +4,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Tests;
 using Tests.Weapons.MissileLauncher;
 using UnityEngine;
+using UInput = UnityEngine.Input;
 
 namespace Tests.Weapons.Launcher
 {
@@ -33,21 +33,21 @@ namespace Tests.Weapons.Launcher
         }
         private void Update()
         {
-            if (Input.GetKeyDown(_launchCode))
+            if (UInput.GetKeyDown(_launchCode))
             {
                 Debug.Log("Launch start");
                 _launcher.StartLaunch();
             }
-            else if (Input.GetKeyDown(_reloadCode))
+            else if (UInput.GetKeyDown(_reloadCode))
             {
                 Debug.Log("Start reload");
                 _launcher.StartReload();
 
             }
-            else if (Input.GetKeyDown(_supplyCode))
+            else if (UInput.GetKeyDown(_supplyCode))
             {
                 Debug.Log("Start supply");
-                _launcher.Supply(_supplyQuantity);
+                _launcher.Fill(_supplyQuantity);
             }
         }
     }

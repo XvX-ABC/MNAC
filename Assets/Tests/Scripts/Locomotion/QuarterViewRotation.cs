@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Tests.Environment;
+using UnityEngine;
 namespace Tests.Locomotion
 {
     public class QuarterViewRotation : IModule

@@ -3,6 +3,7 @@ using System.Reflection;
 using Assets.Scripts.Utilities.Timeline;
 using Assets.Scripts.Utilities.Timeline.Event.Point;
 using FoundationStone.UI.Tests.MVC;
+using Tests.BodyBehaviour.Arm;
 using Tests.Utilities;
 using Tests.Weapons.MissileLauncher;
 using UnityEngine;
@@ -34,6 +35,7 @@ namespace Tests.Weapons.Launcher
         protected LauncherActionsLock actionsLock;
 
 
+        public string Name { get => this.name; }
         public ushort SpareCount { get => ammoSpareQuantity; }
         public ushort MagazineCount { get => ammoInMagazineQuantity; set => ammoInMagazineQuantity = value; }
         public ILauncherDefinitions Definitions { get => definitions; protected set => definitions = value; }
@@ -44,6 +46,8 @@ namespace Tests.Weapons.Launcher
         public ITimeline LaunchDurationTimeline { get => launchDurationTimeline; }
         public ITimeline ReloadTimeline { get => reloadTimeline; }
         ILauncherActionsLock ILauncher.actionsLock { get => actionsLock; }
+
+        WeaponType IWeapon.Type => WeaponType.Launcher;
 
         protected virtual void Awake()
         {
@@ -162,7 +166,7 @@ namespace Tests.Weapons.Launcher
         }
 
 
-        public int Supply(int num)
+        public int Fill(int num)
         {
             if (!enabled || actionsLock.IsLocked(ActionsEnum.Supply) || num == 0)
                 return 0;
@@ -231,6 +235,7 @@ namespace Tests.Weapons.Launcher
             var obj = ammoPool.Get();
             ammoInMagazineQuantity--;
         }
+
 #if UNITY_EDITOR
         IMissileLauncherDefinitionsEditor _definitionsEditor;
         protected virtual void OnDrawGizmos()

@@ -2,7 +2,7 @@
 {
     public interface ILocomotionAnimationDefinitions
     {
-        public IHorizontalLocomotionAnimationDefinitions Horizontal { get; }
+        public IGroundLocomotionAnimatorDefinitions Ground { get; }
         public IJumpLocomotionAnimationDefinitions Jump { get; }
         public IAirLocomotionAnimationDefinitions Air { get; }
         public IBoostingLocomotionAnimatorDefinitions Boosting { get; }

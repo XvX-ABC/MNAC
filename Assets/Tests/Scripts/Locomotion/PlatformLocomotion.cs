@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Tests.Environment;
 using UnityEngine;
 using UnityEngine.Animations;
 namespace Tests.Locomotion

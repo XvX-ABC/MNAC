@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UInput = UnityEngine.Input;
 namespace Tests.Locomotion.Arms
 {
     public class ShoulderControlBase : MonoBehaviour
@@ -68,7 +69,7 @@ namespace Tests.Locomotion.Arms
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (UInput.GetKeyDown(KeyCode.Space))
                 _applyRotation = !_applyRotation;
 
             var hrotaton = CalculateHorizontalRotation();

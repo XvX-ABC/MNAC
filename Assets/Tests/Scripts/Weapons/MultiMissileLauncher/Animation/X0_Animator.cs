@@ -3,7 +3,6 @@ using Assets.Scripts.Utilities.Timeline.Event.Point;
 using System;
 using System.Data;
 using System.Linq;
-using Tests;
 using Tests.Weapons.Launcher;
 using Tests.Weapons.MissileLauncher;
 using Tests.Weapons.MultiMissileLauncher;
