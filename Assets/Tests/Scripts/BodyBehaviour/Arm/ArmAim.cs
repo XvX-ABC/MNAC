@@ -8,7 +8,7 @@ using Debug = UnityEngine.Debug;
 namespace Tests.BodyBehaviour.Arm
 {
     [Serializable]
-    public class ArmAim : IArmBehaviour
+    internal class ArmAim
     {
 
         [SerializeField]
@@ -54,7 +54,6 @@ namespace Tests.BodyBehaviour.Arm
         }
         public bool Continuing => _enabled;
 
-        IInput IArmBehaviour.Input { set => throw new NotImplementedException(); }
 
         internal void OnAwake()
         {
@@ -65,7 +64,7 @@ namespace Tests.BodyBehaviour.Arm
             if (_hint != AvatarIKHint.LeftElbow && _hint != AvatarIKHint.RightElbow)
                 throw new Exception("The ik hint must be a part of elbows");
         }
-        public void Update()
+        public void OnUpdate()
         {
             if (!_enabled)
                 return;
@@ -100,6 +99,10 @@ namespace Tests.BodyBehaviour.Arm
             var pos = _lowerArmObj.transform.position;
             var v = _handObj.transform.position - _lowerArmObj.transform.position;
             Gizmos.DrawLine(pos, pos + v.normalized * 10);
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(_target.Position, 2);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawSphere(_handIKPos, 1);
         }
 
         public bool Begin()

@@ -25,12 +25,12 @@ namespace Tests.Assets
         {
             if (text == null)
                 throw new ArgumentNullException(nameof(text));
-            WriteTextToFile(text);
+            WriteText(text);
             AddBundleTag();
             return true;
         }
 
-        protected void WriteTextToFile(string text)
+        protected void WriteText(string text)
         {
             var path = Path.Join(s_basePath, savePath);
             if (Directory.Exists(path))
@@ -44,8 +44,6 @@ namespace Tests.Assets
         }
         protected virtual void AddBundleTag()
         {
-            //var path = Path.Combine("Assets", Path.GetRelativePath(Application.dataPath, savePath));
-            //Debug.Log("savePath: " + savePath);
             var path = Path.Join("Assets", savePath);
             AssetImporter importer = AssetImporter.GetAtPath(path);
             importer.assetBundleName = bundleName;

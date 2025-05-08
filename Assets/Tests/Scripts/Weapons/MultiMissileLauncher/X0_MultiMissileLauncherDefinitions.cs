@@ -26,7 +26,7 @@ namespace Tests.Weapons.MultiMissileLauncher
             get => actionNumericalDefinitions.MagazineFullOrEmptyDurationTime;
             set => actionNumericalDefinitions.MagazineFullOrEmptyDurationTime = value;
         }
-        public override float ReloadDuration
+        public override float ReloadDurationTime
         {
             get
             {

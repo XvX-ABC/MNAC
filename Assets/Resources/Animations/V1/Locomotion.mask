@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Locomotion
+  m_Mask: 01000000010000000000000001000000010000000000000000000000000000000000000001000000010000000000000000000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Bones
+    m_Weight: 1
+  - m_Path: Bones/Hips
+    m_Weight: 1
+  - m_Path: Bones/Hips/Spine
+    m_Weight: 1
+  - m_Path: Bones/Hips/Spine/Head
+    m_Weight: 0
+  - m_Path: Bones/Hips/Spine/Head/Head_end
+    m_Weight: 0
+  - m_Path: Bones/Hips/Spine/Shoulder_L
+    m_Weight: 0
+  - m_Path: Bones/Hips/Spine/Shoulder_L/UpArm_L
+    m_Weight: 0
+  - m_Path: Bones/Hips/Spine/Shoulder_L/UpArm_L/UpArm_Rotation_L
+    m_Weight: 0
+  - m_Path: Bones/Hips/Spine/Shoulder_L/UpArm_L/UpArm_Rotation_L/LowerArm_L
+    m_Weight: 0
+  - m_Path: Bones/Hips/Spine/Shoulder_L/UpArm_L/UpArm_Rotation_L/LowerArm_L/Hand_L
+    m_Weight: 0
+  - m_Path: Bones/Hips/Spine/Shoulder_L/UpArm_L/UpArm_Rotation_L/LowerArm_L/Hand_L/Hand_L_end
+    m_Weight: 0
+  - m_Path: Bones/Hips/Spine/Shoulder_R
+    m_Weight: 0
+  - m_Path: Bones/Hips/Spine/Shoulder_R/UpArm_R
+    m_Weight: 0
+  - m_Path: Bones/Hips/Spine/Shoulder_R/UpArm_R/UpArm_Rotation_R
+    m_Weight: 0
+  - m_Path: Bones/Hips/Spine/Shoulder_R/UpArm_R/UpArm_Rotation_R/LowerArm_R
+    m_Weight: 0
+  - m_Path: Bones/Hips/Spine/Shoulder_R/UpArm_R/UpArm_Rotation_R/LowerArm_R/Hand_R
+    m_Weight: 0
+  - m_Path: Bones/Hips/Spine/Shoulder_R/UpArm_R/UpArm_Rotation_R/LowerArm_R/Hand_R/Hand_R_end
+    m_Weight: 0
+  - m_Path: Bones/Hips/UpLeg_L
+    m_Weight: 1
+  - m_Path: Bones/Hips/UpLeg_L/Leg_L
+    m_Weight: 1
+  - m_Path: Bones/Hips/UpLeg_L/Leg_L/Foot_L
+    m_Weight: 1
+  - m_Path: Bones/Hips/UpLeg_L/Leg_L/Foot_L/Forefoot_L
+    m_Weight: 1
+  - m_Path: Bones/Hips/UpLeg_L/Leg_L/Foot_L/Forefoot_L/Forefoot_L_end
+    m_Weight: 1
+  - m_Path: Bones/Hips/UpLeg_L/Leg_L/Foot_L/Heel_L
+    m_Weight: 1
+  - m_Path: Bones/Hips/UpLeg_L/Leg_L/Foot_L/Heel_L/Heel_L_end
+    m_Weight: 1
+  - m_Path: Bones/Hips/UpLeg_R
+    m_Weight: 1
+  - m_Path: Bones/Hips/UpLeg_R/Leg_R
+    m_Weight: 1
+  - m_Path: Bones/Hips/UpLeg_R/Leg_R/Foot_R
+    m_Weight: 1
+  - m_Path: Bones/Hips/UpLeg_R/Leg_R/Foot_R/Forefoot_R
+    m_Weight: 1
+  - m_Path: Bones/Hips/UpLeg_R/Leg_R/Foot_R/Forefoot_R/Forefoot_R_end
+    m_Weight: 0
+  - m_Path: Bones/Hips/UpLeg_R/Leg_R/Foot_R/Heel_R
+    m_Weight: 1
+  - m_Path: Bones/Hips/UpLeg_R/Leg_R/Foot_R/Heel_R/Heel_R_end
+    m_Weight: 0
+  - m_Path: Bones/Rig
+    m_Weight: 0
+  - m_Path: Bones/Rig/Leg_Hint_L
+    m_Weight: 0
+  - m_Path: Bones/Rig/Leg_Hint_L/Leg_Hint_L_end
+    m_Weight: 0
+  - m_Path: Bones/Rig/Leg_Hint_R
+    m_Weight: 0
+  - m_Path: Bones/Rig/Leg_Hint_R/Leg_Hint_R_end
+    m_Weight: 0
+  - m_Path: Bones/Rig/Leg_IK_L
+    m_Weight: 0
+  - m_Path: Bones/Rig/Leg_IK_L/Leg_IK_L_end
+    m_Weight: 0
+  - m_Path: Bones/Rig/Leg_IK_R
+    m_Weight: 0
+  - m_Path: Bones/Rig/Leg_IK_R/Leg_IK_R_end
+    m_Weight: 0
+  - m_Path: Hips_SK
+    m_Weight: 0
+  - m_Path: Hips_SK/Body_SK
+    m_Weight: 0
+  - m_Path: Hips_SK/Body_SK/Head_SK
+    m_Weight: 0
+  - m_Path: Hips_SK/Body_SK/Shoulder_1
+    m_Weight: 0
+  - m_Path: Hips_SK/Body_SK/Shoulder_1/Arm_0
+    m_Weight: 0
+  - m_Path: Hips_SK/Body_SK/Shoulder_1/Arm_0/Forearm
+    m_Weight: 0
+  - m_Path: Hips_SK/Body_SK/Shoulder_1/Arm_0/Forearm/Hand_SK
+    m_Weight: 0
+  - m_Path: Hips_SK/UpLeg_SK
+    m_Weight: 0
+  - m_Path: Hips_SK/UpLeg_SK/Leg_SK
+    m_Weight: 0
+  - m_Path: Hips_SK/UpLeg_SK/Leg_SK/Foot_SK
+    m_Weight: 0
+  - m_Path: "Hips_SK/UpLeg_SK/Leg_SK/Foot_SK/\u7ACB\u65B9\u4F53.024"
+    m_Weight: 0
+  - m_Path: "Hips_SK/UpLeg_SK/Leg_SK/Foot_SK/\u7ACB\u65B9\u4F53.025"
+    m_Weight: 0

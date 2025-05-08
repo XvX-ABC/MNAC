@@ -19,7 +19,7 @@ namespace Tests.Weapons.Launcher
 
 
         [SerializeField]
-        protected GameObjectAssetAgent originAssetAgent;
+        protected PrefabAssetAgent originAssetAgent;
 
         protected LauncherNumericalDefinitions numericalDefinitions;
         protected GameObject origin;
@@ -39,7 +39,7 @@ namespace Tests.Weapons.Launcher
 
         public virtual ushort AmmoSpareQuantity { get => numericalDefinitions.AmmoSpareQuantity; set => numericalDefinitions.AmmoSpareQuantity = value; }
         public virtual ushort AmmoInMagazineQuantity { get => numericalDefinitions.AmmoInMagazineQuantity; set => numericalDefinitions.AmmoInMagazineQuantity = value; }
-        public virtual float ReloadDuration { get => numericalDefinitions.ReloadDuration; set => numericalDefinitions.ReloadDuration = value; }
+        public virtual float ReloadDurationTime { get => numericalDefinitions.ReloadDuration; set => numericalDefinitions.ReloadDuration = value; }
         public virtual float LaunchDurationTime { get => numericalDefinitions.LaunchDurationTime; set => numericalDefinitions.LaunchDurationTime = value; }
         public virtual Vector2 LaunchDelayRange
         {

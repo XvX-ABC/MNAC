@@ -1,10 +1,12 @@
 #define TESTS
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UInput = UnityEngine.Input;
 namespace Tests.Locomotion.Arms
 {
+    [Obsolete]
     public class ShoulderControlBase : MonoBehaviour
     {
         [SerializeField]

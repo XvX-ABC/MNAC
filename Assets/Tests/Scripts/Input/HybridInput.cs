@@ -51,10 +51,10 @@ namespace Tests.Input
             set => _virtualInput.IsBoosting = value;
         }
 
-        bool IInput.Fire => throw new System.NotImplementedException();
+        public bool Fire => false;
 
-        bool IInput.Reload => throw new System.NotImplementedException();
+        public bool Reload => false;
 
-        bool IInput.Supply => throw new System.NotImplementedException();
+        public bool Supply => false;
     }
 }

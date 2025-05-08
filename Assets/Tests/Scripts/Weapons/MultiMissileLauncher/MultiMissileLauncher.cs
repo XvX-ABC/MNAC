@@ -3,7 +3,6 @@ using Assets.Scripts.Utilities.Timeline.Event;
 using Assets.Scripts.Utilities.Timeline.Event.Point;
 using System;
 using System.Linq;
-using Tests.BodyBehaviour.Arm;
 using Tests.Utilities;
 using Tests.Weapons.Launcher;
 using Tests.Weapons.MissileLauncher;
@@ -219,7 +218,7 @@ namespace Tests.Weapons.MultiMissileLauncher
         protected virtual ITimeline CreateReloadTimeline()
         {
             //return new TimelinesGroup(l => l.ReloadTimeline, subLaunchers);
-            var timeline = new Timeline(definitions.ReloadDuration);
+            var timeline = new Timeline(definitions.ReloadDurationTime);
             timeline.AddPointEvent(0, _ => _actionsLock.LockAll());
             timeline.AddPointEvent(1, _ => _actionsLock.UnlockAll());
             return timeline;

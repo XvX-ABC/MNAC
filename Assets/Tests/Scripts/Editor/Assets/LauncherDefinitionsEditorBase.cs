@@ -33,7 +33,7 @@ namespace Tests.Editor.Assets
         FieldInfo _originField;
 
         SerializedProperty _originAssetAgent;
-        GameObjectAssetAgent _originAssetAgentObj;
+        PrefabAssetAgent _originAssetAgentObj;
         Action _loadOrigin;
 
 
@@ -60,7 +60,7 @@ namespace Tests.Editor.Assets
 
             _originAssetAgent = serializedObject.FindProperty("originAssetAgent");
             field = typeof(LauncherDefinitions_AB).GetField("originAssetAgent", BindingFlags.NonPublic | BindingFlags.Instance);
-            _originAssetAgentObj = field.GetValue(instance) as GameObjectAssetAgent;
+            _originAssetAgentObj = field.GetValue(instance) as PrefabAssetAgent;
 
             _originField = typeof(LauncherDefinitions_AB).GetField("origin", BindingFlags.NonPublic | BindingFlags.Instance);
 

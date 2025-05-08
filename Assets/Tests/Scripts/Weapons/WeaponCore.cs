@@ -30,7 +30,7 @@ namespace Assets.Tests.Scripts.Weapons
     {
         Dictionary<SupplyDepotType, ISupplyDepot> _supplyDepots;
         [SerializeField]
-        GameObjectAssetAgent[] _originAssets;
+        PrefabAssetAgent_Managed[] _originAssets;
         Dictionary<string, GameObject> _cache;
         public WeaponCore()
         {
@@ -56,7 +56,8 @@ namespace Assets.Tests.Scripts.Weapons
                 var d = a.Definitions;
                 if (d.Name == name)
                 {
-                    var obj = a.Load();
+                    a.Load();
+                    var obj = a.Asset;
                     result = Instantiate(obj);
                     return result;
                 }
@@ -74,7 +75,8 @@ namespace Assets.Tests.Scripts.Weapons
                 var d = a.Definitions;
                 if (d.Name == name)
                 {
-                    origin = a.Load();
+                    a.Load();
+                    origin = a.Asset;
                     return true;
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Weapons;
 
 namespace Tests.BodyBehaviour.Arm
 {

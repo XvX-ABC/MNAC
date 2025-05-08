@@ -77,7 +77,8 @@ namespace Assets.Scripts.Utilities.Timeline.Event.Point
             var index = Array.IndexOf(_events, evt);
             if (index == -1)
                 return false;
-            Array.Copy(_events, index + 1, _events, index, _events.Length - index + 1);
+            if (index != _events.Length - 1)
+                Array.Copy(_events, index + 1, _events, index, _events.Length - index - 1);
             Array.Resize(ref _events, _events.Length - 1);
             return true;
         }

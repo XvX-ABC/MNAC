@@ -30,7 +30,7 @@ namespace Tests.BodyBehaviour.Arm
                 _selectionFunc = value;
             }
         }
-        public Func<GameObject, GameObject, GameObject> WeaponSwitchFunc { get => _mountPoint.LoadObjChangeFunc; set => _mountPoint.LoadObjChangeFunc = value; }
+        public Func<GameObject, GameObject, GameObject> WeaponSwitchingFunc { get => _mountPoint.LoadObjChangeFunc; set => _mountPoint.LoadObjChangeFunc = value; }
         IInput IArmBehaviour.Input { set => throw new NotImplementedException(); }
         public bool Continuing { get => _timeline.IsRunning; }
         public ArmWeaponSwitching(IArmWeaponDefinitions definitions, MountPoint mountPoint, WeaponCore weaponCore, Func<ArmWeaponDescription[], string> selectionFunc)
@@ -100,7 +100,7 @@ namespace Tests.BodyBehaviour.Arm
         }
 
 
-        public void Update()
+        public void OnUpdate()
         {
             if (_timeline.IsRunning)
                 _timeline.OnUpdate(Time.deltaTime);

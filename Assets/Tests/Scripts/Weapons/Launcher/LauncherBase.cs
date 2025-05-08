@@ -3,7 +3,6 @@ using System.Reflection;
 using Assets.Scripts.Utilities.Timeline;
 using Assets.Scripts.Utilities.Timeline.Event.Point;
 using FoundationStone.UI.Tests.MVC;
-using Tests.BodyBehaviour.Arm;
 using Tests.Utilities;
 using Tests.Weapons.MissileLauncher;
 using UnityEngine;
@@ -136,7 +135,7 @@ namespace Tests.Weapons.Launcher
 
         protected virtual ITimeline CreateReloadTimeline()
         {
-            var timeline = new Timeline(definitions.ReloadDuration);
+            var timeline = new Timeline(definitions.ReloadDurationTime);
             timeline.AddPointEvent(0, _ => actionsLock.LockStartReload());
             timeline.AddPointEvent(1, _ =>
             {

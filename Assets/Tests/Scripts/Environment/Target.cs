@@ -20,7 +20,7 @@ namespace Tests.Environment
         {
             get
             {
-                _controller.UpdatePos(context.Position);
+                //_controller.UpdatePos(context.Position);
                 var ray = _camera.ScreenPointToRay(UInput.mousePosition);
                 var layer = LayerMask.NameToLayer("Terrain");
                 if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, 1 << layer))

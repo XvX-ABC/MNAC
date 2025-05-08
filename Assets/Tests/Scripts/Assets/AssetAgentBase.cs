@@ -9,8 +9,8 @@ namespace Tests.Assets
     {
         [SerializeField]
         protected AssetDefinitions definitions;
-        protected IAssetLoader<T> _loader;
-        public IAssetLoader Loader { get => _loader; }
+        protected IAssetLoader<T> loader;
+        public IAssetLoader Loader { get => loader; }
 #if UNITY_EDITOR
 
         protected IAssetSaver<T> _saver;
@@ -26,7 +26,7 @@ namespace Tests.Assets
         }
         protected AssetAgentBase(IAssetLoader<T> loader, IAssetSaver<T> saver)
         {
-            _loader = loader;
+            this.loader = loader;
             _saver = saver;
         }
         public virtual void Save(T obj)
@@ -50,14 +50,14 @@ namespace Tests.Assets
             {
 
                 var path = definitions.GetPath();
-                _loader.Path = path;
+                loader.Path = path;
 #if UNITY_EDITOR && EDITOR_ASSET_LOAD
-                path = Path.Join("Assets", _loader.Path);
+                path = Path.Join("Assets", loader.Path);
                 var importer = AssetImporter.GetAtPath(path);
                 if (importer != null)
                     definitions.BundleName = importer.assetBundleName;
 #endif
-                return _loader.Load();
+                return loader.Load();
             }
             catch (Exception e)
             {

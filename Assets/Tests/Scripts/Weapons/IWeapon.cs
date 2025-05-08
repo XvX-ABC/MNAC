@@ -1,5 +1,3 @@
-using Tests.BodyBehaviour.Arm;
-
 namespace Tests.Weapons
 {
     public interface IWeapon

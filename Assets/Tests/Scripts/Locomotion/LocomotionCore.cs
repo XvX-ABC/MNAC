@@ -1,6 +1,8 @@
-﻿using Locomotion;
+﻿using Assets.Tests.Scripts.BodyBehaviour;
+using Locomotion;
 using System;
 using System.Text;
+using Tests.BodyBehaviour.Arm;
 using Tests.Environment;
 using Tests.Input;
 using Tests.Locomotion.Animation;
@@ -14,7 +16,7 @@ namespace Tests.Locomotion
         Descending
     }
     [RequireComponent(typeof(Rigidbody))]
-    public class LocomotionCore : MonoBehaviour
+    public class LocomotionCore : MonoBehaviour, IAimer
     {
         [SerializeField]
         Camera _camera;
@@ -25,7 +27,7 @@ namespace Tests.Locomotion
         internal HorizontalDrag horizontalDrag;
         internal JumpLocomotion jumpLocomotion;
         internal AirLocomotion airLocomotion;
-        internal Gravity gravity;
+        //internal Gravity gravity;
         internal QuarterViewRotation rotation;
         internal PlatformLocomotion platformLocomotion;
 
@@ -38,6 +40,7 @@ namespace Tests.Locomotion
         Context _context;
 
         IModule[] _modules;
+        ITarget IAimer.Target { get => _context.Target; set => _context.Target = value; }
         void Awake()
         {
             _definitions = GetComponent<ILocomotionDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionDefinitions));
@@ -47,21 +50,21 @@ namespace Tests.Locomotion
             _rb = GetComponent<Rigidbody>();
 
 
-            platformLocomotion = GetComponent<PlatformLocomotion>() ?? throw new ComponentCantFindException(this.gameObject, typeof(PlatformLocomotion));
+            //platformLocomotion = GetComponent<PlatformLocomotion>() ?? throw new ComponentCantFindException(this.gameObject, typeof(PlatformLocomotion));
 
             horizontalDrag = new(_definitions.Base);
             jumpLocomotion = new(_definitions.Jump);
             horizontalLocomotion = new(_definitions.Base, jumpLocomotion);
             boostingLocomotion = new(_definitions.Base, _definitions.Boosting, jumpLocomotion);
             airLocomotion = new(_definitions.Base, jumpLocomotion);
-            gravity = new();
+            //gravity = new();
             rotation = new(this.gameObject);
             var collider = GetComponent<Collider>();
 
-            var target = new Tests.Environment.Target(_camera);
+            //var target = new Tests.Environment.Target(_camera);
 
-            _context = new(_rb, _input, target, collider, _groundDetector);
-            target.context = _context;
+            _context = new(_rb, _input, null, collider, _groundDetector);
+            //target.context = _context;
 
 
             _modules = new IModule[]
@@ -79,7 +82,7 @@ namespace Tests.Locomotion
 
 
             _locomotionAnimator = GetComponent<LocomotionAnimatorCore>();
-            if (_locomotionAnimator != null)
+            if (_locomotionAnimator != null && _locomotionAnimator.enabled)
             {
                 Array.Resize(ref _modules, _modules.Length + 1);
                 Array.Copy(_modules, 0, _modules, 1, _modules.Length - 1);

@@ -29,7 +29,7 @@ namespace Tests.Weapons.Launcher
         public ushort AmmoTotalQuantity { get => (ushort)(_ammoSpareQuantity + _ammoQuantityInMagazine); }
         public ushort AmmoSpareQuantity { get => _ammoSpareQuantity; }
         public ushort AmmoInMagazineQuantity { get => _ammoQuantityInMagazine; }
-        public float ReloadDuration { get => _reloadDuration; }
+        public float ReloadDurationTime { get => _reloadDuration; }
 
         public float LaunchDurationTime => throw new NotImplementedException();
 

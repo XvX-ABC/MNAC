@@ -29,17 +29,17 @@ namespace Tests.BodyBehaviour.Arm
             var result = true;
             foreach (var b in subBehaviours)
             {
-                var s = b.Begin();
+                var s = b.End();
                 if (!s)
                 {
                     var name = b.GetType().Name;
-                    Debug.LogWarning($"The behaviour '{name}' to start failed.");
+                    Debug.LogWarning($"The behaviour '{name}' to end failed.");
                     result = false;
                 }
             }
             return result;
         }
-        public static bool AnyBehaviourIsContinuing(IArmBehaviour[] subBehaviours)
+        public static bool AnyBehaviourIsContinuing(params IArmBehaviour[] subBehaviours)
         {
             if (subBehaviours == null || subBehaviours.Length == 0)
                 return false;
@@ -54,7 +54,7 @@ namespace Tests.BodyBehaviour.Arm
         public bool Continuing { get; }
         public bool Begin();
         public bool End();
-        public void Update() { }
-        public void OnAnimatorIK(int layerIndex);
+        public void OnUpdate() { }
+        public void OnAnimatorIK(int layerIndex) { }
     }
 }

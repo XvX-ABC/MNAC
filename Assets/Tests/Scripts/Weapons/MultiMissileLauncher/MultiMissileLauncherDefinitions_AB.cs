@@ -19,7 +19,7 @@ namespace Tests.Weapons.MultiMissileLauncher
         protected MissileLauncherNumericalDefinitions numericalDefinitions;
 
         [SerializeField]
-        protected GameObjectAssetAgent originAssetAgent;
+        protected PrefabAssetAgent originAssetAgent;
         protected GameObject origin;
         public GameObject AmmoOrigin { get => origin; set => origin = value; }
         public virtual float LaunchDurationTime { get => numericalDefinitions.LaunchDurationTime; set => numericalDefinitions.LaunchDurationTime = value; }
@@ -37,7 +37,7 @@ namespace Tests.Weapons.MultiMissileLauncher
 
         public virtual ushort AmmoInMagazineQuantity { get => numericalDefinitions.AmmoInMagazineQuantity; set => numericalDefinitions.AmmoInMagazineQuantity = value; }
 
-        public virtual float ReloadDuration { get => numericalDefinitions.ReloadDuration; set => numericalDefinitions.ReloadDuration = value; }
+        public virtual float ReloadDurationTime { get => numericalDefinitions.ReloadDuration; set => numericalDefinitions.ReloadDuration = value; }
 
         public Dictionary<string, AssetDefinitions> AssetDefinitionsMap => throw new NotImplementedException();
 
@@ -75,7 +75,7 @@ namespace Tests.Weapons.MultiMissileLauncher
 
             editor.AmmoSpareQuantity = 1;
             editor.AmmoInMagazineQuantity = 1;
-            editor.ReloadDuration = numericalDefinitions.ReloadDuration;
+            editor.ReloadDurationTime = numericalDefinitions.ReloadDuration;
             editor.LaunchDelayRange = numericalDefinitions.LaunchDelayRange;
         }
 

@@ -1,10 +1,11 @@
 ﻿using System;
+using Tests.BodyBehaviour.Arm;
 using Tests.Environment;
 using Tests.Input;
 using UnityEngine;
 namespace Tests.Locomotion
 {
-    public class Context
+    public class Context 
     {
         LocomotionContext _originalLocomotion;
         LocomotionContext _expectedLocomotion;
@@ -45,7 +46,7 @@ _expectedLocomotion.SquareSpeed;
             _expectedLocomotion = new(null);
             World = new(input);
             Input = input;
-            Target = target;
+            //Target = target;
             GroundDetector = groundDetector;
 
         }

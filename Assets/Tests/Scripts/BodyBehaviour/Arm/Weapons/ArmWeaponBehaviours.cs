@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using Tests.Input;
 using Tests.Locomotion;
 using Tests.Weapons;
@@ -45,10 +46,9 @@ namespace Tests.BodyBehaviour.Arm
                 throw new ArgumentNullException(nameof(weapon));
             var name = weapon.Name;
             if (name == null || name.Length == 0)
-                throw new Exception("The name can't was empty.");
+                throw new Exception("The weapon name can't be empty.");
             if (!_weaponBehaviours.TryGetValue(name, out var b))
                 throw new CantFindBehaviourByNameException(name);
-
             if (_activatedBehaviours == null)
             {
                 _activatedBehaviours = new IArmWeaponBehaviour[] { b };
@@ -56,10 +56,10 @@ namespace Tests.BodyBehaviour.Arm
             else
             {
                 Array.Resize(ref _activatedBehaviours, _activatedBehaviours.Length + 1);
-                b.Weapon = weapon;
-                b.Input = _input;
                 _activatedBehaviours[^1] = b;
             }
+            b.Weapon = weapon;
+            b.Input = _input;
         }
         public void UnactivateBehaviourBy(IWeapon weapon)
         {
@@ -67,7 +67,7 @@ namespace Tests.BodyBehaviour.Arm
                 throw new ArgumentNullException(nameof(weapon));
             var name = weapon.Name;
             if (name == null || name.Length == 0)
-                throw new Exception("The name can't was empty");
+                throw new Exception("The name can't be empty");
             if (!_weaponBehaviours.TryGetValue(name, out var b))
                 throw new CantFindBehaviourByNameException(name);
             if (_activatedBehaviours == null)
@@ -79,7 +79,8 @@ namespace Tests.BodyBehaviour.Arm
                 if (ab == b)
                 {
                     var length = _activatedBehaviours.Length;
-                    Array.Copy(_activatedBehaviours, i + 1, _activatedBehaviours, i, length - i - 1);
+                    if (i != length - 1)
+                        Array.Copy(_activatedBehaviours, i + 1, _activatedBehaviours, i, length - i - 1);
                     Array.Resize(ref _activatedBehaviours, length - 1);
                     break;
                 }
@@ -101,10 +102,10 @@ namespace Tests.BodyBehaviour.Arm
                 b.OnAnimatorIK(layerIndex);
         }
 
-        public void Update()
+        public void OnUpdate()
         {
             foreach (var b in _activatedBehaviours)
-                b.Update();
+                b.OnUpdate();
         }
 
     }

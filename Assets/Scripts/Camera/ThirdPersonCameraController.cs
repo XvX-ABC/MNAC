@@ -25,7 +25,6 @@ public class ThirdPersonCameraController : MonoBehaviour
         this.transform.position += df;
         _oldPosition = currentPos;
     }
-    // Update is called once per frame
     void LateUpdate()
     {
         UpdatePos();
