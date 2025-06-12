@@ -1,13 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Utilities.Timeline
 {
     public class RandomLengthTimeline : Timeline
     {
-        ITimeGeneration _timeGeneration;
-        public RandomLengthTimeline(ITimeGeneration timeGeneration)
+        internal ITimeGenerator timeGenerator;
+        public RandomLengthTimeline(ITimeGenerator timeGeneration)
         {
-            _timeGeneration = timeGeneration;
+            this.timeGenerator = timeGeneration;
         }
         public RandomLengthTimeline(Vector2 range) : this(new RandomTimeGeneration(range))
         {
@@ -15,14 +16,18 @@ namespace Assets.Scripts.Utilities.Timeline
         }
         public override void Start()
         {
-            if (_timeGeneration != null)
-                duration = _timeGeneration.Time;
+            if (timeGenerator != null)
+                duration = timeGenerator.Time;
             base.Start();
         }
         protected override void Reset()
         {
             base.Reset();
             time = 0;
+        }
+        public override bool UpdateLength(float newLength)
+        {
+            throw new NotImplementedException();
         }
     }
 }

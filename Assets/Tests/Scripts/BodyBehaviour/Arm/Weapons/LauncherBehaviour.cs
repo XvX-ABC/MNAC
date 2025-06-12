@@ -1,5 +1,6 @@
 ﻿using Assets.Tests.Scripts.Weapons;
 using Mono.Cecil;
+using RootMotion.FinalIK;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -17,14 +18,58 @@ using Debug = UnityEngine.Debug;
 
 namespace Tests.BodyBehaviour.Arm
 {
+    public class ArmAimer : IArmBehaviour, IAimer
+    {
+        AimIK _ik;
+        ITarget _target;
+        bool _endabled;
+        public ArmAimer(AimIK ik)
+        {
+            this._ik = ik ?? throw new NullReferenceException(nameof(ik));
+        }
+
+        public IInput Input { set => throw new NotImplementedException(); }
+
+        public bool Continuing => _endabled;
+        public ITarget Target { get => _target; set => _target = value; }
+        public bool BEnd()
+        {
+            if (_target == null)
+            {
+                return false;
+            }
+            _ik.solver.IKPositionWeight = 0f;
+            _endabled = true;
+            return true;
+        }
+
+        public bool BStart()
+        {
+            if (_target == null)
+            {
+                return false;
+            }
+            _ik.solver.IKPositionWeight = 1f;
+            _endabled = false;
+            return true;
+
+        }
+        public void OnUpdate()
+        {
+            if (!_endabled)
+                return;
+            _ik.solver.IKPosition = _target.Position;
+        }
+    }
     [Serializable]
     public class LauncherBehaviour : MonoBehaviour, IArmWeaponBehaviour, IAimer
     {
 
         [SerializeField]
-        ArmAim _aim;
+        ArmAim _aim_old;
+        ArmAimer _aim;
         [SerializeField]
-        ArmReload _reload;
+        ArmReloadAnimation _reloadAnimation;
         [SerializeField]
         AimToReloadTransition _transition;
 
@@ -47,16 +92,18 @@ namespace Tests.BodyBehaviour.Arm
         }
         public virtual ITarget Target
         {
-            get => _aim.Target;
-            set => _aim.Target = value;
+            get => _aim_old.Target;
+            set => _aim_old.Target = value;
         }
         IInput IArmBehaviour.Input { set => _input = value ?? throw new NullReferenceException(nameof(value)); }
-        public bool Continuing { get => _transition.Continuing || _aim.Continuing; }
+        public bool Continuing { get => _transition.Continuing || _aim_old.Continuing; }
 
         protected virtual void Awake()
         {
-            _aim.OnAwake();
-            _transition.Initialize(_aim,_reload);
+            //_aim_old.OnAwake();
+            _transition.Initialize(_aim_old, _reloadAnimation);
+            var aimIk = GetComponent<AimIK>() ?? throw new ComponentCantFindException(this.gameObject, typeof(AimIK));
+            _aim = new(aimIk);
         }
         protected virtual void Start()
         {
@@ -64,6 +111,11 @@ namespace Tests.BodyBehaviour.Arm
         }
         public void Update()
         {
+            if (_aim.Continuing || _transition.Continuing)
+                _reloadAnimation.Play();
+            else
+                _reloadAnimation.Stop();
+
             if (_input.Reload)
             {
                 _transition.Begin();
@@ -73,22 +125,26 @@ namespace Tests.BodyBehaviour.Arm
                 _transition.End();
             }
 
-            _aim.OnUpdate();
+            _aim_old.OnUpdate();
             _transition.OnUpdate();
+        }
+        void LateUpdate()
+        {
+            _aim.OnUpdate();
         }
         public void OnAnimatorIK(int layerIndex)
         {
-            _aim.OnAnimatorIK(layerIndex);
+            _aim_old.OnAnimatorIK(layerIndex);
         }
 
-        public bool Begin()
+        public bool BStart()
         {
             if (!enabled)
                 enabled = true;
             return true;
         }
 
-        public bool End()
+        public bool BEnd()
         {
             if (enabled)
                 enabled = false;

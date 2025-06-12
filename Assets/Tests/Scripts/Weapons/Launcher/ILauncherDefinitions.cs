@@ -24,6 +24,7 @@ namespace Tests.Weapons.Launcher
     }
     public interface ILauncherDefinitions
     {
+     
         public GameObject AmmoOrigin { get; }
         public Vector3 MagazinePosition { get; }
         public Vector3 MuzzlePosition { get; }

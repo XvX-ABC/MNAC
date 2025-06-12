@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Xml.Schema;
 using Tests.Input;
+using Tests.States;
 using Tests.Weapons;
 using UnityEngine;
 using UInput = UnityEngine.Input;
@@ -15,8 +16,6 @@ namespace Tests.BodyBehaviour.Arm
     public class ArmBehavioursCore : MonoBehaviour, IArmBehaviour
     {
 
-        //[SerializeField]
-        //GameObject _bodyObj;
         [SerializeField]
         WeaponCore _weaponCore;
         [SerializeField]
@@ -30,11 +29,11 @@ namespace Tests.BodyBehaviour.Arm
 
         IArmWeaponBehaviour[] _behaviours;
 
-        //IInput _input;
-
 
         ArmWeaponSwitching _weaponSwitching;
         ArmWeaponBehaviours _weaponBehaviours;
+
+        StateMachine<object> _stateMachine;
         IInput IArmBehaviour.Input
         {
             set
@@ -64,7 +63,6 @@ namespace Tests.BodyBehaviour.Arm
 
 
             _weaponSwitching = new ArmWeaponSwitching(weaponDefinitions, weaponMountPoint, _weaponCore);
-
 
 
 
@@ -115,12 +113,21 @@ namespace Tests.BodyBehaviour.Arm
                 return nobj;
             };
 
+            _stateMachine = new();
+            var switchingState = new ArmBehaviourState("switching", _weaponSwitching);
+            var behavioursState = new ArmBehaviourState("behaviours", _weaponBehaviours);
+            var estate = new EmptyState<object>();
+            _stateMachine.AddState(behavioursState);
+            _stateMachine.AddState(switchingState);
+            _stateMachine.AddState(estate);
+            _stateMachine.AddTransitionFor(behavioursState, () => _input.Supply && _weaponBehaviours.BEnd(), switchingState);
+            _stateMachine.AddTransitionFor(switchingState, () => (!_weaponSwitching.Continuing || (_input.Fire && _weaponSwitching.BEnd())) && _weaponBehaviours.BStart(), behavioursState);
+            _stateMachine.AddTransitionFor(behavioursState, () => UInput.GetKeyDown(KeyCode.S), estate);
         }
         private void Start()
         {
             var mp = FindMountPoint(_definitions.Weapon.MountPointName);
             var n = _definitions.Weapon.Origins[0].Name;
-            //var core = _bodyObj.GetComponent<WeaponCore>();
             SetDefaultWeapon(mp, n, _weaponCore);
         }
 
@@ -134,15 +141,20 @@ namespace Tests.BodyBehaviour.Arm
         public void OnUpdate()
         {
 
-            if (_input.Supply)
+            //if (_input.Supply)
+            //{
+            //    if (_weaponBehaviours.Continuing && !_weaponBehaviours.BEnd())
+            //        throw new Exception("Try to end weapon behaviours failed.");
+            //    if (!_weaponSwitching.Continuing && !_weaponSwitching.BStart())
+            //        throw new Exception("Try to start weapon switching failed.");
+            //}
+            //_weaponSwitching.OnUpdate();
+            //_weaponBehaviours.OnUpdate();
+            if (UInput.GetKeyDown(KeyCode.S))
             {
-                if (_weaponBehaviours.Continuing && !_weaponBehaviours.End())
-                    throw new Exception("Try to end weapon behaviours failed.");
-                if (!_weaponSwitching.Continuing && !_weaponSwitching.Begin())
-                    throw new Exception("Try to start weapon switching failed.");
+                Debug.Log("Debug point");
             }
-            _weaponSwitching.OnUpdate();
-            _weaponBehaviours.OnUpdate();
+            _stateMachine.OnUpdate();
 
         }
         public void OnAnimatorIK(int layerIndex)
@@ -152,13 +164,13 @@ namespace Tests.BodyBehaviour.Arm
             _weaponBehaviours.OnAnimatorIK(layerIndex);
         }
 
-        bool IArmBehaviour.Begin()
+        bool IArmBehaviour.BStart()
         {
             enabled = true;
             return IArmBehaviour.TryBeginAllBehaviours(_behaviours);
         }
 
-        bool IArmBehaviour.End()
+        bool IArmBehaviour.BEnd()
         {
             enabled = false;
             return IArmBehaviour.TryEndAllBehaviours(_behaviours);

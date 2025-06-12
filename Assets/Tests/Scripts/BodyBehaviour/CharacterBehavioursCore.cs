@@ -13,6 +13,7 @@ namespace Assets.Tests.Scripts.BodyBehaviour
         }
         private void Update()
         {
+            base.OnUpdate();
             //if (UInput.GetKeyDown(KeyCode.B))
             //{
             //    Debug.Log("Start all weapon behaviours");

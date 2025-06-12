@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Tests.Weapons.MultiMissileLauncher;
 using UnityEditor;
-namespace Tests.Editor.Assets
+namespace Tests.Editors.Assets
 {
     [CustomEditor(typeof(X0_MultiMissileLauncherDefinitions))]
     public class X0_MissileLauncherDefinitionsEditor : LauncherDefinitionsEditorBase<X0_MultiMissileLauncherDefinitions>

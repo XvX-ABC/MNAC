@@ -3,6 +3,13 @@ using UnityEngine;
 
 namespace Tests.BodyBehaviour.Arm
 {
+    public enum BehaviourState
+    {
+        None,
+        Ready,
+        Running,
+        Ended,
+    }
     public interface IArmBehaviour
     {
         public static bool TryBeginAllBehaviours(IArmBehaviour[] subBehaviours)
@@ -12,7 +19,7 @@ namespace Tests.BodyBehaviour.Arm
             var result = true;
             foreach (var b in subBehaviours)
             {
-                var s = b.Begin();
+                var s = b.BStart();
                 if (!s)
                 {
                     var name = b.GetType().Name;
@@ -29,7 +36,7 @@ namespace Tests.BodyBehaviour.Arm
             var result = true;
             foreach (var b in subBehaviours)
             {
-                var s = b.End();
+                var s = b.BEnd();
                 if (!s)
                 {
                     var name = b.GetType().Name;
@@ -51,9 +58,10 @@ namespace Tests.BodyBehaviour.Arm
             return false;
         }
         public IInput Input { set; }
+        public BehaviourState State { get => BehaviourState.None; }
         public bool Continuing { get; }
-        public bool Begin();
-        public bool End();
+        public bool BStart();
+        public bool BEnd();
         public void OnUpdate() { }
         public void OnAnimatorIK(int layerIndex) { }
     }

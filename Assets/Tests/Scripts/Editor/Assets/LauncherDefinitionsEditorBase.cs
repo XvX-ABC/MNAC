@@ -11,7 +11,7 @@ using Tests.Weapons.Launcher;
 using UnityEditor;
 using UnityEngine;
 using AssetDefinitions = Tests.Assets.AssetDefinitions;
-namespace Tests.Editor.Assets
+namespace Tests.Editors.Assets
 {
     public class LauncherDefinitionsEditorBase<T> : UnityEditor.Editor where T : LauncherDefinitions_AB
     {

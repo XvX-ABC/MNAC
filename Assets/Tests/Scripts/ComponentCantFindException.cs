@@ -1,6 +1,12 @@
 ﻿using System;
 using UnityEngine;
-
+public class ComponentException : Exception
+{
+    public ComponentException(string message):base(message)
+    {
+    }
+        
+}
 public class ComponentCantFindException : Exception
 {
     public ComponentCantFindException(string message) : base(message)

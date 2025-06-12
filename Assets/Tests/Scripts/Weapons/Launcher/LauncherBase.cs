@@ -22,7 +22,6 @@ namespace Tests.Weapons.Launcher
 
         protected Action<ILauncher> initializationAction;
         protected float lastLaunchTime;
-        //protected float lastReloadTime;
 
 
         protected ITimeline delayLaunchTimeline;
@@ -38,8 +37,8 @@ namespace Tests.Weapons.Launcher
         public ushort SpareCount { get => ammoSpareQuantity; }
         public ushort MagazineCount { get => ammoInMagazineQuantity; set => ammoInMagazineQuantity = value; }
         public ILauncherDefinitions Definitions { get => definitions; protected set => definitions = value; }
-        public Vector3 MagazinePosition { get => transform.position + transform.rotation * definitions.MagazinePosition; }
-        public Vector3 MuzzlePosition { get => transform.position + transform.rotation * definitions.MuzzlePosition; }
+        public Vector3 MagazinePosition => this.transform.TransformPoint(definitions.MagazinePosition);
+        public Vector3 MuzzlePosition => this.transform.TransformPoint(definitions.MuzzlePosition);
         public Action<ILauncher> InitializationAction { get => initializationAction; set => initializationAction = value; }
         public ITimeline DelayLaunchTimeline { get => delayLaunchTimeline; }
         public ITimeline LaunchDurationTimeline { get => launchDurationTimeline; }
@@ -78,11 +77,11 @@ namespace Tests.Weapons.Launcher
         }
         protected virtual void Update()
         {
-            if (delayLaunchTimeline.IsRunning)
+            if (delayLaunchTimeline != null && delayLaunchTimeline.IsRunning)
                 delayLaunchTimeline.OnUpdate(Time.deltaTime);
-            if (launchDurationTimeline.IsRunning)
+            if (launchDurationTimeline != null && launchDurationTimeline.IsRunning)
                 launchDurationTimeline.OnUpdate(Time.deltaTime);
-            if (reloadTimeline.IsRunning)
+            if (reloadTimeline != null && reloadTimeline.IsRunning)
                 reloadTimeline.OnUpdate(Time.deltaTime);
         }
         protected void OnDestroy()
@@ -150,7 +149,7 @@ namespace Tests.Weapons.Launcher
             timeline.AddPointEvent(0, _ => actionsLock.LockStartLaunch());
             timeline.AddPointEvent(1, _ =>
             {
-                DoLaunch();
+                Launch();
                 actionsLock.UnlockAll();
                 launchDurationTimeline.Start();
             });
@@ -175,7 +174,6 @@ namespace Tests.Weapons.Launcher
             else
                 suppNum = Mathf.Min(-(definitions.AmmoSpareQuantity - ammoSpareQuantity), num);
             ammoSpareQuantity += (ushort)suppNum;
-            //remainingCount =(ushort) Mathf.Min(definition.AmmoTotalNum - definition.AmmoTotalNumInMagazine, remainingCount + num);
             return suppNum;
         }
         public virtual bool StartReload()
@@ -229,20 +227,20 @@ namespace Tests.Weapons.Launcher
                 return false;
             return true;
         }
-        internal virtual void DoLaunch()
+        internal virtual void Launch()
         {
             var obj = ammoPool.Get();
             ammoInMagazineQuantity--;
         }
 
 #if UNITY_EDITOR
-        IMissileLauncherDefinitionsEditor _definitionsEditor;
-        protected virtual void OnDrawGizmos()
+        ILauncherDefinitionsEditor _definitionsEditor;
+        protected virtual void OnDrawGizmosSelected()
         {
             if (definitions == null)
             {
-                definitions = GetComponent<IMissileLauncherDefinitions>();
-                _definitionsEditor = definitions as IMissileLauncherDefinitionsEditor;
+                definitions = GetComponent<ILauncherDefinitions>();
+                _definitionsEditor = definitions as ILauncherDefinitionsEditor;
                 _definitionsEditor?.Load();
             }
             if (definitions != null)

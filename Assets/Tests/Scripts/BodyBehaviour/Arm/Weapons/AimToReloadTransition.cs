@@ -22,54 +22,54 @@ namespace Tests.BodyBehaviour.Arm
 
 
         internal ArmAim aim;
-        internal ArmReload reload;
-
+        internal ArmReloadAnimation reloadAnimation;
 
         ITimeline _timeline_ator;
         ITimeline _timeline_rtoa;
+        ITimeline _reloadTimeline;
         ITimelineEvent _reloadEndEvent;
-        //ILauncher _launcher;
-        internal void Initialize(ArmAim aim, ArmReload reload)
+        ITimelineEvent _continuingEvent;
+        ITimelineEvent _pauseEvent;
+        ILauncher _launcher;
+        internal void Initialize(ArmAim aim, ArmReloadAnimation reloadAnimation)
         {
             this.aim = aim ?? throw new ArgumentNullException(nameof(aim));
-            this.reload = reload ?? throw new ArgumentNullException(nameof(reload));
+            this.reloadAnimation = reloadAnimation ?? throw new ArgumentNullException(nameof(reloadAnimation));
             InitializeTimelines(_durationTime);
             aim.Weight = 1;
         }
 
-        //internal ITimeline reloadTimeline
-        //{
-        //    set
-        //    {
-        //        var timeline = reload.Timeline;
-        //        if (timeline != null)
-        //            timeline.RemovePointEvent(_reloadEndEvent);
-
-        //        reload.Timeline = timeline;
-        //        timeline = value;
-        //        _reloadEndEvent = timeline.AddPointEvent(1, _ => _timeline_rtoa.Start());
-        //    }
-
-        //}
         public ILauncher Target
         {
-            get => reload.Launcher;
+            get => _launcher;
             set
             {
                 if (value == null)
                     throw new NullReferenceException(nameof(value));
                 var timeline = value.ReloadTimeline;
                 if (_reloadEndEvent != null)
-                    reload.Timeline.RemoveEvent(_reloadEndEvent);
-                _reloadEndEvent = timeline.AddPointEvent(1, _ => _timeline_rtoa.Start());
+                {
+                    _reloadTimeline.RemoveEvent(_reloadEndEvent);
+                    _reloadTimeline.RemoveEvent(_continuingEvent);
+                    _reloadTimeline.RemoveEvent(_pauseEvent);
+                }
 
-                reload.Launcher = value;
+
+                _reloadEndEvent = timeline.AddPointEvent(1, _ => _timeline_rtoa.Start());
+                _continuingEvent = timeline.AddPointEvent(0, _ => reloadAnimation.Continue());
+                _pauseEvent = timeline.AddPointEvent(1, _ => reloadAnimation.Pause());
+
+
+                _reloadTimeline = timeline;
+
+                reloadAnimation.DurationTime = timeline.Length;
+                _launcher = value;
             }
         }
-        public bool Continuing => _timeline_ator.IsRunning || _timeline_rtoa.IsRunning;
+        public bool Continuing => _timeline_ator.IsRunning || _timeline_rtoa.IsRunning || _reloadTimeline.IsRunning;
         public bool Begin()
         {
-            if (_timeline_ator.IsRunning || _timeline_rtoa.IsRunning || reload.Continuing)
+            if (!aim.Continuing || _timeline_ator.IsRunning || _timeline_rtoa.IsRunning || _reloadTimeline.IsRunning)
                 return false;
             _timeline_ator.Start();
             return true;
@@ -82,12 +82,11 @@ namespace Tests.BodyBehaviour.Arm
 
 
             if (_timeline_ator.IsRunning)
-                _timeline_ator.Stop();
-            else if (reload.Continuing)
-                //_launcher.EndReload();
-                reload.End();
+                _timeline_ator.EarlyEnd();
+            else if (_reloadTimeline.IsRunning)
+                _launcher.EndReload();
             else if (_timeline_rtoa.IsRunning)
-                _timeline_rtoa.Stop();
+                _timeline_rtoa.EarlyEnd();
 
             aim.Weight = 1;
             if (!aim.Continuing)
@@ -103,11 +102,15 @@ namespace Tests.BodyBehaviour.Arm
                 var weight = _curve.Evaluate(ctx.Proportion);
                 aim.Weight = weight;
             });
+            _timeline_ator.AddPointEvent(0, _ =>
+            {
+                reloadAnimation.Pause();
+            });
             _timeline_ator.AddPointEvent(1, _ =>
             {
                 if (!aim.End())
                     throw new Exception("Try to end aim behaviour failed.");
-                if (!reload.Start())
+                if (!_launcher.StartReload())
                     throw new Exception("Try to start reload behaviour failed.");
             });
 
@@ -123,7 +126,6 @@ namespace Tests.BodyBehaviour.Arm
                 if (!aim.Begin())
                     throw new Exception("Try to start aim behaviour failed.");
             });
-
         }
         public void OnUpdate()
         {

@@ -19,9 +19,9 @@ namespace Assets.Tests.Scripts.Weapons
 
         }
     }
-    public class GetWeaponObjByNameFailedException : Exception
+    public class WeaponObjGetFailedByName : Exception
     {
-        public GetWeaponObjByNameFailedException(string name) : base($"Get a weapon obj by the name '{name}'  failed.")
+        public WeaponObjGetFailedByName(string name) : base($"Get a weapon obj by the name '{name}'  failed.")
         {
 
         }

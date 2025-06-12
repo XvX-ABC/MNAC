@@ -3,7 +3,7 @@ using Random = Unity.Mathematics.Random;
 
 namespace Assets.Scripts.Utilities.Timeline
 {
-    internal class RandomTimeGeneration : ITimeGeneration
+    internal class RandomTimeGeneration : ITimeGenerator
     {
         Vector2 _range;
         Random _random;
@@ -19,9 +19,17 @@ namespace Assets.Scripts.Utilities.Timeline
         }
         public RandomTimeGeneration(Vector2 range)
         {
-            _range = new Vector2(Mathf.Min(range.x, range.y), Mathf.Max(range.x, range.y));
+            UpdateRange(range);
             _random = new((uint)this.GetHashCode());
         }
+        public void UpdateRange(Vector2 range)
+        {
+            _range = new Vector2(Mathf.Min(range.x, range.y), Mathf.Max(range.x, range.y));
+        }
 
+        public void UpdateRange(System.Numerics.Vector2 range)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

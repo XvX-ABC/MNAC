@@ -1,0 +1,16 @@
+{
+    "MagazinePosition": {
+        "x": 0.0,
+        "y": -0.6100000143051148,
+        "z": 0.0
+    },
+    "MuzzlePosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 3.5899999141693117
+    },
+    "AmmoInMagazineQuantity": 50,
+    "ReloadDuration": 1.0,
+    "RPS": 5.0
+}   "RPS": 2.0
+}

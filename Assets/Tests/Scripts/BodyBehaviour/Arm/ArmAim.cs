@@ -45,11 +45,14 @@ namespace Tests.BodyBehaviour.Arm
             get => _target;
             set
             {
-                if (value == null)
+
+                if (value == null || value.Obj == null)
                     _enabled = false;
                 else
+                {
                     _enabled = true;
-                _target = value;
+                    _target = value;
+                }
             }
         }
         public bool Continuing => _enabled;

@@ -139,11 +139,11 @@ namespace Assets.Scripts.Utilities.Timeline
                     return true;
             return false;
         }
-        public bool UpdateLength(float newLength)
+        public virtual bool UpdateLength(float newLength)
         {
             if (isRunning)
             {
-                Debug.LogWarning("The timeline can't update length now. because it's running");
+                Debug.LogWarning("This timeline can't update length. because it's running right now.");
                 return false;
             }
             if (newLength < 0)

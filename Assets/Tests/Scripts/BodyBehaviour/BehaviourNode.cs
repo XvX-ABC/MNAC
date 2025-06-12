@@ -52,12 +52,12 @@ namespace Assets.Tests.Scripts.BodyBehaviour
                 b.OnAnimatorIK(layerIndex);
         }
 
-        bool IArmBehaviour.Begin()
+        bool IArmBehaviour.BStart()
         {
             return IArmBehaviour.TryBeginAllBehaviours(behaviours);
         }
 
-        bool IArmBehaviour.End()
+        bool IArmBehaviour.BEnd()
         {
             return IArmBehaviour.TryEndAllBehaviours(behaviours);
         }

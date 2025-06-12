@@ -64,7 +64,7 @@ namespace Tests.Weapons.MissileLauncher
             });
             timeline.AddPointEvent(1, _ =>
             {
-                DoLaunch();
+                Launch();
                 actionsLock.UnlockAll();
                 launchDurationTimeline.Start();
             });
@@ -87,7 +87,7 @@ namespace Tests.Weapons.MissileLauncher
                 missile = missileObj.GetComponent<IMissile>();
             }
         }
-        internal override void DoLaunch()
+        internal override void Launch()
         {
             missileObj.transform.SetParent(null);
             var missile = this.missile;

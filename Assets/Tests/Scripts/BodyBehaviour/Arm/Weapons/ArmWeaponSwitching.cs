@@ -3,10 +3,45 @@ using Assets.Scripts.Utilities.Timeline.Event.Point;
 using Assets.Tests.Scripts.Weapons;
 using System;
 using Tests.Input;
+using Tests.States;
 using UnityEngine;
 
 namespace Tests.BodyBehaviour.Arm
 {
+    public class ArmBehaviourState : IState<object>
+    {
+        IArmBehaviour _behaviour;
+        string _name;
+        Guid _id;
+        Transition<object>[] _transitions;
+        public string Name => _name;
+
+        public Guid ID => _id;
+
+        public Transition<object>[] Transitions { get => _transitions; set => _transitions = value; }
+        public object Context { set { } }
+
+        public ArmBehaviourState(string name, IArmBehaviour behaviour)
+        {
+            _name = name;
+            _behaviour = behaviour ?? throw new ArgumentNullException(nameof(behaviour));
+            _id = Guid.NewGuid();
+        }
+        public void OnEnter()
+        {
+            _behaviour.BStart();
+        }
+
+        public void OnExit()
+        {
+            _behaviour.BEnd();
+        }
+
+        public void OnUpdate()
+        {
+            _behaviour.OnUpdate();
+        }
+    }
     public class ArmWeaponSwitching : IArmBehaviour
     {
         IArmWeaponDefinitions _definitions;
@@ -18,6 +53,8 @@ namespace Tests.BodyBehaviour.Arm
         ITimeline _timeline;
         GameObject _weaponObj;
         DefaultWeaponSelector _defaultSelector;
+
+        BehaviourState _state;
 
 
         public Func<ArmWeaponDescription[], string> SelectionFunc
@@ -32,6 +69,7 @@ namespace Tests.BodyBehaviour.Arm
         }
         public Func<GameObject, GameObject, GameObject> WeaponSwitchingFunc { get => _mountPoint.LoadObjChangeFunc; set => _mountPoint.LoadObjChangeFunc = value; }
         IInput IArmBehaviour.Input { set => throw new NotImplementedException(); }
+        BehaviourState IArmBehaviour.State { get => _state; }
         public bool Continuing { get => _timeline.IsRunning; }
         public ArmWeaponSwitching(IArmWeaponDefinitions definitions, MountPoint mountPoint, WeaponCore weaponCore, Func<ArmWeaponDescription[], string> selectionFunc)
         {
@@ -40,7 +78,6 @@ namespace Tests.BodyBehaviour.Arm
             _timeline = new Timeline(_definitions.SwitchingDurationTime);
             _timeline.AddPointEvent(_definitions.SwitchingMountedProportion, _ =>
             {
-                Debug.Log("change the weapon obj");
                 _weaponObj = GetWeaponObj();
                 _mountPoint.LoadObj = _weaponObj;
             });
@@ -73,13 +110,13 @@ namespace Tests.BodyBehaviour.Arm
         {
             var name = _selectionFunc(_definitions.Origins);
             if (!_weaponCore.TryGetWeaponObj(name, out var obj))
-                throw new GetWeaponObjByNameFailedException(name);
+                throw new WeaponObjGetFailedByName(name);
             return obj;
         }
 
 
 
-        public bool Begin()
+        public bool BStart()
         {
 
             if (_timeline.IsRunning)
@@ -93,7 +130,7 @@ namespace Tests.BodyBehaviour.Arm
         }
 
 
-        public bool End()
+        public bool BEnd()
         {
             _timeline.Stop();
             return true;

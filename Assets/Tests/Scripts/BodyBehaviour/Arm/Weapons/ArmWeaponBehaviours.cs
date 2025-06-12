@@ -87,11 +87,11 @@ namespace Tests.BodyBehaviour.Arm
 
             }
         }
-        public bool Begin()
+        public bool BStart()
         {
             return IArmBehaviour.TryBeginAllBehaviours(_activatedBehaviours);
         }
-        public bool End()
+        public bool BEnd()
         {
             return IArmBehaviour.TryEndAllBehaviours(_activatedBehaviours);
         }

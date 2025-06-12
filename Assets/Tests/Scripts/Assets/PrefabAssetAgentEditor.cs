@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tests.Assets
 {
-    //[CustomPropertyDrawer(typeof(PrefabAssetAgent_Managed))]
+    [CustomPropertyDrawer(typeof(PrefabAssetAgent_Managed))]
     public class PrefabAssetAgentEditor : PropertyDrawer
     {
         bool _foldout;
