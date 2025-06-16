@@ -7,6 +7,7 @@ namespace Tests.Locomotion.Animation
     {
         GroundLocomotionAnimator _horizontal;
         JumpLocomotionAnimator _jump;
+        AirLocomotionAnimator_New _air_new;
         AirLocomotionAnimator _air;
         BoostingLocomotionAnimator _boosting;
         IModule[] _modules;
@@ -15,9 +16,10 @@ namespace Tests.Locomotion.Animation
         {
             _horizontal = GetComponent<GroundLocomotionAnimator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(GroundLocomotionAnimator));
             _jump = GetComponent<JumpLocomotionAnimator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(JumpLocomotionAnimator));
-            _air = GetComponent<AirLocomotionAnimator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(AirLocomotionAnimator));
+            //_air = GetComponent<AirLocomotionAnimator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(AirLocomotionAnimator));
+            _air_new = GetComponent<AirLocomotionAnimator_New>() ?? throw new ComponentCantFindException(this.gameObject, typeof(AirLocomotionAnimator_New));
             _boosting = GetComponent<BoostingLocomotionAnimator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(BoostingLocomotionAnimator));
-            _modules = new IModule[] { _horizontal, _jump, _air, _boosting };
+            _modules = new IModule[] { _horizontal, _jump, _air_new, _boosting };
         }
         public void OnFixedUpdate(Context context)
         {

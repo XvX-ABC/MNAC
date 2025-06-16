@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Utilities;
 using System;
 using Tests.Environment;
+using Unity.VisualScripting;
 using UnityEngine;
 using JState = Tests.Locomotion.JumpLocomotion.State;
 namespace Tests.Locomotion.Animation
