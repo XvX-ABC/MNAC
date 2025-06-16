@@ -54,6 +54,8 @@ namespace Tests.Locomotion.Animation
         }
         public void OnFixedUpdate(Context context)
         {
+            if (!enabled)
+                return;
             var jstate = _jumpLocomotion.CurrentState;
             _toJump = jstate > JState.OnGround;
             _startEvent.TryExecute();

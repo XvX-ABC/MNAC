@@ -24,8 +24,8 @@ namespace Tests.Locomotion.Animation
             _detector = GetComponent<IGroundDetector>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IGroundDetector));
 
 
-            _ascendingStartEvent = new(ctx => { _animator.SetTrigger(_definitions.EnterParamName); _animator.SetBool(_definitions.StateHoldingParamName, true); });
-            _jumpEndEvent = new(ctx => { _maxHeight = 0; _animator.SetBool(_definitions.StateHoldingParamName, false); });
+            _ascendingStartEvent = new(ctx => { _animator.SetTrigger(_definitions.EnterParamName); /*_animator.SetBool(_definitions.StateHoldingParamName, true)*/; });
+            //_jumpEndEvent = new(ctx => { _maxHeight = 0; _animator.SetBool(_definitions.StateHoldingParamName, false); });
         }
         void Start()
         {
@@ -47,10 +47,13 @@ namespace Tests.Locomotion.Animation
             var groundHeight = _detector.GroundHeight;
             var currentHeight = _detector.Distance;
             var v = currentHeight / (_maxHeight - groundHeight);
-            _animator.Play(_definitions.DescendingClipName, 0, Mathf.Clamp01(1 - v));
+            if (v > 0.1f)
+                _animator.Play(_definitions.DescendingClipName, 0, Mathf.Clamp01(1 - v));
         }
         public void OnFixedUpdate(Context context)
         {
+            if (!enabled)
+                return;
             var state = _jumpLocomotion.CurrentState;
 
             if (state == JState.Descending)
@@ -60,7 +63,7 @@ namespace Tests.Locomotion.Animation
                 _maxHeight = Mathf.Max(_maxHeight, context.Position.y);
 
             _ascendingStartEvent.TryExecute(context);
-            _jumpEndEvent.TryExecute(context);
+            //_jumpEndEvent.TryExecute(context);
         }
     }
 }

@@ -8,6 +8,7 @@ using Tests.Locomotion;
 using Tests.Weapons;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
+using UInput = UnityEngine.Input;
 
 namespace Tests.BodyBehaviour.Arm
 {
@@ -104,6 +105,11 @@ namespace Tests.BodyBehaviour.Arm
 
         public void OnUpdate()
         {
+            if (UInput.GetKeyDown(KeyCode.S))
+            {
+                foreach (var b in _activatedBehaviours)
+                    b.BEnd();
+            }
             foreach (var b in _activatedBehaviours)
                 b.OnUpdate();
         }

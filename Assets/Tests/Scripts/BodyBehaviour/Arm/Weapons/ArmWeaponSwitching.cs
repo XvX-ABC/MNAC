@@ -13,6 +13,7 @@ namespace Tests.BodyBehaviour.Arm
         IArmBehaviour _behaviour;
         string _name;
         Guid _id;
+        bool _enabled;
         Transition<object>[] _transitions;
         public string Name => _name;
 
@@ -20,6 +21,7 @@ namespace Tests.BodyBehaviour.Arm
 
         public Transition<object>[] Transitions { get => _transitions; set => _transitions = value; }
         public object Context { set { } }
+        public bool Enabled { get => _enabled; set => _enabled = value; }
 
         public ArmBehaviourState(string name, IArmBehaviour behaviour)
         {

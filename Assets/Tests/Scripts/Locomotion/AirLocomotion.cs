@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Utilities;
+using Assets.Scripts.Utilities.Timeline;
 using Locomotion;
 using System;
 using Tests.Environment;
@@ -47,6 +48,7 @@ namespace Tests.Locomotion
 
             if (input.IsAscending)
             {
+
                 if (_jumpLocomotion.CurrentState > JState.OnGround && _jumpLocomotion.CurrentState <= JState.Ascending)
                     return;
                 else if (_jumpLocomotion.CurrentState == JState.Descending)
@@ -59,6 +61,7 @@ namespace Tests.Locomotion
                 context.Velocity = velocity;
             }
             _stateEvent.TryExecute(true, context);
+
 
         }
     }

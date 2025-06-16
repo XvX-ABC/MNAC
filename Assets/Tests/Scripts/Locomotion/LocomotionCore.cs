@@ -134,6 +134,9 @@ namespace Tests.Locomotion
             }
         }
 
+        void Update()
+        {
+        }
         void FixedUpdate()
         {
             UpdateContext();

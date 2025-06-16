@@ -51,10 +51,10 @@ namespace Tests.Input
             set => _virtualInput.IsBoosting = value;
         }
 
-        public bool Fire => false;
+        public bool Fire => _currentInput.Fire;
 
-        public bool Reload => false;
+        public bool Reload => _currentInput.Reload;
 
-        public bool Supply => false;
+        public bool Supply => _currentInput.Supply;
     }
 }

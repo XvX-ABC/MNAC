@@ -33,11 +33,15 @@ namespace Tests.BodyBehaviour.Arm
         }
         public void Play()
         {
+            Debug.Log("Play Reload Animation");
             _animator.SetBool(_enterParamName, true);
+            _animator.SetFloat(_speedMultiplierName, _expectedSpeedMultiplier);
         }
         public void Stop()
         {
+            Debug.Log("Stopped Reload Animation");
             _animator.SetBool(_enterParamName, false);
+            _animator.SetFloat(_speedMultiplierName, _expectedSpeedMultiplier);
         }
         public void Pause()
         {

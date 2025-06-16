@@ -16,6 +16,8 @@ namespace Tests.States
 
         public Transition<T>[] Transitions { get => _transitions; set => _transitions = value; }
         public T Context { set => _context = value; }
+        public bool Enabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public EmptyState()
         {
             _transitions = new Transition<T>[0];
@@ -40,6 +42,7 @@ namespace Tests.States
         HashSet<IState<T>> _states;
         IState<T> _currentState;
         T _context;
+        internal Action<IState<T>, IState<T>> stateChangedAction;
         public StateMachine()
         {
             _states = new HashSet<IState<T>>();
@@ -108,15 +111,17 @@ namespace Tests.States
         }
         void ChangeState(IState<T> nextState)
         {
-            _currentState?.OnExit();
+            var currentState = _currentState;
+            currentState?.OnExit();
             nextState.OnEnter();
             _currentState = nextState;
+            stateChangedAction?.Invoke(currentState, nextState);
         }
         IState<T> CheckTransitions()
         {
             foreach (var t in _currentState.Transitions)
             {
-                if (t.TriggerEvent())
+                if (t.DestinationState.Enabled && t.TriggerEvent())
                     return t.DestinationState;
             }
             return null;
@@ -156,6 +161,7 @@ namespace Tests.States
         public string Name { get; }
         public Guid ID { get; }
         public Transition<T>[] Transitions { get; set; }
+        public bool Enabled { get; set; }
         public T Context { set; }
         public void OnEnter();
         public void OnUpdate();

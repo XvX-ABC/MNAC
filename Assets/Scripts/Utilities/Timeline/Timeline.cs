@@ -86,7 +86,7 @@ namespace Assets.Scripts.Utilities.Timeline
         {
             if (!isRunning)
                 return;
-            var context = new TimelineContext() { DeltaTime = deltaTime, Time = time, Proportion = time / duration, Duration = duration };
+            var context = new TimelineContext() { DeltaTime = deltaTime, Time = time, Proportion = duration == 0 ? 1 : time / duration, Duration = duration };
 
             if (!_startActionExecuted)
             {

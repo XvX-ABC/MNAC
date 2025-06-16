@@ -42,33 +42,14 @@ namespace Tests.Locomotion.Animation
         }
         public void OnFixedUpdate(Context context)
         {
+            if (!enabled)
+                return;
             var ground = context.Ground;
             _startEvent.TryExecute(context);
             _endEvent.TryExecute(context);
             if (ground == null)
                 UpdateVelocity(context);
 
-            //var ground = context.Ground;
-            //if (ground!=null)
-            //{
-            //    if (_animator.GetBool(_definition.EnterParamName))
-            //        _animator.SetBool(_definition.EnterParamName, false);
-            //    return;
-            //}
-            //if (_jumpLocomotion.CurrentState > JState.Idle && _jumpLocomotion.CurrentState <= JState.Ascending)
-            //    return;
-
-            //var input = context.Input;
-            //if (!input.IsAscending)
-            //    return;
-
-
-            //_animator.SetBool(_definition.EnterParamName, true);
-
-
-            //var velocity = context.Velocity * 0.05f;
-            //_animator.SetFloat(_definition.XParamName, velocity.x);
-            //_animator.SetFloat(_definition.YParamName, velocity.z);
         }
     }
 }

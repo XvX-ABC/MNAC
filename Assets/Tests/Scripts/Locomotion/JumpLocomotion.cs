@@ -60,6 +60,7 @@ namespace Tests.Locomotion
             {
                 _context.Velocity += Quaternion.FromToRotation(World.DefaultUp, _context.World.Up) * _startVelocity;
                 _preparationEndAction?.Invoke(_state, _context);
+                i = 1;
             });
 
             _ascendingTimeline = new Timeline(_ascendingDurationTime);
@@ -133,6 +134,7 @@ namespace Tests.Locomotion
             v.y = context.Velocity.y;
             context.Velocity = v;
         }
+        float i;
         public void OnFixedUpdate(Context context)
         {
 
@@ -149,12 +151,15 @@ namespace Tests.Locomotion
 
             if (_state == State.InPreparation && ground == null)
                 _ascendingTimeline.Start();
+            else if (_state == State.InPreparation && ground != null)
+            {
+                Debug.Log("frame : " + i++);
+            }
 
             if (_state == State.OnGround && ground != null && input.IsAscending)
             {
                 StartJumpImpl(context);
             }
-
             if (_preparationTimeline.IsRunning)
                 _preparationTimeline.OnUpdate(context.DeltaTime);
             if (_ascendingTimeline.IsRunning)

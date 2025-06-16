@@ -975,7 +975,22 @@ PrefabInstance:
     - target: {fileID: -4453410279357248921, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4453410279357248921, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _jump._height
+      value: 3.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4453410279357248921, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _jump._preparationDuration
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3599583202459158695, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: m_Interpolate
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -2814279678923396318, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
@@ -985,12 +1000,12 @@ PrefabInstance:
     - target: {fileID: -2814279678923396318, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -156438170123911413, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 747830215347353628, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
@@ -1000,6 +1015,11 @@ PrefabInstance:
     - target: {fileID: 1458634209188609053, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2550968540632913536, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2672839148910755900, guid: cda3572f260d2fd4aa54e5b415780ea9,
@@ -1020,7 +1040,7 @@ PrefabInstance:
     - target: {fileID: 2736971665504801338, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3485702767577499301, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
@@ -1160,12 +1180,22 @@ PrefabInstance:
     - target: {fileID: 5099703997328524687, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _jump._enterParamName
+      value: Jump_Enter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _boosting._toJumpParamName
+      value: Jump_Enter
       objectReference: {fileID: 0}
     - target: {fileID: 6453919022208487632, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
@@ -1175,17 +1205,22 @@ PrefabInstance:
     - target: {fileID: 6630123584220569405, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6855149692986579720, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6982147408347759563, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6982147408347759563, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _weapon._switchingDurationTime
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7018669895204781476, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
@@ -1245,14 +1280,15 @@ PrefabInstance:
     - target: {fileID: 8261480167803269727, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8506014216990972398, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3485702767577499301, guid: cda3572f260d2fd4aa54e5b415780ea9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8484196092275241973, guid: cda3572f260d2fd4aa54e5b415780ea9,
@@ -1311,7 +1347,7 @@ MonoBehaviour:
     IKPosition: {x: 5.3113666, y: 1.8468211, z: -0.44775903}
     IKPositionWeight: 1
     root: {fileID: 3564753411768140481}
-    target: {fileID: 462109978}
+    target: {fileID: 0}
     tolerance: 0
     maxIterations: 4
     useRotationLimits: 1
@@ -1361,6 +1397,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4ea4b6f2127ca74db14038837a3da7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _transition:
+    _curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: -1
+        outSlope: -1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -1
+        outSlope: -1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    _duration: 1
+    _offset: 0
+  _reloadAnimation:
+    _clipLength: 2.458
+    _speedMultiplierName: Arm_Reload_Speed_Multiplier
+    _enterParamName: Arm_Enter_Reload
+    _animator: {fileID: 3564753411768140478}
 --- !u!114 &3564753411768140491 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3066788001689609190, guid: cda3572f260d2fd4aa54e5b415780ea9,

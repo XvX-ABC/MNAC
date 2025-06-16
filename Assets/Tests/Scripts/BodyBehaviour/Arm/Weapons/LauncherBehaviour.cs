@@ -1,160 +1,86 @@
-﻿using Assets.Tests.Scripts.Weapons;
-using Mono.Cecil;
-using RootMotion.FinalIK;
+﻿using RootMotion.FinalIK;
 using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Tests.Input;
-using Tests.Locomotion;
 using Tests.Weapons;
 using Tests.Weapons.Launcher;
-using Unity.VisualScripting.Dependencies.NCalc;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.InputSystem.Layouts;
-using static UnityEngine.Rendering.DebugUI;
-using Debug = UnityEngine.Debug;
 
-
-namespace Tests.BodyBehaviour.Arm
+namespace Tests.BodyBehaviour.Arm.Weapons
 {
-    public class ArmAimer : IArmBehaviour, IAimer
-    {
-        AimIK _ik;
-        ITarget _target;
-        bool _endabled;
-        public ArmAimer(AimIK ik)
-        {
-            this._ik = ik ?? throw new NullReferenceException(nameof(ik));
-        }
-
-        public IInput Input { set => throw new NotImplementedException(); }
-
-        public bool Continuing => _endabled;
-        public ITarget Target { get => _target; set => _target = value; }
-        public bool BEnd()
-        {
-            if (_target == null)
-            {
-                return false;
-            }
-            _ik.solver.IKPositionWeight = 0f;
-            _endabled = true;
-            return true;
-        }
-
-        public bool BStart()
-        {
-            if (_target == null)
-            {
-                return false;
-            }
-            _ik.solver.IKPositionWeight = 1f;
-            _endabled = false;
-            return true;
-
-        }
-        public void OnUpdate()
-        {
-            if (!_endabled)
-                return;
-            _ik.solver.IKPosition = _target.Position;
-        }
-    }
-    [Serializable]
+    [RequireComponent(typeof(AimIK))]
     public class LauncherBehaviour : MonoBehaviour, IArmWeaponBehaviour, IAimer
     {
-
+        ArmAimer _aimer;
         [SerializeField]
-        ArmAim _aim_old;
-        ArmAimer _aim;
+        ArmAimingAndReloadTransition _transition;
         [SerializeField]
         ArmReloadAnimation _reloadAnimation;
-        [SerializeField]
-        AimToReloadTransition _transition;
-
-        IInput _input;
         ILauncher _launcher;
+        IInput _input;
         public WeaponType Type => WeaponType.Launcher;
-        public virtual IWeapon Weapon
+
+        public IWeapon Weapon
         {
             get => _launcher;
+
             set
             {
                 if (value is ILauncher launcher)
                 {
                     _launcher = launcher;
-                    _transition.Target = launcher;
+                    _transition.Launcher = launcher;
                 }
                 else
                     throw new InvalidCastException($"This weapon '{value.Name}' is not a launcher.");
             }
         }
-        public virtual ITarget Target
-        {
-            get => _aim_old.Target;
-            set => _aim_old.Target = value;
-        }
-        IInput IArmBehaviour.Input { set => _input = value ?? throw new NullReferenceException(nameof(value)); }
-        public bool Continuing { get => _transition.Continuing || _aim_old.Continuing; }
+        public IInput Input { set => _input = value; }
 
-        protected virtual void Awake()
+        public bool Continuing => _aimer.Continuing;
+        public ITarget Target
         {
-            //_aim_old.OnAwake();
-            _transition.Initialize(_aim_old, _reloadAnimation);
-            var aimIk = GetComponent<AimIK>() ?? throw new ComponentCantFindException(this.gameObject, typeof(AimIK));
-            _aim = new(aimIk);
+            get => _aimer.Target;
+            set => _aimer.Target = value;
         }
-        protected virtual void Start()
+        void Awake()
         {
-            _aim.Target = GetComponent<ITarget>();
+            _aimer = new(GetComponent<AimIK>());
+            Target = GetComponent<ITarget>();
+            _transition.Initialize(_aimer, _reloadAnimation);
         }
-        public void Update()
+        public void OnUpdate()
         {
-            if (_aim.Continuing || _transition.Continuing)
-                _reloadAnimation.Play();
-            else
-                _reloadAnimation.Stop();
-
+            if (!this.enabled)
+                return;
             if (_input.Reload)
             {
-                _transition.Begin();
-            }
-            else if (_transition.Continuing && _input.Fire)
-            {
-                _transition.End();
+                _transition.BStart();
             }
 
-            _aim_old.OnUpdate();
             _transition.OnUpdate();
         }
         void LateUpdate()
         {
-            _aim.OnUpdate();
+
+            _aimer.OnUpdate();
         }
-        public void OnAnimatorIK(int layerIndex)
+        public bool BEnd()
         {
-            _aim_old.OnAnimatorIK(layerIndex);
+            if (_transition.Continuing)
+                _transition.BEnd();
+            _aimer.BEnd();
+            enabled = false;
+            return true;
         }
 
         public bool BStart()
         {
-            if (!enabled)
-                enabled = true;
-            return true;
-        }
-
-        public bool BEnd()
-        {
-            if (enabled)
-                enabled = false;
-            if (_transition.Continuing)
-                _transition.End();
-            return true;
-        }
-        void OnDrawGizmos()
-        {
-            //_aim.OnDrawGizmos();
+            this.enabled = true;
+            return _aimer.BStart();
         }
     }
 }

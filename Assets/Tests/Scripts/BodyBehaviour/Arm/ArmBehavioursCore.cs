@@ -116,46 +116,32 @@ namespace Tests.BodyBehaviour.Arm
             _stateMachine = new();
             var switchingState = new ArmBehaviourState("switching", _weaponSwitching);
             var behavioursState = new ArmBehaviourState("behaviours", _weaponBehaviours);
-            var estate = new EmptyState<object>();
             _stateMachine.AddState(behavioursState);
             _stateMachine.AddState(switchingState);
-            _stateMachine.AddState(estate);
             _stateMachine.AddTransitionFor(behavioursState, () => _input.Supply && _weaponBehaviours.BEnd(), switchingState);
             _stateMachine.AddTransitionFor(switchingState, () => (!_weaponSwitching.Continuing || (_input.Fire && _weaponSwitching.BEnd())) && _weaponBehaviours.BStart(), behavioursState);
-            _stateMachine.AddTransitionFor(behavioursState, () => UInput.GetKeyDown(KeyCode.S), estate);
+            switchingState.Enabled = false;
         }
         private void Start()
         {
             var mp = FindMountPoint(_definitions.Weapon.MountPointName);
             var n = _definitions.Weapon.Origins[0].Name;
             SetDefaultWeapon(mp, n, _weaponCore);
+            this.BStart();
         }
 
         void SetDefaultWeapon(MountPoint weaponMountPoint, string weaponName, WeaponCore weaponCore)
         {
             if (!weaponCore.TryGetWeaponObj(weaponName, out var obj))
                 throw new Exception();
+            var weapon = obj.GetComponent<IWeapon>();
+            _weaponBehaviours.ActivateBehaviourBy(weapon);
             weaponMountPoint.LoadObj = obj;
         }
 
         public void OnUpdate()
         {
-
-            //if (_input.Supply)
-            //{
-            //    if (_weaponBehaviours.Continuing && !_weaponBehaviours.BEnd())
-            //        throw new Exception("Try to end weapon behaviours failed.");
-            //    if (!_weaponSwitching.Continuing && !_weaponSwitching.BStart())
-            //        throw new Exception("Try to start weapon switching failed.");
-            //}
-            //_weaponSwitching.OnUpdate();
-            //_weaponBehaviours.OnUpdate();
-            if (UInput.GetKeyDown(KeyCode.S))
-            {
-                Debug.Log("Debug point");
-            }
             _stateMachine.OnUpdate();
-
         }
         public void OnAnimatorIK(int layerIndex)
         {
@@ -164,13 +150,13 @@ namespace Tests.BodyBehaviour.Arm
             _weaponBehaviours.OnAnimatorIK(layerIndex);
         }
 
-        bool IArmBehaviour.BStart()
+        public bool BStart()
         {
             enabled = true;
             return IArmBehaviour.TryBeginAllBehaviours(_behaviours);
         }
 
-        bool IArmBehaviour.BEnd()
+        public bool BEnd()
         {
             enabled = false;
             return IArmBehaviour.TryEndAllBehaviours(_behaviours);
