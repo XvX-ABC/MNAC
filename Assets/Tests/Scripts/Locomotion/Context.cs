@@ -5,7 +5,7 @@ using Tests.Input;
 using UnityEngine;
 namespace Tests.Locomotion
 {
-    public class Context 
+    public class Context
     {
         LocomotionContext _originalLocomotion;
         LocomotionContext _expectedLocomotion;
@@ -40,8 +40,10 @@ _expectedLocomotion.SquareSpeed;
         public IGround Ground;
         public IGroundDetector GroundDetector;
         public State State;
-        public Context(Rigidbody rb, IHybridInput input, ITarget target, Collider collider, IGroundDetector groundDetector)
+        public Transform Transform;
+        public Context(Rigidbody rb, Transform transform, IHybridInput input, ITarget target, Collider collider, IGroundDetector groundDetector)
         {
+            this.Transform = transform;
             _originalLocomotion = new(rb);
             _expectedLocomotion = new(null);
             World = new(input);

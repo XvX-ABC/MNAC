@@ -9,14 +9,14 @@ namespace Locomotion
         class BaseDefinitions : IBaseDefinitions
         {
             [SerializeField]
-            float _speed;
+            float _maxSpeed;
             [SerializeField]
             float _accelerationSpeed;
             [SerializeField]
             float _ascendingSpeed;
             [SerializeField]
             float _drag;
-            public float Speed => _speed;
+            public float MaxSpeed => _maxSpeed;
 
             public float AccelerationSpeed => _accelerationSpeed;
 

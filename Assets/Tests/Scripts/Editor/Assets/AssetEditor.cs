@@ -20,11 +20,13 @@ namespace Tests.Editors.Assets
             public bool IsArray;
         }
         AssetField[] _assetFields;
+        SerializedProperty[] _normallyProps;
         void LoadAllAssetFields()
         {
             var t = target.GetType();
             var fields = t.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
-            var list = new List<AssetField>();
+            var assetsList = new List<AssetField>();
+            var normallyList = new List<SerializedProperty>();
             var sb = new StringBuilder();
             foreach (var field in fields)
             {
@@ -38,22 +40,24 @@ namespace Tests.Editors.Assets
                     sb.AppendLine(i.FullName);
                 }
                 var isArray = false;
+
+                var prop = serializedObject.FindProperty(field.Name);
+
                 if (t.IsArray)
                 {
                     t = t.GetElementType();
                     interfaces = t.GetInterfaces();
                     if (!interfaces.Any(i => i == typeof(IAssetAgent_Managed)))
                     {
-                        continue;
+                        goto Add_To_Normally_List;
                     }
                     isArray = true;
                 }
                 if (!interfaces.Any(i => i == typeof(IAssetAgent_Managed)) || !t.IsSerializable)
                 {
-                    continue;
+                    goto Add_To_Normally_List;
                 }
 
-                var prop = serializedObject.FindProperty(field.Name);
                 var assetField = new AssetField()
                 {
                     Info = field,
@@ -62,15 +66,24 @@ namespace Tests.Editors.Assets
                     IsArray = isArray
                 };
 
-                list.Add(assetField);
+                assetsList.Add(assetField);
                 sb.AppendLine();
                 sb.AppendLine();
                 sb.AppendLine();
+            Add_To_Normally_List:
+                normallyList.Add(prop);
             }
-            //Debug.Log(sb.ToString());
-            _assetFields = list.ToArray();
+            Debug.Log(sb.ToString());
+            _assetFields = assetsList.ToArray();
+            _normallyProps = normallyList.ToArray();
         }
-
+        void DrawAllNormallyProperties()
+        {
+            if (_normallyProps == null)
+                return;
+            foreach (var prop in _normallyProps)
+                EditorGUILayout.PropertyField(prop);
+        }
         void DrawAllAssetFields()
         {
             if (_assetFields == null)
@@ -126,6 +139,7 @@ namespace Tests.Editors.Assets
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+            DrawAllNormallyProperties();
             DrawAllAssetFields();
             DrawButtons();
             serializedObject.ApplyModifiedProperties();

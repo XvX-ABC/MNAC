@@ -33,6 +33,7 @@ namespace Tests.Locomotion
         }
         public void StartBoost(Context context)
         {
+        
             if (_timeline.IsRunning)
                 return;
             var currentTime = Time.unscaledTime;
@@ -41,7 +42,7 @@ namespace Tests.Locomotion
             var direction = context.World.Input.HorizontalDirection;
             if (direction == Vector3.zero)
                 return;
-            var speed = _baseDefinitions.Speed * _definitions.Power;
+            var speed = _baseDefinitions.MaxSpeed * _definitions.Power;
             var expectedVelocity = direction * speed;
             _velocity = expectedVelocity;
             _context = context;

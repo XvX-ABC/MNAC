@@ -1,11 +1,13 @@
-﻿using System;
-using Assets.Scripts.Utilities;
+﻿using Assets.Scripts.Utilities;
 using Locomotion;
+using System;
 using Tests.Environment;
+using Tests.Weapons.MultiMissileLauncher.Animation;
 using UnityEngine;
 using JState = Tests.Locomotion.JumpLocomotion.State;
 namespace Tests.Locomotion.Animation
 {
+    [Obsolete]
     public class BoostingLocomotionAnimator : MonoBehaviour, IModule
     {
         IBoostingLocomotionAnimatorDefinitions _definitions;
@@ -22,9 +24,10 @@ namespace Tests.Locomotion.Animation
 
             _animator = GetComponent<Animator>() ?? throw new ComponentCantFindException(this.gameObject, typeof(Animator));
 
-            _startEvent = new(() => _animator.SetTrigger(_definitions.EnterParamName));
-            _endEvent = new(() => _animator.SetBool(_definitions.ToJumpParamName, _toJump));
 
+
+            _startEvent = new(() => { _animator.SetBool(_definitions.EnterParamName, true); });
+            _endEvent = new(() => _animator.SetBool(_definitions.EnterParamName, false));
         }
         void Start()
         {
@@ -32,19 +35,13 @@ namespace Tests.Locomotion.Animation
 
             _locomotion = GetComponent<LocomotionCore>()?.boostingLocomotion ?? throw new NullReferenceException(nameof(BoostingLocomotion));
 
-
+            var duration = _locomotion.Definitions.Duration;
+            var v = duration == 0 ? 1 : _definitions.BoostingClipLength / duration * 50;
+            _animator.SetFloat(_definitions.DurationMultiplierParamName, v);
 
             var ld = _locomotion.Definitions;
             var clipLength = _definitions.BoostingClipLength;
 
-
-            var plength = ld.Duration * _definitions.PreparatoryProportion;
-            var v = plength == 0 ? 0 : clipLength / plength;
-            _animator.SetFloat(_definitions.PreparationMultiplierParamName, v);
-
-            var dlength = ld.Duration * (1 - _definitions.PreparatoryProportion);
-            v = dlength == 0 ? 0 : clipLength / dlength;
-            _animator.SetFloat(_definitions.DurationMultiplierParamName, v);
 
             _locomotion.StartAction += _ => _startEvent.Enabled = true;
             _locomotion.EndAction += _ => _endEvent.Enabled = true;

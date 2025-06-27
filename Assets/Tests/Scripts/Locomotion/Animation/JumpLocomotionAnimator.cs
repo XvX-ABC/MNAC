@@ -6,6 +6,7 @@ using UnityEngine;
 using JState = Tests.Locomotion.JumpLocomotion.State;
 namespace Tests.Locomotion.Animation
 {
+    [Obsolete]
     public class JumpLocomotionAnimator : MonoBehaviour, IModule
     {
 
@@ -25,9 +26,7 @@ namespace Tests.Locomotion.Animation
             _detector = GetComponent<IGroundDetector>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IGroundDetector));
 
 
-            _ascendingStartEvent = new(ctx => { _animator.SetBool(_definitions.EnterParamName, true); /*_animator.SetBool(_definitions.StateHoldingParamName, true)*/; });
-            //_jumpEndEvent = new(ctx => { _maxHeight = 0; _animator.SetBool(_definitions.StateHoldingParamName, false); });
-            _ascendingEndEvent = new(ctx => { _animator.SetBool(_definitions.EnterParamName, false); });
+            _ascendingStartEvent = new(ctx => { _animator.SetTrigger(_definitions.EnterParamName); });
         }
         void Start()
         {
@@ -45,29 +44,17 @@ namespace Tests.Locomotion.Animation
 
 
         }
-        //void Landing()
-        //{
-        //    var groundHeight = _detector.GroundHeight;
-        //    var currentHeight = _detector.Distance;
-        //    var v = currentHeight / (_maxHeight - groundHeight);
-        //    if (v > 0.1f)
-        //        _animator.Play(_definitions.DescendingClipName, 0, Mathf.Clamp01(1 - v));
-        //}
         public void OnFixedUpdate(Context context)
         {
             if (!enabled)
                 return;
             var state = _jumpLocomotion.CurrentState;
 
-            //if (state == JState.Descending)
-            //    Landing();
-
             if (state == JState.Ascending)
                 _maxHeight = Mathf.Max(_maxHeight, context.Position.y);
 
             _ascendingStartEvent.TryExecute(context);
-            _ascendingEndEvent.TryExecute(context);
-            //_jumpEndEvent.TryExecute(context);
+            //_ascendingEndEvent.TryExecute(context);
         }
     }
 }

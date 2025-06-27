@@ -1,8 +1,10 @@
 ﻿using System;
 using Tests.Environment;
 using UnityEngine;
+using static Tests.Locomotion.AirLocomotion;
 namespace Tests.Locomotion.Animation
 {
+    [Obsolete]
     public class AirLocomotionAnimator_New : MonoBehaviour, IModule
     {
         IAirLocomotionAnimationDefinitions _definitions;
@@ -20,7 +22,12 @@ namespace Tests.Locomotion.Animation
         {
             var controlBase = GetComponent<LocomotionCore>() ?? throw new ComponentCantFindException(this.gameObject, typeof(LocomotionCore));
             _locomotion = controlBase.airLocomotion ?? throw new NullReferenceException(nameof(_locomotion));
-            _locomotion.DescendingAction += _ => Descend();
+            _locomotion.PostureChangedAction += (oldStatus, newStatus, ctx) =>
+            {
+                _animator.SetBool(_definitions.EnterParamName, newStatus == PostureState.Ascending);
+                _animator.SetBool(_definitions.DescendingEntryParamName, newStatus == PostureState.Descending);
+            };
+            //_locomotion.DescendingAction += _ => Descend();
         }
         void Descend()
         {
@@ -30,14 +37,23 @@ namespace Tests.Locomotion.Animation
             if (max == 0)
                 return;
             var v = currentHeight / max;
-            if (v > _definitions.V0)
-            {
-                _animator.Play(_definitions.DescentClipName, 0, Mathf.Clamp01(1 - v));
-            }
-            else
-            {
-                _animator.CrossFade(_definitions.NextStateClipName, _definitions.V0, 0, 1 - _definitions.V0, 0);
-            }
+            _animator.SetBool(_definitions.DescendingEntryParamName, true);
+            //if (v > _definitions.V0)
+            //{
+            //    _animator.Play(_definitions.DescentClipName, 0, Mathf.Clamp01(1 - v));
+            //}
+            //else
+            //{
+            //    _animator.CrossFade(_definitions.NextStateClipName, _definitions.V0, 0, 1 - _definitions.V0, 0);
+            //}
+        }
+        void UpdateVelocity(Context context)
+        {
+            var rotation = context.OriginalLocomotion.Rotation;
+            var velocity = context.Velocity;
+            var v = Quaternion.Inverse(rotation) * velocity * 0.05f;
+            _animator.SetFloat(_definitions.XParamName, v.x);
+            _animator.SetFloat(_definitions.YParamName, v.z);
         }
         public void OnFixedUpdate(Context context)
         {
@@ -50,6 +66,7 @@ namespace Tests.Locomotion.Animation
             {
                 _maxHeight = 0;
             }
+            UpdateVelocity(context);
         }
     }
 }

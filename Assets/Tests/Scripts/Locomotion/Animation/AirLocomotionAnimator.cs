@@ -6,6 +6,7 @@ using UnityEngine;
 using JState = Tests.Locomotion.JumpLocomotion.State;
 namespace Tests.Locomotion.Animation
 {
+    [Obsolete]
     public class AirLocomotionAnimator : MonoBehaviour, IModule
     {
         IAirLocomotionAnimationDefinitions _definitions;

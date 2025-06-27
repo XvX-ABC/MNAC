@@ -2,7 +2,7 @@
 
 namespace Tests.Locomotion.Animation
 {
-    class LocomotionAnimationDefinitions : MonoBehaviour, ILocomotionAnimationDefinitions
+public   class LocomotionAnimationDefinitions : MonoBehaviour, ILocomotionAnimationDefinitions
     {
         [SerializeField]
         GroundLocomotionAnimatorDefinitions _ground;

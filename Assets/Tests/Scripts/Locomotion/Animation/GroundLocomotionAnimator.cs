@@ -6,6 +6,7 @@ using Tests.Weapons.MultiMissileLauncher.Animation;
 using UnityEngine;
 namespace Tests.Locomotion.Animation
 {
+    [Obsolete]
     public class GroundLocomotionAnimator : MonoBehaviour, IModule
     {
         const float BottomHeight = 0.8f;
@@ -108,9 +109,9 @@ namespace Tests.Locomotion.Animation
             _animator.SetBool(_definitions.StateHoldingParamName, passed);
             if (!passed)
                 return;
-            UpdateAnimation(context);
+            UpdateAnimationVelocity(context);
         }
-        void UpdateAnimation(Context context)
+        void UpdateAnimationVelocity(Context context)
         {
             var rotation = context.OriginalLocomotion.Rotation;
             var velocity = context.Velocity;

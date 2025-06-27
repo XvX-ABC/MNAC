@@ -6,6 +6,7 @@ using Tests.BodyBehaviour.Arm;
 using Tests.Environment;
 using Tests.Input;
 using Tests.Locomotion.Animation;
+using Tests.Locomotion.Animation.States;
 using UnityEngine;
 namespace Tests.Locomotion
 {
@@ -32,6 +33,7 @@ namespace Tests.Locomotion
         internal PlatformLocomotion platformLocomotion;
 
 
+        LocomotionAnimationCore _stateCore;
         LocomotionAnimatorCore _locomotionAnimator;
 
         ILocomotionDefinitions _definitions;
@@ -63,7 +65,7 @@ namespace Tests.Locomotion
 
             //var target = new Tests.Environment.Target(_camera);
 
-            _context = new(_rb, _input, null, collider, _groundDetector);
+            _context = new(_rb, this.transform, _input, null, collider, _groundDetector);
             //target.context = _context;
 
 
@@ -88,6 +90,16 @@ namespace Tests.Locomotion
                 Array.Copy(_modules, 0, _modules, 1, _modules.Length - 1);
                 _modules[0] = _locomotionAnimator;
             }
+
+
+            _stateCore = GetComponent<LocomotionAnimationCore>();
+            if (_stateCore != null && _stateCore.enabled)
+            {
+                Array.Resize(ref _modules, _modules.Length + 1);
+                Array.Copy(_modules, 0, _modules, 1, _modules.Length - 1);
+                _modules[0] = _stateCore;
+            }
+
         }
         void UpdateContext()
         {

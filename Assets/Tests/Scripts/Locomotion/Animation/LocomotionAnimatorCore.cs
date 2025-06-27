@@ -1,8 +1,10 @@
-﻿using Tests.Environment;
+﻿using System;
+using Tests.Environment;
 using UnityEngine;
 
 namespace Tests.Locomotion.Animation
 {
+    [Obsolete]
     public class LocomotionAnimatorCore : MonoBehaviour, IModule
     {
         GroundLocomotionAnimator _horizontal;

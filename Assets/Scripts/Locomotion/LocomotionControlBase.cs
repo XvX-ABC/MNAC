@@ -259,7 +259,7 @@ namespace Locomotion
             {
                 direction = direction.normalized;
                 Vector3 velocity;
-                var speed = _definition.Speed;
+                var speed = _definition.MaxSpeed;
                 var accelerationSpeed = _definition.AccelerationSpeed;
                 if (planeNormal != Vector3.zero)
                     direction = Vector3.ProjectOnPlane(direction, planeNormal);

@@ -9,7 +9,6 @@ namespace Tests.Locomotion
     class HorizontalLocomotion : IModule
     {
         IBaseDefinitions _definitions;
-        JumpLocomotion _jump;
 
         public HorizontalLocomotion(IBaseDefinitions definitions, JumpLocomotion jump)
         {
@@ -18,6 +17,7 @@ namespace Tests.Locomotion
 
         }
 
+        JumpLocomotion _jump;
         public void OnFixedUpdate(Context context)
         {
             var world = context.World;
@@ -35,9 +35,9 @@ namespace Tests.Locomotion
                 currentSpeed = currentVelocity.magnitude;
             }
 
-            var speed = _definitions.Speed;
-            if (currentSpeed <= _definitions.Speed)
-                speed = Mathf.MoveTowards(currentSpeed, _definitions.Speed, _definitions.AccelerationSpeed);
+            var speed = _definitions.MaxSpeed;
+            if (currentSpeed <= _definitions.MaxSpeed)
+                speed = Mathf.MoveTowards(currentSpeed, _definitions.MaxSpeed, _definitions.AccelerationSpeed);
             var velocity = direction.normalized * speed - currentVelocity;
             context.Velocity += velocity;
         }

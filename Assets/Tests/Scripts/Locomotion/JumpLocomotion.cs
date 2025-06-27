@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Windows;
 namespace Tests.Locomotion
 {
-    class JumpLocomotion : IModule
+   internal class JumpLocomotion : IModule
     {
         public enum State
         {
@@ -147,19 +147,15 @@ namespace Tests.Locomotion
                 else
                     ProbesHandle(context);
             }
-
-
-            if (_state == State.InPreparation && ground == null)
-                _ascendingTimeline.Start();
-            else if (_state == State.InPreparation && ground != null)
-            {
-                Debug.Log("frame : " + i++);
-            }
-
-            if (_state == State.OnGround && ground != null && input.IsAscending)
+                     if (_state == State.OnGround && ground != null && input.IsAscending)
             {
                 StartJumpImpl(context);
             }
+
+            if (_state == State.InPreparation && ground == null)
+                _ascendingTimeline.Start();
+
+   
             if (_preparationTimeline.IsRunning)
                 _preparationTimeline.OnUpdate(context.DeltaTime);
             if (_ascendingTimeline.IsRunning)

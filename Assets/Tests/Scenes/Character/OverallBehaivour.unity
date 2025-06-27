@@ -349,7 +349,7 @@ MonoBehaviour:
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
-  m_CameraDistance: 37.23
+  m_CameraDistance: 26.35
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
@@ -396,7 +396,7 @@ Transform:
   m_GameObject: {fileID: 835923203}
   serializedVersion: 2
   m_LocalRotation: {x: 0.34360853, y: -1.3419241e-22, z: 3.7053557e-23, w: 0.939113}
-  m_LocalPosition: {x: 8.435568e-21, y: 27.657291, z: -28.438744}
+  m_LocalPosition: {x: 5.9703792e-21, y: 20.635618, z: -20.12788}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -537,7 +537,7 @@ Transform:
   m_GameObject: {fileID: 1018797105}
   serializedVersion: 2
   m_LocalRotation: {x: 0.34360853, y: -1.3928095e-22, z: 5.0960986e-23, w: 0.939113}
-  m_LocalPosition: {x: 8.435568e-21, y: 27.657291, z: -28.438744}
+  m_LocalPosition: {x: 5.9703792e-21, y: 20.635618, z: -20.12788}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -980,7 +980,17 @@ PrefabInstance:
     - target: {fileID: -4453410279357248921, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: _jump._height
-      value: 3.3
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4453410279357248921, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _base._maxSpeed
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: -4453410279357248921, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _quickBoost._duration
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: -4453410279357248921, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
@@ -1005,7 +1015,7 @@ PrefabInstance:
     - target: {fileID: -156438170123911413, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 747830215347353628, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
@@ -1040,7 +1050,7 @@ PrefabInstance:
     - target: {fileID: 2736971665504801338, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3485702767577499301, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
@@ -1204,13 +1214,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
+      propertyPath: _air._enterParamName
+      value: Air_Flying_Enter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
       propertyPath: _air._descentClipName
       value: Descending
       objectReference: {fileID: 0}
     - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: _jump._enterParamName
-      value: Jump_Enter
+      value: Air_Jump_Enter
       objectReference: {fileID: 0}
     - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
@@ -1219,8 +1234,58 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
+      propertyPath: _boosting._enterParamName
+      value: Boosting_Enter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
       propertyPath: _boosting._toJumpParamName
       value: Jump_Enter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _air._flying.definitions.Name
+      value: Flying
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _air._descendingEntryParamName
+      value: Air_Descending_Enter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _jump._ascendingMultiplierName
+      value: Air_Jump_Ascending_Multiplier
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _air._flying.definitions.DirPath
+      value: Tests/Resources/Config/Locomotion/Animation
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _air._descending.definitions.Name
+      value: Descending
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _air._flying._asset.EnterParamName
+      value: Air_Flying_Enter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _air._descending.definitions.DirPath
+      value: Tests/Resources/Config/Locomotion/Animation
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _air._descending._asset.EnterParamName
+      value: Air_Descending_Enter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272602854747056136, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _boosting._durationMultiplierParamName
+      value: Boosting_Multiplier
       objectReference: {fileID: 0}
     - target: {fileID: 6453919022208487632, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
@@ -1235,7 +1300,7 @@ PrefabInstance:
     - target: {fileID: 6855149692986579720, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6982147408347759563, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
@@ -1314,6 +1379,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3485702767577499301, guid: cda3572f260d2fd4aa54e5b415780ea9, type: 3}
+    - {fileID: -156438170123911413, guid: cda3572f260d2fd4aa54e5b415780ea9, type: 3}
+    - {fileID: 6855149692986579720, guid: cda3572f260d2fd4aa54e5b415780ea9, type: 3}
+    - {fileID: 2736971665504801338, guid: cda3572f260d2fd4aa54e5b415780ea9, type: 3}
+    - {fileID: 5099703997328524687, guid: cda3572f260d2fd4aa54e5b415780ea9, type: 3}
+    - {fileID: 6630123584220569405, guid: cda3572f260d2fd4aa54e5b415780ea9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8484196092275241973, guid: cda3572f260d2fd4aa54e5b415780ea9,
@@ -1323,8 +1393,8 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7650634701108471582, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3564753411768140509}
+      insertIndex: 7
+      addedObject: {fileID: 3564753411768140525}
     - targetCorrespondingSourceObject: {fileID: 2550968540632913536, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       insertIndex: 3
@@ -1482,7 +1552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2c8e4fe967e57b4c8a43b753e5678ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3564753411768140509
+--- !u!114 &3564753411768140525
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1491,7 +1561,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3564753411768140476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd00334f6c2d1624ea9984a6e5930ca4, type: 3}
+  m_Script: {fileID: 11500000, guid: f87a746fd06262844ad801baacd6409f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807

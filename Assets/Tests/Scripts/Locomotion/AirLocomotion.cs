@@ -7,24 +7,26 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 using JState = Tests.Locomotion.JumpLocomotion.State;
 namespace Tests.Locomotion
 {
     class AirLocomotion : IModule
     {
+        public enum PostureState
+        {
+            Unchanged = 0,
+            Ascending = 1,
+            Descending = 2,
+        }
         internal class PostureEvaluator
         {
-            public enum State
-            {
-                Unchanged = 0,
-                Ascending = 1,
-                Descending = 2,
-            }
+
             const byte EVALUATION_FRAMES = 3;
             float[] _velocityCaches;
             byte _index;
-            State _stateCache;
-            public Action<byte, Context> PostureChangedAction;
+            internal PostureState state;
+            public Action<PostureState, PostureState, Context> PostureChangedAction;
             public Action<Context> AscendingAction;
             public Action<Context> DescendingAction;
             public PostureEvaluator()
@@ -38,7 +40,7 @@ namespace Tests.Locomotion
                 if (_index >= EVALUATION_FRAMES)
                     _index = 0;
             }
-            public State AscendingEvaluate()
+            public PostureState AscendingEvaluate()
             {
                 var sum = 0f;
                 for (int i = 0; i < EVALUATION_FRAMES; i++)
@@ -47,32 +49,33 @@ namespace Tests.Locomotion
                 }
                 sum /= EVALUATION_FRAMES;
                 if (sum == 0)
-                    return State.Unchanged;
+                    return PostureState.Unchanged;
                 else
-                    return sum > 0 ? State.Ascending : State.Descending;
+                    return sum > 0 ? PostureState.Ascending : PostureState.Descending;
             }
-            public void OnFixedUpdate(Context context)
+            public void Evaluate(Context context)
             {
                 var state = AscendingEvaluate();
-                if (state != _stateCache)
+                if (state != this.state)
                 {
-                    PostureChangedAction?.Invoke((byte)state, context);
+                    PostureChangedAction?.Invoke(this.state, state, context);
                 }
-                if (state == State.Ascending)
+                if (state == PostureState.Ascending)
                 {
                     AscendingAction?.Invoke(context);
                 }
-                else if (state == State.Descending)
+                else if (state == PostureState.Descending)
                 {
                     DescendingAction?.Invoke(context);
                 }
-                _stateCache = state;
+                this.state = state;
                 WriteVelocityCache(context.Velocity.y);
             }
             public void Reset()
             {
                 Array.Clear(_velocityCaches, 0, _velocityCaches.Length);
-                _stateCache = State.Unchanged;
+                PostureChangedAction?.Invoke(this.state, PostureState.Unchanged, null);
+                state = PostureState.Unchanged;
             }
         }
 
@@ -103,7 +106,7 @@ namespace Tests.Locomotion
 
         public Action<Context> StartAction { get => _startAction; set => _startAction = value; }
         public Action<Context> EndAction { get => _endAction; set => _endAction = value; }
-        public Action<byte, Context> PostureChangedAction
+        public Action<PostureState, PostureState, Context> PostureChangedAction
         {
             get => _evaluator.PostureChangedAction;
             set => _evaluator.PostureChangedAction = value;
@@ -129,12 +132,12 @@ namespace Tests.Locomotion
                 return;
             }
 
+            if (_jumpLocomotion.CurrentState > JState.OnGround && _jumpLocomotion.CurrentState <= JState.Ascending)
+                return;
+
             if (input.IsAscending)
             {
-
-                if (_jumpLocomotion.CurrentState > JState.OnGround && _jumpLocomotion.CurrentState <= JState.Ascending)
-                    return;
-                else if (_jumpLocomotion.CurrentState == JState.Descending)
+                if (_jumpLocomotion.CurrentState == JState.Descending)
                     _jumpLocomotion.EndJump(context);
 
                 var velocity = context.Velocity;
@@ -143,8 +146,8 @@ namespace Tests.Locomotion
                     velocity.y = _definitions.AscendingSpeed;
                 context.Velocity = velocity;
             }
+            _evaluator.Evaluate(context);
             _stateEvent.TryExecute(true, context);
-            _evaluator.OnFixedUpdate(context);
         }
     }
 }

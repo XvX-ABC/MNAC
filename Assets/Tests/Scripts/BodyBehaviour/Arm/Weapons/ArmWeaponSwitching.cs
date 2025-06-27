@@ -8,26 +8,16 @@ using UnityEngine;
 
 namespace Tests.BodyBehaviour.Arm
 {
-    public class ArmBehaviourState : IState<object>
+    public class ArmBehaviourState : StateBase
     {
         IArmBehaviour _behaviour;
-        string _name;
-        Guid _id;
-        bool _enabled;
         Transition<object>[] _transitions;
-        public string Name => _name;
 
-        public Guid ID => _id;
 
-        public Transition<object>[] Transitions { get => _transitions; set => _transitions = value; }
-        public object Context { set { } }
-        public bool Enabled { get => _enabled; set => _enabled = value; }
-
-        public ArmBehaviourState(string name, IArmBehaviour behaviour)
+        public ArmBehaviourState(string name, IArmBehaviour behaviour) : base(name)
         {
-            _name = name;
+            this.name = name;
             _behaviour = behaviour ?? throw new ArgumentNullException(nameof(behaviour));
-            _id = Guid.NewGuid();
         }
         public void OnEnter()
         {
