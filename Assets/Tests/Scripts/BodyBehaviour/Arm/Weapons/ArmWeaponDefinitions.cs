@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.BodyBehaviour.Arm
+namespace Tests.Behaviours.Arm
 {
     [Serializable]
     public class ArmWeaponDefinitions : IArmWeaponDefinitions

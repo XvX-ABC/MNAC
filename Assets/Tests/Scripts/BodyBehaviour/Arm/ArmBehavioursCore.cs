@@ -1,49 +1,59 @@
-﻿using Assets.Tests.Scripts.Weapons;
+﻿using Assets.Tests.Scripts.BodyBehaviour.Arm.Animations;
+using Assets.Tests.Scripts.Weapons;
 using NUnit.Framework.Api;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Xml.Schema;
+using Tests.BodyBehaviour.Arm.Animations;
 using Tests.Input;
 using Tests.States;
 using Tests.Weapons;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
+using static Tests.BodyBehaviour.Arm.Animations.ArmWeaponBehavioursAnimator;
 using UInput = UnityEngine.Input;
 
-namespace Tests.BodyBehaviour.Arm
+namespace Tests.Behaviours.Arm
 {
-    [RequireComponent(typeof(ArmBehaviourDefinitions))]
-    public class ArmBehavioursCore : MonoBehaviour, IArmBehaviour
-    {
 
+    [RequireComponent(typeof(ArmBehaviourDefinitions))]
+    public class ArmBehavioursCore : MonoStateBase, IArmBehaviour
+    {
+        public static implicit operator StateBase<object>(ArmBehavioursCore core)
+        {
+            return core._stateMachine;
+        }
+        [SerializeField]
+        Animator _animator;
         [SerializeField]
         WeaponCore _weaponCore;
         [SerializeField]
         HybridInput _input;
-        [SerializeField]
-        GameObject[] _weaponBehaviourObjs;
+        //[SerializeField]
+        //GameObject[] _weaponBehaviourObjs;
         [SerializeField]
         MountPoint[] _mountPoints;
 
         IArmBehaviourDefinitions _definitions;
 
-        IArmWeaponBehaviour[] _behaviours;
+        //IArmWeaponBehaviour[] _behaviours;
 
 
-        ArmWeaponSwitching _weaponSwitching;
-        ArmWeaponBehaviours _weaponBehaviours;
-
-        StateMachine<object> _stateMachine;
+        internal ArmWeaponSwitching weaponSwitching;
+        internal ArmWeaponHoldingBehaviours holdingBehaviours;
+        internal ArmWeaponAnimator weaponAnimator;
+        PlayableStateMachine _stateMachine;
         IInput IArmBehaviour.Input
         {
             set
             {
-                foreach (var b in _behaviours)
-                    b.Input = value;
+                weaponSwitching.Input = value;
+                holdingBehaviours.Input = value;
             }
         }
 
-        bool IArmBehaviour.Continuing => IArmBehaviour.AnyBehaviourIsContinuing(_behaviours);
+        bool IArmBehaviour.Continuing => false;
 
         public MountPoint FindMountPoint(string name)
         {
@@ -62,72 +72,67 @@ namespace Tests.BodyBehaviour.Arm
             var weaponMountPoint = FindMountPoint(weaponDefinitions.MountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.MountPointName);
 
 
-            _weaponSwitching = new ArmWeaponSwitching(weaponDefinitions, weaponMountPoint, _weaponCore);
+            weaponSwitching = new ArmWeaponSwitching(weaponDefinitions, weaponMountPoint, _weaponCore);
+            weaponSwitching.ExitWhenEnd = true;
 
 
-
-            var length = _weaponBehaviourObjs.Length;
-            _behaviours = new IArmWeaponBehaviour[length];
-            for (int i = 0; i < length; i++)
-            {
-                _behaviours[i] = _weaponBehaviourObjs[i].GetComponent<IArmWeaponBehaviour>() ?? throw new ComponentCantFindException(_weaponBehaviourObjs[i], typeof(IArmWeaponBehaviour));
-            }
-
-
-
-            var l = new List<(string, IArmWeaponBehaviour)>();
+            var alist = new List<(string, IArmWeaponHoldingBehavioursAnimator)>();
+            var blist = new List<(string, IArmWeaponHoldingBehaviour)>();
             foreach (var od in _definitions.Weapon.Origins)
             {
-                var n = od.Name;
-                var t = od.Type;
-                foreach (var b in _behaviours)
+                if (!_weaponCore.TryGetWeaponOrigin(od.Name, out var origin))
                 {
-                    if (b.Type == t)
-                    {
-                        l.Add((n, b));
-                        break;
-                    }
+                    Debug.LogWarning(new WeaponOriginNotContainsException(_weaponCore, od.Name));
+                    continue;
                 }
+                var behaviour = origin.GetComponent<IArmWeaponHoldingBehaviour>();
+                var animator = behaviour.Animator;
+                if (behaviour == null)
+                {
+                    Debug.LogWarning(new ComponentCantFindException(origin, typeof(IArmWeaponHoldingBehaviour)));
+                    continue;
+                }
+                blist.Add((od.Name, behaviour));
             }
-            _weaponBehaviours = new ArmWeaponBehaviours(l.ToArray());
+            holdingBehaviours = new ArmWeaponHoldingBehaviours(this.gameObject, blist.ToArray());
 
 
-            _weaponBehaviours.Input = _input;
+
+            holdingBehaviours.Input = _input;
 
 
-            _weaponSwitching.WeaponSwitchingFunc += (cobj, nobj) =>
+            weaponSwitching.SwitchingEvent += (cobj, nobj) =>
             {
                 if (cobj != null)
                 {
                     var cweapon = cobj.GetComponent<IWeapon>();
-                    _weaponBehaviours.UnactivateBehaviourBy(cweapon);
+                    holdingBehaviours.UnactivateBehaviourBy(cweapon);
                     cobj.SetActive(false);
                 }
                 if (nobj != null)
                 {
                     var nweapon = nobj.GetComponent<IWeapon>();
-                    _weaponBehaviours.ActivateBehaviourBy(nweapon);
+                    holdingBehaviours.ActivateBehaviourBy(nweapon);
                     nobj.SetActive(true);
                 }
 
                 return nobj;
             };
 
-            _stateMachine = new();
-            var switchingState = new ArmBehaviourState("switching", _weaponSwitching);
-            var behavioursState = new ArmBehaviourState("behaviours", _weaponBehaviours);
-            _stateMachine.AddState(behavioursState);
-            _stateMachine.AddState(switchingState);
-            _stateMachine.AddTransitionFor(behavioursState, () => _input.Supply && _weaponBehaviours.BEnd(), switchingState);
-            _stateMachine.AddTransitionFor(switchingState, () => (!_weaponSwitching.Continuing || (_input.Fire && _weaponSwitching.BEnd())) && _weaponBehaviours.BStart(), behavioursState);
-            switchingState.Enabled = false;
+            _stateMachine = new(this.name);
+            _stateMachine.AddState(holdingBehaviours);
+            _stateMachine.AddState(weaponSwitching);
+            //_stateMachine.AddTransitionFor(holdingBehaviours, () => _input.Supply, weaponSwitching);
+            //_stateMachine.AddTransitionFor(weaponSwitching, () => weaponSwitching.NormalizedTime >= 1, holdingBehaviours);
+            _stateMachine.AddTransitionFor(weaponSwitching, holdingBehaviours, 1, () => _input.Supply, (s, d, t) => { });
+            weaponAnimator = new(this, _animator, GetComponent<IArmAnimationDefinitions>(), alist.ToArray());
         }
         private void Start()
         {
             var mp = FindMountPoint(_definitions.Weapon.MountPointName);
             var n = _definitions.Weapon.Origins[0].Name;
             SetDefaultWeapon(mp, n, _weaponCore);
-            this.BStart();
+            this.OnEnter();
         }
 
         void SetDefaultWeapon(MountPoint weaponMountPoint, string weaponName, WeaponCore weaponCore)
@@ -135,31 +140,36 @@ namespace Tests.BodyBehaviour.Arm
             if (!weaponCore.TryGetWeaponObj(weaponName, out var obj))
                 throw new Exception();
             var weapon = obj.GetComponent<IWeapon>();
-            _weaponBehaviours.ActivateBehaviourBy(weapon);
+            holdingBehaviours.ActivateBehaviourBy(weapon);
             weaponMountPoint.LoadObj = obj;
         }
 
-        public void OnUpdate()
+        public override void OnUpdate()
         {
             _stateMachine.OnUpdate();
+            weaponAnimator.OnUpdate();
         }
         public void OnAnimatorIK(int layerIndex)
         {
 
-            _weaponSwitching.OnAnimatorIK(layerIndex);
-            _weaponBehaviours.OnAnimatorIK(layerIndex);
+            weaponSwitching.OnAnimatorIK(layerIndex);
+            holdingBehaviours.OnAnimatorIK(layerIndex);
         }
 
-        public bool BStart()
+        public override void OnEnter()
         {
             enabled = true;
-            return IArmBehaviour.TryBeginAllBehaviours(_behaviours);
+            //IArmBehaviour.TryBeginAllBehaviours(_behaviours);
         }
 
-        public bool BEnd()
+        public override void OnExit()
         {
             enabled = false;
-            return IArmBehaviour.TryEndAllBehaviours(_behaviours);
+            //IArmBehaviour.TryEndAllBehaviours(_behaviours);
+        }
+        void Update()
+        {
+            this.OnUpdate();
         }
     }
 }

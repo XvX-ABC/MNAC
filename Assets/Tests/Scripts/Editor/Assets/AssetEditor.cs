@@ -70,10 +70,11 @@ namespace Tests.Editors.Assets
                 sb.AppendLine();
                 sb.AppendLine();
                 sb.AppendLine();
+                continue;
             Add_To_Normally_List:
                 normallyList.Add(prop);
             }
-            Debug.Log(sb.ToString());
+            //Debug.Log(sb.ToString());
             _assetFields = assetsList.ToArray();
             _normallyProps = normallyList.ToArray();
         }

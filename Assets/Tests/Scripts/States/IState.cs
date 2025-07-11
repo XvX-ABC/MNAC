@@ -1,19 +1,35 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Assets.Scripts.Utilities.Timeline;
+using System;
 
 namespace Tests.States
 {
-    internal interface IState<T>
+    public interface IState<T>
     {
         public string Name { get; }
-        public Guid ID { get; }
-        public Transition<T>[] Transitions { get; set; }
+        public T Context { get; set; }
         public bool Enabled { get; set; }
-        public T Context { set; }
+        public Guid ID { get; }
+        public ITransition<T>[] Transitions { get; }
+        public void AddTransition(ITransition<T> transition);
+        public void RemoveTransition(IState<T> destinationState);
+        public ITransition<T> FindTransition(IState<T> destinationState);
         public void OnEnter();
-        public void OnUpdate();
         public void OnExit();
+        public void OnUpdate();
+    }
+    public interface IState : IState<object>
+    {
+    }
+
+    public interface IPlayableState<T> : IState<T>
+    {
+        public ITimeline Timeline { get; }
+        public bool ExitWhenEnd { get; set; }
+        public new IPlayableTransition<T>[] Transitions { get; }
+        [Obsolete("",true)]
+        public void OnTransitionRunning(IPlayableTransition<T> transition);
+    }
+    public interface IDurationTimeState : IPlayableState<object>
+    {
     }
 }

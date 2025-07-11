@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tests.BodyBehaviour.Arm;
+using Tests.Behaviours.Arm;
 using Tests.Environment;
 using UnityEngine;
 using UInput = UnityEngine.Input;

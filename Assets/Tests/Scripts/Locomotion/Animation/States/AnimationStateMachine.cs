@@ -4,6 +4,8 @@ namespace Tests.Locomotion.Animation.States
 {
     public class AnimationStateMachine : AnimationStateMachine<Context>
     {
-
+        public AnimationStateMachine(string name) : base(name)
+        {
+        }
     }
 }

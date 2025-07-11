@@ -32,10 +32,13 @@ namespace Assets.Scripts.Utilities
         Action _action;
         bool _enabled;
         public bool Enabled { get => _enabled; set => _enabled = value; }
-        public SingleEvent(Action action)
+        public SingleEvent(Action action, bool defaultEnabled)
         {
             _action = action ?? throw new ArgumentNullException(nameof(action));
-            _enabled = false;
+            _enabled = defaultEnabled;
+        }
+        public SingleEvent(Action action) : this(action, false)
+        {
         }
         public bool TryExecute()
         {

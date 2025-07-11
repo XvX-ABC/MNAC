@@ -13,11 +13,11 @@ namespace Tests.Locomotion.Animation.States
         }
         public override void OnEnter()
         {
-            animator.SetBool(_definitions.EnterParamName, true);
+            animator.SetBool(_definitions.Flying.EnterParamName, true);
         }
         public override void OnExit()
         {
-            animator.SetBool(_definitions.EnterParamName, false);
+            animator.SetBool(_definitions.Flying.EnterParamName, false);
         }
     }
 }

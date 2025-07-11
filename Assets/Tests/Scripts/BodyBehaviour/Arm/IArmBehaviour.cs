@@ -1,7 +1,8 @@
 ﻿using Tests.Input;
+using Tests.States;
 using UnityEngine;
 
-namespace Tests.BodyBehaviour.Arm
+namespace Tests.Behaviours.Arm
 {
     public enum BehaviourState
     {
@@ -10,7 +11,7 @@ namespace Tests.BodyBehaviour.Arm
         Running,
         Ended,
     }
-    public interface IArmBehaviour
+    public interface IArmBehaviour : IState
     {
         public static bool TryBeginAllBehaviours(IArmBehaviour[] subBehaviours)
         {
@@ -19,13 +20,14 @@ namespace Tests.BodyBehaviour.Arm
             var result = true;
             foreach (var b in subBehaviours)
             {
-                var s = b.BStart();
-                if (!s)
-                {
-                    var name = b.GetType().Name;
-                    Debug.LogWarning($"The behaviour '{name}' to start failed.");
-                    result = false;
-                }
+                //var s = b.OnEnter();
+                //if (!s)
+                //{
+                //    var name = b.GetType().Name;
+                //    Debug.LogWarning($"The behaviour '{name}' to start failed.");
+                //    result = false;
+                //}
+                b.OnEnter();
             }
             return result;
         }
@@ -36,13 +38,14 @@ namespace Tests.BodyBehaviour.Arm
             var result = true;
             foreach (var b in subBehaviours)
             {
-                var s = b.BEnd();
-                if (!s)
-                {
-                    var name = b.GetType().Name;
-                    Debug.LogWarning($"The behaviour '{name}' to end failed.");
-                    result = false;
-                }
+                //var s = b.OnExit();
+                //if (!s)
+                //{
+                //    var name = b.GetType().Name;
+                //    Debug.LogWarning($"The behaviour '{name}' to end failed.");
+                //    result = false;
+                //}
+                b.OnEnter();
             }
             return result;
         }
@@ -59,10 +62,7 @@ namespace Tests.BodyBehaviour.Arm
         }
         public IInput Input { set; }
         public BehaviourState State { get => BehaviourState.None; }
-        public bool Continuing { get; }
-        public bool BStart();
-        public bool BEnd();
-        public void OnUpdate() { }
+        public bool Continuing { get => false; }
         public void OnAnimatorIK(int layerIndex) { }
     }
 }

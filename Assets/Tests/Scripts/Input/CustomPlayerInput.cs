@@ -3,6 +3,15 @@ using UnityEngine;
 using UInput = UnityEngine.Input;
 namespace Tests.Input
 {
+    public enum InputTypes
+    {
+        HorizontalDirection,    
+        IsAscending,
+        IsBoosting,
+        Fire,
+        Reload,
+        Supply,
+    }
     [Serializable]
     public class CustomPlayerInput : MonoBehaviour, IInput
     {

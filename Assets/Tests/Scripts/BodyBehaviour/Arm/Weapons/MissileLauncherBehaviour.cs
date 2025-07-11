@@ -3,7 +3,7 @@ using Tests.Weapons;
 using Tests.Weapons.MissileLauncher;
 
 
-namespace Tests.BodyBehaviour.Arm
+namespace Tests.Behaviours.Arm
 {
   
 }

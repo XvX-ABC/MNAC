@@ -5,104 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.Video;
 
-namespace Tests.BTree
+namespace Tests.BT
 {
-    public enum NodeState
+    public abstract class Composite : Task
     {
-        Success,
-        Failure,
-        Running
-    }
-    public interface INode
-    {
-        public bool Enabled { get; set; }
-        public NodeState Update();
-    }
-    public class BTree : Node
-    {
-        INode _rootNode;
-        public override NodeState Update()
+        protected List<ITask> children;
+        StringBuilder _sb;
+        protected Composite()
         {
-            if (_rootNode.Enabled)
-                return _rootNode.Update();
-            return NodeState.Failure;
+            children = new List<ITask>();
+            _sb = new();
         }
-    }
-    public abstract class Node : ScriptableObject, INode
-    {
-        protected bool enabled;
-
-        public bool Enabled
+        public override string ToString()
         {
-            get => enabled;
-            set
+            _sb.Clear();
+            foreach (var c in children)
             {
-                if (value)
-                    OnStart();
-                else
-                    OnStop();
-                enabled = value;
+                _sb.AppendLine(c.ToString());
             }
-        }
-
-        protected virtual void OnStart() { }
-        protected virtual void OnStop() { }
-        protected virtual NodeState OnUpdate() { return NodeState.Failure; }
-        public virtual NodeState Update()
-        {
-            if (!enabled)
-                Enabled = true;
-            var state = OnUpdate();
-            if (state == NodeState.Failure || state == NodeState.Success)
-                Enabled = false;
-            return state;
-        }
-    }
-    public abstract class CompositeNode : Node
-    {
-        protected List<INode> children;
-        protected CompositeNode()
-        {
-            children = new List<INode>();
-        }
-    }
-    public class SequencerNode : CompositeNode
-    {
-        protected override NodeState OnUpdate()
-        {
-            foreach (var node in children)
-            {
-                var state = node.Update();
-                switch (state)
-                {
-                    case NodeState.Failure:
-                        return NodeState.Failure;
-                    case NodeState.Running:
-                        return NodeState.Running;
-                }
-            }
-            return NodeState.Success;
-        }
-    }
-    public class FallbackNode : CompositeNode
-    {
-        protected override NodeState OnUpdate()
-        {
-            foreach (var node in children)
-            {
-                var state = node.Update();
-                switch (state)
-                {
-                    case NodeState.Success:
-                        return NodeState.Success;
-                    case NodeState.Running:
-                        return NodeState.Running;
-                }
-            }
-            return NodeState.Failure;
+            return _sb.ToString();
         }
     }
 }

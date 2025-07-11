@@ -2,39 +2,43 @@
 using Assets.Scripts.Utilities.Timeline.Event.Point;
 using Assets.Tests.Scripts.Weapons;
 using System;
+using Tests.BT;
 using Tests.Input;
 using Tests.States;
 using UnityEngine;
 
-namespace Tests.BodyBehaviour.Arm
+namespace Tests.Behaviours.Arm
 {
-    public class ArmBehaviourState : StateBase
+    public abstract class ArmBehaviorState : StateBase, IArmBehaviour
     {
-        IArmBehaviour _behaviour;
-        Transition<object>[] _transitions;
-
-
-        public ArmBehaviourState(string name, IArmBehaviour behaviour) : base(name)
+        protected ArmBehaviorState(string name) : base($"arm_{name}")
         {
-            this.name = name;
-            _behaviour = behaviour ?? throw new ArgumentNullException(nameof(behaviour));
         }
-        public void OnEnter()
+        Action _entryAction;
+        Action _updateAction;
+        Action _exitAction;
+        public abstract IInput Input { set; }
+        public abstract bool Continuing { get; }
+        public Action EntryAction { get => _entryAction; set => _entryAction = value; }
+        public Action UpdateAction { get => _updateAction; set => _updateAction = value; }
+        public Action ExitAction { get => _exitAction; set => _exitAction = value; }
+        public override void OnEnter()
         {
-            _behaviour.BStart();
+            _entryAction?.Invoke();
         }
-
-        public void OnExit()
+        public override void OnExit()
         {
-            _behaviour.BEnd();
+            _exitAction?.Invoke();
         }
-
-        public void OnUpdate()
+        public override void OnUpdate()
         {
-            _behaviour.OnUpdate();
+            _updateAction?.Invoke();
         }
     }
-    public class ArmWeaponSwitching : IArmBehaviour
+
+
+
+    public class ArmWeaponSwitching : ArmBehaviourPlayableState
     {
         IArmWeaponDefinitions _definitions;
         MountPoint _mountPoint;
@@ -42,11 +46,9 @@ namespace Tests.BodyBehaviour.Arm
         Func<ArmWeaponDescription[], string> _selectionFunc;
 
 
-        ITimeline _timeline;
         GameObject _weaponObj;
         DefaultWeaponSelector _defaultSelector;
 
-        BehaviourState _state;
 
 
         public Func<ArmWeaponDescription[], string> SelectionFunc
@@ -59,16 +61,14 @@ namespace Tests.BodyBehaviour.Arm
                 _selectionFunc = value;
             }
         }
-        public Func<GameObject, GameObject, GameObject> WeaponSwitchingFunc { get => _mountPoint.LoadObjChangeFunc; set => _mountPoint.LoadObjChangeFunc = value; }
-        IInput IArmBehaviour.Input { set => throw new NotImplementedException(); }
-        BehaviourState IArmBehaviour.State { get => _state; }
-        public bool Continuing { get => _timeline.IsRunning; }
-        public ArmWeaponSwitching(IArmWeaponDefinitions definitions, MountPoint mountPoint, WeaponCore weaponCore, Func<ArmWeaponDescription[], string> selectionFunc)
+        public Func<GameObject, GameObject, GameObject> SwitchingEvent { get => _mountPoint.LoadObjChangeFunc; set => _mountPoint.LoadObjChangeFunc = value; }
+        public override bool Continuing { get => timeline.IsRunning; }
+        public override IInput Input { set => throw new NotImplementedException(); }
+        public ArmWeaponSwitching(IArmWeaponDefinitions definitions, MountPoint mountPoint, WeaponCore weaponCore, Func<ArmWeaponDescription[], string> selectionFunc) : base("switching", definitions.SwitchingDurationTime)
         {
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
             _mountPoint = mountPoint ?? throw new ArgumentNullException(nameof(mountPoint));
-            _timeline = new Timeline(_definitions.SwitchingDurationTime);
-            _timeline.AddPointEvent(_definitions.SwitchingMountedProportion, _ =>
+            timeline.AddPointEvent(_definitions.SwitchingMountedProportion, _ =>
             {
                 _weaponObj = GetWeaponObj();
                 _mountPoint.LoadObj = _weaponObj;
@@ -92,6 +92,7 @@ namespace Tests.BodyBehaviour.Arm
             }
             else
                 _selectionFunc = selectionFunc;
+
         }
 
 
@@ -105,34 +106,47 @@ namespace Tests.BodyBehaviour.Arm
                 throw new WeaponObjGetFailedByName(name);
             return obj;
         }
-
-
-
-        public bool BStart()
+        //public override void OnStop()
+        //{
+        //    _timeline.Stop();
+        //}
+        //protected override TaskState OnWork()
+        //{
+        //    if (_timeline.IsRunning)
+        //    {
+        //        _timeline.OnUpdate(Time.deltaTime);
+        //        return TaskState.Running;
+        //    }
+        //    else if (input.Supply)
+        //    {
+        //        _timeline.Start();
+        //        return TaskState.Running;
+        //    }
+        //    return TaskState.Failure;
+        //}
+        public override void OnEnter()
         {
-
-            if (_timeline.IsRunning)
+            base.OnEnter();
+            if (timeline.IsRunning)
             {
                 Debug.LogWarning("This weapon switching behaviour is still continuing");
-                return false;
+                return;
             }
 
-            _timeline.Start();
-            return true;
+            timeline.Start();
         }
 
 
-        public bool BEnd()
+        public override void OnExit()
         {
-            _timeline.Stop();
-            return true;
+            base.OnExit();
+            timeline.Stop();
         }
 
 
-        public void OnUpdate()
+        public override void OnUpdate()
         {
-            if (_timeline.IsRunning)
-                _timeline.OnUpdate(Time.deltaTime);
+            timeline.OnUpdate(Time.deltaTime);
         }
         public void OnAnimatorIK(int layerIndex) { }
     }

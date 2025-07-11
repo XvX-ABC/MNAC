@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Tests.BodyBehaviour.Arm
+namespace Tests.Behaviours.Arm
 {
     public class CantFindBehaviourByNameException : Exception
     {
-        public CantFindBehaviourByNameException(string name) : base($"Can't find a mount point by the name '{name}'")
+        public CantFindBehaviourByNameException(string name) : base($"Can't find a behaviour by the name '{name}'")
         {
 
         }

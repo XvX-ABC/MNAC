@@ -1,5 +1,5 @@
 ﻿using System;
-using Tests.BodyBehaviour.Arm;
+using Tests.Behaviours.Arm;
 using Tests.Environment;
 using Tests.Input;
 using UnityEngine;

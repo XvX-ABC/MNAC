@@ -6,7 +6,7 @@ using Tests.Weapons.Launcher;
 using UnityEngine;
 using UnityEngine.VFX;
 
-namespace Tests.BodyBehaviour.Arm
+namespace Tests.Behaviours.Arm
 {
     [Serializable]
     internal class ArmReloadAnimation

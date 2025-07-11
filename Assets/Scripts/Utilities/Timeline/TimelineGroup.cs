@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Tests.Weapons.Launcher;
 using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Assets.Scripts.Utilities.Timeline
 {
@@ -62,6 +64,10 @@ namespace Assets.Scripts.Utilities.Timeline
         public bool IsRunning => lastEndTimeline.IsRunning;
 
         public float Time => lastEndTimeline.Time;
+        public float NormalizedTime
+        {
+            get => lastEndTimeline.Length == 0 ? 1 : lastEndTimeline.Time / lastEndTimeline.Length;
+        }
         public float Length
         {
             get

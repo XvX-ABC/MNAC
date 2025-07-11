@@ -33,13 +33,10 @@ namespace Tests.Locomotion.Animation.States
         bool _boostingEnter;
         private void Awake()
         {
-
-
-
             _bonesDefinitions = GetComponent<IBonesDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IBonesDefinitions));
             _definitions = GetComponent<ILocomotionAnimationDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(ILocomotionAnimationDefinitions));
             _animator = GetComponent<Animator>();
-            _stateMachine = new();
+            _stateMachine = new(this.name);
         }
         void Start()
         {
@@ -101,8 +98,8 @@ namespace Tests.Locomotion.Animation.States
             var rotation = context.OriginalLocomotion.Rotation;
             var velocity = context.Velocity;
             var v = Quaternion.Inverse(rotation) * velocity * 0.05f;
-            _animator.SetFloat(_definitions.Air.XParamName, v.x);
-            _animator.SetFloat(_definitions.Air.YParamName, v.z);
+            _animator.SetFloat(_definitions.Ground.XParamName, v.x);
+            _animator.SetFloat(_definitions.Ground.YParamName, v.z);
         }
         private void OnAnimatorIK(int layerIndex)
         {
@@ -110,7 +107,7 @@ namespace Tests.Locomotion.Animation.States
         }
         public void OnFixedUpdate(Context context)
         {
-            _stateMachine.context = context;
+            _stateMachine.Context = context;
             UpdateHorizontalVelocity(context);
             _stateMachine.OnUpdate();
         }

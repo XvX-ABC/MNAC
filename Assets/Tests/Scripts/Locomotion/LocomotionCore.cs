@@ -2,7 +2,7 @@
 using Locomotion;
 using System;
 using System.Text;
-using Tests.BodyBehaviour.Arm;
+using Tests.Behaviours.Arm;
 using Tests.Environment;
 using Tests.Input;
 using Tests.Locomotion.Animation;
@@ -33,8 +33,7 @@ namespace Tests.Locomotion
         internal PlatformLocomotion platformLocomotion;
 
 
-        LocomotionAnimationCore _stateCore;
-        LocomotionAnimatorCore _locomotionAnimator;
+        LocomotionAnimationCore _animationCore;
 
         ILocomotionDefinitions _definitions;
         IGroundDetector _groundDetector;
@@ -82,22 +81,12 @@ namespace Tests.Locomotion
             };
 
 
-
-            _locomotionAnimator = GetComponent<LocomotionAnimatorCore>();
-            if (_locomotionAnimator != null && _locomotionAnimator.enabled)
+            _animationCore = GetComponent<LocomotionAnimationCore>();
+            if (_animationCore != null && _animationCore.enabled)
             {
                 Array.Resize(ref _modules, _modules.Length + 1);
                 Array.Copy(_modules, 0, _modules, 1, _modules.Length - 1);
-                _modules[0] = _locomotionAnimator;
-            }
-
-
-            _stateCore = GetComponent<LocomotionAnimationCore>();
-            if (_stateCore != null && _stateCore.enabled)
-            {
-                Array.Resize(ref _modules, _modules.Length + 1);
-                Array.Copy(_modules, 0, _modules, 1, _modules.Length - 1);
-                _modules[0] = _stateCore;
+                _modules[0] = _animationCore;
             }
 
         }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.BodyBehaviour.Arm
+namespace Tests.Behaviours.Arm
 {
     public class ArmBehaviourDefinitions : MonoBehaviour, IArmBehaviourDefinitions
     {

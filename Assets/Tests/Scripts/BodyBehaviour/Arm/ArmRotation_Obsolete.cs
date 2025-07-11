@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
-namespace Tests.BodyBehaviour.Arm
+namespace Tests.Behaviours.Arm
 {
     [RequireComponent(typeof(Animator))]
     public class ArmRotation_Obsolete : MonoBehaviour

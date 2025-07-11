@@ -1,7 +1,7 @@
 ﻿using System;
 using Tests.Weapons;
 
-namespace Tests.BodyBehaviour.Arm
+namespace Tests.Behaviours.Arm
 {
     [Serializable]
     public struct ArmWeaponDescription

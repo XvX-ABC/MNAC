@@ -12,7 +12,7 @@ namespace Assets.Scripts.Utilities.Timeline
 
         internal IEventsExecutor[] executors;
         internal float time;
-        internal float duration;
+        internal float length;
         internal bool isLoop;
         internal bool isRunning;
         bool _startActionExecuted;
@@ -24,31 +24,35 @@ namespace Assets.Scripts.Utilities.Timeline
         {
             get => time;
         }
+        public float NormalizedTime
+        {
+            get => length == 0 ? 1 : time / length;
+        }
         public bool IsRunning
         {
             get => isRunning;
         }
         public float Length
         {
-            get => duration;
+            get => length;
         }
         public Action<TimelineContext> StartAction { get => startAction; set => startAction = value; }
         public Action<float> UpdateAction { get => updateAction; set => updateAction = value; }
         public Action<TimelineContext> EndAction { get => endAction; set => endAction = value; }
-        internal Timeline(IEventsExecutor[] executors, float duration, bool isLoop, bool isRunning)
+        internal Timeline(IEventsExecutor[] executors, float length, bool isLoop, bool isRunning)
         {
             if (executors == null || executors.Length == 0)
                 throw new ArgumentException("executor");
-            if (duration < 0)
-                throw new ArgumentException("duration");
+            if (length < 0)
+                throw new ArgumentException("length");
 
-            this.duration = duration;
+            this.length = length;
             this.isLoop = isLoop;
             this.isRunning = isRunning;
 
             this.executors = executors;
         }
-        internal Timeline(Span<ITimelineEvent> events, IEventsExecutor[] executors, float duration, bool isLoop, bool isRunning) : this(executors, duration, isLoop, isRunning)
+        internal Timeline(Span<ITimelineEvent> events, IEventsExecutor[] executors, float length, bool isLoop, bool isRunning) : this(executors, length, isLoop, isRunning)
         {
             if (events == null || events.Length == 0)
                 throw new ArgumentException("events");
@@ -80,13 +84,13 @@ namespace Assets.Scripts.Utilities.Timeline
         {
             if (isLoop)
                 throw new NotSupportedException("The loop timeline was not supported early end.");
-            time = duration;
+            time = length;
         }
         public void OnUpdate(float deltaTime)
         {
             if (!isRunning)
                 return;
-            var context = new TimelineContext() { DeltaTime = deltaTime, Time = time, Proportion = duration == 0 ? 1 : time / duration, Duration = duration };
+            var context = new TimelineContext() { DeltaTime = deltaTime, Time = time, Proportion = length == 0 ? 1 : time / length, Duration = length };
 
             if (!_startActionExecuted)
             {
@@ -94,10 +98,10 @@ namespace Assets.Scripts.Utilities.Timeline
                 _startActionExecuted = true;
             }
 
-            updateAction?.Invoke(time / duration);
+            updateAction?.Invoke(time / length);
             foreach (var executor in executors)
                 executor.Execute(context);
-            if (time >= duration)
+            if (time >= length)
             {
                 endAction?.Invoke(context);
                 Reset();
@@ -112,8 +116,8 @@ namespace Assets.Scripts.Utilities.Timeline
         }
         protected virtual void Reset()
         {
-            if (isLoop && time >= duration)
-                time -= duration;
+            if (isLoop && time >= length)
+                time -= length;
             else
                 time = 0;
             isRunning = isLoop;
@@ -148,7 +152,7 @@ namespace Assets.Scripts.Utilities.Timeline
             }
             if (newLength < 0)
                 Debug.LogWarning(new ArgumentException(nameof(newLength)));
-            this.duration = newLength;
+            this.length = newLength;
             return true;
         }
         public override string ToString()

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.BodyBehaviour.Arm
+namespace Tests.Behaviours.Arm
 {
     public class CantFindMountPointByNameException : Exception
     {

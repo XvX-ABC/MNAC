@@ -1,0 +1,136 @@
+﻿using Mono.Cecil.Cil;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
+using Tests.Input;
+using Tests.Locomotion;
+using Tests.Weapons;
+using Unity.VisualScripting;
+using UnityEngine;
+using Debug = UnityEngine.Debug;
+using UInput = UnityEngine.Input;
+
+namespace Tests.Behaviours.Arm
+{
+    internal class ArmWeaponHoldingBehaviours : ArmBehaviourPlayableState
+    {
+        Dictionary<string, IArmWeaponHoldingBehaviour> _weaponBehaviours;
+        IArmWeaponHoldingBehaviour[] _activatedBehaviours;
+        IInput _input;
+        Action<IWeapon> _activatedAction;
+        Action<IWeapon> _unactivatedAction;
+        public override IInput Input
+        {
+            set
+            {
+                if (_activatedBehaviours != null)
+                    foreach (var b in _activatedBehaviours)
+                        b.Input = value;
+                _input = value;
+            }
+        }
+        public override bool Continuing
+        {
+            get => IArmBehaviour.AnyBehaviourIsContinuing(_activatedBehaviours);
+        }
+        public Action<IWeapon> ActivatedAction { get => _activatedAction; set => _activatedAction = value; }
+        public Action<IWeapon> UnactivatedAction { get => _unactivatedAction; set => _unactivatedAction = value; }
+
+        public ArmWeaponHoldingBehaviours(GameObject armObj, params (string name, IArmWeaponHoldingBehaviour behaviour)[] weaponBehavioursMapping) : base("behaviors")
+        {
+            _weaponBehaviours = new();
+            foreach (var wwm in weaponBehavioursMapping)
+            {
+                var n = wwm.name;
+                var b = wwm.behaviour;
+                _weaponBehaviours.Add(n, b);
+            }
+
+        }
+        public void ActivateBehaviourBy(IWeapon weapon)
+        {
+            if (weapon == null)
+                throw new ArgumentNullException(nameof(weapon));
+            var name = weapon.Name;
+            if (name == null || name.Length == 0)
+                throw new Exception("The weapon name can't be empty.");
+            if (!_weaponBehaviours.TryGetValue(name, out var b))
+                throw new CantFindBehaviourByNameException(name);
+            if (_activatedBehaviours == null)
+            {
+                _activatedBehaviours = new IArmWeaponHoldingBehaviour[] { b };
+            }
+            else
+            {
+                Array.Resize(ref _activatedBehaviours, _activatedBehaviours.Length + 1);
+                _activatedBehaviours[^1] = b;
+            }
+            b.Weapon = weapon;
+            b.Input = _input;
+            _activatedAction?.Invoke(weapon);
+        }
+        public void UnactivateBehaviourBy(IWeapon weapon)
+        {
+            if (weapon == null)
+                throw new ArgumentNullException(nameof(weapon));
+            var name = weapon.Name;
+            if (name == null || name.Length == 0)
+                throw new Exception("The name can't be empty");
+            if (!_weaponBehaviours.TryGetValue(name, out var b))
+                throw new CantFindBehaviourByNameException(name);
+            if (_activatedBehaviours == null)
+                return;
+
+            for (int i = 0; i < _activatedBehaviours.Length; i++)
+            {
+                var ab = _activatedBehaviours[i];
+                if (ab == b)
+                {
+                    var length = _activatedBehaviours.Length;
+                    if (length == 1)
+                    {
+                        _activatedBehaviours = null;
+                    }
+                    else
+                    {
+                        if (i != length - 1)
+                            Array.Copy(_activatedBehaviours, i + 1, _activatedBehaviours, i, length - i - 1);
+                        Array.Resize(ref _activatedBehaviours, length - 1);
+                    }
+                    break;
+                }
+
+            }
+            _unactivatedAction?.Invoke(weapon);
+        }
+        public override void OnEnter()
+        {
+            IArmBehaviour.TryBeginAllBehaviours(_activatedBehaviours);
+        }
+        public override void OnExit()
+        {
+            IArmBehaviour.TryEndAllBehaviours(_activatedBehaviours);
+        }
+
+        public void OnAnimatorIK(int layerIndex)
+        {
+            foreach (var b in _activatedBehaviours)
+                b.OnAnimatorIK(layerIndex);
+        }
+
+        public override void OnUpdate()
+        {
+            if (_activatedBehaviours == null)
+                return;
+            if (UInput.GetKeyDown(KeyCode.S))
+            {
+                foreach (var b in _activatedBehaviours)
+                    b.OnExit();
+            }
+            foreach (var b in _activatedBehaviours)
+                b.OnUpdate();
+        }
+
+    }
+}

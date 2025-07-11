@@ -1,5 +1,6 @@
-﻿namespace Tests.BodyBehaviour.Arm
+﻿namespace Tests.Behaviours.Arm
 {
+    
     public interface IArmWeaponDefinitions
     {
         public ArmWeaponDescription[] Origins { get; }

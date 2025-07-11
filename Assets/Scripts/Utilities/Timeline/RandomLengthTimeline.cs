@@ -17,7 +17,7 @@ namespace Assets.Scripts.Utilities.Timeline
         public override void Start()
         {
             if (timeGenerator != null)
-                duration = timeGenerator.Time;
+                length = timeGenerator.Time;
             base.Start();
         }
         protected override void Reset()

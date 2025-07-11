@@ -7,6 +7,7 @@ namespace Assets.Scripts.Utilities.Timeline
     {
         bool IsRunning { get; }
         float Time { get; }
+        float NormalizedTime { get => 0f; }
         float Length { get; }
         Action<TimelineContext> StartAction { get; set; }
         Action<float> UpdateAction { get; set; }

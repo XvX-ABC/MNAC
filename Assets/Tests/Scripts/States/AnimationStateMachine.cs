@@ -4,6 +4,10 @@ namespace Tests.States
 {
     public class AnimationStateMachine<T> : StateMachine<T>
     {
+        public AnimationStateMachine(string name) : base(name)
+        {
+        }
+
         public new AnimationStateBase<T> CurrentState { get => (AnimationStateBase<T>)currentState; }
         public void OnAnimatorIK(int layerIndex)
         {
