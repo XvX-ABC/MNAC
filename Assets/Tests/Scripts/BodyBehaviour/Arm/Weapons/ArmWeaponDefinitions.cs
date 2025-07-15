@@ -14,9 +14,12 @@ namespace Tests.Behaviours.Arm
         float _switchingDurationTime;
         [SerializeField]
         float _switchingMountedProportion;
+        [SerializeField]
+        float _switchingToBehavioursDurationTime;
         public ArmWeaponDescription[] Origins { get => _origins; }
         public string MountPointName { get => _mountPointName; }
         public float SwitchingDurationTime { get => _switchingDurationTime; }
         public float SwitchingMountedProportion { get => _switchingMountedProportion; }
+        public float SwitchingToBehavioursDurationTime { get => _switchingToBehavioursDurationTime; }
     }
 }

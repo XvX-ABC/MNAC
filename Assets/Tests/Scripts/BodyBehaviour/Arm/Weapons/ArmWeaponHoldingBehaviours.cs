@@ -16,26 +16,11 @@ namespace Tests.Behaviours.Arm
     internal class ArmWeaponHoldingBehaviours : ArmBehaviourPlayableState
     {
         Dictionary<string, IArmWeaponHoldingBehaviour> _weaponBehaviours;
-        IArmWeaponHoldingBehaviour[] _activatedBehaviours;
-        IInput _input;
-        Action<IWeapon> _activatedAction;
-        Action<IWeapon> _unactivatedAction;
-        public override IInput Input
-        {
-            set
-            {
-                if (_activatedBehaviours != null)
-                    foreach (var b in _activatedBehaviours)
-                        b.Input = value;
-                _input = value;
-            }
-        }
-        public override bool Continuing
-        {
-            get => IArmBehaviour.AnyBehaviourIsContinuing(_activatedBehaviours);
-        }
-        public Action<IWeapon> ActivatedAction { get => _activatedAction; set => _activatedAction = value; }
-        public Action<IWeapon> UnactivatedAction { get => _unactivatedAction; set => _unactivatedAction = value; }
+        internal IArmWeaponHoldingBehaviour[] _activatedBehaviours;
+        Action<IWeapon, IArmWeaponHoldingBehaviour> _activatedAction;
+        Action<IWeapon, IArmWeaponHoldingBehaviour> _unactivatedAction;
+        public Action<IWeapon, IArmWeaponHoldingBehaviour> ActivatedAction { get => _activatedAction; set => _activatedAction = value; }
+        public Action<IWeapon, IArmWeaponHoldingBehaviour> UnactivatedAction { get => _unactivatedAction; set => _unactivatedAction = value; }
 
         public ArmWeaponHoldingBehaviours(GameObject armObj, params (string name, IArmWeaponHoldingBehaviour behaviour)[] weaponBehavioursMapping) : base("behaviors")
         {
@@ -67,8 +52,7 @@ namespace Tests.Behaviours.Arm
                 _activatedBehaviours[^1] = b;
             }
             b.Weapon = weapon;
-            b.Input = _input;
-            _activatedAction?.Invoke(weapon);
+            _activatedAction?.Invoke(weapon, b);
         }
         public void UnactivateBehaviourBy(IWeapon weapon)
         {
@@ -102,22 +86,15 @@ namespace Tests.Behaviours.Arm
                 }
 
             }
-            _unactivatedAction?.Invoke(weapon);
+            _unactivatedAction?.Invoke(weapon, b);
         }
         public override void OnEnter()
         {
-            IArmBehaviour.TryBeginAllBehaviours(_activatedBehaviours);
         }
         public override void OnExit()
         {
-            IArmBehaviour.TryEndAllBehaviours(_activatedBehaviours);
         }
 
-        public void OnAnimatorIK(int layerIndex)
-        {
-            foreach (var b in _activatedBehaviours)
-                b.OnAnimatorIK(layerIndex);
-        }
 
         public override void OnUpdate()
         {

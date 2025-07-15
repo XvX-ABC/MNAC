@@ -2,7 +2,7 @@
 
 namespace Tests
 {
-   public class Target : MonoBehaviour, ITarget
+    public class Target : MonoBehaviour, ITarget
     {
         [SerializeField]
         GameObject _obj;

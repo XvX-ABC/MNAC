@@ -21,6 +21,7 @@ namespace Tests.States
             }
 
             public ITimeline Timeline => _timeline;
+
         }
     }
 

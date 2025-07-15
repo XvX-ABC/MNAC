@@ -26,8 +26,6 @@ namespace Tests.States
         public ITimeline Timeline { get; }
         public bool ExitWhenEnd { get; set; }
         public new IPlayableTransition<T>[] Transitions { get; }
-        [Obsolete("",true)]
-        public void OnTransitionRunning(IPlayableTransition<T> transition);
     }
     public interface IDurationTimeState : IPlayableState<object>
     {

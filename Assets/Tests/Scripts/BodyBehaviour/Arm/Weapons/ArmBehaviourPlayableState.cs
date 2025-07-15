@@ -12,8 +12,8 @@ namespace Tests.Behaviours.Arm
         Action _entryAction;
         Action _updateAction;
         Action _exitAction;
-        public abstract IInput Input { set; }
-        public abstract bool Continuing { get; }
+        //public abstract IInput Input { set; }
+        //public abstract bool Continuing { get; }
         public Action EntryAction { get => _entryAction; set => _entryAction = value; }
         public Action UpdateAction { get => _updateAction; set => _updateAction = value; }
         public Action ExitAction { get => _exitAction; set => _exitAction = value; }

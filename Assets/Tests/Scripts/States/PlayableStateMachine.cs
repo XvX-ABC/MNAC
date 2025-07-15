@@ -46,7 +46,7 @@ namespace Tests.States
             {
                 var t = this.transitions[0] as PlayableTransition;
                 t.destinationState = desState;
-                t.triggerEvent = () => timeline.NormalizedTime >= 0;
+                t.triggerEvent = () => timeline.NormalizedTime >= 1;
 
             }
             public override void OnEnter()
@@ -79,10 +79,15 @@ namespace Tests.States
             var transition = NewTransition(state, destinationState, triggerEvent, null, 0);
             AddTransitionFor(transition);
         }
-        public void AddTransitionFor<S, D>(S state, D destinationState, float duration, Func<bool> triggerEvent, Action<S, D, float> durationEvent) where S : class, IPlayableState<T> where D : class, IPlayableState<T>
+        public IPlayableTransition<T> AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, float duration, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent)
         {
-            var transition = NewTransition(state, destinationState, triggerEvent, (Action<IPlayableState<T>, IPlayableState<T>, float>)durationEvent, duration);
+            var transition = NewTransition(state, destinationState, triggerEvent, durationEvent, duration);
             AddTransitionFor(transition);
+            return transition;
+        }
+        public IPlayableTransition<T> AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, float duration, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent)
+        {
+            return AddTransitionFor(state, destinationState, duration, null, durationEvent);
         }
         public override void AddTransition(ITransition<T> transition)
         {

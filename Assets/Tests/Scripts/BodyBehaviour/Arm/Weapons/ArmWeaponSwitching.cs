@@ -62,8 +62,6 @@ namespace Tests.Behaviours.Arm
             }
         }
         public Func<GameObject, GameObject, GameObject> SwitchingEvent { get => _mountPoint.LoadObjChangeFunc; set => _mountPoint.LoadObjChangeFunc = value; }
-        public override bool Continuing { get => timeline.IsRunning; }
-        public override IInput Input { set => throw new NotImplementedException(); }
         public ArmWeaponSwitching(IArmWeaponDefinitions definitions, MountPoint mountPoint, WeaponCore weaponCore, Func<ArmWeaponDescription[], string> selectionFunc) : base("switching", definitions.SwitchingDurationTime)
         {
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));

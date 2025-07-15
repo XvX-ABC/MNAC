@@ -2,7 +2,7 @@
 
 namespace Tests.Behaviours.Arm
 {
-    public class ArmBehaviourDefinitions : MonoBehaviour, IArmBehaviourDefinitions
+    public class ArmBehaviourDefinitions : MonoBehaviour, IArmDefinitions
     {
         [SerializeField]
         ArmWeaponDefinitions _weapon;

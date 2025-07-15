@@ -8,5 +8,20 @@ namespace Tests.Locomotion.Animation.States
         public AnimationStateBase(string name, Animator animator) : base(name, animator)
         {
         }
+
+        public override void OnEnter()
+        {
+
+        }
+
+        public override void OnExit()
+        {
+
+        }
+
+        public override void OnUpdate()
+        {
+
+        }
     }
 }

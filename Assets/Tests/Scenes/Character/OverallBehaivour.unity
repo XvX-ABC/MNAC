@@ -655,12 +655,6 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &1229868305 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 670590856313265028, guid: cda3572f260d2fd4aa54e5b415780ea9,
-    type: 3}
-  m_PrefabInstance: {fileID: 3564753411768140475}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1512211825
 GameObject:
   m_ObjectHideFlags: 0
@@ -1426,23 +1420,27 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2550968540632913536, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3564753411768140486}
-    - targetCorrespondingSourceObject: {fileID: 2550968540632913536, guid: cda3572f260d2fd4aa54e5b415780ea9,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 3564753411768140480}
     - targetCorrespondingSourceObject: {fileID: 2550968540632913536, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3564753411768140488}
+      addedObject: {fileID: 3564753411768140485}
     - targetCorrespondingSourceObject: {fileID: 2550968540632913536, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3564753411768140487}
+      addedObject: {fileID: 3564753411768140484}
     - targetCorrespondingSourceObject: {fileID: 2550968540632913536, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3564753411768140489}
+      addedObject: {fileID: 3564753411768140483}
+    - targetCorrespondingSourceObject: {fileID: 2550968540632913536, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3564753411768140482}
+    - targetCorrespondingSourceObject: {fileID: 2550968540632913536, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3564753411768140486}
   m_SourcePrefab: {fileID: 100100000, guid: cda3572f260d2fd4aa54e5b415780ea9, type: 3}
 --- !u!1 &3564753411768140476 stripped
 GameObject:
@@ -1475,7 +1473,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3564753411768140479}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5013856973b27429d937d256dc082f2e, type: 3}
   m_Name: 
@@ -1484,7 +1482,7 @@ MonoBehaviour:
   solver:
     executedInEditor: 0
     IKPosition: {x: 5.3113666, y: 1.8468211, z: -0.44775903}
-    IKPositionWeight: 1
+    IKPositionWeight: 0
     root: {fileID: 3564753411768140481}
     target: {fileID: 0}
     tolerance: 0
@@ -1524,7 +1522,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3564753411768140475}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3564753411768140486
+--- !u!114 &3564753411768140482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3564753411768140479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d120dc552b3941549a574e4f4f50756b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _core: {fileID: 3564753411768140493}
+  _weaponName: Weapon_0
+  _idleClip: {fileID: 7400000, guid: cb0eb66da2dcff54dbd93a509d784a1d, type: 2}
+--- !u!114 &3564753411768140483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3564753411768140479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee460e70e7611b44787977be6b52f74e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _reloadClip: {fileID: 7400000, guid: 6a26022e94c42484db2f6e3019b314d8, type: 2}
+  _idleAndAimTransitionLength: 1
+  _aimAndReloadTransitionsLength: 2
+--- !u!114 &3564753411768140484
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1536,7 +1564,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4ea4b6f2127ca74db14038837a3da7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3564753411768140487
+  type: 0
+  _input: {fileID: 3564753411768140527}
+  _target: {fileID: 462109979}
+--- !u!114 &3564753411768140485
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1545,57 +1576,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 3564753411768140479}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c4b93fb569869440b844b05682a5dc7, type: 3}
+  m_Script: {fileID: 11500000, guid: ce693b41da53bb34fbff654cc74fd7a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 3564753411768140478}
-  _weaponCore: {fileID: 3564753411768140493}
-  _input: {fileID: 3564753411768140491}
-  _mountPoints:
-  - _mountPointObj: {fileID: 1229868305}
-    _type: 0
---- !u!114 &3564753411768140488
-MonoBehaviour:
+  _obj: {fileID: 462109974}
+--- !u!95 &3564753411768140486
+Animator:
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3564753411768140479}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e7ba03f58959df4da2a3edcbb695659, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _weapon:
-    _origins:
-    - Name: Weapon_0
-      Type: 0
-    - Name: Weapon_1
-      Type: 0
-    _mountPointName: Hand_R
-    _switchingDurationTime: 2
-    _switchingMountedProportion: 0
---- !u!114 &3564753411768140489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3564753411768140479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07db6dc829dc6984e971ea2c1bc88200, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _switching:
-    definitions:
-      Name: ArmAnimation
-      BundleName: 
-      DirPath: Tests/Resources/Config
-    _asset:
-      _enterName: Arm_Weapon_Switching_Enter
-      _multiplierName: Arm_Weapon_Switching_Multiplier
-      _clipLength: 2.458
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &3564753411768140491 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3066788001689609190, guid: cda3572f260d2fd4aa54e5b415780ea9,
@@ -1644,8 +1650,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 363e4609faf8e7743a8ab2d74ed3e314, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeObjs:
-  - {fileID: 3564753411768140479}
+--- !u!114 &3564753411768140527 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6453919022208487632, guid: cda3572f260d2fd4aa54e5b415780ea9,
+    type: 3}
+  m_PrefabInstance: {fileID: 3564753411768140475}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3564753411768140476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d999e5b44ccabd14e9865176d9bfc613, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

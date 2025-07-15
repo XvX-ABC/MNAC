@@ -1,4 +1,7 @@
 ﻿using Assets.Scripts.Utilities.Timeline;
+using System;
+using System.Threading;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine.Playables;
 
 namespace Tests.States
@@ -13,6 +16,7 @@ namespace Tests.States
     {
         protected ITimeline timeline;
         bool _exitWhenEnd;
+        IPlayableTransition<T>[] _transitions;
         public PlayableStateBase(string name, float duration = 0, bool enabled = true) : base(name, enabled)
         {
             timeline = NewTimeline(duration);
@@ -29,11 +33,15 @@ namespace Tests.States
             set => _exitWhenEnd = value;
         }
 
-        public new IPlayableTransition<T>[] Transitions { get => (IPlayableTransition<T>[])base.transitions; }
+        public new IPlayableTransition<T>[] Transitions { get => _transitions; }
         public override void AddTransition(ITransition<T> transition)
         {
             if (transition is IPlayableTransition<T> pt)
+            {
                 base.AddTransition(pt);
+                //_transitions = (IPlayableTransition<T>[])base.transitions;
+                _transitions = Array.ConvertAll(base.transitions, it => (IPlayableTransition<T>)it);
+            }
             else
                 return;
         }
@@ -41,12 +49,14 @@ namespace Tests.States
         public void OnTransitionRunning(IPlayableTransition<T> transition)
         {
             if (transition is IPlayableTransition<T> pt)
+            {
                 base.RemoveTransition((IState<T>)pt);
+                _transitions = Array.ConvertAll(base.transitions, it => (IPlayableTransition<T>)it);
+            }
             else
                 return;
         }
-        
-    }
 
+    }
 
 }

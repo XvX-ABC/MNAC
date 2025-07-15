@@ -47,11 +47,11 @@ namespace Tests.Behaviours.Arm
             return true;
 
         }
-        public override void OnStop()
+        public void OnStop()
         {
             _ik.solver.IKPositionWeight = 0f;
         }
-        protected override TaskState OnWork()
+        protected TaskState OnWork()
         {
             if (_target == null)
                 return TaskState.Failure;

@@ -1,7 +1,10 @@
-﻿using NUnit.Framework.Constraints;
+﻿using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using UnityEngine.UI;
 
 namespace Tests.States
 {
@@ -51,17 +54,19 @@ namespace Tests.States
             internal S sourceState;
             internal S destinationState;
             internal Func<bool> triggerEvent;
+            protected Action<T> triggeredEvent;
             protected internal Transition() { }
             public Transition(S sourceState, S destinationState, Func<bool> triggerEvent)
             {
                 this.sourceState = sourceState ?? throw new ArgumentNullException(nameof(sourceState));
                 this.destinationState = destinationState ?? throw new ArgumentNullException(nameof(destinationState));
-                this.triggerEvent = triggerEvent ?? throw new ArgumentNullException(nameof(triggerEvent));
+                this.triggerEvent = triggerEvent;
             }
 
             public IState<T> SourceState => sourceState;
 
             public IState<T> DestinationState => destinationState;
+            public Action<T> TriggeredEvent { get => triggeredEvent; set => triggeredEvent = value; }
             public override int GetHashCode()
             {
                 return HashCode.Combine(sourceState, destinationState, triggerEvent);
@@ -88,6 +93,7 @@ namespace Tests.States
 
         public StateMachineBase(string name, bool enabled = true) : base(name, enabled)
         {
+            states = new();
         }
         protected virtual Transition NewTransition(S sourceState, S destinationState, Func<bool> triggerEvent)
         {
@@ -128,6 +134,10 @@ namespace Tests.States
 
             var transition = NewTransition(state, destinationState, triggerEvent);
             AddTransitionFor(transition);
+        }
+        public virtual void AddTransitionFor(S state, S destinationState)
+        {
+            AddTransitionFor(state, destinationState, null);
         }
         void RemoveTransitionFor(ITransition<T> transition)
         {
@@ -181,7 +191,16 @@ namespace Tests.States
             {
                 var t = ts as Transition;
                 if (t.destinationState.Enabled && (t.triggerEvent == null || t.triggerEvent()))
+                {
+                    if (t.triggerEvent == null)
+                        return t.destinationState;
+                    else if (t.triggerEvent())
+                    {
+                        t.TriggeredEvent?.Invoke(context);
+                        return t.destinationState;
+                    }
                     return t.destinationState;
+                }
 
             }
             return null;
@@ -215,6 +234,12 @@ namespace Tests.States
         public override void OnExit()
         {
             currentState?.OnExit();
+        }
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("current state: " + currentState.Name);
+            return sb.ToString();
         }
     }
 }

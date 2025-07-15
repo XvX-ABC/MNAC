@@ -1,4 +1,5 @@
 ﻿using Tests.Assets;
+using Tests.BodyBehaviour.Arm.Animations;
 using UnityEngine;
 
 namespace Assets.Tests.Scripts.BodyBehaviour.Arm.Animations
@@ -6,15 +7,8 @@ namespace Assets.Tests.Scripts.BodyBehaviour.Arm.Animations
     public class ArmAnimationDefinitions : MonoBehaviour, IArmAnimationDefinitions
     {
         [SerializeField]
-        JsonAssetAgent_Managed<ArmSwitchingAnimationDefinitions> _switching;
-        public IArmSwitchingAnimationDefinitions Switching
-        {
-            get
-            {
-                if (_switching.Asset == null)
-                    _switching.Load();
-                return _switching.Asset;
-            }
-        }
+        JsonAssetAgent_Managed<ArmWeaponAnimationDefinitions> _weapon;
+
+        public IArmWeaponAnimationDefinitions Weapon => _weapon.Asset;
     }
 }

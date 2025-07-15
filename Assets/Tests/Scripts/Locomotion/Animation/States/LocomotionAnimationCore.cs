@@ -58,19 +58,19 @@ namespace Tests.Locomotion.Animation.States
             _stateMachine.AddState(_flyingState);
             _stateMachine.AddState(_boostingState);
 
-            _stateMachine.AddTransitionFor(_groundState, () => _jumpEnter, _jumpState);
-            _stateMachine.AddTransitionFor(_groundState, () => _airDescendingEnter, _airDescendingState);
+            _stateMachine.AddTransitionFor(_groundState, _jumpState, () => _jumpEnter);
+            _stateMachine.AddTransitionFor(_groundState, _airDescendingState, () => _airDescendingEnter);
 
-            _stateMachine.AddTransitionFor(_jumpState, () => _airDescendingEnter, _airDescendingState);
-            _stateMachine.AddTransitionFor(_jumpState, () => _flyingEnter, _flyingState);
+            _stateMachine.AddTransitionFor(_jumpState, _airDescendingState, () => _airDescendingEnter);
+            _stateMachine.AddTransitionFor(_jumpState, _flyingState, () => _flyingEnter);
 
-            _stateMachine.AddTransitionFor(_airDescendingState, () => _flyingEnter, _flyingState);
-            _stateMachine.AddTransitionFor(_airDescendingState, () => !_airDescendingEnter, _groundState);
+            _stateMachine.AddTransitionFor(_airDescendingState, _flyingState, () => _flyingEnter);
+            _stateMachine.AddTransitionFor(_airDescendingState, _groundState, () => !_airDescendingEnter);
 
-            _stateMachine.AddTransitionFor(_flyingState, () => !_flyingEnter, _airDescendingState);
+            _stateMachine.AddTransitionFor(_flyingState, _airDescendingState, () => !_flyingEnter);
 
-            _stateMachine.AddTransitionFor(_boostingState, () => !_airDescendingEnter, _groundState);
-            _stateMachine.AddTransitionFor(_boostingState, () => _airDescendingEnter, _airDescendingState);
+            _stateMachine.AddTransitionFor(_boostingState, _groundState, () => !_airDescendingEnter);
+            _stateMachine.AddTransitionFor(_boostingState, _airDescendingState, () => _airDescendingEnter);
 
 
 

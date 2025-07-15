@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework.Constraints;
 using System;
+using UnityEditor.Rendering;
 
 namespace Tests.States
 {
@@ -39,9 +40,7 @@ namespace Tests.States
             this.id = Guid.NewGuid();
             this.enabled = enabled;
         }
-        public virtual void OnEnter() { }
-        public virtual void OnUpdate() { }
-        public virtual void OnExit() { }
+
 
         public virtual void AddTransition(ITransition<T> transition)
         {
@@ -92,6 +91,9 @@ namespace Tests.States
                 return transitions[index];
             return null;
         }
+        public abstract void OnEnter();
+        public abstract void OnUpdate();
+        public abstract void OnExit();
     }
 
 

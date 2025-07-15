@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Utilities.Timeline;
+﻿using System;
 
 namespace Tests.States
 {
@@ -6,9 +6,6 @@ namespace Tests.States
     {
         public IState<T> SourceState { get; }
         public IState<T> DestinationState { get; }
-    }
-    public interface IPlayableTransition<T> : ITransition<T>
-    {
-        public ITimeline Timeline { get; }
+        public Action<T> TriggeredEvent { get; set; }
     }
 }

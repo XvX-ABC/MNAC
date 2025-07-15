@@ -4,17 +4,10 @@ using UnityEngine;
 namespace Assets.Tests.Scripts.BodyBehaviour.Arm.Animations
 {
     [Serializable]
-    public class ArmSwitchingAnimationDefinitions : IArmSwitchingAnimationDefinitions
+    public class ArmSwitchingAnimationDefinitions : IArmWeaponSwitchingAnimationDefinitions
     {
         [SerializeField]
-        string _enterName;
-        [SerializeField]
-        string _multiplierName;
-        [SerializeField]
-        float _clipLength;
-
-        public string EnterName { get => _enterName; }
-        public string MultiplierName { get => _multiplierName; }
-        public float ClipLength { get => _clipLength; }
+        AnimationClip _clip;
+        public AnimationClip Clip { get => _clip; }
     }
 }
