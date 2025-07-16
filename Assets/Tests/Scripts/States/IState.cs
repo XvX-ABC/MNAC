@@ -26,8 +26,7 @@ namespace Tests.States
         public ITimeline Timeline { get; }
         public bool ExitWhenEnd { get; set; }
         public new IPlayableTransition<T>[] Transitions { get; }
-    }
-    public interface IDurationTimeState : IPlayableState<object>
-    {
+        public void OnTransitionWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition);
+        public void OnTransitionWhichToNextState(IReadonlyPlayableTransition<T> currentTransition);
     }
 }

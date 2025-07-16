@@ -1,5 +1,10 @@
 ﻿using Assets.Scripts.Utilities.Timeline;
+using Assets.Scripts.Utilities.Timeline.Event;
+using Assets.Scripts.Utilities.Timeline.Event.Range;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor.Timeline;
 using UnityEngine;
 
@@ -17,7 +22,8 @@ namespace Tests.States
         {
             internal IPlayableState<T> srcState;
             internal IPlayableState<T> desState;
-            internal IPlayableTransition<T> srcTransition;
+            internal IPlayableTransition<T> currentTransition;
+            List<ITransition<T>> _list;
             public TransitionState() : base("", 0, true)
             {
                 var transition = new PlayableTransition()
@@ -27,6 +33,7 @@ namespace Tests.States
                     triggerEvent = null,
                 };
                 this.transitions = new ITransition<T>[] { transition };
+                _list = new();
             }
             protected override ITimeline NewTimeline(float duration)
             {
@@ -34,20 +41,34 @@ namespace Tests.States
             }
             public void Update(IPlayableTransition<T> srcTransition)
             {
-                timeline = srcTransition.Timeline;
-                if (timeline == null)
-                    throw new NullReferenceException(nameof(srcTransition.Timeline));
+
+                this.currentTransition = srcTransition;
+                timeline = srcTransition.Timeline ?? throw new NullReferenceException(nameof(srcTransition.Timeline));
                 srcState = (IPlayableState<T>)srcTransition.SourceState;
                 desState = (IPlayableState<T>)srcTransition.DestinationState;
                 name = $"{srcState.Name} ->  {desState.Name}";
+
+
                 UpdateTransitionWhichToNextState();
             }
             void UpdateTransitionWhichToNextState()
             {
+                Array.Resize(ref this.transitions, 1);
                 var t = this.transitions[0] as PlayableTransition;
                 t.destinationState = desState;
                 t.triggerEvent = () => timeline.NormalizedTime >= 1;
 
+
+                _list.Clear();
+                foreach (var ts in desState.Transitions)
+                    if (ts.TriggerEvent != null)
+                        _list.Add(ts);
+                var dLength = _list.Count;
+                if (dLength > 0)
+                {
+                    Array.Resize(ref this.transitions, dLength + 1);
+                    Array.Copy(desState.Transitions, 0, this.transitions, 1, dLength);
+                }
             }
             public override void OnEnter()
             {
@@ -93,39 +114,30 @@ namespace Tests.States
         {
             base.AddTransitionFor(transition as IPlayableTransition<T>);
         }
-        protected override IPlayableState<T> CheckTransitions()
+        protected override ITransition<T> CheckTransitions()
         {
-            var state = base.CheckTransitions();
-            if (state != null && state.ExitWhenEnd)
+            var transition = base.CheckTransitions();
+            if (transition != null && currentState.ExitWhenEnd)
             {
-                var timeline = state.Timeline;
-                return timeline.NormalizedTime >= 1 ? state : null;
+                var timeline = currentState.Timeline;
+                return timeline.NormalizedTime >= 1 ? transition : null;
             }
-            return state;
+            return transition;
         }
-        protected override void ChangeState(IPlayableState<T> nextState)
+        protected override void ChangeState(ITransition<T> triggeredTransition)
         {
-            try
+            var nextState = default(IState<T>);
+            var transition = triggeredTransition;
+            if (currentState != _transitionState || _transitionState != triggeredTransition.SourceState)
             {
-                currentState.OnExit();
-            }
-            catch (Exception e)
-            {
-                throw new StateExitException(currentState, e, "currentState");
-            }
-
-
-            if (currentState != _transitionState)
-            {
-                var transition = currentState.FindTransition(nextState);
                 try
                 {
                     _transitionState.Update((IPlayableTransition<T>)transition);
-                    currentState = _transitionState;
+                    nextState = _transitionState;
                 }
                 catch (NullReferenceException)
                 {
-                    currentState = nextState;
+                    nextState = transition.DestinationState;
                 }
                 catch (Exception)
                 {
@@ -133,20 +145,8 @@ namespace Tests.States
                 }
             }
             else
-            {
-                currentState = nextState;
-            }
-
-
-            try
-            {
-                currentState.OnEnter();
-            }
-            catch (Exception e)
-            {
-
-                throw new StateEntryException(currentState, e, "currentState");
-            }
+                nextState = transition.DestinationState;
+            ChangeState(nextState);
         }
     }
 

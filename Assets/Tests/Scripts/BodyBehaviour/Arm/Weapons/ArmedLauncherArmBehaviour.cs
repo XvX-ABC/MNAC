@@ -22,7 +22,7 @@ namespace Tests.Behaviours.Arm.Weapons
 
     public class ArmedLauncherArmBehaviour : ArmedArmBehaviour
     {
-        protected class ReloadAnimator : IArmWeaponHoldingBehavioursAnimator
+        protected internal class ReloadAnimator : IArmWeaponHoldingBehavioursAnimator
         {
             AnimationClipPlayable _playable;
             AnimationClip _clip;
@@ -55,7 +55,7 @@ namespace Tests.Behaviours.Arm.Weapons
                 _playable.Play();
                 _playable.SetTime(0);
             }
-            public void End()
+            public void Stop()
             {
                 _playable.Pause();
             }
@@ -72,6 +72,7 @@ namespace Tests.Behaviours.Arm.Weapons
         [SerializeField]
         Target _target;
         ILauncherBehaviourDefinitions _definitions;
+        IPlayableTransition<object> _ts;
         internal IInput input { get => _input; }
         public override IWeapon Weapon
         {
@@ -81,7 +82,8 @@ namespace Tests.Behaviours.Arm.Weapons
                 if (value is ILauncher launcher)
                 {
                     _launcher = launcher;
-                    _ammoLoad.ReloadTimeline = launcher.ReloadTimeline;
+                    //_ammoLoad.ReloadTimeline = launcher.ReloadTimeline;
+                    _ammoLoad.Launcher = launcher;
                     _reloadAnimator.ReloadTimeline = launcher.ReloadTimeline;
                 }
                 else
@@ -98,7 +100,7 @@ namespace Tests.Behaviours.Arm.Weapons
             InitializeArmAim();
             InitializeAmmoReload();
             InitializeStateMachine();
-            
+
         }
         private void Start()
         {
@@ -111,7 +113,7 @@ namespace Tests.Behaviours.Arm.Weapons
         }
         void InitializeAmmoReload()
         {
-            _ammoLoad = new();
+            _ammoLoad = new(this._reloadAnimator);
             _ammoLoad.ExitWhenEnd = true;
         }
         void InitializeStateMachine()
@@ -123,25 +125,24 @@ namespace Tests.Behaviours.Arm.Weapons
 
             _stateMachine.AddTransitionFor(_idle, _aim, _definitions.IdleAndAimTransitionLength, () => _target != null, (s, d, t) =>
             {
-                Debug.Log("t: " + t);
+
                 (d as ArmAim).Weight = t;
             });
             _stateMachine.AddTransitionFor(_aim, _idle, _definitions.IdleAndAimTransitionLength, () => _target == null, (s, d, t) =>
             {
                 (s as ArmAim).Weight = 1 - t;
             });
-            var t = _stateMachine.AddTransitionFor(_aim, _ammoLoad, _definitions.AimAndReloadTransitionLength, () => input.Reload, (s, d, t) =>
-              {
-                  (s as ArmAim).Weight = 1 - t;
-              });
-            t.Timeline.AddPointEvent(0, _ => _reloadAnimator.Play());
+            _ts = _stateMachine.AddTransitionFor(_aim, _ammoLoad, _definitions.AimAndReloadTransitionLength, () => input.Reload, (s, d, t) =>
+                                      {
+                                          //Debug.Log("t: " + t);
+                                          (s as ArmAim).Weight = 1 - t;
+                                      });
 
 
-            t = _stateMachine.AddTransitionFor(_ammoLoad, _aim, _definitions.AimAndReloadTransitionLength, (s, d, t) =>
+            _ts = _stateMachine.AddTransitionFor(_ammoLoad, _aim, _definitions.AimAndReloadTransitionLength, (s, d, t) =>
                     {
                         (d as ArmAim).Weight = t;
                     });
-            t.Timeline.AddPointEvent(1, _ => _reloadAnimator.End());
         }
         public override void OnEnter()
         {
@@ -159,6 +160,13 @@ namespace Tests.Behaviours.Arm.Weapons
         }
         private void Update()
         {
+            //if (_stateMachine.CurrentState.Name.Contains("armed_arm_aim ->  armed_arm_ammo_load"))
+            //if (_stateMachine.CurrentState == _ammoLoad)
+            //if (this.input.Reload)
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
+            {
+                Debug.Log("Debug point");
+            }
             _stateMachine.OnUpdate();
             Debug.Log(_stateMachine);
         }

@@ -25,7 +25,7 @@ namespace Tests.States
             var index = Array.FindIndex(transitions, t => t.DestinationState == destinationState);
             return index;
         }
-        public ITransition<T>[] Transitions { get => transitions; set => transitions = value; }
+        public ITransition<T>[] Transitions { get => transitions; }
         public string Name { get => name; }
         public Guid ID { get => id; }
         public virtual bool Enabled
@@ -82,7 +82,7 @@ namespace Tests.States
             }
             this.transitions = transitions;
         }
-        public virtual ITransition<T> FindTransition(IState<T> destinationState)
+        public ITransition<T> FindTransition(IState<T> destinationState)
         {
             if (destinationState == null)
                 return null;

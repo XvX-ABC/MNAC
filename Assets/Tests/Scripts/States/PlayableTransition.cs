@@ -18,10 +18,13 @@ namespace Tests.States
                     {
                         durationEvent.Invoke(sourceState, destinationState, ctx.Proportion);
                     });
+                _timeline.AddRangeEvent(0, 1, ctx => { sourceState.OnTransitionWhichToNextState(this); });
+                _timeline.AddRangeEvent(0, 1, ctx => { destinationState.OnTransitionWhichOfPreviousState(this); });
             }
 
             public ITimeline Timeline => _timeline;
 
+            IReadonlyTimeline IReadonlyPlayableTransition<T>.Timeline => Timeline;
         }
     }
 

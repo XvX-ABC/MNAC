@@ -27,7 +27,7 @@ namespace Tests.States
             {
 
             }
-            public StateEntryException(S state, Exception e, string stateType = "state") : base($"There has a exception when enter to the '{stateType}' '{state.Name}'. \n{e.Message}.")
+            public StateEntryException(IState<T> state, Exception e, string stateType = "state") : base($"There has a exception when enter to the '{stateType}' '{state.Name}'. \n{e.Message}.")
             {
             }
         }
@@ -36,7 +36,7 @@ namespace Tests.States
             public StateExitException(string message) : base(message)
             {
             }
-            public StateExitException(S state, Exception e, string stateType = "state") : base($"There has a exception when exit from the '{stateType}' '{state.Name}'. \n{e.Message}.")
+            public StateExitException(IState<T> state, Exception e, string stateType = "state") : base($"There has a exception when exit from the '{stateType}' '{state.Name}'. \n{e.Message}.")
             {
             }
         }
@@ -45,7 +45,7 @@ namespace Tests.States
             public StateUpdateException(string message) : base(message)
             {
             }
-            public StateUpdateException(S state, Exception e) : base($"There has a exception when the state '{state.Name}' update.\n{e.Message}")
+            public StateUpdateException(IState<T> state, Exception e) : base($"There has a exception when the state '{state.Name}' update.\n{e.Message}")
             {
             }
         }
@@ -66,6 +66,7 @@ namespace Tests.States
             public IState<T> SourceState => sourceState;
 
             public IState<T> DestinationState => destinationState;
+            public Func<bool> TriggerEvent => triggerEvent;
             public Action<T> TriggeredEvent { get => triggeredEvent; set => triggeredEvent = value; }
             public override int GetHashCode()
             {
@@ -90,7 +91,7 @@ namespace Tests.States
                 }
             }
         }
-
+        public IState<T> CurrentState { get => currentState; }
         public StateMachineBase(string name, bool enabled = true) : base(name, enabled)
         {
             states = new();
@@ -149,6 +150,12 @@ namespace Tests.States
                 throw new StateNotExistException(desState);
             srcState.RemoveTransition(desState);
         }
+        protected virtual void ChangeState(IState<T> state)
+        {
+            if (state is not S es)
+                throw new InvalidCastException($"The state type '{state.GetType().Name}' can't converts to the state type '{typeof(S)}'");
+            ChangeState(es);
+        }
         protected virtual void ChangeState(S nextState)
         {
             var currentState = this.currentState;
@@ -171,7 +178,10 @@ namespace Tests.States
                 throw new StateEntryException(nextState, e, "nextState");
             }
             this.currentState = nextState;
-
+        }
+        protected virtual void ChangeState(ITransition<T> triggeredTransition)
+        {
+            ChangeState(triggeredTransition.DestinationState);
         }
         public virtual void ChangeStateTo(S state)
         {
@@ -181,25 +191,23 @@ namespace Tests.States
                 throw new StateNotExistException(state);
             ChangeState(state);
         }
-        protected virtual S CheckTransitions()
+        protected virtual ITransition<T> CheckTransitions()
         {
             var currentState = this.currentState;
             var transitions = currentState.Transitions;
             if (transitions == null)
                 return null;
-            foreach (var ts in transitions)
+            foreach (var t in transitions)
             {
-                var t = ts as Transition;
-                if (t.destinationState.Enabled && (t.triggerEvent == null || t.triggerEvent()))
+                if (t.DestinationState.Enabled)
                 {
-                    if (t.triggerEvent == null)
-                        return t.destinationState;
-                    else if (t.triggerEvent())
+                    if (t.TriggerEvent == null)
+                        return t;
+                    else if (t.TriggerEvent())
                     {
                         t.TriggeredEvent?.Invoke(context);
-                        return t.destinationState;
+                        return t;
                     }
-                    return t.destinationState;
                 }
 
             }
@@ -209,10 +217,10 @@ namespace Tests.States
         {
             if (currentState == null || !this.enabled)
                 return;
-            var nextState = CheckTransitions();
-            if (nextState != null)
+            var currentTransition = CheckTransitions();
+            if (currentTransition != null)
             {
-                ChangeState(nextState);
+                ChangeState(currentTransition);
             }
             else
             {

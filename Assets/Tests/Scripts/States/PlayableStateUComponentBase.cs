@@ -42,6 +42,13 @@ namespace Tests.States
 
         }
 
+        public void OnTransitionWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)
+        {
+        }
+
+        public void OnTransitionWhichToNextState(IReadonlyPlayableTransition<T> currentTransition)
+        {
+        }
     }
 
 }
