@@ -2,9 +2,12 @@
 using System;
 using System.Collections.Generic;
 using Tests.BodyBehaviour.Arm.Animations;
+using Tests.Characters;
 using Tests.Input;
 using Tests.States;
+using Tests.Utilities.MTrees;
 using Tests.Weapons;
+using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -12,20 +15,14 @@ namespace Tests.Behaviours.Arm
 {
 
     [RequireComponent(typeof(ArmBehaviourDefinitions))]
-    public class ArmCore : StateUComponentBase, IArmBehaviour
+    public class ArmCore : StateUComponentBase, IArmBehaviour, IState
     {
         public static implicit operator StateBase<object>(ArmCore core)
         {
             return core._stateMachine;
         }
-        [SerializeField]
-        Animator _animator;
-        [SerializeField]
         WeaponCore _weaponCore;
-        [SerializeField]
-        HybridInput _input;
-        //[SerializeField]
-        //GameObject[] _weaponBehaviourObjs;
+        IInput _input;
         [SerializeField]
         MountPoint[] _mountPoints;
         [SerializeField]
@@ -34,14 +31,31 @@ namespace Tests.Behaviours.Arm
         internal IArmDefinitions definitions;
         internal IArmAnimationDefinitions animationDefinitions;
 
-        //IArmWeaponBehaviour[] _behaviours;
-
 
         internal ArmWeaponSwitching weaponSwitching;
-        internal ArmWeaponHoldingBehaviours holdingBehaviours;
-        internal ArmWeaponAnimationCore animationCore;
+        internal ArmedWeaponArmBehaviours armedBehaviours;
+        internal ArmAnimationCore animationCore;
+        Blackboard _blackboard;
+        ComponentNode _node;
         PlayableStateMachine _stateMachine;
-
+        public Blackboard Blackboard
+        {
+            get => _blackboard;
+            set
+            {
+                if (value != null)
+                {
+                    value.TryReadValue(CharacterBlackboardFields.Input, out _input);
+                    value.TryReadValue(CharacterBlackboardFields.WeaponCore, out _weaponCore);
+                }
+                _blackboard = value;
+                _node.UpdateBlackboardForChildren();
+            }
+        }
+        public ICharacterComponentNode Node
+        {
+            get => _node;
+        }
         public MountPoint FindMountPoint(string name)
         {
             foreach (var m in _mountPoints)
@@ -66,6 +80,14 @@ namespace Tests.Behaviours.Arm
             InitializeStateMachine();
 
             InitializePlayableGraph();
+
+            InitializeNode();
+        }
+        void InitializeNode()
+        {
+            this._node = new(this.ID, this);
+            _node.AddChild(weaponSwitching.Node);
+            _node.AddChild(armedBehaviours.Node);
         }
 
         void InitializeSwitchingBehaviour(IArmWeaponDefinitions definitions, MountPoint mountPoint)
@@ -75,7 +97,7 @@ namespace Tests.Behaviours.Arm
         }
         void InitializeHoldingBehaviours(IArmWeaponDefinitions definitions)
         {
-            var blist = new List<(string, IArmWeaponHoldingBehaviour)>();
+            var blist = new List<(string, IArmedWeaponArmBehaviour)>();
             foreach (var od in definitions.Origins)
             {
                 if (!_weaponCore.TryGetWeaponOrigin(od.Name, out var origin))
@@ -83,15 +105,15 @@ namespace Tests.Behaviours.Arm
                     Debug.LogWarning(new WeaponOriginNotContainsException(_weaponCore, od.Name));
                     continue;
                 }
-                var behaviour = origin.GetComponent<IArmWeaponHoldingBehaviour>();
+                var behaviour = origin.GetComponent<IArmedWeaponArmBehaviour>();
                 if (behaviour == null)
                 {
-                    Debug.LogWarning(new ComponentCantFindException(origin, typeof(IArmWeaponHoldingBehaviour)));
+                    Debug.LogWarning(new ComponentCantFindException(origin, typeof(IArmedWeaponArmBehaviour)));
                     continue;
                 }
                 blist.Add((od.Name, behaviour));
             }
-            holdingBehaviours = new ArmWeaponHoldingBehaviours(this.gameObject, blist.ToArray());
+            armedBehaviours = new ArmedWeaponArmBehaviours(this.gameObject, blist.ToArray());
 
 
             weaponSwitching.SwitchingEvent += (cobj, nobj) =>
@@ -99,13 +121,13 @@ namespace Tests.Behaviours.Arm
                 if (cobj != null)
                 {
                     var cweapon = cobj.GetComponent<IWeapon>();
-                    holdingBehaviours.UnactivateBehaviourBy(cweapon);
+                    armedBehaviours.UnactivateBehaviourBy(cweapon);
                     cobj.SetActive(false);
                 }
                 if (nobj != null)
                 {
                     var nweapon = nobj.GetComponent<IWeapon>();
-                    holdingBehaviours.ActivateBehaviourBy(nweapon);
+                    armedBehaviours.ActivateBehaviourBy(nweapon);
                     nobj.SetActive(true);
                 }
 
@@ -115,16 +137,14 @@ namespace Tests.Behaviours.Arm
         void InitializeStateMachine()
         {
             _stateMachine = new(this.name);
-            _stateMachine.AddState(holdingBehaviours);
+            _stateMachine.AddState(armedBehaviours);
             _stateMachine.AddState(weaponSwitching);
-            //_stateMachine.AddTransitionFor(holdingBehaviours, () => _input.Supply, weaponSwitching);
-            //_stateMachine.AddTransitionFor(weaponSwitching, () => weaponSwitching.NormalizedTime >= 1, holdingBehaviours);
             var length = definitions.Weapon.SwitchingToBehavioursDurationTime;
-            _stateMachine.AddTransitionFor(holdingBehaviours, weaponSwitching, length, () => _input.Supply, (s, d, t) =>
+            _stateMachine.AddTransitionFor(armedBehaviours, weaponSwitching, length, () => _input.Supply, (s, d, t) =>
             {
                 animationCore.SwitchingWeight = t;
             });
-            _stateMachine.AddTransitionFor(weaponSwitching, holdingBehaviours, length, (s, d, t) =>
+            _stateMachine.AddTransitionFor(weaponSwitching, armedBehaviours, length, (s, d, t) =>
             {
                 animationCore.SwitchingWeight = 1 - t;
             });
@@ -147,7 +167,7 @@ namespace Tests.Behaviours.Arm
             if (!weaponCore.TryGetWeaponObj(weaponName, out var obj))
                 throw new Exception();
             var weapon = obj.GetComponent<IWeapon>();
-            holdingBehaviours.ActivateBehaviourBy(weapon);
+            armedBehaviours.ActivateBehaviourBy(weapon);
             weaponMountPoint.LoadObj = obj;
         }
 
@@ -163,13 +183,11 @@ namespace Tests.Behaviours.Arm
         public override void OnEnter()
         {
             enabled = true;
-            //IArmBehaviour.TryBeginAllBehaviours(_behaviours);
         }
 
         public override void OnExit()
         {
             enabled = false;
-            //IArmBehaviour.TryEndAllBehaviours(_behaviours);
         }
         void Update()
         {

@@ -14,7 +14,7 @@ using UnityEngine.Playables;
 
 namespace Tests.BodyBehaviour.Arm.Animations
 {
-    internal class ArmWeaponAnimationCore
+    internal class ArmAnimationCore
     {
         GameObject _armObj;
         Animator _animator;
@@ -24,7 +24,7 @@ namespace Tests.BodyBehaviour.Arm.Animations
 
 
 
-        ArmWeaponHoldingBehavioursAnimator _holdingBehavioursAnimator;
+        ArmedWeaponArmAnimator _armedAnimator;
         public float SwitchingWeight
         {
             get => _playable.GetInputWeight(0);
@@ -35,13 +35,13 @@ namespace Tests.BodyBehaviour.Arm.Animations
                 _playable.SetInputWeight(1, 1 - v);
             }
         }
-        public ArmWeaponAnimationCore(ArmCore core, PlayableGraph graph)
+        public ArmAnimationCore(ArmCore core, PlayableGraph graph)
         {
             _armObj = core.gameObject;
             _definitions = core.definitions.Weapon;
             _animationDefinitions = core.animationDefinitions.Weapon;
             _animator = _armObj.GetComponent<Animator>();
-            _holdingBehavioursAnimator = new(core.holdingBehaviours, graph);
+            _armedAnimator = new(core.armedBehaviours, graph);
 
             InitializePlayableGraph(graph);
         }
@@ -51,7 +51,7 @@ namespace Tests.BodyBehaviour.Arm.Animations
             var clip = AnimationClipPlayable.Create(graph, _animationDefinitions.Switching.Clip ?? throw new NullReferenceException("definitions.Switching.Clip"));
             clip.SetDuration(_definitions.SwitchingDurationTime);
             graph.Connect(clip, 0, _playable, 0);
-            graph.Connect(_holdingBehavioursAnimator.playablePart, 0, _playable, 1);
+            graph.Connect(_armedAnimator.playablePart, 0, _playable, 1);
         }
     }
 }

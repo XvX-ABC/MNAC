@@ -1424,10 +1424,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2550968540632913536, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3564753411768140485}
-    - targetCorrespondingSourceObject: {fileID: 2550968540632913536, guid: cda3572f260d2fd4aa54e5b415780ea9,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 3564753411768140484}
     - targetCorrespondingSourceObject: {fileID: 2550968540632913536, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
@@ -1537,6 +1533,10 @@ MonoBehaviour:
   _core: {fileID: 3564753411768140493}
   _weaponName: Weapon_0
   _idleClip: {fileID: 7400000, guid: cb0eb66da2dcff54dbd93a509d784a1d, type: 2}
+  _animator: {fileID: 3564753411768140478}
+  _bodyMask: {fileID: 0}
+  _armMask: {fileID: 31900000, guid: 3c4e547ce125fa342938ed2ebd9f490f, type: 2}
+  _input: {fileID: 3564753411768140527}
 --- !u!114 &3564753411768140483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1549,6 +1549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee460e70e7611b44787977be6b52f74e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _aimingClip: {fileID: 7400000, guid: a73c1b60d5549de45949867a79b9748f, type: 2}
   _reloadClip: {fileID: 7400000, guid: 6a26022e94c42484db2f6e3019b314d8, type: 2}
   _idleAndAimTransitionLength: 1
   _aimAndReloadTransitionsLength: 2
@@ -1565,21 +1566,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  _input: {fileID: 3564753411768140527}
-  _target: {fileID: 462109979}
---- !u!114 &3564753411768140485
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3564753411768140479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce693b41da53bb34fbff654cc74fd7a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _obj: {fileID: 462109974}
+  _targetsCatcher:
+    _target: {fileID: 462109979}
 --- !u!95 &3564753411768140486
 Animator:
   serializedVersion: 7
@@ -1589,7 +1577,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3564753411768140479}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 0b091718624e186429165c4ceff23e59, type: 3}
   m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0

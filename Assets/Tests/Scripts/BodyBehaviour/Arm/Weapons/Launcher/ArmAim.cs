@@ -3,6 +3,7 @@ using RootMotion.FinalIK;
 using System;
 using System.Data;
 using Tests.Behaviours.Arm;
+using Tests.Characters;
 using Tests.States;
 using UnityEngine;
 
@@ -18,8 +19,7 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
             get => _target;
             set
             {
-                if (value != null)
-                    _target = value;
+                _target = value;
             }
 
         }
@@ -47,7 +47,13 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
         void UpdateTarget()
         {
             if (_target != null && _aimIK.solver.IKPositionWeight > 0)
+            {
                 _aimIK.solver.SetIKPosition(_target.Position);
+            }
+        }
+        public override void OnEnter()
+        {
+            this.Weight = 1;
         }
         public override void OnTransitionWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
         {
@@ -58,6 +64,10 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
         {
             base.OnTransitionWhichOfPreviousState(currentTransition);
             UpdateTarget();
+            if (currentTransition.Timeline.NormalizedTime >= 1)
+            {
+                Weight = 0;
+            }
         }
     }
 }

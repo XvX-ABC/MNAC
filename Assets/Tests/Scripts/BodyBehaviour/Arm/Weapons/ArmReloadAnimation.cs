@@ -9,6 +9,7 @@ using UnityEngine.VFX;
 namespace Tests.Behaviours.Arm
 {
     [Serializable]
+    [Obsolete]
     internal class ArmReloadAnimation
     {
 

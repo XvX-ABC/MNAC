@@ -10,9 +10,9 @@ using UnityEngine.Playables;
 
 namespace Assets.Tests.Scripts.BodyBehaviour.Arm.Animation
 {
-    internal class ArmWeaponHoldingBehavioursAnimator
+    internal class ArmedWeaponArmAnimator
     {
-        ArmWeaponHoldingBehaviours _behaviours;
+        ArmedWeaponArmBehaviours _behaviours;
         internal Playable playablePart;
         PlayableGraph _graph;
         float _weight;
@@ -21,7 +21,7 @@ namespace Assets.Tests.Scripts.BodyBehaviour.Arm.Animation
             get => _weight;
             set => _weight = value;
         }
-        public ArmWeaponHoldingBehavioursAnimator(ArmWeaponHoldingBehaviours behaviours, PlayableGraph graph)
+        public ArmedWeaponArmAnimator(ArmedWeaponArmBehaviours behaviours, PlayableGraph graph)
         {
             _behaviours = behaviours ?? throw new ArgumentNullException(nameof(behaviours));
             _behaviours.ActivatedAction += this.ActivatedAnimator;
@@ -29,12 +29,12 @@ namespace Assets.Tests.Scripts.BodyBehaviour.Arm.Animation
             _graph = graph;
         }
 
-        void ActivatedAnimator(IWeapon weapon, IArmWeaponHoldingBehaviour behaviour)
+        void ActivatedAnimator(IWeapon weapon, IArmedWeaponArmBehaviour behaviour)
         {
             var animator = behaviour.Animator;
             this.playablePart = animator.GetPlayablePart(_graph);
         }
-        void UnactivatedAnimator(IWeapon weapon, IArmWeaponHoldingBehaviour behaviour)
+        void UnactivatedAnimator(IWeapon weapon, IArmedWeaponArmBehaviour behaviour)
         {
             var p = behaviour.Animator.GetPlayablePart(_graph);
             if (p.Equals(this.playablePart))

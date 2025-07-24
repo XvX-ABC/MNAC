@@ -13,16 +13,16 @@ using UInput = UnityEngine.Input;
 
 namespace Tests.Behaviours.Arm
 {
-    internal class ArmWeaponHoldingBehaviours : ArmBehaviourPlayableState
+    internal class ArmedWeaponArmBehaviours : ArmBehaviourPlayableState
     {
-        Dictionary<string, IArmWeaponHoldingBehaviour> _weaponBehaviours;
-        internal IArmWeaponHoldingBehaviour[] _activatedBehaviours;
-        Action<IWeapon, IArmWeaponHoldingBehaviour> _activatedAction;
-        Action<IWeapon, IArmWeaponHoldingBehaviour> _unactivatedAction;
-        public Action<IWeapon, IArmWeaponHoldingBehaviour> ActivatedAction { get => _activatedAction; set => _activatedAction = value; }
-        public Action<IWeapon, IArmWeaponHoldingBehaviour> UnactivatedAction { get => _unactivatedAction; set => _unactivatedAction = value; }
+        Dictionary<string, IArmedWeaponArmBehaviour> _weaponBehaviours;
+        internal IArmedWeaponArmBehaviour[] _activatedBehaviours;
+        Action<IWeapon, IArmedWeaponArmBehaviour> _activatedAction;
+        Action<IWeapon, IArmedWeaponArmBehaviour> _unactivatedAction;
+        public Action<IWeapon, IArmedWeaponArmBehaviour> ActivatedAction { get => _activatedAction; set => _activatedAction = value; }
+        public Action<IWeapon, IArmedWeaponArmBehaviour> UnactivatedAction { get => _unactivatedAction; set => _unactivatedAction = value; }
 
-        public ArmWeaponHoldingBehaviours(GameObject armObj, params (string name, IArmWeaponHoldingBehaviour behaviour)[] weaponBehavioursMapping) : base("behaviors")
+        public ArmedWeaponArmBehaviours(GameObject armObj, params (string name, IArmedWeaponArmBehaviour behaviour)[] weaponBehavioursMapping) : base("behaviors")
         {
             _weaponBehaviours = new();
             foreach (var wwm in weaponBehavioursMapping)
@@ -44,7 +44,7 @@ namespace Tests.Behaviours.Arm
                 throw new CantFindBehaviourByNameException(name);
             if (_activatedBehaviours == null)
             {
-                _activatedBehaviours = new IArmWeaponHoldingBehaviour[] { b };
+                _activatedBehaviours = new IArmedWeaponArmBehaviour[] { b };
             }
             else
             {
@@ -98,15 +98,6 @@ namespace Tests.Behaviours.Arm
 
         public override void OnUpdate()
         {
-            if (_activatedBehaviours == null)
-                return;
-            if (UInput.GetKeyDown(KeyCode.S))
-            {
-                foreach (var b in _activatedBehaviours)
-                    b.OnExit();
-            }
-            foreach (var b in _activatedBehaviours)
-                b.OnUpdate();
         }
 
     }

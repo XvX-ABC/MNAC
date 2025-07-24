@@ -106,8 +106,7 @@ namespace Tests.States
                 return;
             state.Context = context;
             states.Add(state);
-            if (currentState == null)
-                currentState = state;
+
         }
         public void RemoveState(S state)
         {
@@ -215,8 +214,14 @@ namespace Tests.States
         }
         public override void OnUpdate()
         {
-            if (currentState == null || !this.enabled)
+            if (!this.enabled)
                 return;
+            if (currentState == null && states.Count > 0)
+            {
+                var state = states.First();
+                state.OnEnter();
+                currentState = state;
+            }
             var currentTransition = CheckTransitions();
             if (currentTransition != null)
             {

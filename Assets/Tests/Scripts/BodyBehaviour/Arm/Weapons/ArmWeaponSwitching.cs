@@ -3,41 +3,14 @@ using Assets.Scripts.Utilities.Timeline.Event.Point;
 using Assets.Tests.Scripts.Weapons;
 using System;
 using Tests.BT;
+using Tests.Characters;
 using Tests.Input;
 using Tests.States;
+using Tests.Utilities.MTrees;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arm
 {
-    public abstract class ArmBehaviorState : StateBase, IArmBehaviour
-    {
-        protected ArmBehaviorState(string name) : base($"arm_{name}")
-        {
-        }
-        Action _entryAction;
-        Action _updateAction;
-        Action _exitAction;
-        public abstract IInput Input { set; }
-        public abstract bool Continuing { get; }
-        public Action EntryAction { get => _entryAction; set => _entryAction = value; }
-        public Action UpdateAction { get => _updateAction; set => _updateAction = value; }
-        public Action ExitAction { get => _exitAction; set => _exitAction = value; }
-        public override void OnEnter()
-        {
-            _entryAction?.Invoke();
-        }
-        public override void OnExit()
-        {
-            _exitAction?.Invoke();
-        }
-        public override void OnUpdate()
-        {
-            _updateAction?.Invoke();
-        }
-    }
-
-
-
     public class ArmWeaponSwitching : ArmBehaviourPlayableState
     {
         IArmWeaponDefinitions _definitions;
@@ -104,24 +77,6 @@ namespace Tests.Behaviours.Arm
                 throw new WeaponObjGetFailedByName(name);
             return obj;
         }
-        //public override void OnStop()
-        //{
-        //    _timeline.Stop();
-        //}
-        //protected override TaskState OnWork()
-        //{
-        //    if (_timeline.IsRunning)
-        //    {
-        //        _timeline.OnUpdate(Time.deltaTime);
-        //        return TaskState.Running;
-        //    }
-        //    else if (input.Supply)
-        //    {
-        //        _timeline.Start();
-        //        return TaskState.Running;
-        //    }
-        //    return TaskState.Failure;
-        //}
         public override void OnEnter()
         {
             base.OnEnter();

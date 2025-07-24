@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Utilities.Timeline;
 using System;
+using Tests.Behaviours.Arm.Weapons;
 using Tests.Weapons;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -7,16 +8,17 @@ using UnityEngine.Playables;
 namespace Tests.Behaviours.Arm
 {
 
-    public interface IArmWeaponHoldingBehavioursAnimator
+    public interface IArmedWeaponArmAnimator
     {
         //public Playable PlayablePart { get; }
         public Playable GetPlayablePart(PlayableGraph graph);
+        public IOutputSetting OutputSetting { set; }
     }
-    internal interface IArmWeaponHoldingBehaviour : IArmBehaviour
+    internal interface IArmedWeaponArmBehaviour : IArmBehaviour
     {
         public WeaponType Type { get; }
         public IWeapon Weapon { get; set; }
-        public IArmWeaponHoldingBehavioursAnimator Animator { get; }
+        public IArmedWeaponArmAnimator Animator { get; }
 
     }
 }

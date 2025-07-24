@@ -8,6 +8,7 @@ using Tests.Input;
 
 namespace Tests.Behaviours
 {
+    [Obsolete]
     public interface IBehaviour : ITask
     {
         public IInput Input { set; }

@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace Tests.Behaviours.Arm
 {
+    [Obsolete]
     public class ArmWeaponActions : Sequencer, IArmAction
     {
         Dictionary<string, IArmWeaponAction> _weaponActions;

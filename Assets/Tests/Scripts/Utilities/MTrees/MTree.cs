@@ -6,21 +6,21 @@ using Unity.VisualScripting;
 
 namespace Tests.Utilities.MTrees
 {
-    internal class MTree<T> : IEnumerable<IMNode<T>>
+    internal class MTree : IEnumerable<IMTNode>
     {
-        class Enumerator : IEnumerator<IMNode<T>>
+        class Enumerator : IEnumerator<IMTNode>
         {
-            IMNode<T> _root;
-            IMNode<T> _current;
-            Stack<IMNode<T>> _stack;
-            public Enumerator(IMNode<T> root)
+            IMTNode _root;
+            IMTNode _current;
+            Stack<IMTNode> _stack;
+            public Enumerator(IMTNode root)
             {
                 _root = root;
                 _current = root;
                 _stack = new();
                 _stack.Push(_root);
             }
-            public IMNode<T> Current => _current;
+            public IMTNode Current => _current;
 
             object IEnumerator.Current => Current;
 
@@ -55,19 +55,19 @@ namespace Tests.Utilities.MTrees
                 _current = _root;
             }
         }
-        IMNode<T> _root;
+        IMTNode _root;
         Enumerator _enumerator;
-        public IMNode<T> Root { get => _root; }
-        public MTree(IMNode<T> root)
+        public IMTNode Root { get => _root; }
+        public MTree(IMTNode root)
         {
             _root = root ?? throw new ArgumentNullException(nameof(root));
             _enumerator = new(_root);
         }
-        IMNode<T> FindNode(Guid id)
+        IMTNode FindNode(Guid id)
         {
             return this.FirstOrDefault(node => node.ID == id);
         }
-        IEnumerator FindNodeWithCoroutine(Guid id, Action<IMNode<T>> successfulAction)
+        IEnumerator FindNodeWithCoroutine(Guid id, Action<IMTNode> successfulAction)
         {
             var enumerator = _enumerator;
             do
@@ -82,7 +82,7 @@ namespace Tests.Utilities.MTrees
             } while (_enumerator.MoveNext());
 
         }
-        public IEnumerator<IMNode<T>> GetEnumerator()
+        public IEnumerator<IMTNode> GetEnumerator()
         {
             return _enumerator;
         }

@@ -36,14 +36,14 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
         {
             base.OnTransitionWhichOfPreviousState(currentTransition);
             var time = currentTransition.Timeline.NormalizedTime;
-            if (time <= 0)
+            if (time >= 0.8f)
                 _animator.Play();
         }
         public override void OnTransitionWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.OnTransitionWhichToNextState(currentTransition);
             var time = currentTransition.Timeline.NormalizedTime;
-            if (time >= 1)
+            if (time >= 0.8f)
                 _animator.Stop();
         }
     }

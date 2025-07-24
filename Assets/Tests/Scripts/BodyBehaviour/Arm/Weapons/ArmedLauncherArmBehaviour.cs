@@ -1,12 +1,8 @@
 ﻿using Assets.Scripts.Utilities.Timeline;
-using Assets.Scripts.Utilities.Timeline.Event.Point;
-using BehaviorDesigner.Runtime;
 using RootMotion.FinalIK;
 using System;
-using Tests;
-using Tests.Behaviours.Arm;
-using Tests.Behaviours.Arm.Weapons;
 using Tests.BodyBehaviour.Arm.Weapons.Launcher;
+using Tests.Characters;
 using Tests.Input;
 using Tests.States;
 using Tests.Weapons;
@@ -14,28 +10,54 @@ using Tests.Weapons.Launcher;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
-using UnityEngine.TextCore;
 using ArmAim = Tests.BodyBehaviour.Arm.Weapons.Launcher.ArmAim;
+using Fields = Tests.Characters.CharacterBlackboardFields;
 
 namespace Tests.Behaviours.Arm.Weapons
 {
-
-    public class ArmedLauncherArmBehaviour : ArmedArmBehaviour
+    public class ArmedLauncherArmBehaviour : ArmedWeaponArmBehaviourBase
     {
-        protected internal class ReloadAnimator : IArmWeaponHoldingBehavioursAnimator
+        protected internal class AimingAnimator : IArmedWeaponArmAnimator
         {
             AnimationClipPlayable _playable;
             AnimationClip _clip;
-            float _length;
+            ILauncherBehaviourDefinitions _definitions;
+            public AimingAnimator(AnimationClip clip, ILauncherBehaviourDefinitions definitions)
+            {
+                _clip = clip ?? throw new ArgumentNullException(nameof(_clip));
+                _definitions = definitions ?? throw new ArgumentNullException(nameof(_definitions));
+            }
+
+            public IOutputSetting OutputSetting { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+            public Playable GetPlayablePart(PlayableGraph graph)
+            {
+                if (_playable.Equals(default))
+                {
+                    _playable = AnimationClipPlayable.Create(graph, _clip);
+                }
+                return _playable;
+            }
+        }
+        protected internal class ReloadAnimator : IArmedWeaponArmAnimator
+        {
+            AnimationClipPlayable _playable;
+            AnimationClip _clip;
+            float _speed;
             public ITimeline ReloadTimeline
             {
                 set
                 {
-                    _length = value.Length;
+                    if (value == null)
+                        throw new NullReferenceException(nameof(value));
+                    _speed = value.Length == 0 ? 1 : _clip.length / value.Length;
                     if (!_playable.Equals(default))
-                        _playable.SetDuration(_length);
+                        _playable.SetSpeed(_speed);
                 }
             }
+
+            public IOutputSetting OutputSetting { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
             public ReloadAnimator(AnimationClip clip)
             {
                 _clip = clip ?? throw new ArgumentNullException(nameof(clip));
@@ -46,18 +68,78 @@ namespace Tests.Behaviours.Arm.Weapons
                 if (_playable.Equals(default))
                 {
                     _playable = AnimationClipPlayable.Create(graph, _clip);
-                    _playable.SetDuration(_length);
+                    _playable.SetSpeed(_speed);
                 }
                 return _playable;
             }
             public void Play()
             {
-                _playable.Play();
                 _playable.SetTime(0);
+                _playable.Play();
             }
             public void Stop()
             {
                 _playable.Pause();
+            }
+        }
+        protected internal class BAnimator : IArmedWeaponArmAnimator
+        {
+            internal AimingAnimator aiming;
+            internal ReloadAnimator reload;
+            AnimationMixerPlayable _playable;
+            float _aimingWeight;
+            float _idleWeight;
+            internal IOutputSetting outputSetting;
+            public float IdleWeight
+            {
+                get => _idleWeight;
+                set
+                {
+                    var v = Mathf.Clamp01(value);
+                    _idleWeight = v;
+                    UpdateWeight();
+                    if (outputSetting != null)
+                        outputSetting.Weight = 1 - v;
+                }
+            }
+            public float AimingWeight
+            {
+                get => _aimingWeight;
+                set
+                {
+                    var v = Mathf.Clamp01(value);
+                    _aimingWeight = value;
+                    UpdateWeight();
+                }
+            }
+
+            public IOutputSetting OutputSetting { set => outputSetting = value; }
+
+            void UpdateWeight()
+            {
+                if (!_playable.Equals(default))
+                {
+                    _playable.SetInputWeight(0, _aimingWeight);
+                    _playable.SetInputWeight(1, 1 - _aimingWeight);
+                }
+            }
+            public BAnimator(ILauncherBehaviourDefinitions definitions)
+            {
+                aiming = new(definitions?.AimingClip, definitions);
+                reload = new(definitions?.ReloadClip);
+            }
+            public Playable GetPlayablePart(PlayableGraph graph)
+            {
+                if (_playable.Equals(default))
+                {
+                    var ap = aiming.GetPlayablePart(graph);
+                    var rp = reload.GetPlayablePart(graph);
+                    _playable = AnimationMixerPlayable.Create(graph, 2);
+                    graph.Connect(ap, 0, _playable, 0);
+                    graph.Connect(rp, 0, _playable, 1);
+                    AimingWeight = _aimingWeight;
+                }
+                return _playable;
             }
         }
         ILauncher _launcher;
@@ -65,15 +147,11 @@ namespace Tests.Behaviours.Arm.Weapons
         ArmIdle _idle;
         ArmAim _aim;
         AmmoLoad _ammoLoad;
-        ReloadAnimator _reloadAnimator;
-        //IInput _input;
+        BAnimator _banimator;
         [SerializeField]
-        CustomPlayerInput _input;
-        [SerializeField]
-        Target _target;
+        TargetsCatcher_Debug _targetsCatcher;
         ILauncherBehaviourDefinitions _definitions;
-        IPlayableTransition<object> _ts;
-        internal IInput input { get => _input; }
+        IInput _input;
         public override IWeapon Weapon
         {
             get => _launcher;
@@ -82,29 +160,63 @@ namespace Tests.Behaviours.Arm.Weapons
                 if (value is ILauncher launcher)
                 {
                     _launcher = launcher;
-                    //_ammoLoad.ReloadTimeline = launcher.ReloadTimeline;
                     _ammoLoad.Launcher = launcher;
-                    _reloadAnimator.ReloadTimeline = launcher.ReloadTimeline;
+                    _banimator.reload.ReloadTimeline = launcher.ReloadTimeline;
                 }
                 else
                     throw new Exception("Weapon");
             }
         }
-        public override IArmWeaponHoldingBehavioursAnimator Animator { get => _reloadAnimator; }
+        public IOutputSetting OutputSetting
+        {
+            get => _banimator.outputSetting;
+            set => _banimator.outputSetting = value;
+        }
+        public override IArmedWeaponArmAnimator Animator { get => _banimator; }
+        public override Blackboard Blackboard
+        {
+            get => base.Blackboard;
+            set
+            {
+                if (value != null)
+                {
+                    if (value.Contains(Fields.TargetsCatcher))
+                        value.TryWriteValue(Fields.TargetsCatcher, _targetsCatcher);
+                    else
+                        value.TryRegisterField(Fields.TargetsCatcher, _targetsCatcher);
+
+                    if (value.TryReadValue<IInput>(Fields.Input, out var input))
+                    {
+                        _input = input;
+                    }
+                }
+                base.Blackboard = value;
+            }
+        }
         protected override void Awake()
         {
             base.Awake();
             _definitions = GetComponent<ILauncherBehaviourDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherBehaviourDefinitions));
-            _idle = new ArmIdle();
-            _reloadAnimator = new(_definitions.ReloadClip);
+            _banimator = new(_definitions);
+            _idle = new ArmIdle(_banimator);
             InitializeArmAim();
             InitializeAmmoReload();
             InitializeStateMachine();
 
+            _aim.weightChangedAction += v =>
+            {
+                _banimator.AimingWeight = v;
+            };
+            _targetsCatcher.OnAwake();
+            _targetsCatcher.TargetsChangedAction += targets =>
+            {
+                var target = targets.Count > 0 ? targets[0] : null;
+                _aim.Target = target;
+            };
         }
         private void Start()
         {
-            _aim.Target = _target;
+            _banimator.AimingWeight = 1;
         }
         void InitializeArmAim()
         {
@@ -113,7 +225,7 @@ namespace Tests.Behaviours.Arm.Weapons
         }
         void InitializeAmmoReload()
         {
-            _ammoLoad = new(this._reloadAnimator);
+            _ammoLoad = new(this._banimator.reload);
             _ammoLoad.ExitWhenEnd = true;
         }
         void InitializeStateMachine()
@@ -123,26 +235,27 @@ namespace Tests.Behaviours.Arm.Weapons
             _stateMachine.AddState(_aim);
             _stateMachine.AddState(_ammoLoad);
 
-            _stateMachine.AddTransitionFor(_idle, _aim, _definitions.IdleAndAimTransitionLength, () => _target != null, (s, d, t) =>
+            _stateMachine.AddTransitionFor(_idle, _aim, _definitions.IdleAndAimTransitionLength, () => _aim.Target != null, (s, d, t) =>
             {
 
                 (d as ArmAim).Weight = t;
+                _banimator.IdleWeight = 1 - t;
             });
-            _stateMachine.AddTransitionFor(_aim, _idle, _definitions.IdleAndAimTransitionLength, () => _target == null, (s, d, t) =>
+            _stateMachine.AddTransitionFor(_aim, _idle, _definitions.IdleAndAimTransitionLength, () => _aim.Target == null, (s, d, t) =>
+            {
+                (s as ArmAim).Weight = 1 - t;
+                _banimator.IdleWeight = t;
+            });
+            _stateMachine.AddTransitionFor(_aim, _ammoLoad, _definitions.AimAndReloadTransitionLength, () => _input.Reload, (s, d, t) =>
             {
                 (s as ArmAim).Weight = 1 - t;
             });
-            _ts = _stateMachine.AddTransitionFor(_aim, _ammoLoad, _definitions.AimAndReloadTransitionLength, () => input.Reload, (s, d, t) =>
-                                      {
-                                          //Debug.Log("t: " + t);
-                                          (s as ArmAim).Weight = 1 - t;
-                                      });
 
 
-            _ts = _stateMachine.AddTransitionFor(_ammoLoad, _aim, _definitions.AimAndReloadTransitionLength, (s, d, t) =>
-                    {
-                        (d as ArmAim).Weight = t;
-                    });
+            _stateMachine.AddTransitionFor(_ammoLoad, _aim, _definitions.AimAndReloadTransitionLength, (s, d, t) =>
+              {
+                  (d as ArmAim).Weight = t;
+              });
         }
         public override void OnEnter()
         {
@@ -160,124 +273,10 @@ namespace Tests.Behaviours.Arm.Weapons
         }
         private void Update()
         {
-            //if (_stateMachine.CurrentState.Name.Contains("armed_arm_aim ->  armed_arm_ammo_load"))
-            //if (_stateMachine.CurrentState == _ammoLoad)
-            //if (this.input.Reload)
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
-            {
-                Debug.Log("Debug point");
-            }
+            _targetsCatcher.OnUpdate();
             _stateMachine.OnUpdate();
             Debug.Log(_stateMachine);
         }
-        private void OnDrawGizmos()
-        {
-            var pos = _target.Position;
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(pos, 1);
-        }
     }
 }
-//    [RequireComponent(typeof(AimIK))]
-//    public class LauncherBehaviour : MonoBehaviour, IArmWeaponBehaviour, IAimer, IArmWeaponAction
-//    {
-//        ArmAimer _aimer;
-//        [SerializeField]
-//        ArmAimingAndReloadTransition _transition;
-//        [SerializeField]
-//        ArmReloadAnimation _reloadAnimation;
-//        ILauncher _launcher;
-//        IInput _input;
 
-//        Selector _selector;
-//        class Selector : Tests.BT.Selector
-//        {
-//            public Selector(params IArmAction[] actions)
-//            {
-//                children.AddRange(actions);
-//            }
-//        }
-//        public WeaponType Type => WeaponType.Launcher;
-
-//        public IWeapon Weapon
-//        {
-//            get => _launcher;
-
-//            set
-//            {
-//                if (value is ILauncher launcher)
-//                {
-//                    _launcher = launcher;
-//                    _transition.Launcher = launcher;
-//                }
-//                else
-//                    throw new InvalidCastException($"This weapon '{value.Name}' is not a launcher.");
-//            }
-//        }
-//        public IInput Input
-//        {
-//            set
-//            {
-//                _aimer.Input = value;
-//                //_transition.Input = value;
-//            }
-//        }
-
-//        public bool Continuing => _aimer.Continuing;
-//        public ITarget Target
-//        {
-//            get => _aimer.Target;
-//            set => _aimer.Target = value;
-//        }
-
-
-//        public TaskState State => _selector.State;
-
-//        void Awake()
-//        {
-//            _aimer = new(GetComponent<AimIK>());
-//            Target = GetComponent<ITarget>();
-//            _transition.Initialize(_aimer, _reloadAnimation);
-//            //_selector = new Selector(_transition, _aimer);
-//        }
-//        public void OnUpdate()
-//        {
-//            if (!this.enabled)
-//                return;
-//            if (_input.Reload)
-//            {
-//                _transition.BStart();
-//            }
-
-//            _transition.OnUpdate();
-//        }
-//        void LateUpdate()
-//        {
-
-//            _aimer.OnUpdate();
-//        }
-//        public bool BEnd()
-//        {
-//            if (_transition.Continuing)
-//                _transition.BEnd();
-//            _aimer.BEnd();
-//            enabled = false;
-//            return true;
-//        }
-
-//        public bool BStart()
-//        {
-//            this.enabled = true;
-//            return _aimer.BStart();
-//        }
-
-//        public TaskState Work()
-//        {
-//            if (!enabled)
-//                return TaskState.Failure;
-//            var state = _selector.Work();
-//            Debug.Log(_selector.ToString());
-//            return state;
-//        }
-//    }
-//}

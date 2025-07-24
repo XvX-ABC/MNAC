@@ -19,6 +19,7 @@ using TaskStatus = BehaviorDesigner.Runtime.Tasks.TaskStatus;
 namespace Tests.Behaviours.Arm.Weapons
 {
     [Serializable]
+    [Obsolete]
     public class ArmAimingAndReloadTransition : Action
     {
         [SerializeField]
