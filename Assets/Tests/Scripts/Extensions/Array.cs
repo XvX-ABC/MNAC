@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
+using UnityEngine.UIElements;
 
 namespace Tests.Extensions
 {
@@ -18,13 +19,17 @@ namespace Tests.Extensions
         {
             var length = array.Length;
             var index = Array.IndexOf(array, elem);
-            if (index < 0 || index >= length)
+            return Remove(array, index);
+        }
+        public static bool Remove<T>(this T[] array, int index)
+        {
+            var length = array.Length;
+            if (index == -1 || index >= length)
                 return false;
             if (index != length - 1)
                 Array.Copy(array, index + 1, array, index, length - index - 1);
             Array.Resize(ref array, length - 1);
             return true;
-
         }
     }
 }

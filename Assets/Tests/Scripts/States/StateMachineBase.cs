@@ -164,7 +164,8 @@ namespace Tests.States
             }
             catch (Exception e)
             {
-                throw new StateExitException(currentState, e, "currentState");
+                //throw new StateExitException(currentState, e, "currentState");
+                throw;
             }
 
             try
@@ -174,7 +175,8 @@ namespace Tests.States
             catch (Exception e)
             {
 
-                throw new StateEntryException(nextState, e, "nextState");
+                //throw new StateEntryException(nextState, e, "nextState");
+                throw;
             }
             this.currentState = nextState;
         }
@@ -229,14 +231,14 @@ namespace Tests.States
             }
             else
             {
+                currentState.OnUpdate();
                 try
                 {
-                    currentState.OnUpdate();
                 }
                 catch (Exception e)
                 {
 
-                    throw new StateUpdateException(currentState, e);
+                    throw e;
                 }
             }
         }

@@ -10,6 +10,7 @@ using Tests.Weapons.Launcher;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
+using static UnityEngine.Rendering.DebugUI;
 using ArmAim = Tests.BodyBehaviour.Arm.Weapons.Launcher.ArmAim;
 using Fields = Tests.Characters.CharacterBlackboardFields;
 
@@ -17,7 +18,7 @@ namespace Tests.Behaviours.Arm.Weapons
 {
     public class ArmedLauncherArmBehaviour : ArmedWeaponArmBehaviourBase
     {
-        protected internal class AimingAnimator : IArmedWeaponArmAnimator
+        protected internal class AimingAnimator : IDynamicPlayablePart
         {
             AnimationClipPlayable _playable;
             AnimationClip _clip;
@@ -29,17 +30,18 @@ namespace Tests.Behaviours.Arm.Weapons
             }
 
             public IOutputSetting OutputSetting { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            public bool Enabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
             public Playable GetPlayablePart(PlayableGraph graph)
             {
-                if (_playable.Equals(default))
+                if (_playable.IsNull())
                 {
                     _playable = AnimationClipPlayable.Create(graph, _clip);
                 }
                 return _playable;
             }
         }
-        protected internal class ReloadAnimator : IArmedWeaponArmAnimator
+        protected internal class ReloadAnimator : IDynamicPlayablePart
         {
             AnimationClipPlayable _playable;
             AnimationClip _clip;
@@ -57,6 +59,7 @@ namespace Tests.Behaviours.Arm.Weapons
             }
 
             public IOutputSetting OutputSetting { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            public bool Enabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
             public ReloadAnimator(AnimationClip clip)
             {
@@ -65,7 +68,7 @@ namespace Tests.Behaviours.Arm.Weapons
 
             public Playable GetPlayablePart(PlayableGraph graph)
             {
-                if (_playable.Equals(default))
+                if (_playable.IsNull())
                 {
                     _playable = AnimationClipPlayable.Create(graph, _clip);
                     _playable.SetSpeed(_speed);
@@ -90,6 +93,8 @@ namespace Tests.Behaviours.Arm.Weapons
             float _aimingWeight;
             float _idleWeight;
             internal IOutputSetting outputSetting;
+            internal bool enabled;
+            internal byte state;
             public float IdleWeight
             {
                 get => _idleWeight;
@@ -113,8 +118,19 @@ namespace Tests.Behaviours.Arm.Weapons
                 }
             }
 
-            public IOutputSetting OutputSetting { set => outputSetting = value; }
+            public IOutputSetting OutputSetting
+            {
+                get => outputSetting;
+                set
+                {
+                    if (value != null)
+                        value.Weight = _idleWeight;
+                    outputSetting = value;
+                }
+            }
 
+            public bool Enabled { get => enabled; set => enabled = value; }
+            public byte State { get => state; }
             void UpdateWeight()
             {
                 if (!_playable.Equals(default))
@@ -130,15 +146,12 @@ namespace Tests.Behaviours.Arm.Weapons
             }
             public Playable GetPlayablePart(PlayableGraph graph)
             {
-                if (_playable.Equals(default))
-                {
-                    var ap = aiming.GetPlayablePart(graph);
-                    var rp = reload.GetPlayablePart(graph);
-                    _playable = AnimationMixerPlayable.Create(graph, 2);
-                    graph.Connect(ap, 0, _playable, 0);
-                    graph.Connect(rp, 0, _playable, 1);
-                    AimingWeight = _aimingWeight;
-                }
+                var ap = aiming.GetPlayablePart(graph);
+                var rp = reload.GetPlayablePart(graph);
+                _playable = AnimationMixerPlayable.Create(graph, 2);
+                graph.Connect(ap, 0, _playable, 0);
+                graph.Connect(rp, 0, _playable, 1);
+                AimingWeight = _aimingWeight;
                 return _playable;
             }
         }
@@ -147,7 +160,7 @@ namespace Tests.Behaviours.Arm.Weapons
         ArmIdle _idle;
         ArmAim _aim;
         AmmoLoad _ammoLoad;
-        BAnimator _banimator;
+        internal BAnimator banimator;
         [SerializeField]
         TargetsCatcher_Debug _targetsCatcher;
         ILauncherBehaviourDefinitions _definitions;
@@ -161,7 +174,7 @@ namespace Tests.Behaviours.Arm.Weapons
                 {
                     _launcher = launcher;
                     _ammoLoad.Launcher = launcher;
-                    _banimator.reload.ReloadTimeline = launcher.ReloadTimeline;
+                    banimator.reload.ReloadTimeline = launcher.ReloadTimeline;
                 }
                 else
                     throw new Exception("Weapon");
@@ -169,10 +182,10 @@ namespace Tests.Behaviours.Arm.Weapons
         }
         public IOutputSetting OutputSetting
         {
-            get => _banimator.outputSetting;
-            set => _banimator.outputSetting = value;
+            get => banimator.outputSetting;
+            set => banimator.outputSetting = value;
         }
-        public override IArmedWeaponArmAnimator Animator { get => _banimator; }
+        public override IArmedWeaponArmAnimator Animator { get => banimator; }
         public override Blackboard Blackboard
         {
             get => base.Blackboard;
@@ -193,30 +206,19 @@ namespace Tests.Behaviours.Arm.Weapons
                 base.Blackboard = value;
             }
         }
+
+
         protected override void Awake()
         {
             base.Awake();
             _definitions = GetComponent<ILauncherBehaviourDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILauncherBehaviourDefinitions));
-            _banimator = new(_definitions);
-            _idle = new ArmIdle(_banimator);
-            InitializeArmAim();
-            InitializeAmmoReload();
-            InitializeStateMachine();
 
-            _aim.weightChangedAction += v =>
-            {
-                _banimator.AimingWeight = v;
-            };
-            _targetsCatcher.OnAwake();
-            _targetsCatcher.TargetsChangedAction += targets =>
-            {
-                var target = targets.Count > 0 ? targets[0] : null;
-                _aim.Target = target;
-            };
+
         }
         private void Start()
         {
-            _banimator.AimingWeight = 1;
+            if (banimator != null)
+                banimator.AimingWeight = 1;
         }
         void InitializeArmAim()
         {
@@ -225,7 +227,7 @@ namespace Tests.Behaviours.Arm.Weapons
         }
         void InitializeAmmoReload()
         {
-            _ammoLoad = new(this._banimator.reload);
+            _ammoLoad = new(this.banimator.reload);
             _ammoLoad.ExitWhenEnd = true;
         }
         void InitializeStateMachine()
@@ -239,12 +241,12 @@ namespace Tests.Behaviours.Arm.Weapons
             {
 
                 (d as ArmAim).Weight = t;
-                _banimator.IdleWeight = 1 - t;
+                banimator.IdleWeight = 1 - t;
             });
             _stateMachine.AddTransitionFor(_aim, _idle, _definitions.IdleAndAimTransitionLength, () => _aim.Target == null, (s, d, t) =>
             {
                 (s as ArmAim).Weight = 1 - t;
-                _banimator.IdleWeight = t;
+                banimator.IdleWeight = t;
             });
             _stateMachine.AddTransitionFor(_aim, _ammoLoad, _definitions.AimAndReloadTransitionLength, () => _input.Reload, (s, d, t) =>
             {
@@ -273,9 +275,46 @@ namespace Tests.Behaviours.Arm.Weapons
         }
         private void Update()
         {
+            this.OnUpdate();
             _targetsCatcher.OnUpdate();
-            _stateMachine.OnUpdate();
-            Debug.Log(_stateMachine);
+            Debug.Log("launcher statemachine : " + _stateMachine);
+        }
+        public override void Initialize(Blackboard blackboard)
+        {
+            base.Initialize(blackboard);
+
+            if (blackboard.Contains(Fields.TargetsCatcher))
+                blackboard.TryWriteValue(Fields.TargetsCatcher, _targetsCatcher);
+            else
+                blackboard.TryRegisterField(Fields.TargetsCatcher, _targetsCatcher);
+
+            if (blackboard.TryReadValue<IInput>(Fields.Input, out var input))
+            {
+                _input = input;
+            }
+
+
+            banimator = new(_definitions);
+            _idle = new ArmIdle(this);
+
+            InitializeArmAim();
+            InitializeAmmoReload();
+            InitializeStateMachine();
+
+            _aim.weightChangedAction += v =>
+            {
+                banimator.AimingWeight = v;
+            };
+            _targetsCatcher.OnAwake();
+            _targetsCatcher.TargetsChangedAction += targets =>
+            {
+                var target = targets.Count > 0 ? targets[0] : null;
+                _aim.Target = target;
+            };
+        }
+        public override void Dispose()
+        {
+            blackboard.TryUnregisterField(Fields.TargetsCatcher);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Tests.Utilities.MTrees
     {
         protected T value;
         public T Value { get => value; set => this.value = value; }
+        public T ParentValue { get => Parent is IMTContainerNode<T> parentNode ? parentNode.Value : default; }
         protected MTContainerNode()
         {
         }
@@ -34,10 +35,12 @@ namespace Tests.Utilities.MTrees
         public MTNode()
         {
             id = Guid.NewGuid();
+            children = new List<IMTNode>();
         }
         public MTNode(Guid id)
         {
             this.id = id;
+            children = new List<IMTNode>();
         }
 
         public virtual void AddChild(IMTNode node)

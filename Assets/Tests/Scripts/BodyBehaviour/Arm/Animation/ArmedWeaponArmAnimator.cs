@@ -1,45 +1,257 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tests.Behaviours.Arm;
+using Tests.Behaviours.Arm.Weapons;
+using Tests.Character;
+using Tests.Extensions;
 using Tests.Weapons;
-using UnityEngine.Analytics;
+using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.Playables;
+using static Tests.BodyBehaviour.Arm.Animations.ArmedWeaponArmAnimator;
+using static UnityEngine.Rendering.DebugUI;
+using IPlayablePart = Tests.Character.IPlayablePart;
 
-namespace Assets.Tests.Scripts.BodyBehaviour.Arm.Animation
+namespace Tests.BodyBehaviour.Arm.Animations
 {
-    internal class ArmedWeaponArmAnimator
+    internal class ArmedWeaponArmAnimator_New
     {
-        ArmedWeaponArmBehaviours _behaviours;
-        internal Playable playablePart;
-        PlayableGraph _graph;
-        float _weight;
-        public float Weight
-        {
-            get => _weight;
-            set => _weight = value;
-        }
-        public ArmedWeaponArmAnimator(ArmedWeaponArmBehaviours behaviours, PlayableGraph graph)
-        {
-            _behaviours = behaviours ?? throw new ArgumentNullException(nameof(behaviours));
-            _behaviours.ActivatedAction += this.ActivatedAnimator;
-            _behaviours.UnactivatedAction += this.UnactivatedAnimator;
-            _graph = graph;
-        }
+        Dictionary<string, IArmedWeaponArmAnimator> _animators;
+        AnimatorWrapper[] _activatedAnimators;
+        ArmedWeaponArmBehavioursController _controller;
+        internal ArmedWeaponPlayablePart playablePart;
+        Action<bool, IPlayablePart> _stateAction;
 
+        internal Action<bool, IPlayablePart> stateAction { get => _stateAction; set => _stateAction = value; }
+
+        internal class ArmedWeaponPlayablePart : PlayablePartBase
+        {
+            IArmedWeaponArmAnimator _animator;
+
+            internal IArmedWeaponArmAnimator animator
+            {
+                get => _animator;
+                set
+                {
+
+                    _animator = value;
+                }
+            }
+            public override IOutputSetting OutputSetting { get => _animator.OutputSetting; set => _animator.OutputSetting = value; }
+            public ArmedWeaponPlayablePart()
+            {
+            }
+            public override bool Initialize(PlayableGraph graph)
+            {
+                playablePart = _animator.GetPlayablePart(graph);
+                return true;
+            }
+        }
+        public ArmedWeaponArmAnimator_New(ArmedWeaponArmBehavioursController controller)
+        {
+            _animators = new();
+            _controller = controller ?? throw new ArgumentNullException(nameof(controller));
+            foreach (var kv in _controller.weaponBehavioursMapping)
+            {
+                var name = kv.Key;
+                var animator = kv.Value.Animator;
+                _animators.Add(name, animator);
+            }
+            _controller.ActivatedAction += ActivatedAnimator;
+            _controller.UnactivatedAction += UnactivatedAnimator;
+            playablePart = new();
+        }
         void ActivatedAnimator(IWeapon weapon, IArmedWeaponArmBehaviour behaviour)
         {
-            var animator = behaviour.Animator;
-            this.playablePart = animator.GetPlayablePart(_graph);
+            var name = weapon.Name;
+            if (_animators.TryGetValue(name, out var animator))
+            {
+                if (_activatedAnimators == null)
+                    _activatedAnimators = new AnimatorWrapper[] { new() { Animator = animator, OldState = animator.State } };
+                else
+                    _activatedAnimators.Append(new() { Animator = animator, OldState = animator.State });
+                playablePart.animator = animator;
+            }
         }
         void UnactivatedAnimator(IWeapon weapon, IArmedWeaponArmBehaviour behaviour)
         {
-            var p = behaviour.Animator.GetPlayablePart(_graph);
-            if (p.Equals(this.playablePart))
-                this.playablePart = default;
-            return;
+            if (_activatedAnimators == null)
+                return;
+            var name = weapon.Name;
+            if (_animators.TryGetValue(name, out var animator))
+            {
+                animator.OutputSetting = null;
+                if (_activatedAnimators.Length == 1)
+                    _activatedAnimators = null;
+                else
+                {
+                    for (var i = 0; i < _activatedAnimators.Length; i++)
+                    {
+                        var w = _activatedAnimators[i];
+                        if (w.Animator == animator)
+                        {
+                            _activatedAnimators.Remove(i);
+                            break;
+                        }
+                    }
+                }
+                playablePart.animator = null;
+            }
+        }
+        public void OnUpdate()
+        {
+            if (_activatedAnimators == null)
+                return;
+            //for (int i = 0; i < _activatedAnimators.Length; i++)
+            //{
+            //    var a = _activatedAnimators[i];
+            //    var oldState = a.OldState;
+            //    var currentState = a.Animator.State;
+            //    _activatedAnimators[i].OldState = currentState;
+            //    if (oldState != currentState)
+            //    {
+            //        playablePart.animator = a.Animator;
+            //        _stateAction?.Invoke(currentState > 0, playablePart);
+            //        break;
+            //    }
+            //}
+        }
+    }
+    internal class ArmedWeaponArmAnimator : IDynamicPlayablePart
+    {
+        internal struct AnimatorWrapper
+        {
+            public IArmedWeaponArmAnimator Animator;
+            public byte OldState;
+        }
+        Dictionary<string, IArmedWeaponArmAnimator> _animators;
+        AnimatorWrapper[] _activatedAnimators;
+        ArmedWeaponArmBehavioursController _controller;
+        //AnimationMixerPlayable playablePart;
+        PlayableGraph _graph;
+        Action<Playable> _playablePartUpdateAction;
+
+        IOutputSetting _outputSetting;
+        //public Playable PlayablePart
+        //{
+        //    get => playablePart;
+        //}
+        public bool Enabled
+        {
+            get => _controller.Enabled;
+            set => _controller.Enabled = value;
+        }
+        public IOutputSetting OutputSetting
+        {
+            get => _outputSetting;
+            set => _outputSetting = value;
+        }
+        public Action<Playable> UpdateAction { get => _playablePartUpdateAction; set => _playablePartUpdateAction = value; }
+
+        public ArmedWeaponArmAnimator(ArmedWeaponArmBehavioursController controller)
+        {
+            _animators = new();
+            _controller = controller ?? throw new ArgumentNullException(nameof(controller));
+            foreach (var kv in _controller.weaponBehavioursMapping)
+            {
+                var name = kv.Key;
+                var animator = kv.Value.Animator;
+                _animators.Add(name, animator);
+            }
+            _controller.ActivatedAction += ActivatedAnimator;
+            _controller.UnactivatedAction += UnactivatedAnimator;
+
+        }
+        void InitializePlayablePart(PlayableGraph graph)
+        {
+            //if (playablePart.IsNull())
+            //{
+            //    var count = _controller.behaviours.Length;
+
+            //    playablePart = AnimationMixerPlayable.Create(graph, count);
+            //    var idx = 0;
+            //    foreach (var b in _controller.behaviours)
+            //    {
+            //        var animator = b.Animator;
+            //        var p = animator.GetPlayablePart(graph);
+            //        var outputSetting = new OutputSetting(playablePart, idx);
+            //        animator.OutputSetting = outputSetting;
+
+            //        graph.Connect(p, 0, playablePart, idx);
+            //        playablePart.SetInputWeight(idx++, 0);
+            //    }
+            //}
+            _graph = graph;
+        }
+        void ActivatedAnimator(IWeapon weapon, IArmedWeaponArmBehaviour behaviour)
+        {
+            var name = weapon.Name;
+            if (_animators.TryGetValue(name, out var animator))
+            {
+                if (_activatedAnimators == null)
+                    _activatedAnimators = new AnimatorWrapper[] { new() { Animator = animator, OldState = animator.State } };
+                else
+                    _activatedAnimators.Append(new() { Animator = animator, OldState = animator.State });
+            }
+        }
+        void UnactivatedAnimator(IWeapon weapon, IArmedWeaponArmBehaviour behaviour)
+        {
+            if (_activatedAnimators == null)
+                return;
+            var name = weapon.Name;
+            if (_animators.TryGetValue(name, out var animator))
+            {
+                animator.OutputSetting = null;
+                if (_activatedAnimators.Length == 1)
+                    _activatedAnimators = null;
+                else
+                {
+                    for (var i = 0; i < _activatedAnimators.Length; i++)
+                    {
+                        var w = _activatedAnimators[i];
+                        if (w.Animator == animator)
+                        {
+                            _activatedAnimators.Remove(i);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        public Playable GetPlayablePart(PlayableGraph graph)
+        {
+            //if (playablePart.IsNull())
+            //    InitializePlayablePart(graph);
+            //return playablePart;
+            _graph = graph;
+            return Playable.Null;
+        }
+        Playable CreatePlayablePart(PlayableGraph graph)
+        {
+            var w = _activatedAnimators[0];
+            w.Animator.OutputSetting = _outputSetting;
+            return w.Animator.GetPlayablePart(graph);
+        }
+        public void OnUpdate()
+        {
+            if (_activatedAnimators == null)
+                return;
+            foreach (var a in _activatedAnimators)
+            {
+                var oldState = a.OldState;
+                var currentState = a.Animator.State;
+                if (oldState != currentState)
+                {
+                    var p = Playable.Null;
+                    if (currentState > 0)
+                    {
+                        p = CreatePlayablePart(_graph);
+                    }
+                    _playablePartUpdateAction?.Invoke(p);
+                    break;
+                }
+            }
         }
     }
 }

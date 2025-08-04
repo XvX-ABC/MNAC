@@ -3,7 +3,7 @@
 
     public interface IArmWeaponDefinitions
     {
-        public ArmWeaponDescription[] Origins { get; }
+        public WeaponDescription[] Origins { get; }
         public string MountPointName { get; }
         public float SwitchingDurationTime { get; }
         public float SwitchingMountedProportion { get; }

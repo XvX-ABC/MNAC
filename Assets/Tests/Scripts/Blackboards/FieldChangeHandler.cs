@@ -12,7 +12,6 @@ namespace Tests.Blackboards
         protected Dictionary<K, Action<FieldEventType, object, object>> _actions;
         public bool Enabled { get => _enabled; set => _enabled = value; }
 
-        public IReadOnlyDictionary<K, object> Values { set => _values = value; }
         public FieldChangeHandler(K key)
         {
             _key = key;
@@ -26,7 +25,14 @@ namespace Tests.Blackboards
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
-            _actions[key] += action;
+            if (_actions.TryGetValue(key, out var a))
+            {
+                a += action;
+            }
+            else
+            {
+                _actions[key] = action;
+            }
         }
         public void RegisterAction<T>(K key, Action<FieldEventType, T, T> action)
         {
@@ -57,6 +63,7 @@ namespace Tests.Blackboards
         public void Initialize(Blackboard<K, A> blackboard)
         {
             blackboard.TryRegisterField(_key, this);
+            _values = blackboard.values;
         }
         (bool, object) IMiddleware<K, A>.ValueReadingHandle(ValueInfo<K, A> valueInfo)
         {
@@ -71,8 +78,9 @@ namespace Tests.Blackboards
         (bool, object) IMiddleware<K, A>.ValueRegisterHandle(ValueInfo<K, A> valueInfo)
         {
             var key = valueInfo.Key;
-            if (_values.TryGetValue(key, out var oldValue) && _actions.TryGetValue(key, out var action))
+            if (_actions.TryGetValue(key, out var action))
             {
+                _values.TryGetValue(key, out var oldValue);
                 action?.Invoke(FieldEventType.Register, oldValue, valueInfo.Value);
             }
             return (true, valueInfo.Value);
@@ -81,9 +89,9 @@ namespace Tests.Blackboards
         (bool, object) IMiddleware<K, A>.ValueUnregisterHandle(ValueInfo<K, A> valueInfo)
         {
             var key = valueInfo.Key;
-            if (_actions.TryGetValue(key, out var action))
+            if (_actions.TryGetValue(key, out var value) && _actions.TryGetValue(key, out var action))
             {
-                action?.Invoke(FieldEventType.Unregister, valueInfo.Value, default);
+                action?.Invoke(FieldEventType.Unregister, value, default);
             }
             return (true, valueInfo.Value);
         }

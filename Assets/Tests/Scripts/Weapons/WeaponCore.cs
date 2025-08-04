@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tests.Assets;
+using Tests.Behaviours.Arm;
 using Tests.Weapons;
 using Tests.Weapons.Launcher;
 using Unity.VisualScripting;
@@ -12,9 +13,9 @@ using UnityEngine.Animations.Rigging;
 
 namespace Assets.Tests.Scripts.Weapons
 {
-    public class WeaponOriginNotContainsException : Exception
+    public class WeaponNotContainsException : Exception
     {
-        public WeaponOriginNotContainsException(WeaponCore core, string name) : base($"There is not exists a weapon origin which's name is '{name}' in the weapon core '{core.name}'")
+        public WeaponNotContainsException(WeaponCore core, string name) : base($"There is not exists a weapon origin which's name is '{name}' in the weapon core '{core.name}'")
         {
 
         }
@@ -65,9 +66,9 @@ namespace Assets.Tests.Scripts.Weapons
             }
             return result;
         }
-        public bool TryGetWeaponOrigin(string name, out GameObject origin)
+        public bool TryGetWeaponOriginObj(string name, out GameObject obj)
         {
-            origin = default;
+            obj = default;
             if (name == null || name.Length == 0)
                 return false;
             foreach (var a in _originAssets)
@@ -76,9 +77,21 @@ namespace Assets.Tests.Scripts.Weapons
                 if (d.Name == name)
                 {
                     a.Load();
-                    origin = a.Asset;
+                    obj = a.Asset;
                     return true;
                 }
+            }
+            return false;
+        }
+        public bool TryGetWeaponDescription(string name, out WeaponDescription description)
+        {
+            description = default;
+            if (name == null || name.Length == 0)
+                return false;
+            if (TryGetWeaponOriginObj(name, out var obj) && obj.TryGetComponent<IWeapon>(out var w))
+            {
+                description = new WeaponDescription { Name = w.Name, Type = w.Type };
+                return true;
             }
             return false;
         }

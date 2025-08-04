@@ -6,9 +6,9 @@ using Unity.VisualScripting;
 
 namespace Tests.Utilities.MTrees
 {
-    internal class MTree : IEnumerable<IMTNode>
+    public class MTree : IEnumerable<IMTNode>
     {
-        class Enumerator : IEnumerator<IMTNode>
+        protected class Enumerator : IEnumerator<IMTNode>
         {
             IMTNode _root;
             IMTNode _current;
@@ -55,21 +55,22 @@ namespace Tests.Utilities.MTrees
                 _current = _root;
             }
         }
-        IMTNode _root;
-        Enumerator _enumerator;
-        public IMTNode Root { get => _root; }
+        protected IMTNode root;
+     protected   Enumerator enumerator;
+        public IMTNode Root { get => root; }
         public MTree(IMTNode root)
         {
-            _root = root ?? throw new ArgumentNullException(nameof(root));
-            _enumerator = new(_root);
+            this.root = root ?? throw new ArgumentNullException(nameof(root));
+            enumerator = new(this.root);
         }
+        protected MTree() { }
         IMTNode FindNode(Guid id)
         {
             return this.FirstOrDefault(node => node.ID == id);
         }
         IEnumerator FindNodeWithCoroutine(Guid id, Action<IMTNode> successfulAction)
         {
-            var enumerator = _enumerator;
+            var enumerator = this.enumerator;
             do
             {
                 var cnode = enumerator.Current;
@@ -79,12 +80,12 @@ namespace Tests.Utilities.MTrees
                     yield break;
                 }
                 yield return null;
-            } while (_enumerator.MoveNext());
+            } while (this.enumerator.MoveNext());
 
         }
         public IEnumerator<IMTNode> GetEnumerator()
         {
-            return _enumerator;
+            return enumerator;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

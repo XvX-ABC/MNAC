@@ -8,11 +8,9 @@ using UnityEngine.Playables;
 namespace Tests.Behaviours.Arm
 {
 
-    public interface IArmedWeaponArmAnimator
+    public interface IArmedWeaponArmAnimator : IDynamicPlayablePart
     {
-        //public Playable PlayablePart { get; }
-        public Playable GetPlayablePart(PlayableGraph graph);
-        public IOutputSetting OutputSetting { set; }
+        public byte State { get; }
     }
     internal interface IArmedWeaponArmBehaviour : IArmBehaviour
     {

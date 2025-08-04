@@ -1,4 +1,5 @@
 ﻿using Assets.Tests.Scripts.BodyBehaviour.Arm.Animations;
+using UnityEngine;
 
 namespace Tests.BodyBehaviour.Arm.Animations
 {

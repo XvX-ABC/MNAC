@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -31,37 +32,45 @@ namespace Tests.Blackboards
         Reading,
         Writing,
     }
-    public class Blackboard<K, A>
+    public class Blackboard<K, A> : ICloneable
     {
-        protected Dictionary<K, object> values;
-        protected IMiddleware<K, A>[] middlewares;
-
-        delegate (bool, object) MiddlewareFunc(IMiddleware<K, A> m, ValueInfo<K, A> valueInfo);
-        protected Blackboard(params IMiddleware<K, A>[] middlewares) : this()
+        protected internal Dictionary<K, object> values;
+        IMiddleware<K, A>[] _middlewares;
+        protected IMiddleware<K, A>[] middlewares
         {
+            get => _middlewares;
+            set
+            {
+                _middlewares = value;
+                InitializeMiddlewares();
+            }
+        }
+        delegate (bool, object) MiddlewareFunc(IMiddleware<K, A> m, ValueInfo<K, A> valueInfo);
+        protected Blackboard(params IMiddleware<K, A>[] middlewares)
+        {
+            values = new Dictionary<K, object>();
             this.middlewares = middlewares;
         }
         public Blackboard()
         {
             values = new Dictionary<K, object>();
-            InitializeMiddlewares();
         }
         void InitializeMiddlewares()
         {
-            if (middlewares == null)
+            if (_middlewares == null)
                 return;
-            foreach (var m in middlewares)
+            foreach (var m in _middlewares)
             {
                 m.Enabled = false;
                 m.Initialize(this);
             }
 
-            foreach (var m in middlewares)
+            foreach (var m in _middlewares)
                 m.Enabled = true;
         }
         (bool, object) MiddlewareExecute(ValueInfo<K, A> info, FieldEventType etype)
         {
-            if (middlewares == null || middlewares.Length == 0)
+            if (_middlewares == null || _middlewares.Length == 0)
                 return (true, info.Value);
             MiddlewareFunc func = null;
             switch (etype)
@@ -79,7 +88,7 @@ namespace Tests.Blackboards
                     func = Write;
                     break;
             }
-            foreach (var m in middlewares)
+            foreach (var m in _middlewares)
             {
                 if (!m.Enabled)
                     continue;
@@ -159,5 +168,12 @@ namespace Tests.Blackboards
             return true;
         }
 
+        public object Clone()
+        {
+            var obj = new Blackboard<K, A>();
+            obj._middlewares = (IMiddleware<K, A>[])this._middlewares.Clone();
+            obj.values = new Dictionary<K, object>(values);
+            return obj;
+        }
     }
 }

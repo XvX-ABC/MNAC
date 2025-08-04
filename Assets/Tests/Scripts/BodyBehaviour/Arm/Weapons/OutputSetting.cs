@@ -1,4 +1,5 @@
-﻿using UnityEngine.Playables;
+﻿using UnityEngine;
+using UnityEngine.Playables;
 
 namespace Tests.Behaviours.Arm.Weapons
 {
@@ -9,7 +10,7 @@ namespace Tests.Behaviours.Arm.Weapons
         public float Weight
         {
             get => _parentNode.GetInputWeight(_portNum);
-            set => _parentNode.SetInputWeight(_portNum, value);
+            set => _parentNode.SetInputWeight(_portNum, Mathf.Clamp01(value));
         }
         public OutputSetting(Playable parent, int portNum)
         {

@@ -10,7 +10,7 @@ namespace Tests.Behaviours.Arm
     {
         protected ArmBehaviourPlayableState(string name, float duration = 0, bool enabled = true) : base($"arm_{name}", duration, enabled)
         {
-            node = new(id, this);
+            node = new(this);
         }
         Action _entryAction;
         Action _updateAction;
@@ -26,7 +26,6 @@ namespace Tests.Behaviours.Arm
             set
             {
                 blackboard = value;
-                node.UpdateBlackboardForChildren();
             }
         }
 
@@ -43,6 +42,15 @@ namespace Tests.Behaviours.Arm
         public override void OnUpdate()
         {
             _updateAction?.Invoke();
+        }
+
+        public virtual void Initialize(Blackboard blackboard)
+        {
+            this.blackboard = blackboard;
+        }
+        public virtual void Dispose()
+        {
+            this.blackboard = null;
         }
     }
 }

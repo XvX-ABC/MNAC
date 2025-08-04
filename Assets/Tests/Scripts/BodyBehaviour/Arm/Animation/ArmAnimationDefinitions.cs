@@ -7,8 +7,8 @@ namespace Assets.Tests.Scripts.BodyBehaviour.Arm.Animations
     public class ArmAnimationDefinitions : MonoBehaviour, IArmAnimationDefinitions
     {
         [SerializeField]
-        JsonAssetAgent_Managed<ArmWeaponAnimationDefinitions> _weapon;
+        ArmWeaponAnimationDefinitions _weapon;
 
-        public IArmWeaponAnimationDefinitions Weapon => _weapon.Asset;
+        public IArmWeaponAnimationDefinitions Weapon => _weapon;
     }
 }

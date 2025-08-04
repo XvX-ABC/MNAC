@@ -10,27 +10,14 @@ namespace Tests.Characters
         {
             get => (FieldChangeHandler<object, object>)this.middlewares[0];
         }
-        public Blackboard() : base(new FieldChangeHandler<object, object>(CharacterBlackboardFields.FieldChangeHandler))
+        public Blackboard() : base(new FieldChangeHandler(CharacterBlackboardFields.FieldChangeHandler))
         {
         }
 
         protected Blackboard(params IMiddleware<object, object>[] middlewares) : base(middlewares)
         {
-            this.middlewares.Append(new FieldChangeHandler<object, object>(CharacterBlackboardFields.FieldChangeHandler));
+            this.middlewares.Append(new FieldChangeHandler(CharacterBlackboardFields.FieldChangeHandler));
         }
-        public void TrackValue<T>(object key, Action<T, T> action)
-        {
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-            var handler = this.handler;
-            handler.RegisterAction(key, (et, ov, nv) =>
-            {
-                if (ov != nv && ov is T v)
-                    action(v, (T)nv);
-            });
-        }
-      
+
     }
 }

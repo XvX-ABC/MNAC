@@ -9,6 +9,7 @@ namespace Tests.Characters
             FieldChangeHandler = Guid.NewGuid();
             TargetsCatcher = Guid.NewGuid();
             Input = Guid.NewGuid();
+            WeaponCore = Guid.NewGuid();
         }
         public static readonly Guid FieldChangeHandler;
         public static readonly Guid TargetsCatcher;

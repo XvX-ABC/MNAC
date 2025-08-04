@@ -7,7 +7,7 @@ namespace Tests.Behaviours.Arm
     public class ArmWeaponDefinitions : IArmWeaponDefinitions
     {
         [SerializeField]
-        ArmWeaponDescription[] _origins;
+        WeaponDescription[] _origins;
         [SerializeField]
         string _mountPointName;
         [SerializeField]
@@ -16,7 +16,7 @@ namespace Tests.Behaviours.Arm
         float _switchingMountedProportion;
         [SerializeField]
         float _switchingToBehavioursDurationTime;
-        public ArmWeaponDescription[] Origins { get => _origins; }
+        public WeaponDescription[] Origins { get => _origins; }
         public string MountPointName { get => _mountPointName; }
         public float SwitchingDurationTime { get => _switchingDurationTime; }
         public float SwitchingMountedProportion { get => _switchingMountedProportion; }

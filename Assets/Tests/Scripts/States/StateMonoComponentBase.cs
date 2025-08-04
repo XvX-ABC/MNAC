@@ -1,13 +1,14 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace Tests.States
 {
-    public abstract class StateUComponentBase : StateUComponentBase<object>
+    public abstract class StateMonoComponentBase : StateMonoComponentBase<object>
     {
 
     }
-    public abstract class StateUComponentBase<T> : MonoBehaviour, IState<T>
+    public abstract class StateMonoComponentBase<T> : MonoBehaviour, IState<T>
     {
         class State : StateBase<T>
         {

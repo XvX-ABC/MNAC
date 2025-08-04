@@ -1,9 +1,10 @@
 ﻿using System;
 using Tests.Utilities.MTrees;
+using UnityEngine;
 
 namespace Tests.Characters
 {
-    public abstract class CharacterMonoComponentBase : ICharacterComponent
+    public abstract class CharacterMonoComponentBase : MonoBehaviour, ICharacterComponent
     {
         Guid _id;
         protected Blackboard blackboard;
@@ -15,26 +16,24 @@ namespace Tests.Characters
             get => blackboard;
             set
             {
-                if (blackboard != null)
-                    UnregisterInBlackboard(blackboard);
-                if (value != null)
-                    RegisterToBlackboard(value);
                 blackboard = value;
             }
         }
-        protected virtual void RegisterToBlackboard(Blackboard blackboard)
-        {
-            blackboard.TryRegisterField(this.Name, this);
-        }
-        protected virtual void UnregisterInBlackboard(Blackboard blackboard)
-        {
-            blackboard.TryUnregisterField(this.Name);
-        }
-        public abstract string Name { get; }
+        public string Name { get => this.name; }
+        public bool Enabled { get => enabled; set => enabled = value; }
         protected virtual void Awake()
         {
             _id = Guid.NewGuid();
-            node = new(_id, this);
+            node = new(this);
+        }
+
+        public virtual void Initialize(Blackboard blackboard)
+        {
+            this.blackboard = blackboard;
+        }
+        public virtual void Dispose()
+        {
+            this.blackboard = null;
         }
     }
 

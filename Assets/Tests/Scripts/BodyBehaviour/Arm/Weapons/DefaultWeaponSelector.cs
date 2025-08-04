@@ -5,7 +5,7 @@ namespace Tests.Behaviours.Arm
     internal class DefaultWeaponSelector
     {
         ushort _index;
-        public string Select(ArmWeaponDescription[] originDefinitions)
+        public string Select(WeaponDescription[] originDefinitions)
         {
             if (originDefinitions == null)
                 throw new ArgumentNullException(nameof(originDefinitions));

@@ -7,6 +7,7 @@ namespace Tests.Characters
     {
         protected Blackboard blackboard;
         internal ComponentNode node;
+        protected bool enabled;
         Guid _id;
         public Guid ID { get => _id; }
         public virtual Blackboard Blackboard
@@ -14,27 +15,26 @@ namespace Tests.Characters
             get => blackboard;
             set
             {
-                if (blackboard != null)
-                    UnregisterInBlackboard(blackboard);
-                if (value != null)
-                    RegisterToBlackboard(value);
                 blackboard = value;
             }
         }
         public ICharacterComponentNode Node { get => node; }
-        protected virtual void RegisterToBlackboard(Blackboard blackboard)
-        {
-            blackboard.TryRegisterField(this.Name, this);
-        }
-        protected virtual void UnregisterInBlackboard(Blackboard blackboard)
-        {
-            blackboard.TryUnregisterField(this.Name);
-        }
         public abstract string Name { get; }
+        public bool Enabled { get => enabled; set => enabled = value; }
+
         protected CharacterComponentBase()
         {
             _id = Guid.NewGuid();
-            node = new(_id, this);
+            node = new(this);
+        }
+
+        public virtual void Initialize(Blackboard blackboard)
+        {
+            this.blackboard = blackboard;
+        }
+        public virtual void Dispose()
+        {
+            this.blackboard = null;
         }
     }
 
