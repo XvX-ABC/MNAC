@@ -1,11 +1,11 @@
 ﻿using System;
-using Tests.Behaviours.Arm.Weapons;
+using Tests.BodyBehaviour.Arm.Weapons.Launcher;
 using Tests.States;
 using TMPro;
 using UnityEngine.Assertions.Must;
 using static Tests.Behaviours.Arm.Weapons.ArmedLauncherArmBehaviour;
 
-namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
+namespace Tests.Behaviours.Arm.Weapons
 {
     internal class ArmIdle : ArmedArmStateBase
     {
@@ -19,16 +19,13 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
         public override void OnEnter()
         {
             _animator.IdleWeight = 1;
-            _animator.state = 0;
-            //_animator.enabled = false;
             //_behaviour.enabled = false;
+            _animator.enabled = false;
         }
         public override void OnExit()
         {
-            _animator.state = 1;
-            //_behaviour.enabled = true;
         }
-        public override void OnTransitionWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
         {
             var time = currentTransition.Timeline.NormalizedTime;
             if (time >= 1)

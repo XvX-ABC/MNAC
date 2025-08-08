@@ -26,7 +26,11 @@ namespace Tests.States
         public ITimeline Timeline { get; }
         public bool ExitWhenEnd { get; set; }
         public new IPlayableTransition<T>[] Transitions { get; }
-        public void OnTransitionWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition);
-        public void OnTransitionWhichToNextState(IReadonlyPlayableTransition<T> currentTransition);
+        public void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition);
+        public void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition);
+        public void TransitionEndWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition);
+        public void TransitionBeginWhichToNextState(IReadonlyPlayableTransition<T> currentTransition);
+        public void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<T> currentTransition);
+        public void TransitionEndWhichToNextState(IReadonlyPlayableTransition<T> currentTransition);
     }
 }

@@ -42,12 +42,32 @@ namespace Tests.States
 
         }
 
-        public void OnTransitionWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)
+        public virtual void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)
         {
         }
 
-        public void OnTransitionWhichToNextState(IReadonlyPlayableTransition<T> currentTransition)
+        public virtual void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<T> currentTransition)
         {
+        }
+
+        public virtual void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)
+        {
+           
+        }
+
+        public virtual void TransitionEndWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)
+        {
+           
+        }
+
+        public virtual void TransitionBeginWhichToNextState(IReadonlyPlayableTransition<T> currentTransition)
+        {
+           
+        }
+
+        public virtual void TransitionEndWhichToNextState(IReadonlyPlayableTransition<T> currentTransition)
+        {
+           
         }
     }
 

@@ -18,13 +18,12 @@ namespace Tests.BodyBehaviour.Arm.Animations
     internal class ArmedWeaponArmAnimator_New
     {
         Dictionary<string, IArmedWeaponArmAnimator> _animators;
-        AnimatorWrapper[] _activatedAnimators;
+        IArmedWeaponArmAnimator[] _activatedAnimators;
         ArmedWeaponArmBehavioursController _controller;
         internal ArmedWeaponPlayablePart playablePart;
         Action<bool, IPlayablePart> _stateAction;
 
         internal Action<bool, IPlayablePart> stateAction { get => _stateAction; set => _stateAction = value; }
-
         internal class ArmedWeaponPlayablePart : PlayablePartBase
         {
             IArmedWeaponArmAnimator _animator;
@@ -38,6 +37,7 @@ namespace Tests.BodyBehaviour.Arm.Animations
                     _animator = value;
                 }
             }
+            public override bool Enabled => _animator.Enabled;
             public override IOutputSetting OutputSetting { get => _animator.OutputSetting; set => _animator.OutputSetting = value; }
             public ArmedWeaponPlayablePart()
             {
@@ -46,6 +46,9 @@ namespace Tests.BodyBehaviour.Arm.Animations
             {
                 playablePart = _animator.GetPlayablePart(graph);
                 return true;
+            }
+            public override void Dispose()
+            {
             }
         }
         public ArmedWeaponArmAnimator_New(ArmedWeaponArmBehavioursController controller)
@@ -68,9 +71,9 @@ namespace Tests.BodyBehaviour.Arm.Animations
             if (_animators.TryGetValue(name, out var animator))
             {
                 if (_activatedAnimators == null)
-                    _activatedAnimators = new AnimatorWrapper[] { new() { Animator = animator, OldState = animator.State } };
+                    _activatedAnimators = new IArmedWeaponArmAnimator[] { animator };
                 else
-                    _activatedAnimators.Append(new() { Animator = animator, OldState = animator.State });
+                    _activatedAnimators.Append(animator);
                 playablePart.animator = animator;
             }
         }
@@ -85,17 +88,7 @@ namespace Tests.BodyBehaviour.Arm.Animations
                 if (_activatedAnimators.Length == 1)
                     _activatedAnimators = null;
                 else
-                {
-                    for (var i = 0; i < _activatedAnimators.Length; i++)
-                    {
-                        var w = _activatedAnimators[i];
-                        if (w.Animator == animator)
-                        {
-                            _activatedAnimators.Remove(i);
-                            break;
-                        }
-                    }
-                }
+                    _activatedAnimators.Remove(animator);
                 playablePart.animator = null;
             }
         }
@@ -120,13 +113,8 @@ namespace Tests.BodyBehaviour.Arm.Animations
     }
     internal class ArmedWeaponArmAnimator : IDynamicPlayablePart
     {
-        internal struct AnimatorWrapper
-        {
-            public IArmedWeaponArmAnimator Animator;
-            public byte OldState;
-        }
         Dictionary<string, IArmedWeaponArmAnimator> _animators;
-        AnimatorWrapper[] _activatedAnimators;
+        IArmedWeaponArmAnimator[] _activatedAnimators;
         ArmedWeaponArmBehavioursController _controller;
         //AnimationMixerPlayable playablePart;
         PlayableGraph _graph;
@@ -190,9 +178,9 @@ namespace Tests.BodyBehaviour.Arm.Animations
             if (_animators.TryGetValue(name, out var animator))
             {
                 if (_activatedAnimators == null)
-                    _activatedAnimators = new AnimatorWrapper[] { new() { Animator = animator, OldState = animator.State } };
+                    _activatedAnimators = new IArmedWeaponArmAnimator[] { animator };
                 else
-                    _activatedAnimators.Append(new() { Animator = animator, OldState = animator.State });
+                    _activatedAnimators.Append(animator);
             }
         }
         void UnactivatedAnimator(IWeapon weapon, IArmedWeaponArmBehaviour behaviour)
@@ -207,15 +195,7 @@ namespace Tests.BodyBehaviour.Arm.Animations
                     _activatedAnimators = null;
                 else
                 {
-                    for (var i = 0; i < _activatedAnimators.Length; i++)
-                    {
-                        var w = _activatedAnimators[i];
-                        if (w.Animator == animator)
-                        {
-                            _activatedAnimators.Remove(i);
-                            break;
-                        }
-                    }
+                    _activatedAnimators.Remove(animator);
                 }
             }
         }
@@ -229,29 +209,30 @@ namespace Tests.BodyBehaviour.Arm.Animations
         }
         Playable CreatePlayablePart(PlayableGraph graph)
         {
-            var w = _activatedAnimators[0];
-            w.Animator.OutputSetting = _outputSetting;
-            return w.Animator.GetPlayablePart(graph);
+            //var w = _activatedAnimators[0];
+            //w.Animator.OutputSetting = _outputSetting;
+            //return w.Animator.GetPlayablePart(graph);
+            return default;
         }
         public void OnUpdate()
         {
-            if (_activatedAnimators == null)
-                return;
-            foreach (var a in _activatedAnimators)
-            {
-                var oldState = a.OldState;
-                var currentState = a.Animator.State;
-                if (oldState != currentState)
-                {
-                    var p = Playable.Null;
-                    if (currentState > 0)
-                    {
-                        p = CreatePlayablePart(_graph);
-                    }
-                    _playablePartUpdateAction?.Invoke(p);
-                    break;
-                }
-            }
+            //if (_activatedAnimators == null)
+            //    return;
+            //foreach (var a in _activatedAnimators)
+            //{
+            //    var oldState = a.OldState;
+            //    var currentState = a.Animator.State;
+            //    if (oldState != currentState)
+            //    {
+            //        var p = Playable.Null;
+            //        if (currentState > 0)
+            //        {
+            //            p = CreatePlayablePart(_graph);
+            //        }
+            //        _playablePartUpdateAction?.Invoke(p);
+            //        break;
+            //    }
+            //}
         }
     }
 }

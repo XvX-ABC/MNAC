@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.States;
 using Tests.Utilities.MTrees;
 
 namespace Tests.Characters

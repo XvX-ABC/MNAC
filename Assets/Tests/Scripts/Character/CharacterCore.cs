@@ -34,10 +34,14 @@ namespace Tests.Character
         protected Playable playablePart;
         protected IOutputSetting outputSetting;
         protected AnimationPlayableNode node;
-        public bool Enabled => enabled;
+        public virtual bool Enabled => enabled;
 
         public Playable PlayablePart => playablePart;
-        public virtual IOutputSetting OutputSetting { get => outputSetting; set => outputSetting = value; }
+        public virtual IOutputSetting OutputSetting
+        {
+            get => outputSetting;
+            set => outputSetting = value;
+        }
         public virtual IPlayablePartNode Node { get => node; }
         protected PlayablePartBase()
         {
@@ -53,6 +57,8 @@ namespace Tests.Character
     public interface IPlayablePartNode : IMTContainerNode<IPlayablePart>
     {
         public PlayableGraph Graph { get; set; }
+        public void ConnectChild(IPlayablePartNode childNode);
+        public void DisconnectChild(IPlayablePartNode childNode);
     }
     public interface ICharacterArmAnimationDefinitions
     {
@@ -151,9 +157,10 @@ namespace Tests.Character
             var controller = new ControllerPlayable(_animator);
             var layersMixer = new LayersMixerPlayable(_definitions);
 
-
             root.AddChild(layersMixer.Node);
             layersMixer.Node.AddChild(controller.Node);
+
+            controller.OutputSetting.Weight = 1;
 
             var leftArm = _core.leftArm;
 

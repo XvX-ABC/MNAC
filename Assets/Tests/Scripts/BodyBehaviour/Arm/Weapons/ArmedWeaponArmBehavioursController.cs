@@ -1,19 +1,12 @@
 ﻿using Assets.Tests.Scripts.Weapons;
-using Mono.Cecil.Cil;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using Tests.BodyBehaviour.Arm.Animations;
 using Tests.Characters;
-using Tests.Input;
-using Tests.Locomotion;
+using Tests.States;
 using Tests.Weapons;
-using Unity.VisualScripting;
-using UnityEngine;
 using Debug = UnityEngine.Debug;
-using UInput = UnityEngine.Input;
 
 namespace Tests.Behaviours.Arm
 {
@@ -33,16 +26,19 @@ namespace Tests.Behaviours.Arm
         public Action<IWeapon, IArmedWeaponArmBehaviour> UnactivatedAction { get => _unactivatedAction; set => _unactivatedAction = value; }
         public override bool Enabled
         {
-            get => activatedBehaviours == null ? false : activatedBehaviours[0].Enabled;
+            get => activatedBehaviours == null ? false : ((IState<object>)activatedBehaviours[0]).Enabled;
             set
             {
                 if (activatedBehaviours == null)
                     return;
-                activatedBehaviours[0].Enabled = value;
+                ((IState<object>)activatedBehaviours[0]).Enabled = value;
             }
         }
-
         internal ArmAnimationCore_New AnimationCore { get => _animationCore; set => _animationCore = value; }
+        public byte StatusNum
+        {
+            get => activatedBehaviours == null ? (byte)0 : activatedBehaviours[0].StatusNum;
+        }
 
         public ArmedWeaponArmBehavioursController(WeaponCore weaponCore, IArmWeaponDefinitions definitions, params IArmedWeaponArmBehaviour[] behaviours) : base("behaviours")
         {
@@ -60,6 +56,7 @@ namespace Tests.Behaviours.Arm
                 }
                 var type = description.Type;
                 var b = behaviours.First(b => b.Type == type);
+                b.Enabled = false;
                 weaponBehavioursMapping.Add(od.Name, b);
             }
         }
@@ -91,6 +88,7 @@ namespace Tests.Behaviours.Arm
                 activatedBehaviours[^1] = b;
             }
             b.Weapon = weapon;
+            b.Enabled = true;
             _activatedAction?.Invoke(weapon, b);
         }
         public void UnactivateBehaviourBy(IWeapon weapon)
@@ -105,6 +103,8 @@ namespace Tests.Behaviours.Arm
             if (activatedBehaviours == null)
                 return;
 
+
+        
             for (int i = 0; i < activatedBehaviours.Length; i++)
             {
                 var ab = activatedBehaviours[i];
@@ -125,6 +125,7 @@ namespace Tests.Behaviours.Arm
                 }
 
             }
+            b.Enabled = false;
             _unactivatedAction?.Invoke(weapon, b);
         }
         public override void OnEnter()
@@ -132,12 +133,38 @@ namespace Tests.Behaviours.Arm
             base.OnEnter();
             if (_animationCore != null)
                 _animationCore.StatusNum = 1;
+            if (activatedBehaviours != null)
+            {
+                var b = activatedBehaviours[0];
+                b.State.OnEnter();
+            }
         }
         public override void OnExit()
         {
             base.OnExit();
-            if (_animationCore != null)
-                _animationCore.StatusNum = 2;
+            if (activatedBehaviours != null)
+            {
+                var b = activatedBehaviours[0];
+                b.State.OnExit();
+            }
+        }
+        public override void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.TransitionRunningWhichOfPreviousState(currentTransition);
+            if (activatedBehaviours != null)
+            {
+                var b = activatedBehaviours[0];
+                b.State.TransitionRunningWhichOfPreviousState(currentTransition);
+            }
+        }
+        public override void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.TransitionRunningWhichToNextState(currentTransition);
+            if (activatedBehaviours != null)
+            {
+                var b = activatedBehaviours[0];
+                b.State.TransitionRunningWhichToNextState(currentTransition);
+            }
         }
     }
 }

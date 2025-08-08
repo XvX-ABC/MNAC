@@ -21,22 +21,22 @@ namespace Tests.Behaviours.Arm
     [RequireComponent(typeof(ArmAnimationDefinitions))]
     public class ArmCore : StateMonoComponentBase, IArmBehaviour, IState, IDynamicPlayablePart
     {
-        class IdleState : PlayableStateBase
+        internal class IdleState : PlayableStateBase
         {
             ArmAnimationCore_New _core;
-            public IdleState(ArmAnimationCore_New core) : base("idle")
+            internal ArmAnimationCore_New core { set => _core = value; }
+            public IdleState() : base("idle")
             {
-                _core = core;
             }
 
             public override void OnEnter()
             {
-                _core.SwitchingWeight = 1;
+                _core.StatusNum = 4;
             }
 
             public override void OnExit()
             {
-                _core.SwitchingWeight = 0;
+
             }
 
             public override void OnUpdate()
@@ -59,6 +59,7 @@ namespace Tests.Behaviours.Arm
 
         internal ArmWeaponSwitching weaponSwitching;
         internal ArmedWeaponArmBehavioursController armedWeaponController;
+        internal IdleState idle;
         //internal ArmAnimationCore animationCore;
         internal ArmAnimationCore_New acore_new;
         Blackboard _blackboard;
@@ -140,7 +141,7 @@ namespace Tests.Behaviours.Arm
 
             weaponSwitching.AnimationCore = acore_new;
             armedWeaponController.AnimationCore = acore_new;
-
+            idle.core = acore_new;
             SetDefaultWeapon(weaponMountPoint, weaponDefinitions.Origins[0].Name, _weaponCore);
 
         }
@@ -151,21 +152,6 @@ namespace Tests.Behaviours.Arm
         }
         void InitializeArmedWeaponBehaviours(IArmWeaponDefinitions definitions)
         {
-            //foreach (var od in definitions.Origins)
-            //{
-            //    if (!_weaponCore.TryGetWeaponOrigin(od.Name, out var origin))
-            //    {
-            //        Debug.LogWarning(new WeaponOriginNotContainsException(_weaponCore, od.Name));
-            //        continue;
-            //    }
-            //    var behaviour = origin.GetComponent<IArmedWeaponArmBehaviour>();
-            //    if (behaviour == null)
-            //    {
-            //        Debug.LogWarning(new ComponentCantFindException(origin, typeof(IArmedWeaponArmBehaviour)));
-            //        continue;
-            //    }
-            //    blist.Add((od.Name, behaviour));
-            //}
             var blist = new List<(string, IArmedWeaponArmBehaviour)>();
             var behaviours = this.GetComponents<IArmedWeaponArmBehaviour>();
             armedWeaponController = new ArmedWeaponArmBehavioursController(_weaponCore, definitions, behaviours);
@@ -187,31 +173,34 @@ namespace Tests.Behaviours.Arm
         }
         void InitializeStateMachine()
         {
-            var idle = new IdleState(acore_new);
+            idle = new IdleState();
             _stateMachine = new(this.name);
-            //_stateMachine.AddState(idle);
+            _stateMachine.AddState(idle);
             _stateMachine.AddState(armedWeaponController);
             _stateMachine.AddState(weaponSwitching);
             var length = definitions.Weapon.SwitchingToBehavioursDurationTime;
 
-            //_stateMachine.AddTransitionFor(idle, weaponSwitching, () =>_input.Supply);
-            //_stateMachine.AddTransitionFor(weaponSwitching, idle, () => !armedWeaponController.Enabled);
+            _stateMachine.AddTransitionFor(idle, weaponSwitching, () => _input.Supply);
+            _stateMachine.AddTransitionFor(idle, armedWeaponController, 0, () => armedWeaponController.Enabled, (_, _, _) => { acore_new.StatusNum = 1; });
+
+            _stateMachine.AddTransitionFor(armedWeaponController, idle, () => !armedWeaponController.Enabled);
             _stateMachine.AddTransitionFor(armedWeaponController, weaponSwitching, length, () => _input.Supply, (s, d, t) =>
             {
-                if (!acore_new.playing && t >= 0.3f)
+                acore_new.StatusNum = 2;
+                if (t >= 0.3f)
                 {
-                    acore_new.PlaySwitching();
+                    acore_new.StartPlaySwitching();
                 }
                 acore_new.SwitchingWeight = t;
-            });
-            _stateMachine.AddTransitionFor(weaponSwitching, armedWeaponController, length, (s, d, t) =>
+            }, 0);
+
+            _stateMachine.AddTransitionFor(weaponSwitching, idle, () => !armedWeaponController.Enabled);
+            _stateMachine.AddTransitionFor(weaponSwitching, armedWeaponController, length, () => armedWeaponController.Enabled, (s, d, t) =>
             {
-                if (acore_new.playing)
-                {
-                    acore_new.StopSwitching();
-                }
+                acore_new.StatusNum = 2;
+                acore_new.StopPlaySwitching();
                 acore_new.SwitchingWeight = 1 - t;
-            });
+            }, 0);
         }
 
 
@@ -228,7 +217,7 @@ namespace Tests.Behaviours.Arm
         public override void OnUpdate()
         {
             _stateMachine.OnUpdate();
-            //Debug.Log("ArmCore.StateMachine: " + _stateMachine);
+            Debug.Log("ArmCore.StateMachine: " + _stateMachine);
         }
 
         public override void OnEnter()

@@ -2,6 +2,7 @@
 using Tests.States;
 using Tests.Weapons.Launcher;
 using UnityEngine;
+using static Tests.Behaviours.Arm.Weapons.ArmedLauncherArmBehaviour;
 using ReloadAnimator = Tests.Behaviours.Arm.Weapons.ArmedLauncherArmBehaviour.ReloadAnimator;
 
 namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
@@ -9,7 +10,8 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
     internal class AmmoLoad : ArmedArmStateBase
     {
 
-        ReloadAnimator _animator;
+        ReloadAnimator _reloadAnimator;
+        internal BAnimator animator;
         ILauncher _launcher;
         public ILauncher Launcher
         {
@@ -21,7 +23,7 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
         }
         public AmmoLoad(ReloadAnimator animator) : base("ammo_load", 0)
         {
-            _animator = animator;
+            _reloadAnimator = animator;
         }
         public override void OnEnter()
         {
@@ -32,19 +34,25 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
         {
             _launcher.EndReload();
         }
-        public override void OnTransitionWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.OnTransitionWhichOfPreviousState(currentTransition);
-            var time = currentTransition.Timeline.NormalizedTime;
-            if (time >= 0.8f)
-                _animator.Play();
+            base.TransitionBeginWhichOfPreviousState(currentTransition);
+            if (animator != null)
+                animator.enabled = true;
         }
-        public override void OnTransitionWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.OnTransitionWhichToNextState(currentTransition);
+            base.TransitionRunningWhichOfPreviousState(currentTransition);
             var time = currentTransition.Timeline.NormalizedTime;
             if (time >= 0.8f)
-                _animator.Stop();
+                _reloadAnimator.Play();
+        }
+        public override void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.TransitionRunningWhichToNextState(currentTransition);
+            var time = currentTransition.Timeline.NormalizedTime;
+            if (time >= 0.8f)
+                _reloadAnimator.Stop();
         }
     }
 }

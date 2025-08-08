@@ -158,14 +158,17 @@ namespace Tests.States
         protected virtual void ChangeState(S nextState)
         {
             var currentState = this.currentState;
-            try
+            if (currentState != null)
             {
-                currentState.OnExit();
-            }
-            catch (Exception e)
-            {
-                //throw new StateExitException(currentState, e, "currentState");
-                throw;
+                try
+                {
+                    currentState.OnExit();
+                }
+                catch (Exception e)
+                {
+                    //throw new StateExitException(currentState, e, "currentState");
+                    throw;
+                }
             }
 
             try
@@ -244,14 +247,18 @@ namespace Tests.States
         }
         public override void OnEnter()
         {
+            this.enabled = true;
             currentState?.OnEnter();
         }
         public override void OnExit()
         {
             currentState?.OnExit();
+            this.enabled = false;
         }
         public override string ToString()
         {
+            if (!this.enabled)
+                return "This state machine is not enabled.";
             var sb = new StringBuilder();
             sb.AppendLine("current state: " + currentState.Name);
             return sb.ToString();

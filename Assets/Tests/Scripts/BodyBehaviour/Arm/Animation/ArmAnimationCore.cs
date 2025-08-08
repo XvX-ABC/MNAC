@@ -23,25 +23,20 @@ namespace Tests.BodyBehaviour.Arm.Animations
         IArmWeaponAnimationDefinitions _animationDefinitions;
         MixerPlayablePart _mixer;
         SwitchingPlayablePart _switching;
-        IOutputSetting _armedSetting;
 
-        byte _statusNum = 1;
+        byte _statusNum;
         ArmedWeaponArmAnimator_New _armedAnimator;
         internal bool playing;
+        bool _initialized;
         public float SwitchingWeight
         {
             get => _switching.OutputSetting.Weight;
             set
             {
-                if (_statusNum != 2)
-                    throw new Exception();
                 var v = Mathf.Clamp01(value);
                 _switching.OutputSetting.Weight = v;
-                if (_armedSetting != null)
-                    _armedSetting.Weight = 1 - v;
             }
         }
-        public override IOutputSetting OutputSetting { get => _switching.OutputSetting; set => _switching.OutputSetting = value; }
         public byte StatusNum
         {
             get => _statusNum;
@@ -49,8 +44,7 @@ namespace Tests.BodyBehaviour.Arm.Animations
             {
                 if (value == _statusNum)
                     return;
-                _statusNum = value;
-                if (!_switching.inti)
+                if (!_initialized)
                     throw new Exception();
                 var pnode = this.node.Parent;
                 switch (value)
@@ -60,27 +54,44 @@ namespace Tests.BodyBehaviour.Arm.Animations
                         _mixer.Node.RemoveChild(_armedAnimator.playablePart.Node);
                         pnode.RemoveChild(_mixer.Node);
                         pnode.AddChild(_switching.Node);
-                        this.node = (AnimationPlayableNode)_switching.Node;
-                        _switching.OutputSetting.Weight = 1;
+                        _switching.OutputSetting = this.outputSetting;
+                        this.outputSetting.Weight = 1;
                         break;
                     case 1:
                         _mixer.Node.RemoveChild(_switching.Node);
                         _mixer.Node.RemoveChild(_armedAnimator.playablePart.Node);
                         pnode.RemoveChild(_mixer.Node);
                         pnode.AddChild(_armedAnimator.playablePart.Node);
-                        this.node = (AnimationPlayableNode)_armedAnimator.playablePart.Node;
-                        _armedSetting = _armedAnimator.playablePart.OutputSetting;
-                        _armedSetting.Weight = 1;
+                        _armedAnimator.playablePart.OutputSetting = this.outputSetting;
                         break;
                     case 2:
-                        pnode.RemoveChild(this.node);
+                        Debug.Log("armed weapon playable part enabled: " + _armedAnimator.playablePart.Enabled);
+                        if (!_armedAnimator.playablePart.Enabled)
+                        {
+                            this.StatusNum = 0;
+                            break;
+                        }
+
+
+                        if (_statusNum == 0)
+                            pnode.RemoveChild(_switching.Node);
+                        else if (_statusNum == 1)
+                            pnode.RemoveChild(_armedAnimator.playablePart.Node);
+                      
                         pnode.AddChild(_mixer.Node);
                         _mixer.Node.AddChild(_switching.Node);
                         _mixer.Node.AddChild(_armedAnimator.playablePart.Node);
-                        this.node = (AnimationPlayableNode)_mixer.Node;
-                        _armedSetting = _armedAnimator.playablePart.OutputSetting;
+                        _mixer.OutputSetting = this.outputSetting;
+
+                        _switching.PlayablePart.SetTime(0);
+                        _switching.PlayablePart.Pause();
+                        this.outputSetting.Weight = 1;
+                        break;
+                    case 4:
+                        this.outputSetting.Weight = 0;
                         break;
                 }
+                _statusNum = value;
             }
         }
         public ArmAnimationCore_New(ArmCore core)
@@ -92,8 +103,6 @@ namespace Tests.BodyBehaviour.Arm.Animations
 
             _switching = new(_definitions, _animationDefinitions);
             _mixer = new();
-
-            this.node = (AnimationPlayableNode)_switching.Node;
 
 
             //_armedAnimator.stateAction += (b, p) =>
@@ -142,7 +151,6 @@ namespace Tests.BodyBehaviour.Arm.Animations
         {
             IArmWeaponDefinitions _definitions;
             IArmWeaponAnimationDefinitions _animationDefinitions;
-            internal bool inti;
 
             public SwitchingPlayablePart(IArmWeaponDefinitions definitions, IArmWeaponAnimationDefinitions animationDefinitions) : base()
             {
@@ -160,7 +168,6 @@ namespace Tests.BodyBehaviour.Arm.Animations
                     var speed = _definitions.SwitchingDurationTime > 0 ? length / _definitions.SwitchingDurationTime : 1;
                     c.SetSpeed(speed);
                     this.playablePart = c;
-                    this.inti = true;
                 }
                 return true;
             }
@@ -168,19 +175,31 @@ namespace Tests.BodyBehaviour.Arm.Animations
             {
             }
         }
-
         public override bool Initialize(PlayableGraph graph)
         {
-            return false;
+            _initialized = true;
+            return true;
         }
-        public void PlaySwitching()
+        public override void Dispose()
         {
+            _initialized = false;
+        }
+        public void StartPlaySwitching()
+        {
+            //Debug.Log("Play switching");
+            if (playing)
+                return;
             _switching.PlayablePart.SetTime(0);
             _switching.PlayablePart.Play();
+            playing = true;
         }
-        public void StopSwitching()
+        public void StopPlaySwitching()
         {
+            //Debug.Log("Stop switching");
+            if (!playing)
+                return;
             _switching.PlayablePart.Pause();
+            playing = false;
         }
         public void OnUpdate()
         {

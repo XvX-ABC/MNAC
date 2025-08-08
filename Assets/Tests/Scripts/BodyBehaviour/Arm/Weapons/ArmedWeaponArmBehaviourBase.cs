@@ -14,6 +14,9 @@ namespace Tests.Behaviours.Arm.Weapons
         internal ComponentNode node;
         protected Blackboard blackboard;
         protected GameObject armObj;
+        [Obsolete]
+        protected internal byte statusNum;
+        protected internal bool isActivated;
         public WeaponType Type { get => type; }
         public abstract IWeapon Weapon { get; set; }
         public abstract IArmedWeaponArmAnimator Animator { get; }
@@ -28,6 +31,10 @@ namespace Tests.Behaviours.Arm.Weapons
             }
         }
         public ICharacterComponentNode Node { get => node; }
+        [Obsolete]
+        public byte StatusNum { get => statusNum; }
+        public bool IsActivated { get => isActivated; }
+        public abstract IPlayableState<object> State { get; }
 
         protected override void Awake()
         {

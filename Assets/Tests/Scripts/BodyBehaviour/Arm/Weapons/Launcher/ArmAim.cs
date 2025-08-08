@@ -6,6 +6,7 @@ using Tests.Behaviours.Arm;
 using Tests.Characters;
 using Tests.States;
 using UnityEngine;
+using static Tests.Behaviours.Arm.Weapons.ArmedLauncherArmBehaviour;
 
 namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
 {
@@ -13,6 +14,7 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
     {
         AimIK _aimIK;
         ITarget _target;
+        internal BAnimator animator;
         internal Action<float> weightChangedAction;
         public ITarget Target
         {
@@ -53,21 +55,27 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
         }
         public override void OnEnter()
         {
-            this.Weight = 1;
+            //this.Weight = 1;
         }
-        public override void OnTransitionWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void OnExit()
         {
-            base.OnTransitionWhichToNextState(currentTransition);
+            //this.Weight = 0;
+        }
+        public override void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.TransitionBeginWhichOfPreviousState(currentTransition);
+            if (animator != null)
+                animator.enabled = true;
+        }
+        public override void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.TransitionRunningWhichToNextState(currentTransition);
             UpdateTarget();
         }
-        public override void OnTransitionWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.OnTransitionWhichOfPreviousState(currentTransition);
+            base.TransitionRunningWhichOfPreviousState(currentTransition);
             UpdateTarget();
-            if (currentTransition.Timeline.NormalizedTime >= 1)
-            {
-                Weight = 0;
-            }
         }
     }
 }

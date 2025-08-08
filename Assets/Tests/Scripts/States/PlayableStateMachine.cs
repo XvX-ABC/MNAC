@@ -3,6 +3,7 @@ using Assets.Scripts.Utilities.Timeline.Event;
 using Assets.Scripts.Utilities.Timeline.Event.Range;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Timeline;
@@ -16,8 +17,9 @@ namespace Tests.States
         {
         }
     }
-    public partial class PlayableStateMachine<T> : StateMachineBase<IPlayableState<T>, T>
+    public partial class PlayableStateMachine<T> : StateMachineBase<IPlayableState<T>, T>, IPlayableState<T>
     {
+        static byte s_defaultInterruptionSource = 1;
         class TransitionState : PlayableStateBase<T>
         {
             internal IPlayableState<T> srcState;
@@ -49,16 +51,18 @@ namespace Tests.States
                 name = $"{srcState.Name} ->  {desState.Name}";
 
 
-                UpdateTransitionWhichToNextState();
-            }
-            void UpdateTransitionWhichToNextState()
-            {
                 Array.Resize(ref this.transitions, 1);
                 var t = this.transitions[0] as PlayableTransition;
                 t.destinationState = desState;
                 t.triggerEvent = () => timeline.NormalizedTime >= 1;
 
 
+                var interruptionSource = srcTransition.InterruptionSource;
+                if (interruptionSource > 0)
+                    SetInterruptionSourceByNextState();
+            }
+            void SetInterruptionSourceByNextState()
+            {
                 _list.Clear();
                 foreach (var ts in desState.Transitions)
                     if (ts.TriggerEvent != null)
@@ -85,24 +89,44 @@ namespace Tests.States
 
         }
         TransitionState _transitionState;
+        protected bool _exitWhenEnd;
+        public ITimeline Timeline => currentState?.Timeline;
+
+        public bool ExitWhenEnd { get => _exitWhenEnd; set => _exitWhenEnd = value; }
+
+        IPlayableTransition<T>[] IPlayableState<T>.Transitions => currentState?.Transitions;
+
         public PlayableStateMachine(string name, bool enabled = true) : base(name, enabled)
         {
             _transitionState = new();
         }
 
-        protected PlayableTransition NewTransition(IPlayableState<T> sourceState, IPlayableState<T> destinationState, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent, float duration)
+        protected PlayableTransition NewTransition(IPlayableState<T> sourceState, IPlayableState<T> destinationState, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent, float duration, byte interruptionSource)
         {
-            var transition = new PlayableTransition(sourceState, destinationState, triggerEvent, durationEvent, duration);
+            var transition = new PlayableTransition(sourceState, destinationState, triggerEvent, durationEvent, duration, interruptionSource);
             return transition;
         }
         public override void AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, Func<bool> triggerEvent)
         {
-            var transition = NewTransition(state, destinationState, triggerEvent, null, 0);
+            var transition = NewTransition(state, destinationState, triggerEvent, null, 0, s_defaultInterruptionSource);
+            AddTransitionFor(transition);
+        }
+        public void AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, Func<bool> triggerEvent, byte interruptionSourceNum)
+        {
+            var transition = NewTransition(state, destinationState, triggerEvent, null, 0, interruptionSourceNum);
             AddTransitionFor(transition);
         }
         public IPlayableTransition<T> AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, float duration, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent)
         {
-            var transition = NewTransition(state, destinationState, triggerEvent, durationEvent, duration);
+            //var transition = NewTransition(state, destinationState, triggerEvent, durationEvent, duration, 1);
+            //AddTransitionFor(transition);
+            //return transition;
+            return AddTransitionFor(state, destinationState, duration, triggerEvent, durationEvent, s_defaultInterruptionSource);
+        }
+
+        public IPlayableTransition<T> AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, float duration, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent, byte interruptionSourceNum)
+        {
+            var transition = NewTransition(state, destinationState, triggerEvent, durationEvent, duration, interruptionSourceNum);
             AddTransitionFor(transition);
             return transition;
         }
@@ -147,6 +171,43 @@ namespace Tests.States
             else
                 nextState = transition.DestinationState;
             ChangeState(nextState);
+        }
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
+        }
+        public override void OnExit()
+        {
+            base.OnExit();
+        }
+
+        public virtual void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)
+        {
+        }
+
+        public virtual void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<T> currentTransition)
+        {
+        }
+
+        public void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TransitionEndWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TransitionBeginWhichToNextState(IReadonlyPlayableTransition<T> currentTransition)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TransitionEndWhichToNextState(IReadonlyPlayableTransition<T> currentTransition)
+        {
+            throw new NotImplementedException();
         }
     }
 

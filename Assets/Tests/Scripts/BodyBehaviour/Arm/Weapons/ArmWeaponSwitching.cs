@@ -141,8 +141,6 @@ namespace Tests.Behaviours.Arm
         {
             base.OnExit();
             timeline.Stop();
-            if (_animationCore != null)
-                _animationCore.StatusNum = 2;
         }
 
 

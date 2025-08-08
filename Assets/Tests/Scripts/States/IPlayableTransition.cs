@@ -4,10 +4,11 @@ namespace Tests.States
 {
     public interface IPlayableTransition<T> : ITransition<T>, IReadonlyPlayableTransition<T>
     {
-        public ITimeline Timeline
+        public new ITimeline Timeline
         {
             get;
         }
+        public byte InterruptionSource { get; }
 
     }
     public interface IReadonlyPlayableTransition<T>
