@@ -40,7 +40,7 @@ namespace Tests.Weapons
 
         bool ILauncher.EndReload()
         {
-            _reloadTimeline.Stop();
+            _reloadTimeline.Pause();
             return true;
             //throw new NotImplementedException();
         }
@@ -57,7 +57,7 @@ namespace Tests.Weapons
 
         bool ILauncher.StartReload()
         {
-            _reloadTimeline.Start();
+            _reloadTimeline.Restart();
             return true;
             //throw new NotImplementedException();
         }

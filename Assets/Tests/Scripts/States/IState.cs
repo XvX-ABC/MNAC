@@ -33,4 +33,12 @@ namespace Tests.States
         public void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<T> currentTransition);
         public void TransitionEndWhichToNextState(IReadonlyPlayableTransition<T> currentTransition);
     }
+    public interface IAnimationState<T> : IPlayableState<T>
+    {
+        public byte State { get; }
+        public void SetTime(float time);
+        public void Play();
+        public void Pause();
+        public void Reset();
+    }
 }

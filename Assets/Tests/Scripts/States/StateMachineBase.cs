@@ -8,7 +8,6 @@ using UnityEngine.UI;
 
 namespace Tests.States
 {
-
     public abstract class StateMachineBase<S, T> : StateBase<T> where S : class, IState<T>
     {
         internal class StateNotExistException : Exception
@@ -55,12 +54,19 @@ namespace Tests.States
             internal S destinationState;
             internal Func<bool> triggerEvent;
             protected Action<T> triggeredEvent;
-            protected internal Transition() { }
+
+            internal List<Func<bool>> triggerEvents;
+            protected internal Transition()
+            {
+                triggerEvents = new();
+            }
             public Transition(S sourceState, S destinationState, Func<bool> triggerEvent)
             {
                 this.sourceState = sourceState ?? throw new ArgumentNullException(nameof(sourceState));
                 this.destinationState = destinationState ?? throw new ArgumentNullException(nameof(destinationState));
                 this.triggerEvent = triggerEvent;
+                triggerEvents = new();
+                this.AddTriggerEvent(triggerEvent);
             }
 
             public IState<T> SourceState => sourceState;
@@ -68,9 +74,43 @@ namespace Tests.States
             public IState<T> DestinationState => destinationState;
             public Func<bool> TriggerEvent => triggerEvent;
             public Action<T> TriggeredEvent { get => triggeredEvent; set => triggeredEvent = value; }
+
+            public bool Triggered => IsTriggered();
+
+            public IReadOnlyList<Func<bool>> TriggerEvents => triggerEvents;
+
+            protected bool IsTriggered()
+            {
+                var triggered = true;
+                foreach (var evt in triggerEvents)
+                {
+                    triggered &= evt();
+                }
+                return triggered;
+            }
             public override int GetHashCode()
             {
-                return HashCode.Combine(sourceState, destinationState, triggerEvent);
+                return HashCode.Combine(sourceState, destinationState, triggerEvents);
+            }
+            public bool Contains(Func<bool> triggerEvent)
+            {
+                return triggerEvents.Contains(triggerEvent);
+            }
+            public void AddTriggerEvent(Func<bool> triggerEvent)
+            {
+                if (triggerEvent == null)
+                    return;
+                triggerEvents.Add(triggerEvent);
+            }
+
+            public void RemoveTriggerEvent(Func<bool> triggerEvent)
+            {
+                if (triggerEvent == null) return;
+                triggerEvents.Remove(triggerEvent);
+            }
+            public void ClearTriggerEvents()
+            {
+                triggerEvents.Clear();
             }
         }
         protected HashSet<S> states;
@@ -205,9 +245,17 @@ namespace Tests.States
             {
                 if (t.DestinationState.Enabled)
                 {
-                    if (t.TriggerEvent == null)
+                    //if (t.TriggerEvent == null)
+                    //    return t;
+                    //else if (t.TriggerEvent())
+                    //{
+                    //    t.TriggeredEvent?.Invoke(context);
+                    //    return t;
+                    //}
+
+                    if (t.TriggerEvents.Count == 0)
                         return t;
-                    else if (t.TriggerEvent())
+                    else if (t.Triggered)
                     {
                         t.TriggeredEvent?.Invoke(context);
                         return t;
@@ -224,8 +272,10 @@ namespace Tests.States
             if (currentState == null && states.Count > 0)
             {
                 var state = states.First();
-                state.OnEnter();
-                currentState = state;
+                //state.OnEnter();
+                //currentState = state;
+
+                ChangeState(state);
             }
             var currentTransition = CheckTransitions();
             if (currentTransition != null)

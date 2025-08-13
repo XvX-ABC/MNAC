@@ -231,7 +231,7 @@ namespace Tests.Behaviours.Arm.Weapons
         }
         void InitializeStateMachine()
         {
-            _stateMachine = new(this.name + "_statemachine", false);
+            _stateMachine = new(this.name + "_statemachine");
             _stateMachine.AddState(_idle);
             _stateMachine.AddState(_aim);
             _stateMachine.AddState(_ammoLoad);
@@ -307,7 +307,8 @@ namespace Tests.Behaviours.Arm.Weapons
         }
         private void Update()
         {
-            this.OnUpdate();
+
+            //this.OnUpdate();
             _targetsCatcher.OnUpdate();
             //banimator.OnUpdate();
         }

@@ -97,7 +97,7 @@ namespace Tests.Locomotion
         void EndJumpImpl(Context context)
         {
             if (_preparationTimeline.IsRunning)
-                _preparationTimeline.Stop();
+                _preparationTimeline.Pause();
             if (_ascendingTimeline.IsRunning)
                 _ascendingTimeline.EarlyEnd();
             _state = State.OnGround;
@@ -107,7 +107,7 @@ namespace Tests.Locomotion
         void StartJumpImpl(Context context)
         {
             _context = context;
-            _preparationTimeline.Start();
+            _preparationTimeline.Restart();
             _probeResults = new();
         }
         void ProbesHandle(Context context)
@@ -153,7 +153,7 @@ namespace Tests.Locomotion
             }
 
             if (_state == State.InPreparation && ground == null)
-                _ascendingTimeline.Start();
+                _ascendingTimeline.Restart();
 
 
             if (_preparationTimeline.IsRunning)

@@ -74,7 +74,7 @@ namespace Tests.Behaviours.Arm.Weapons
             _t0 = new Timeline(_duration);
             _t0.AddRangeEvent(0, 1, ctx =>
             {
-                var weight = _curve.Evaluate(ctx.Proportion);
+                var weight = _curve.Evaluate(ctx.NormalizedTime);
                 _aimer.Weight = weight;
             });
             _t0.AddPointEvent(0, _ =>
@@ -96,7 +96,7 @@ namespace Tests.Behaviours.Arm.Weapons
             _t1.AddRangeEvent(0, 1, ctx =>
             {
                 var weight = _curve.Evaluate(1 - ctx
-                    .Proportion);
+                    .NormalizedTime);
                 _aimer.Weight = weight;
             });
             _t1.AddPointEvent(0, _ =>
@@ -111,17 +111,17 @@ namespace Tests.Behaviours.Arm.Weapons
         {
             if (Continuing)
                 return false;
-            _t0.Start();
+            _t0.Restart();
             return true;
         }
         public bool BEnd()
         {
             if (_t0.IsRunning)
-                _t0.Stop();
+                _t0.Pause();
             if (_reloadTimeline.IsRunning)
                 _launcher.EndReload();
             if (_t1.IsRunning)
-                _t1.Stop();
+                _t1.Pause();
 
             //if (!_aimer.Continuing)
             //    _aimer.BStart();
@@ -141,7 +141,7 @@ namespace Tests.Behaviours.Arm.Weapons
             {
                 _reloadTimeline.AddPointEvent(1 - _offset, _ =>
                 {
-                    _t1.Start();
+                    _t1.Restart();
                 });
                 _reloadTimeline.AddPointEvent(0, _ =>
                 {
@@ -156,18 +156,18 @@ namespace Tests.Behaviours.Arm.Weapons
         }
         public override void OnStart()
         {
-            _t0.Start();
+            _t0.Restart();
             _launcher = _weaponObj.Value.GetComponent<ILauncher>();
             InitializeWhenWeaponChanged();
         }
         public override void OnEnd()
         {
             if (_t0.IsRunning)
-                _t0.Stop();
+                _t0.Pause();
             if (_reloadTimeline.IsRunning)
                 _launcher.EndReload();
             if (_t1.IsRunning)
-                _t1.Stop();
+                _t1.Pause();
 
             //if (!_aimer.Continuing)
             //    _aimer.BStart();
@@ -180,7 +180,7 @@ namespace Tests.Behaviours.Arm.Weapons
             _t1.OnUpdate(Time.deltaTime);
             if (Continuing)
             {
-                _t0.Start();
+                _t0.Restart();
                 return TaskStatus.Running;
             }
             return TaskStatus.Failure;

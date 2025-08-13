@@ -10,7 +10,7 @@ using Debug = UnityEngine.Debug;
 
 namespace Tests.Behaviours.Arm
 {
-    internal class ArmedWeaponArmBehavioursController : ArmBehaviourPlayableState
+    internal class ArmedWeaponArmBehavioursController : ArmPlayableState
     {
         internal IArmedWeaponArmBehaviour[] behaviours;
 
@@ -40,7 +40,7 @@ namespace Tests.Behaviours.Arm
             get => activatedBehaviours == null ? (byte)0 : activatedBehaviours[0].StatusNum;
         }
 
-        public ArmedWeaponArmBehavioursController(WeaponCore weaponCore, IArmWeaponDefinitions definitions, params IArmedWeaponArmBehaviour[] behaviours) : base("behaviours")
+        public ArmedWeaponArmBehavioursController(WeaponCore weaponCore, IArmWeaponDefinitions definitions, params IArmedWeaponArmBehaviour[] behaviours) : base("armed_weapon")
         {
             if (weaponCore == null)
                 throw new ArgumentNullException(nameof(weaponCore));
@@ -104,7 +104,7 @@ namespace Tests.Behaviours.Arm
                 return;
 
 
-        
+
             for (int i = 0; i < activatedBehaviours.Length; i++)
             {
                 var ab = activatedBehaviours[i];
@@ -141,11 +141,21 @@ namespace Tests.Behaviours.Arm
         }
         public override void OnExit()
         {
-            base.OnExit();
             if (activatedBehaviours != null)
             {
                 var b = activatedBehaviours[0];
                 b.State.OnExit();
+
+                base.OnExit();
+            }
+        }
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+            if (activatedBehaviours != null)
+            {
+                var b = activatedBehaviours[0];
+                b.State.OnUpdate();
             }
         }
         public override void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)

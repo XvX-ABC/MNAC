@@ -11,7 +11,7 @@ using UnityEngine.Animations;
 using UnityEngine.Playables;
 using static Tests.BodyBehaviour.Arm.Animations.ArmedWeaponArmAnimator;
 using static UnityEngine.Rendering.DebugUI;
-using IPlayablePart = Tests.Character.IPlayablePart;
+using IAnimationPlayablePart = Tests.Character.IAnimationPlayablePart;
 
 namespace Tests.BodyBehaviour.Arm.Animations
 {
@@ -21,10 +21,10 @@ namespace Tests.BodyBehaviour.Arm.Animations
         IArmedWeaponArmAnimator[] _activatedAnimators;
         ArmedWeaponArmBehavioursController _controller;
         internal ArmedWeaponPlayablePart playablePart;
-        Action<bool, IPlayablePart> _stateAction;
+        Action<bool, IAnimationPlayablePart> _stateAction;
 
-        internal Action<bool, IPlayablePart> stateAction { get => _stateAction; set => _stateAction = value; }
-        internal class ArmedWeaponPlayablePart : PlayablePartBase
+        internal Action<bool, IAnimationPlayablePart> stateAction { get => _stateAction; set => _stateAction = value; }
+        internal class ArmedWeaponPlayablePart : AnimationPlayablePartBase
         {
             IArmedWeaponArmAnimator _animator;
 

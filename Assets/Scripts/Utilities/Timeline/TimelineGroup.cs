@@ -147,17 +147,17 @@ namespace Assets.Scripts.Utilities.Timeline
             return true;
         }
 
-        public void Start()
+        public void Restart()
         {
             _lastEndTimeline = timelines.OrderByDescending(t => t.Length).First();
             foreach (var l in timelines)
-                l.Start();
+                l.Restart();
         }
 
-        public void Stop()
+        public void Pause()
         {
             foreach (var l in timelines)
-                l.Stop();
+                l.Pause();
         }
         public bool UpdateLength(float newLength)
         {
@@ -165,6 +165,11 @@ namespace Assets.Scripts.Utilities.Timeline
         }
 
         public void EarlyEnd()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void End()
         {
             throw new NotImplementedException();
         }

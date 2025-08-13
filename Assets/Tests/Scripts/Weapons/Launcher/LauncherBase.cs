@@ -151,7 +151,7 @@ namespace Tests.Weapons.Launcher
             {
                 Launch();
                 actionsLock.UnlockAll();
-                launchDurationTimeline.Start();
+                launchDurationTimeline.Restart();
             });
             return timeline;
         }
@@ -184,14 +184,14 @@ namespace Tests.Weapons.Launcher
                 || ammoInMagazineQuantity == definitions.AmmoInMagazineQuantity
                 || ammoSpareQuantity <= 0)
                 return false;
-            reloadTimeline.Start();
+            reloadTimeline.Restart();
             return true;
         }
         public virtual bool EndReload()
         {
             if (!enabled || actionsLock.EndReloadLocked())
                 return false;
-            reloadTimeline.Stop();
+            reloadTimeline.Pause();
             return true;
         }
         internal virtual void DoReload()
@@ -211,7 +211,7 @@ namespace Tests.Weapons.Launcher
                 return false;
             if (ammoInMagazineQuantity <= 0)
                 return false;
-            delayLaunchTimeline.Start();
+            delayLaunchTimeline.Restart();
             return true;
         }
         public virtual bool EndLaunch()
@@ -220,7 +220,7 @@ namespace Tests.Weapons.Launcher
                 return false;
             else if (delayLaunchTimeline.IsRunning)
             {
-                delayLaunchTimeline.Stop();
+                delayLaunchTimeline.Pause();
                 return true;
             }
             else if (launchDurationTimeline.IsRunning)

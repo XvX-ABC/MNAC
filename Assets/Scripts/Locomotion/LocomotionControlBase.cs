@@ -169,7 +169,7 @@ namespace Locomotion
                     _time = 0;
                     InJumping = true;
                     _stepNum = 1;
-                    _timeline.Start();
+                    _timeline.Restart();
                     _jumpStartActions?.Invoke(this);
                 }
             }
@@ -181,7 +181,7 @@ namespace Locomotion
                     InJumping = false;
                     _currentVelocity = 0;
                     _stepNum = 0;
-                    _timeline.Stop();
+                    _timeline.Pause();
                     _jumpEndActions?.Invoke(this);
                 }
             }
@@ -367,14 +367,14 @@ namespace Locomotion
                     var currentTime = Time.unscaledTime;
                     _boosting = Mathf.Abs(currentTime - _lastBoostTime) >= _definition.Interval;
                     if (_boosting)
-                        _timeline.Start();
+                        _timeline.Restart();
                 }
             }
             public void EndBoost()
             {
                 if (_boosting)
                 {
-                    _timeline.Stop();
+                    _timeline.Pause();
                     _boosting = false;
                     _startVelocity = Vector3.zero;
                     _lastBoostTime = Time.unscaledTime;

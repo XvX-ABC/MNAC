@@ -18,11 +18,12 @@ namespace Assets.Scripts.Utilities.Timeline
         Action<TimelineContext> EndAction { get; set; }
         void Continue();
         void OnUpdate(float deltaTime);
-        void Start();
-        void Stop();
+        void Restart();
+        void Pause();
         void EarlyEnd();
         bool AddEvent(ITimelineEvent evt);
         bool RemoveEvent(ITimelineEvent evt);
         bool UpdateLength(float newLength);
+        void End();
     }
 }

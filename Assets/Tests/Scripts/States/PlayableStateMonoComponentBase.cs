@@ -7,8 +7,10 @@ namespace Tests.States
     }
     public abstract class PlayableStateMonoComponentBase<T> : StateMonoComponentBase<T>, IPlayableState<T>
     {
+
         class PlayableState : PlayableStateBase<T>
         {
+
             public PlayableState(string name, float duration = 0, bool enabled = true) : base(name, duration, enabled)
             {
             }
@@ -32,7 +34,6 @@ namespace Tests.States
         public ITimeline Timeline => state.Timeline;
 
         public bool ExitWhenEnd { get => state.ExitWhenEnd; set => state.ExitWhenEnd = value; }
-
         IPlayableTransition<T>[] IPlayableState<T>.Transitions => state.Transitions;
         protected new IPlayableState<T> state;
         protected override void Awake()
@@ -52,22 +53,22 @@ namespace Tests.States
 
         public virtual void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)
         {
-           
+
         }
 
         public virtual void TransitionEndWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)
         {
-           
+
         }
 
         public virtual void TransitionBeginWhichToNextState(IReadonlyPlayableTransition<T> currentTransition)
         {
-           
+
         }
 
         public virtual void TransitionEndWhichToNextState(IReadonlyPlayableTransition<T> currentTransition)
         {
-           
+
         }
     }
 

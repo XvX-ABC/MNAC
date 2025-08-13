@@ -1,12 +1,6 @@
 ﻿using Assets.Scripts.Utilities.Timeline;
-using Assets.Scripts.Utilities.Timeline.Event;
-using Assets.Scripts.Utilities.Timeline.Event.Range;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor.Timeline;
 using UnityEngine;
 
 namespace Tests.States
@@ -19,7 +13,7 @@ namespace Tests.States
     }
     public partial class PlayableStateMachine<T> : StateMachineBase<IPlayableState<T>, T>, IPlayableState<T>
     {
-        static byte s_defaultInterruptionSource = 1;
+        protected const byte INTERRUPTION_SOURCE_DEFAULT_CODE = PlayableTransition<T>.INTERRUPTION_SOURCE_DEFAULT_CODE;
         class TransitionState : PlayableStateBase<T>
         {
             internal IPlayableState<T> srcState;
@@ -28,7 +22,7 @@ namespace Tests.States
             List<ITransition<T>> _list;
             public TransitionState() : base("", 0, true)
             {
-                var transition = new PlayableTransition()
+                var transition = new PlayableTransition<T>()
                 {
                     sourceState = this,
                     destinationState = null,
@@ -52,9 +46,11 @@ namespace Tests.States
 
 
                 Array.Resize(ref this.transitions, 1);
-                var t = this.transitions[0] as PlayableTransition;
+                var t = this.transitions[0] as PlayableTransition<T>;
                 t.destinationState = desState;
-                t.triggerEvent = () => timeline.NormalizedTime >= 1;
+                //t.triggerEvent = () => timeline.NormalizedTime >= 1;
+                t.ClearTriggerEvents();
+                t.AddTriggerEvent(() => timeline.NormalizedTime >= 1);
 
 
                 var interruptionSource = srcTransition.InterruptionSource;
@@ -65,7 +61,9 @@ namespace Tests.States
             {
                 _list.Clear();
                 foreach (var ts in desState.Transitions)
-                    if (ts.TriggerEvent != null)
+                    //if (ts.TriggerEvent != null)
+                    //_list.Add(ts);
+                    if (ts.TriggerEvents.Count > 0)
                         _list.Add(ts);
                 var dLength = _list.Count;
                 if (dLength > 0)
@@ -76,11 +74,11 @@ namespace Tests.States
             }
             public override void OnEnter()
             {
-                timeline.Start();
+                timeline.Restart();
             }
             public override void OnExit()
             {
-                timeline.Stop();
+                timeline.Pause();
             }
             public override void OnUpdate()
             {
@@ -89,26 +87,29 @@ namespace Tests.States
 
         }
         TransitionState _transitionState;
-        protected bool _exitWhenEnd;
         public ITimeline Timeline => currentState?.Timeline;
 
-        public bool ExitWhenEnd { get => _exitWhenEnd; set => _exitWhenEnd = value; }
-
+        public bool ExitWhenEnd
+        {
+            get => false;
+            set { }
+        }
         IPlayableTransition<T>[] IPlayableState<T>.Transitions => currentState?.Transitions;
+
 
         public PlayableStateMachine(string name, bool enabled = true) : base(name, enabled)
         {
             _transitionState = new();
         }
 
-        protected PlayableTransition NewTransition(IPlayableState<T> sourceState, IPlayableState<T> destinationState, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent, float duration, byte interruptionSource)
+        protected IPlayableTransition<T> NewTransition(IPlayableState<T> sourceState, IPlayableState<T> destinationState, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent, float duration, byte interruptionSource)
         {
-            var transition = new PlayableTransition(sourceState, destinationState, triggerEvent, durationEvent, duration, interruptionSource);
+            var transition = new PlayableTransition<T>(sourceState, destinationState, triggerEvent, durationEvent, duration, interruptionSource);
             return transition;
         }
         public override void AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, Func<bool> triggerEvent)
         {
-            var transition = NewTransition(state, destinationState, triggerEvent, null, 0, s_defaultInterruptionSource);
+            var transition = NewTransition(state, destinationState, triggerEvent, null, 0, INTERRUPTION_SOURCE_DEFAULT_CODE);
             AddTransitionFor(transition);
         }
         public void AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, Func<bool> triggerEvent, byte interruptionSourceNum)
@@ -118,10 +119,7 @@ namespace Tests.States
         }
         public IPlayableTransition<T> AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, float duration, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent)
         {
-            //var transition = NewTransition(state, destinationState, triggerEvent, durationEvent, duration, 1);
-            //AddTransitionFor(transition);
-            //return transition;
-            return AddTransitionFor(state, destinationState, duration, triggerEvent, durationEvent, s_defaultInterruptionSource);
+            return AddTransitionFor(state, destinationState, duration, triggerEvent, durationEvent, INTERRUPTION_SOURCE_DEFAULT_CODE);
         }
 
         public IPlayableTransition<T> AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, float duration, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent, byte interruptionSourceNum)
@@ -136,7 +134,7 @@ namespace Tests.States
         }
         public override void AddTransition(ITransition<T> transition)
         {
-            base.AddTransitionFor(transition as IPlayableTransition<T>);
+            AddTransitionFor(transition as IPlayableTransition<T>);
         }
         protected override ITransition<T> CheckTransitions()
         {
@@ -192,22 +190,22 @@ namespace Tests.States
 
         public void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)
         {
-            throw new NotImplementedException();
+
         }
 
         public void TransitionEndWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)
         {
-            throw new NotImplementedException();
+
         }
 
         public void TransitionBeginWhichToNextState(IReadonlyPlayableTransition<T> currentTransition)
         {
-            throw new NotImplementedException();
+
         }
 
         public void TransitionEndWhichToNextState(IReadonlyPlayableTransition<T> currentTransition)
         {
-            throw new NotImplementedException();
+
         }
     }
 

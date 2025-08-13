@@ -90,7 +90,7 @@ namespace Tests.Weapons.MachineGuns
             if (ammoInMagazineQuantity <= 0)
                 return false;
             Launch();
-            launchDurationTimeline.Start();
+            launchDurationTimeline.Restart();
             return true;
         }
         public override bool EndLaunch()
@@ -98,7 +98,7 @@ namespace Tests.Weapons.MachineGuns
             if (!enabled || actionsLock.EndLaunchLocked())
                 return false;
             if (launchDurationTimeline.IsRunning)
-                launchDurationTimeline.Stop();
+                launchDurationTimeline.Pause();
             return true;
         }
     }

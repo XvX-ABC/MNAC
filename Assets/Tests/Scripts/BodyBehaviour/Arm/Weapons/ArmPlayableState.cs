@@ -6,9 +6,16 @@ using Tests.Utilities.MTrees;
 
 namespace Tests.Behaviours.Arm
 {
-    public abstract class ArmBehaviourPlayableState : PlayableStateBase, IArmBehaviour
+    public interface IWithCallbackPlayableState<T> : IPlayableState<T>
     {
-        protected ArmBehaviourPlayableState(string name, float duration = 0, bool enabled = true) : base($"arm_{name}", duration, enabled)
+        Action EntryAction { get; set; }
+        Action ExitAction { get; set; }
+        Action UpdateAction { get; set; }
+    }
+
+    public abstract class ArmPlayableState : PlayableStateBase, IArmBehaviour, IWithCallbackPlayableState<object>
+    {
+        protected ArmPlayableState(string name, float duration = 0, bool enabled = true) : base($"arm_{name}", duration, enabled)
         {
             node = new(this);
         }

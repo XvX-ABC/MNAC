@@ -9,7 +9,7 @@ namespace Assets.Scripts.Utilities.Timeline.Event.Point
         {
             triggeredFunc = context =>
             {
-                return context.Proportion >= TriggeredProportion;
+                return context.NormalizedTime >= TriggeredProportion;
             };
             _triggeredProportion = triggeredProportion;
         }

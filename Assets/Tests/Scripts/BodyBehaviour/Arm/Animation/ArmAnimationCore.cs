@@ -1,40 +1,137 @@
-﻿using NUnit.Framework.Constraints;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Tests.Behaviours.Arm;
 using Tests.Behaviours.Arm.Weapons;
 using Tests.Character;
-using Tests.Characters;
-using Tests.Weapons.MultiMissileLauncher;
-using TMPro;
-using Unity.VisualScripting;
+using Tests.States;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
-
+using static Tests.BodyBehaviour.Arm.Animations.ArmedWeaponArmAnimator_New;
 namespace Tests.BodyBehaviour.Arm.Animations
 {
-    internal class ArmAnimationCore_New : PlayablePartBase
+    internal class ArmAnimationCore_New : AnimationPlayablePartBase
     {
         IArmWeaponDefinitions _definitions;
         IArmWeaponAnimationDefinitions _animationDefinitions;
         MixerPlayablePart _mixer;
-        SwitchingPlayablePart _switching;
+        internal SwitchingPlayablePart switching;
+        internal ArmedWeaponArmAnimator_New armedAnimator;
+
+        IdleState _idleState;
+        SwitchingState _switchingState;
+        ArmedWeaponState _armedState;
+        BlendingState _blendedState;
+        ArmAnimationPlayingState _playingState;
 
         byte _statusNum;
-        ArmedWeaponArmAnimator_New _armedAnimator;
         internal bool playing;
         bool _initialized;
+
+        class ArmAnimationPlayingState : StateBase
+        {
+            protected ArmAnimationCore_New core;
+            protected IAnimationPlayablePartNode parentNode;
+            public ArmAnimationPlayingState(string name, ArmAnimationCore_New core) : base($"arm_animation_core_{name}")
+            {
+                this.core = core ?? throw new ArgumentNullException(nameof(core));
+                parentNode = core.node.PlayableParent;
+            }
+
+            public override void OnEnter()
+            {
+
+            }
+
+            public override void OnExit()
+            {
+
+            }
+
+            public override void OnUpdate()
+            {
+
+            }
+        }
+        class SwitchingState : ArmAnimationPlayingState
+        {
+            SwitchingPlayablePart _playablePart;
+            public SwitchingState(ArmAnimationCore_New core) : base("switching", core)
+            {
+                _playablePart = core.switching;
+            }
+            public override void OnEnter()
+            {
+                parentNode.AddChild(_playablePart.Node);
+                _playablePart.OutputSetting = core.outputSetting;
+                core.outputSetting.Weight = 1;
+            }
+            public override void OnExit()
+            {
+                parentNode.RemoveChild(_playablePart.Node);
+            }
+        }
+        class ArmedWeaponState : ArmAnimationPlayingState
+        {
+            ArmedWeaponPlayablePart _playablePart;
+            public ArmedWeaponState(ArmAnimationCore_New core) : base("armed_weapon", core)
+            {
+                _playablePart = core.armedAnimator.playablePart;
+            }
+            public override void OnEnter()
+            {
+                parentNode.AddChild(_playablePart.Node);
+                _playablePart.OutputSetting = core.outputSetting;
+            }
+            public override void OnExit()
+            {
+                parentNode.RemoveChild(_playablePart.Node);
+            }
+        }
+        class BlendingState : ArmAnimationPlayingState
+        {
+            MixerPlayablePart _mixer;
+            SwitchingPlayablePart _switching;
+            ArmedWeaponPlayablePart _armedWeapon;
+
+            public BlendingState(ArmAnimationCore_New core) : base("blended_switching_armed_weapon", core)
+            {
+                _mixer = core._mixer;
+                _switching = core.switching;
+                _armedWeapon = core.armedAnimator.playablePart;
+            }
+            public override void OnEnter()
+            {
+                parentNode.AddChild(_mixer.Node);
+                _mixer.Node.AddChild(_switching.Node);
+                _mixer.Node.AddChild(_armedWeapon.Node);
+                _mixer.OutputSetting = core.outputSetting;
+                _switching.Reset();
+                core.outputSetting.Weight = 1;
+            }
+            public override void OnExit()
+            {
+                _mixer.Node.RemoveChild(_switching.Node);
+                _mixer.Node.RemoveChild(_armedWeapon.Node);
+                parentNode.RemoveChild(_mixer.Node);
+            }
+        }
+        class IdleState : ArmAnimationPlayingState
+        {
+            public IdleState(ArmAnimationCore_New core) : base("idle", core)
+            {
+            }
+            public override void OnEnter()
+            {
+                core.outputSetting.Weight = 0;
+            }
+        }
         public float SwitchingWeight
         {
-            get => _switching.OutputSetting.Weight;
+            get => switching.OutputSetting.Weight;
             set
             {
                 var v = Mathf.Clamp01(value);
-                _switching.OutputSetting.Weight = v;
+                switching.OutputSetting.Weight = v;
             }
         }
         public byte StatusNum
@@ -46,51 +143,7 @@ namespace Tests.BodyBehaviour.Arm.Animations
                     return;
                 if (!_initialized)
                     throw new Exception();
-                var pnode = this.node.Parent;
-                switch (value)
-                {
-                    case 0:
-                        _mixer.Node.RemoveChild(_switching.Node);
-                        _mixer.Node.RemoveChild(_armedAnimator.playablePart.Node);
-                        pnode.RemoveChild(_mixer.Node);
-                        pnode.AddChild(_switching.Node);
-                        _switching.OutputSetting = this.outputSetting;
-                        this.outputSetting.Weight = 1;
-                        break;
-                    case 1:
-                        _mixer.Node.RemoveChild(_switching.Node);
-                        _mixer.Node.RemoveChild(_armedAnimator.playablePart.Node);
-                        pnode.RemoveChild(_mixer.Node);
-                        pnode.AddChild(_armedAnimator.playablePart.Node);
-                        _armedAnimator.playablePart.OutputSetting = this.outputSetting;
-                        break;
-                    case 2:
-                        Debug.Log("armed weapon playable part enabled: " + _armedAnimator.playablePart.Enabled);
-                        if (!_armedAnimator.playablePart.Enabled)
-                        {
-                            this.StatusNum = 0;
-                            break;
-                        }
-
-
-                        if (_statusNum == 0)
-                            pnode.RemoveChild(_switching.Node);
-                        else if (_statusNum == 1)
-                            pnode.RemoveChild(_armedAnimator.playablePart.Node);
-                      
-                        pnode.AddChild(_mixer.Node);
-                        _mixer.Node.AddChild(_switching.Node);
-                        _mixer.Node.AddChild(_armedAnimator.playablePart.Node);
-                        _mixer.OutputSetting = this.outputSetting;
-
-                        _switching.PlayablePart.SetTime(0);
-                        _switching.PlayablePart.Pause();
-                        this.outputSetting.Weight = 1;
-                        break;
-                    case 4:
-                        this.outputSetting.Weight = 0;
-                        break;
-                }
+                UpdatePlayingState(value);
                 _statusNum = value;
             }
         }
@@ -98,10 +151,10 @@ namespace Tests.BodyBehaviour.Arm.Animations
         {
             _definitions = core.definitions.Weapon;
             _animationDefinitions = core.animationDefinitions.Weapon;
-            _armedAnimator = new(core.armedWeaponController);
+            armedAnimator = new(core.armedWeaponController);
 
 
-            _switching = new(_definitions, _animationDefinitions);
+            switching = new(_definitions, _animationDefinitions);
             _mixer = new();
 
 
@@ -132,7 +185,7 @@ namespace Tests.BodyBehaviour.Arm.Animations
             //    }
             //};
         }
-        class MixerPlayablePart : PlayablePartBase
+        class MixerPlayablePart : AnimationPlayablePartBase
         {
             public override bool Initialize(PlayableGraph graph)
             {
@@ -147,15 +200,16 @@ namespace Tests.BodyBehaviour.Arm.Animations
             {
             }
         }
-        class SwitchingPlayablePart : PlayablePartBase
+        internal class SwitchingPlayablePart : AnimationPlayablePartBase
         {
             IArmWeaponDefinitions _definitions;
             IArmWeaponAnimationDefinitions _animationDefinitions;
-
+            internal PlayState State => playablePart.GetPlayState();
             public SwitchingPlayablePart(IArmWeaponDefinitions definitions, IArmWeaponAnimationDefinitions animationDefinitions) : base()
             {
                 _definitions = definitions;
                 _animationDefinitions = animationDefinitions;
+                enabled = true;
             }
 
             public override bool Initialize(PlayableGraph graph)
@@ -174,36 +228,77 @@ namespace Tests.BodyBehaviour.Arm.Animations
             public override void Dispose()
             {
             }
+            public void Reset()
+            {
+                if (playablePart.IsNull())
+                    throw new NullReferenceException();
+                playablePart.SetTime(0);
+                playablePart.Pause();
+            }
+            public void Replay()
+            {
+                if (playablePart.IsNull())
+                    throw new NullReferenceException();
+                playablePart.SetTime(0);
+                playablePart.Play();
+            }
+            public void Pause()
+            {
+                if (playablePart.IsNull())
+                    throw new NullReferenceException();
+                playablePart.Pause();
+            }
         }
         public override bool Initialize(PlayableGraph graph)
         {
             _initialized = true;
+            InitializeStates();
             return true;
         }
         public override void Dispose()
         {
             _initialized = false;
         }
-        public void StartPlaySwitching()
+        public void ReplaySwitching()
         {
-            //Debug.Log("Play switching");
             if (playing)
                 return;
-            _switching.PlayablePart.SetTime(0);
-            _switching.PlayablePart.Play();
+            switching.Replay();
             playing = true;
         }
-        public void StopPlaySwitching()
+        public void PauseSwitching()
         {
-            //Debug.Log("Stop switching");
             if (!playing)
                 return;
-            _switching.PlayablePart.Pause();
+            switching.Pause();
             playing = false;
+        }
+        void InitializeStates()
+        {
+            _idleState = new(this);
+            _switchingState = new(this);
+            _armedState = new(this);
+            _blendedState = new(this);
+
+        }
+        void UpdatePlayingState(byte statusNum)
+        {
+            _playingState?.OnExit();
+            var newState = statusNum == 2 && !armedAnimator.playablePart.Enabled ? GetNewState(0) : GetNewState(statusNum);
+            newState.OnEnter();
+            _playingState = newState;
+            ArmAnimationPlayingState GetNewState(byte num) => num switch
+            {
+                0 => _switchingState,
+                1 => _armedState,
+                2 => _blendedState,
+                3 => _idleState,
+                _ => throw new Exception()
+            };
         }
         public void OnUpdate()
         {
-            _armedAnimator.OnUpdate();
+            armedAnimator.OnUpdate();
         }
     }
     internal class ArmAnimationCore : IDynamicPlayablePart

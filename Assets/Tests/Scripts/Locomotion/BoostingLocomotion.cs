@@ -46,14 +46,14 @@ namespace Tests.Locomotion
             var expectedVelocity = direction * speed;
             _velocity = expectedVelocity;
             _context = context;
-            _timeline.Start();
+            _timeline.Restart();
             _startAction?.Invoke(context);
         }
         public void EndBoost(Context context)
         {
             if (!_timeline.isRunning)
                 return;
-            _timeline.Stop();
+            _timeline.Pause();
             _lastTime = Time.unscaledTime;
             _velocity = Vector3.zero;
             _endAction?.Invoke(context);

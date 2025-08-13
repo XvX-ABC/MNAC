@@ -4,7 +4,7 @@
     {
         public float Time;
         public float Duration;
-        public float Proportion;
+        public float NormalizedTime;
         public float DeltaTime;
     }
 }

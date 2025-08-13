@@ -204,7 +204,7 @@ namespace Tests.Weapons.MultiMissileLauncher
             //return new TimelinesGroup(l => l.DelayLaunchTimeline, subLaunchers);
             var timeline = new Timeline(definitions.LaunchDelayRange.y);
             timeline.AddPointEvent(0, _ => _actionsLock.LockAll());
-            timeline.AddPointEvent(1, _ => { _actionsLock.UnlockAll(); _launchDurationTimeline.Start(); });
+            timeline.AddPointEvent(1, _ => { _actionsLock.UnlockAll(); _launchDurationTimeline.Restart(); });
             return timeline;
         }
         protected virtual ITimeline CreateLaunchDurationTimeline()
@@ -237,7 +237,7 @@ namespace Tests.Weapons.MultiMissileLauncher
                     _ammoInMagazineQuantity--;
             }
             if (_ammoInMagazineQuantity != v)
-                _delayLaunchTimeline.Start();
+                _delayLaunchTimeline.Restart();
             return true;
         }
         public bool EndLaunch()
@@ -254,7 +254,7 @@ namespace Tests.Weapons.MultiMissileLauncher
                     else
                         return false;
             }
-            _delayLaunchTimeline.Stop();
+            _delayLaunchTimeline.Pause();
             return true;
         }
 
@@ -279,7 +279,7 @@ namespace Tests.Weapons.MultiMissileLauncher
                 }
             }
             if (_ammoSpareQuantity != v)
-                _reloadTimeline.Start();
+                _reloadTimeline.Restart();
             return true;
         }
         internal bool EndReloadForSubLauncher(IMissileLauncher launcher)
@@ -302,7 +302,7 @@ namespace Tests.Weapons.MultiMissileLauncher
                 if (!EndReloadForSubLauncher(l))
                     return false;
             }
-            _reloadTimeline.Stop();
+            _reloadTimeline.Pause();
             return true;
         }
 

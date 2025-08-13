@@ -14,11 +14,11 @@ namespace Assets.Scripts.Utilities.Timeline
         {
 
         }
-        public override void Start()
+        public override void Restart()
         {
             if (timeGenerator != null)
                 length = timeGenerator.Time;
-            base.Start();
+            base.Restart();
         }
         protected override void Reset()
         {

@@ -10,7 +10,7 @@ namespace Assets.Scripts.Utilities.Timeline.Event.Range
         {
             triggeredFunc = context =>
             {
-                var proportion = context.Proportion;
+                var proportion = context.NormalizedTime;
                 var startProportion = TriggeredProportion;
                 var endProportion = startProportion + DurationProportion;
                 return proportion >= startProportion && proportion < endProportion;

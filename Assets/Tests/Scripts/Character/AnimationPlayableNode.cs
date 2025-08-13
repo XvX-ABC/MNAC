@@ -15,7 +15,7 @@ namespace Tests.Character
             this.enumerator = new(this.root);
         }
     }
-    public class AnimationPlayableNode : MTContainerNode<IPlayablePart>, IPlayablePartNode
+    public class AnimationPlayableNode : MTContainerNode<IAnimationPlayablePart>, IAnimationPlayablePartNode
     {
         protected PlayableGraph graph;
         protected ushort connectedCount;
@@ -23,7 +23,7 @@ namespace Tests.Character
         {
             this.graph = graph;
         }
-        public AnimationPlayableNode(IPlayablePart part)
+        public AnimationPlayableNode(IAnimationPlayablePart part)
         {
             this.value = part ?? throw new ArgumentNullException(nameof(part));
         }
@@ -36,128 +36,105 @@ namespace Tests.Character
             get => this.parent;
             set
             {
-                var oldParent = (IPlayablePartNode)this.parent;
-                if (oldParent != null && !IsRoot(oldParent))
-                {
-                    oldParent.DisconnectChild(this);
-                    this.value.Dispose();
-                }
-
-
-                if (value != null)
-                {
-                    if (value is not IPlayablePartNode pnode)
-                        throw new InvalidCastException(nameof(value));
-                    var newParent = pnode;
-                    if (this.value.Initialize(newParent.Graph))
-                    {
-                        if (!IsRoot(newParent) && newParent.Value != null)
-                            newParent.ConnectChild(this);
-                    }
-                    graph = newParent.Graph;
-                }
-
                 parent = value;
-
             }
         }
-        public PlayableGraph Graph { get => graph; set => graph = value; }
-
-        bool NodeCheck()
+        public IAnimationPlayablePartNode PlayableParent
         {
-            if (this.value == null)
-                throw new NullReferenceException(nameof(this.value));
-            if (this.value.PlayablePart.IsNull())
+            get => (IAnimationPlayablePartNode)this.parent;
+        }
+        public PlayableGraph Graph { get => graph; set => graph = value; }
+        [Obsolete]
+        bool NodeCheck(IAnimationPlayablePartNode node)
+        {
+            if (node.Value == null)
+                throw new NullReferenceException(nameof(node.Value));
+            if (node.Value.PlayablePart.IsNull())
             {
                 Debug.LogWarning("Current PlayablePart is null, cannot connect to parent.");
                 return false;
             }
             return true;
         }
-        void ChildNodeValidityCheck(IPlayablePartNode childNode)
+        void NodeValidityCheck(IAnimationPlayablePartNode node)
         {
-            if (childNode == null)
-                throw new ArgumentNullException(nameof(childNode));
-            if (childNode.Value == null)
-                throw new NullReferenceException(nameof(childNode.Value));
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+            if (node.Value == null)
+                throw new NullReferenceException(nameof(node.Value));
         }
-        bool ChildNodePlayablePartCheck(IPlayablePartNode childNode)
+        bool NodePlayablePartCheck(IAnimationPlayablePartNode node)
         {
-            if (childNode.Value.PlayablePart.IsNull())
+            if (node.Value.PlayablePart.IsNull())
             {
                 Debug.LogWarning("Child node's PlayablePart is null, cannot connect to parent.");
                 return false;
             }
             return true;
         }
-        public virtual void ConnectChild(IPlayablePartNode childNode)
+        public override void AddChild(IMTNode node)
         {
-            //if (this.value == null)
-            //    throw new NullReferenceException(nameof(this.value));
-            //if (childNode == null)
-            //    throw new ArgumentNullException(nameof(childNode));
-            //var p = this.value.PlayablePart;
-            //if (p.IsNull())
-            //{
-            //    Debug.LogWarning("Current PlayablePart is null, cannot connect to it.");
-            //    return;
-            //}
+            if (node is not IAnimationPlayablePartNode pnode)
+                throw new InvalidCastException(nameof(node));
 
-            //if (childNode.Value.PlayablePart.IsNull())
-            //{
-            //    Debug.LogWarning("Child node's PlayablePart is null, cannot connect to parent.");
-            //    return;
-            //}
-            if (!NodeCheck())
+            NodeValidityCheck(pnode);
+            base.AddChild(pnode);
+            if (pnode.Value.Initialize(this.graph))
+            {
+                if (!IsRoot(this) && this.value != null)
+                {
+                    SetOutputSettingForNode(pnode);
+                    if (NodePlayablePartCheck(pnode))
+                        ConnectChild(pnode);
+                }
+            }
+            pnode.Graph = this.graph;
+
+        }
+        public override void RemoveChild(IMTNode node)
+        {
+            if (node is not IAnimationPlayablePartNode pnode)
+                throw new InvalidCastException(nameof(node));
+            if (!children.Contains(node))
                 return;
+            NodeValidityCheck(pnode);
+            if (NodePlayablePartCheck(pnode))
+            {
+                this.DisconnectChild(pnode);
+                pnode.Value.Dispose();
+            }
+            base.RemoveChild(pnode);
+            pnode.Graph = default;
 
+        }
+        void SetOutputSettingForNode(IAnimationPlayablePartNode node)
+        {
             var p = this.value.PlayablePart;
             var idx = this.children == null ? 0 : connectedCount;
-            ChildNodeValidityCheck(childNode);
             var outputSetting = new OutputSetting(p, idx);
-            childNode.Value.OutputSetting = outputSetting;
-            if (!ChildNodePlayablePartCheck(childNode))
-                return;
-
+            node.Value.OutputSetting = outputSetting;
+        }
+        protected virtual void ConnectChild(IAnimationPlayablePartNode childNode)
+        {
+            var p = this.value.PlayablePart;
+            var idx = this.children == null ? 0 : connectedCount;
 
             p.ConnectInput(idx, childNode.Value.PlayablePart, 0);
             connectedCount++;
         }
-        public virtual void DisconnectChild(IPlayablePartNode childNode)
+        protected virtual void DisconnectChild(IAnimationPlayablePartNode childNode)
         {
-            //if (this.value == null)
-            //    throw new NullReferenceException(nameof(this.value));
-            //if (childNode == null)
-            //    throw new ArgumentNullException(nameof(childNode));
-            //var p = this.value.PlayablePart;
-            //if (p.IsNull())
-            //{
-            //    Debug.LogWarning("Current PlayablePart is null, cannot disconnect from it.");
-            //    return;
-            //}
-            //if (childNode.Value.PlayablePart.IsNull())
-            //{
-            //    Debug.LogWarning("Child node's PlayablePart is null, cannot disconnect from parent.");
-            //    return;
-            //}
-            if (!NodeCheck())
-                return;
-
             var p = this.value.PlayablePart;
-
-            ChildNodeValidityCheck(childNode);
 
             var setting = (OutputSetting)childNode.Value.OutputSetting;
             var idx = setting.portNum;
             childNode.Value.OutputSetting = null;
-            if (!ChildNodePlayablePartCheck(childNode))
-                return;
-
 
             p.DisconnectInput(idx);
             connectedCount--;
         }
-        internal virtual void ConnectToParent(IPlayablePartNode parentNode)
+        [Obsolete]
+        internal virtual void ConnectToParent(IAnimationPlayablePartNode parentNode)
         {
             var v = parentNode.Value;
             if (v == null)
@@ -178,7 +155,8 @@ namespace Tests.Character
             p.ConnectInput(idx, this.value.PlayablePart, 0);
             this.value.OutputSetting = outputSetting;
         }
-        internal virtual void DisconnectFromParent(IPlayablePartNode parentNode)
+        [Obsolete]
+        internal virtual void DisconnectFromParent(IAnimationPlayablePartNode parentNode)
         {
             var v = parentNode.Value;
             if (v == null)
@@ -198,7 +176,16 @@ namespace Tests.Character
             p.DisconnectInput(idx);
             this.value.OutputSetting = null;
         }
-
+        [Obsolete]
+        public virtual void RemoveAllChildren()
+        {
+            if (this.children == null || this.children.Count == 0)
+                return;
+            foreach (var node in children)
+            {
+                this.RemoveChild(node);
+            }
+        }
 
     }
 }

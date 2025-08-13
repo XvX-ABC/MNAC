@@ -67,7 +67,7 @@ namespace Assets.Scripts.Utilities.Timeline
         public Timeline(float duration, bool isLoop) : this(new IEventsExecutor[] { new PointEventsExecutor(), new RangeEventsExecutor() }, duration, isLoop, false) { }
         public Timeline(float duration) : this(duration, false) { }
         protected Timeline() : this(0) { }
-        public virtual void Start()
+        public virtual void Restart()
         {
             Reset();
             isRunning = true;
@@ -76,7 +76,7 @@ namespace Assets.Scripts.Utilities.Timeline
         {
             isRunning = true;
         }
-        public void Stop()
+        public void Pause()
         {
             isRunning = false;
         }
@@ -86,11 +86,16 @@ namespace Assets.Scripts.Utilities.Timeline
                 throw new NotSupportedException("The loop timeline was not supported early end.");
             time = length;
         }
+        public void End()
+        {
+            isRunning = false;
+            Reset();
+        }
         public void OnUpdate(float deltaTime)
         {
             if (!isRunning)
                 return;
-            var context = new TimelineContext() { DeltaTime = deltaTime, Time = time, Proportion = length == 0 ? 1 : time / length, Duration = length };
+            var context = new TimelineContext() { DeltaTime = deltaTime, Time = time, NormalizedTime = length == 0 ? 1 : time / length, Duration = length };
 
             if (!_startActionExecuted)
             {

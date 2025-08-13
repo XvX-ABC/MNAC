@@ -11,7 +11,6 @@ using Tests.Behaviours.Arm.Weapons;
 using Tests.BodyBehaviour.Arm.Animations;
 using Tests.Characters;
 using Tests.Input;
-using Tests.Utilities.MTrees;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Accessibility;
@@ -20,46 +19,6 @@ using UnityEngine.Playables;
 
 namespace Tests.Character
 {
-    public interface IPlayablePart : IDisposable
-    {
-        public bool Enabled { get; }
-        public bool Initialize(PlayableGraph graph);
-        public Playable PlayablePart { get; }
-        public IOutputSetting OutputSetting { get; set; }
-        public IPlayablePartNode Node { get; }
-    }
-    public abstract class PlayablePartBase : IPlayablePart
-    {
-        protected bool enabled;
-        protected Playable playablePart;
-        protected IOutputSetting outputSetting;
-        protected AnimationPlayableNode node;
-        public virtual bool Enabled => enabled;
-
-        public Playable PlayablePart => playablePart;
-        public virtual IOutputSetting OutputSetting
-        {
-            get => outputSetting;
-            set => outputSetting = value;
-        }
-        public virtual IPlayablePartNode Node { get => node; }
-        protected PlayablePartBase()
-        {
-            node = new(this);
-        }
-
-        public virtual void Dispose()
-        {
-            playablePart.Destroy();
-        }
-        public abstract bool Initialize(PlayableGraph graph);
-    }
-    public interface IPlayablePartNode : IMTContainerNode<IPlayablePart>
-    {
-        public PlayableGraph Graph { get; set; }
-        public void ConnectChild(IPlayablePartNode childNode);
-        public void DisconnectChild(IPlayablePartNode childNode);
-    }
     public interface ICharacterArmAnimationDefinitions
     {
         AvatarMask Mask { get; }
@@ -80,7 +39,7 @@ namespace Tests.Character
         internal PlayableGraph graph;
         AnimationPlayablePartTree _appt;
 
-        class LayersMixerPlayable : PlayablePartBase
+        class LayersMixerPlayable : AnimationPlayablePartBase
         {
             ICharacterAnimationDefinitions _definitions;
 
@@ -99,7 +58,7 @@ namespace Tests.Character
                 return true;
             }
         }
-        class ControllerPlayable : PlayablePartBase
+        class ControllerPlayable : AnimationPlayablePartBase
         {
             Animator _animator;
             public override IOutputSetting OutputSetting

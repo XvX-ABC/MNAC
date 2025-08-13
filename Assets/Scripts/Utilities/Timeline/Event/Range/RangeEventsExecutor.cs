@@ -31,7 +31,7 @@ namespace Assets.Scripts.Utilities.Timeline.Event.Range
             public void Execute(TimelineContext context)
             {
                 Event.Execute(context);
-                UpdateTriggeredState(context.Proportion);
+                UpdateTriggeredState(context.NormalizedTime);
             }
 
             public void Reset()
@@ -120,7 +120,7 @@ namespace Assets.Scripts.Utilities.Timeline.Event.Range
         {
             if (_events == null)
                 return;
-            var currentProportion = context.Proportion;
+            var currentProportion = context.NormalizedTime;
             foreach (var evt in _events)
             {
                 if (evt.Triggered)

@@ -2,13 +2,15 @@
 using System;
 using System.Threading;
 using Unity.Collections.LowLevel.Unsafe;
+using UnityEngine;
 using UnityEngine.Playables;
 
 namespace Tests.States
 {
+
     public abstract class PlayableStateBase : PlayableStateBase<object>
     {
-        protected PlayableStateBase(string name, float duration = 0, bool enabled = true) : base(name, duration, enabled)
+        protected PlayableStateBase(string name, float duration = 0,  bool enabled = true) : base(name, duration, enabled)
         {
         }
     }
@@ -34,30 +36,18 @@ namespace Tests.States
         }
 
         public new IPlayableTransition<T>[] Transitions { get => _transitions; }
+
+
         public override void AddTransition(ITransition<T> transition)
         {
             if (transition is IPlayableTransition<T> pt)
             {
                 base.AddTransition(pt);
-                //_transitions = (IPlayableTransition<T>[])base.transitions;
                 _transitions = Array.ConvertAll(base.transitions, it => (IPlayableTransition<T>)it);
             }
             else
                 return;
         }
-
-        public void OnTransitionRunning(IPlayableTransition<T> transition)
-        {
-            if (transition is IPlayableTransition<T> pt)
-            {
-                base.RemoveTransition((IState<T>)pt);
-                _transitions = Array.ConvertAll(base.transitions, it => (IPlayableTransition<T>)it);
-            }
-            else
-                return;
-        }
-
-
 
 
         public virtual void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)

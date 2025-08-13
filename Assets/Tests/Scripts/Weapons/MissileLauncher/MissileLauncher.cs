@@ -66,7 +66,7 @@ namespace Tests.Weapons.MissileLauncher
             {
                 Launch();
                 actionsLock.UnlockAll();
-                launchDurationTimeline.Start();
+                launchDurationTimeline.Restart();
             });
             return timeline;
         }
@@ -108,7 +108,7 @@ namespace Tests.Weapons.MissileLauncher
             if (ammoInMagazineQuantity <= 0)
                 return false;
 
-            delayLaunchTimeline.Start();
+            delayLaunchTimeline.Restart();
 
             return true;
         }

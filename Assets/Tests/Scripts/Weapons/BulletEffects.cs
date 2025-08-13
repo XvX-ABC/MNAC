@@ -72,7 +72,7 @@ namespace Tests.Weapons
                 _hitEffect.transform.position = point;
                 _hitEffect.transform.rotation = Quaternion.FromToRotation(Vector3.up, normal);
                 _hitEffect.Play();
-                timeline.Start();
+                timeline.Restart();
             }
 
             //if (Physics.Raycast(shootingRay, out var hitInfo, Mathf.Infinity, _mask))

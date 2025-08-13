@@ -4,6 +4,7 @@ using Assets.Tests.Scripts.Weapons;
 using System;
 using Tests.BodyBehaviour.Arm.Animations;
 using Tests.BT;
+using Tests.Character;
 using Tests.Characters;
 using Tests.Input;
 using Tests.States;
@@ -13,7 +14,7 @@ using UnityEngine;
 
 namespace Tests.Behaviours.Arm
 {
-    public class ArmWeaponSwitching : ArmBehaviourPlayableState
+    public class ArmWeaponSwitching : ArmPlayableState, IAnimationPlayableState
     {
         IArmWeaponDefinitions _definitions;
         MountPoint _mountPoint;
@@ -36,7 +37,6 @@ namespace Tests.Behaviours.Arm
                 _selectionFunc = value;
             }
         }
-        //public Func<GameObject, GameObject, GameObject> SwitchingEvent { get => _mountPoint.LoadObjChangeFunc; set => _mountPoint.LoadObjChangeFunc = value; }
         public Func<IWeapon, IWeapon, IWeapon> SwitchingEvent
         {
             get => _switchingEvent;
@@ -79,6 +79,8 @@ namespace Tests.Behaviours.Arm
         }
 
         internal ArmAnimationCore_New AnimationCore { get => _animationCore; set => _animationCore = value; }
+
+        IAnimationPlayablePartNode IAnimationPlayableState.Node => _animationCore.switching.Node;
 
         public ArmWeaponSwitching(IArmWeaponDefinitions definitions, MountPoint mountPoint, WeaponCore weaponCore, Func<WeaponDescription[], string> selectionFunc) : base("switching", definitions.SwitchingDurationTime)
         {
@@ -131,7 +133,8 @@ namespace Tests.Behaviours.Arm
                 return;
             }
 
-            timeline.Start();
+            timeline.Restart();
+            Debug.Log("switching timeline length: " + timeline.Length);
             if (_animationCore != null)
                 _animationCore.StatusNum = 0;
         }
@@ -139,8 +142,9 @@ namespace Tests.Behaviours.Arm
 
         public override void OnExit()
         {
+            timeline.End();
             base.OnExit();
-            timeline.Stop();
+            Debug.Log("switching timeline length: " + timeline.Length);
         }
 
 
