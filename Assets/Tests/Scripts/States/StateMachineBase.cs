@@ -52,7 +52,6 @@ namespace Tests.States
         {
             internal S sourceState;
             internal S destinationState;
-            internal Func<bool> triggerEvent;
             protected Action<T> triggeredEvent;
 
             internal List<Func<bool>> triggerEvents;
@@ -64,7 +63,6 @@ namespace Tests.States
             {
                 this.sourceState = sourceState ?? throw new ArgumentNullException(nameof(sourceState));
                 this.destinationState = destinationState ?? throw new ArgumentNullException(nameof(destinationState));
-                this.triggerEvent = triggerEvent;
                 triggerEvents = new();
                 this.AddTriggerEvent(triggerEvent);
             }
@@ -72,7 +70,6 @@ namespace Tests.States
             public IState<T> SourceState => sourceState;
 
             public IState<T> DestinationState => destinationState;
-            public Func<bool> TriggerEvent => triggerEvent;
             public Action<T> TriggeredEvent { get => triggeredEvent; set => triggeredEvent = value; }
 
             public bool Triggered => IsTriggered();

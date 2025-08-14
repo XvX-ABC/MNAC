@@ -6,12 +6,6 @@ using Tests.Utilities.MTrees;
 
 namespace Tests.Behaviours.Arm
 {
-    public interface IWithCallbackPlayableState<T> : IPlayableState<T>
-    {
-        Action EntryAction { get; set; }
-        Action ExitAction { get; set; }
-        Action UpdateAction { get; set; }
-    }
 
     public abstract class ArmPlayableState : PlayableStateBase, IArmBehaviour, IWithCallbackPlayableState<object>
     {

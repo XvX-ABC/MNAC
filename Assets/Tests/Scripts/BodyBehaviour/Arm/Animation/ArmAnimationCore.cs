@@ -306,7 +306,7 @@ namespace Tests.BodyBehaviour.Arm.Animations
         IArmWeaponDefinitions _definitions;
         IArmWeaponAnimationDefinitions _animationDefinitions;
         AnimationMixerPlayable _mixer;
-        AnimationClipPlayable _switcingClip;
+        AnimationClipPlayable _switchingClip;
         IOutputSetting _outputSetting;
 
         internal bool playing;
@@ -365,14 +365,14 @@ namespace Tests.BodyBehaviour.Arm.Animations
                 if (p.IsNull())
                 {
                     _mixer.DisconnectInput(0);
-                    cp = _switcingClip;
+                    cp = _switchingClip;
                     _armedAnimator.OutputSetting = this._outputSetting;
                 }
                 else
                 {
                     _mixer.DisconnectInput(0);
                     _mixer.DisconnectInput(1);
-                    _mixer.ConnectInput(0, _switcingClip, 0);
+                    _mixer.ConnectInput(0, _switchingClip, 0);
                     _mixer.ConnectInput(1, p, 0);
                     cp = _mixer;
                     _armedAnimator.OutputSetting = new OutputSetting(_mixer, 1);
@@ -387,9 +387,9 @@ namespace Tests.BodyBehaviour.Arm.Animations
 
             var clip = _animationDefinitions.Switching.Clip;
             var length = clip.length;
-            _switcingClip = AnimationClipPlayable.Create(graph, _animationDefinitions.Switching.Clip ?? throw new NullReferenceException("definitions.Switching.Clip"));
+            _switchingClip = AnimationClipPlayable.Create(graph, _animationDefinitions.Switching.Clip ?? throw new NullReferenceException("definitions.Switching.Clip"));
             var speed = _definitions.SwitchingDurationTime > 0 ? length / _definitions.SwitchingDurationTime : 1;
-            _switcingClip.SetSpeed(speed);
+            _switchingClip.SetSpeed(speed);
 
             _armedAnimator.GetPlayablePart(graph);
             //graph.Connect(_reloadClip, 0, _mixer, 0);
@@ -398,20 +398,20 @@ namespace Tests.BodyBehaviour.Arm.Animations
         }
         public Playable GetPlayablePart(PlayableGraph graph)
         {
-            if (_switcingClip.IsNull())
+            if (_switchingClip.IsNull())
                 InitializePlayablePart(graph);
-            return _switcingClip;
+            return _switchingClip;
         }
         public void PlaySwitching()
         {
             Debug.Log("Play switching animation");
-            _switcingClip.SetTime(0);
-            _switcingClip.Play();
+            _switchingClip.SetTime(0);
+            _switchingClip.Play();
             playing = true;
         }
         public void StopSwitching()
         {
-            _switcingClip.Pause();
+            _switchingClip.Pause();
             playing = false;
         }
 

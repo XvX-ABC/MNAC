@@ -13,7 +13,7 @@ namespace Tests.States
     }
     public partial class PlayableStateMachine<T> : StateMachineBase<IPlayableState<T>, T>, IPlayableState<T>
     {
-        protected const byte INTERRUPTION_SOURCE_DEFAULT_CODE = PlayableTransition<T>.INTERRUPTION_SOURCE_DEFAULT_CODE;
+        protected const byte INTERRUPTION_SOURCE_DEFAULT_CODE = PlayableTransition<T>.INTERRUPTION_SOURCE_NEXT_CODE;
         class TransitionState : PlayableStateBase<T>
         {
             internal IPlayableState<T> srcState;
@@ -26,7 +26,6 @@ namespace Tests.States
                 {
                     sourceState = this,
                     destinationState = null,
-                    triggerEvent = null,
                 };
                 this.transitions = new ITransition<T>[] { transition };
                 _list = new();
@@ -48,7 +47,6 @@ namespace Tests.States
                 Array.Resize(ref this.transitions, 1);
                 var t = this.transitions[0] as PlayableTransition<T>;
                 t.destinationState = desState;
-                //t.triggerEvent = () => timeline.NormalizedTime >= 1;
                 t.ClearTriggerEvents();
                 t.AddTriggerEvent(() => timeline.NormalizedTime >= 1);
 
@@ -61,8 +59,6 @@ namespace Tests.States
             {
                 _list.Clear();
                 foreach (var ts in desState.Transitions)
-                    //if (ts.TriggerEvent != null)
-                    //_list.Add(ts);
                     if (ts.TriggerEvents.Count > 0)
                         _list.Add(ts);
                 var dLength = _list.Count;

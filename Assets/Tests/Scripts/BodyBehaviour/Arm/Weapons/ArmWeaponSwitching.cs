@@ -134,7 +134,6 @@ namespace Tests.Behaviours.Arm
             }
 
             timeline.Restart();
-            Debug.Log("switching timeline length: " + timeline.Length);
             if (_animationCore != null)
                 _animationCore.StatusNum = 0;
         }
@@ -144,7 +143,6 @@ namespace Tests.Behaviours.Arm
         {
             timeline.End();
             base.OnExit();
-            Debug.Log("switching timeline length: " + timeline.Length);
         }
 
 

@@ -1,13 +1,13 @@
 ﻿using Assets.Scripts.Utilities.Timeline;
-using Assets.Scripts.Utilities.Timeline.Event.Point;
 using System;
 using Tests.Behaviours.Arm;
 using Tests.States;
 using UnityEngine;
-using UnityEngine.EventSystems;
-internal interface IBlendingTransition<T> : IPlayableTransition<T>
+public interface IWithCallbackPlayableState<T> : IPlayableState<T>
 {
-    public float FixedExitTime { get; }
+    Action EntryAction { get; set; }
+    Action ExitAction { get; set; }
+    Action UpdateAction { get; set; }
 }
 internal class BlendingTransition<T> : PlayableTransition<T>, IBlendingTransition<T>
 {
@@ -26,7 +26,7 @@ internal class BlendingTransition<T> : PlayableTransition<T>, IBlendingTransitio
         float duration,
         float offset,
         float fixedExitTime = FIXED_EXIT_TIME_INVALID_VALUE,
-        byte interruptionSource = INTERRUPTION_SOURCE_DEFAULT_CODE
+        byte interruptionSource = INTERRUPTION_SOURCE_NEXT_CODE
        ) : base(
             sourceState,
             destinationState,
@@ -40,19 +40,15 @@ internal class BlendingTransition<T> : PlayableTransition<T>, IBlendingTransitio
         {
             fixedExitTime = Mathf.Clamp01(fixedExitTime);
             this.fixedExitTime = fixedExitTime;
-            //this.triggerEvent += () => this.sourceState.Timeline.NormalizedTime >= this.fixedExitTime;
             this.AddTriggerEvent(() => this.sourceState.Timeline.NormalizedTime >= this.fixedExitTime);
         }
-        //this.timeline.AddPointEvent(0, Begin);
         this.timeline.StartAction += Begin;
 
 
-        //destinationState.Timeline.EndAction += ResetDestinationState;
         destinationState.ExitAction += ResetDestinationState;
     }
     protected virtual void Begin(TimelineContext ctx)
     {
-        Debug.Log($"Blending transtion name begin+ " + this.GetType().Name);
         var timeline = destinationState.Timeline;
         _oldLength = timeline.Length;
         var newLength = _oldLength - (offset + ctx.Duration);
@@ -63,9 +59,10 @@ internal class BlendingTransition<T> : PlayableTransition<T>, IBlendingTransitio
     }
     protected virtual void ResetDestinationState()
     {
-        Debug.Log("Blending transition ResetDestinationState");
         var timeline = destinationState.Timeline;
         timeline.UpdateLength(_oldLength);
+        var state = (IWithCallbackPlayableState<T>)destinationState;
+        state.ExitAction -= ResetDestinationState;
     }
 
 }

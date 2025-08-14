@@ -73,7 +73,6 @@ namespace Tests.Behaviours.Arm
             if (weapon == null)
                 throw new ArgumentNullException(nameof(weapon));
             var name = weapon.Name;
-            Debug.Log("Activated  weapon name: " + weapon.Name);
             if (name == null || name.Length == 0)
                 throw new Exception("The weapon name can't be empty.");
             if (!weaponBehavioursMapping.TryGetValue(name, out var b))
@@ -156,6 +155,15 @@ namespace Tests.Behaviours.Arm
             {
                 var b = activatedBehaviours[0];
                 b.State.OnUpdate();
+            }
+        }
+        public override void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.TransitionBeginWhichOfPreviousState(currentTransition);
+            if (activatedBehaviours != null)
+            {
+                var b = activatedBehaviours[0];
+                b.State.TransitionBeginWhichOfPreviousState(currentTransition);
             }
         }
         public override void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)

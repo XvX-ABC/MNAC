@@ -269,7 +269,8 @@ namespace Tests.Behaviours.Arm.Weapons
         {
             var targetsCount = _targetsCatcher.Targets.Count;
             var state = targetsCount > 0 ? _aim as IPlayableState<object> : _idle as IPlayableState<object>;
-            _stateMachine.ChangeStateTo(state);
+            if (_stateMachine.CurrentState != state)
+                _stateMachine.ChangeStateTo(state);
             _stateMachine.OnEnter();
         }
 
@@ -281,7 +282,12 @@ namespace Tests.Behaviours.Arm.Weapons
         public override void OnUpdate()
         {
             _stateMachine.OnUpdate();
-            Debug.Log("Armed launcher state machie: " + _stateMachine + ", animator enabled: " + banimator.enabled);
+            //Debug.Log("Armed launcher state machie: " + _stateMachine + ", animator enabled: " + banimator.enabled);
+        }
+        public override void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.TransitionBeginWhichOfPreviousState(currentTransition);
+            _stateMachine.OnEnter();
         }
         public override void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
         {
@@ -291,26 +297,25 @@ namespace Tests.Behaviours.Arm.Weapons
             if (targetsCount > 0)
             {
                 _aim.Weight = v;
+                _aim.TransitionRunningWhichOfPreviousState(currentTransition);
             }
             banimator.IdleWeight = 1 - v;
         }
         public override void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.TransitionRunningWhichToNextState(currentTransition);
-            var targetsCount = _targetsCatcher.Targets.Count;
             var v = currentTransition.Timeline.NormalizedTime;
-            if (targetsCount > 0)
+            if (_stateMachine.CurrentState == _aim)
             {
                 _aim.Weight = 1 - v;
+                _aim.TransitionRunningWhichToNextState(currentTransition);
             }
             banimator.IdleWeight = v;
         }
         private void Update()
         {
 
-            //this.OnUpdate();
             _targetsCatcher.OnUpdate();
-            //banimator.OnUpdate();
         }
         public override void Initialize(Blackboard blackboard)
         {
@@ -335,11 +340,14 @@ namespace Tests.Behaviours.Arm.Weapons
             InitializeAmmoReload();
             InitializeStateMachine();
 
-            _aim.animator = banimator;
 
             _aim.weightChangedAction += v =>
             {
                 banimator.AimingWeight = v;
+            };
+            _aim.targetChangedAction += t =>
+            {
+                banimator.enabled = t != null;
             };
             _targetsCatcher.OnAwake();
             _targetsCatcher.TargetsChangedAction += targets =>
