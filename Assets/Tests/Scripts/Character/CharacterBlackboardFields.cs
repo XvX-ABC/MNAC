@@ -10,11 +10,13 @@ namespace Tests.Characters
             TargetsCatcher = Guid.NewGuid();
             Input = Guid.NewGuid();
             WeaponCore = Guid.NewGuid();
+            AnimationPB = Guid.NewGuid();
         }
         public static readonly Guid FieldChangeHandler;
         public static readonly Guid TargetsCatcher;
         public static readonly Guid Input;
         public static readonly Guid WeaponCore;
+        public static readonly Guid AnimationPB;
     }
 
 }

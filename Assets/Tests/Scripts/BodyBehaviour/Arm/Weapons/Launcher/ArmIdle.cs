@@ -20,7 +20,6 @@ namespace Tests.Behaviours.Arm.Weapons
         {
             _animator.IdleWeight = 1;
             //_behaviour.enabled = false;
-            _animator.enabled = false;
         }
         public override void OnExit()
         {

@@ -35,11 +35,8 @@ namespace Tests.Behaviours.Arm
             }
         }
         internal ArmAnimationCore_New AnimationCore { get => _animationCore; set => _animationCore = value; }
-        public byte StatusNum
-        {
-            get => activatedBehaviours == null ? (byte)0 : activatedBehaviours[0].StatusNum;
-        }
-
+        public Func<bool> EntryFunc { get => EnterBehaviour; }
+        public Func<bool> ExitFunc { get => ExitBehaviour; }
         public ArmedWeaponArmBehavioursController(WeaponCore weaponCore, IArmWeaponDefinitions definitions, params IArmedWeaponArmBehaviour[] behaviours) : base("armed_weapon")
         {
             if (weaponCore == null)
@@ -126,6 +123,14 @@ namespace Tests.Behaviours.Arm
             }
             b.Enabled = false;
             _unactivatedAction?.Invoke(weapon, b);
+        }
+        bool EnterBehaviour()
+        {
+            return activatedBehaviours == null ? false : activatedBehaviours[0].EntryFunc();
+        }
+        bool ExitBehaviour()
+        {
+            return activatedBehaviours == null ? false : activatedBehaviours[0].ExitFunc();
         }
         public override void OnEnter()
         {

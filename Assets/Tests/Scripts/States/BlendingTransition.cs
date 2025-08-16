@@ -49,6 +49,7 @@ internal class BlendingTransition<T> : PlayableTransition<T>, IBlendingTransitio
     }
     protected virtual void Begin(TimelineContext ctx)
     {
+        Debug.Log("blending transition begin");
         var timeline = destinationState.Timeline;
         _oldLength = timeline.Length;
         var newLength = _oldLength - (offset + ctx.Duration);
@@ -63,6 +64,7 @@ internal class BlendingTransition<T> : PlayableTransition<T>, IBlendingTransitio
         timeline.UpdateLength(_oldLength);
         var state = (IWithCallbackPlayableState<T>)destinationState;
         state.ExitAction -= ResetDestinationState;
+        Debug.Log("blending transition timeline length: " + timeline.Length);
     }
 
 }

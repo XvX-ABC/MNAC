@@ -53,7 +53,10 @@ namespace Tests.States
 
                 var interruptionSource = srcTransition.InterruptionSource;
                 if (interruptionSource > 0)
+                {
+                    Debug.Log(name + " has interruption source from next");
                     SetInterruptionSourceByNextState();
+                }
             }
             void SetInterruptionSourceByNextState()
             {

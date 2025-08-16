@@ -230,6 +230,8 @@ namespace Tests.States
                 throw new ArgumentNullException(nameof(state));
             if (!states.Contains(state))
                 throw new StateNotExistException(state);
+            if (currentState != null && currentState == state)
+                return;
             ChangeState(state);
         }
         protected virtual ITransition<T> CheckTransitions()
@@ -279,18 +281,7 @@ namespace Tests.States
             {
                 ChangeState(currentTransition);
             }
-            else
-            {
-                currentState.OnUpdate();
-                try
-                {
-                }
-                catch (Exception e)
-                {
-
-                    throw e;
-                }
-            }
+            currentState?.OnUpdate();
         }
         public override void OnEnter()
         {

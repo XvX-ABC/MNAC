@@ -34,7 +34,7 @@ namespace Tests.States
         public ITimeline Timeline => state.Timeline;
 
         public bool ExitWhenEnd { get => state.ExitWhenEnd; set => state.ExitWhenEnd = value; }
-        IPlayableTransition<T>[] IPlayableState<T>.Transitions => state.Transitions;
+        public new IPlayableTransition<T>[] Transitions => state.Transitions;
         protected new IPlayableState<T> state;
         protected override void Awake()
         {

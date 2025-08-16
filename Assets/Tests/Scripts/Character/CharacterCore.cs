@@ -16,6 +16,7 @@ using UnityEngine;
 using UnityEngine.Accessibility;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
+using static Tests.Character.CharacterAnimator_New;
 
 namespace Tests.Character
 {
@@ -23,6 +24,7 @@ namespace Tests.Character
     {
         AvatarMask Mask { get; }
     }
+
     [SerializeField]
     public interface ICharacterAnimationDefinitions
     {
@@ -38,7 +40,7 @@ namespace Tests.Character
 
         internal PlayableGraph graph;
         AnimationPlayablePartTree _appt;
-
+        Blackboard _blackboard;
         class LayersMixerPlayable : AnimationPlayablePartBase
         {
             ICharacterAnimationDefinitions _definitions;
@@ -58,7 +60,7 @@ namespace Tests.Character
                 return true;
             }
         }
-        class ControllerPlayable : AnimationPlayablePartBase
+        internal class ControllerPlayable : AnimationPlayablePartBase
         {
             Animator _animator;
             public override IOutputSetting OutputSetting
@@ -105,9 +107,10 @@ namespace Tests.Character
             _definitions = core.GetComponent<ICharacterAnimationDefinitions>() ?? throw new ComponentCantFindException(core.gameObject, typeof(ICharacterAnimationDefinitions));
             _core = core ?? throw new ArgumentNullException(nameof(core));
             _animator = core.GetComponent<Animator>();
+            _blackboard = core.Blackboard;
             InitializePlayableGraph();
-
         }
+
         void InitializePlayableGraph()
         {
             graph = PlayableGraph.Create(_core.name + "_animator");
@@ -115,6 +118,9 @@ namespace Tests.Character
             var root = _appt.Root;
             var controller = new ControllerPlayable(_animator);
             var layersMixer = new LayersMixerPlayable(_definitions);
+
+
+         
 
             root.AddChild(layersMixer.Node);
             layersMixer.Node.AddChild(controller.Node);
@@ -124,6 +130,7 @@ namespace Tests.Character
             var leftArm = _core.leftArm;
 
             layersMixer.Node.AddChild(leftArm.acore_new.Node);
+
 
 
             var a = (AnimationLayerMixerPlayable)layersMixer.PlayablePart;
@@ -188,6 +195,7 @@ namespace Tests.Character
 
             InitializePlayableGraph();
         }
+
         void InitializePlayableGraph()
         {
             _graph = PlayableGraph.Create(_core.name + "_animator");

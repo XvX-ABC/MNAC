@@ -14,14 +14,15 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
     {
         AimIK _aimIK;
         ITarget _target;
-        internal BAnimator animator;
         internal Action<float> weightChangedAction;
+        internal Action<ITarget> targetChangedAction;
         public ITarget Target
         {
             get => _target;
             set
             {
                 _target = value;
+                targetChangedAction?.Invoke(value);
             }
 
         }
@@ -64,8 +65,6 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
         public override void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.TransitionBeginWhichOfPreviousState(currentTransition);
-            if (animator != null)
-                animator.enabled = true;
         }
         public override void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
         {

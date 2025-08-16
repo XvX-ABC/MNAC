@@ -16,7 +16,7 @@ using Fields = Tests.Characters.CharacterBlackboardFields;
 
 namespace Tests.Behaviours.Arm.Weapons
 {
-    public class ArmedLauncherArmBehaviour : ArmedWeaponArmBehaviourBase, IPlayableState<object>
+    public partial class ArmedLauncherArmBehaviour : ArmedWeaponArmBehaviourBase, IPlayableState<object>
     {
         protected internal class AimingAnimator : IDynamicPlayablePart
         {
@@ -85,79 +85,6 @@ namespace Tests.Behaviours.Arm.Weapons
                 _playable.Pause();
             }
         }
-        protected internal class BAnimator : IArmedWeaponArmAnimator
-        {
-            internal AimingAnimator aiming;
-            internal ReloadAnimator reload;
-            internal ArmAim aim;
-            AnimationMixerPlayable _playable;
-            float _aimingWeight;
-            float _idleWeight;
-            internal IOutputSetting outputSetting;
-            internal bool enabled;
-            public float IdleWeight
-            {
-                get => _idleWeight;
-                set
-                {
-                    var v = Mathf.Clamp01(value);
-                    _idleWeight = v;
-                    UpdateWeight();
-                    if (outputSetting != null)
-                        outputSetting.Weight = 1 - v;
-                }
-            }
-            public float AimingWeight
-            {
-                get => _aimingWeight;
-                set
-                {
-                    var v = Mathf.Clamp01(value);
-                    _aimingWeight = value;
-                    UpdateWeight();
-                }
-            }
-
-            public IOutputSetting OutputSetting
-            {
-                get => outputSetting;
-                set
-                {
-                    if (value != null)
-                        value.Weight = 1 - _idleWeight;
-                    outputSetting = value;
-                }
-            }
-
-            public bool Enabled { get => enabled; set => enabled = value; }
-            void UpdateWeight()
-            {
-                if (!_playable.Equals(default))
-                {
-                    _playable.SetInputWeight(0, _aimingWeight);
-                    _playable.SetInputWeight(1, 1 - _aimingWeight);
-                }
-            }
-            internal BAnimator(ILauncherBehaviourDefinitions definitions, ArmAim aim)
-            {
-                aiming = new(definitions?.AimingClip, definitions);
-                reload = new(definitions?.ReloadClip);
-                this.aim = aim;
-            }
-            public Playable GetPlayablePart(PlayableGraph graph)
-            {
-                if (_playable.IsNull())
-                {
-                    var ap = aiming.GetPlayablePart(graph);
-                    var rp = reload.GetPlayablePart(graph);
-                    _playable = AnimationMixerPlayable.Create(graph, 2);
-                    graph.Connect(ap, 0, _playable, 0);
-                    graph.Connect(rp, 0, _playable, 1);
-                    AimingWeight = _aimingWeight;
-                }
-                return _playable;
-            }
-        }
         ILauncher _launcher;
         PlayableStateMachine _stateMachine;
         ArmIdle _idle;
@@ -212,6 +139,9 @@ namespace Tests.Behaviours.Arm.Weapons
 
         public override IPlayableState<object> State => this;
 
+        public override Func<bool> EntryFunc { get => Enter; set => throw new NotImplementedException(); }
+        public override Func<bool> ExitFunc { get => Exit; set => throw new NotImplementedException(); }
+
         protected override void Awake()
         {
             base.Awake();
@@ -232,24 +162,24 @@ namespace Tests.Behaviours.Arm.Weapons
         void InitializeStateMachine()
         {
             _stateMachine = new(this.name + "_statemachine");
-            _stateMachine.AddState(_idle);
+            //_stateMachine.AddState(_idle);
             _stateMachine.AddState(_aim);
             _stateMachine.AddState(_ammoLoad);
 
-            _stateMachine.AddTransitionFor(_idle, _aim, _definitions.IdleAndAimTransitionLength, () => _aim.Target != null, (s, d, t) =>
-            {
-                if (statusNum != 1)
-                    statusNum = 1;
-                (d as ArmAim).Weight = t;
-                banimator.IdleWeight = 1 - t;
-            });
-            _stateMachine.AddTransitionFor(_aim, _idle, _definitions.IdleAndAimTransitionLength, () => _aim.Target == null, (s, d, t) =>
-            {
-                if (statusNum != 0)
-                    statusNum = 0;
-                (s as ArmAim).Weight = 1 - t;
-                banimator.IdleWeight = t;
-            });
+            //_stateMachine.AddTransitionFor(_idle, _aim, _definitions.IdleAndAimTransitionLength, () => _aim.Target != null, (s, d, t) =>
+            //{
+            //    if (statusNum != 1)
+            //        statusNum = 1;
+            //    (d as ArmAim).Weight = t;
+            //    banimator.IdleWeight = 1 - t;
+            //});
+            //_stateMachine.AddTransitionFor(_aim, _idle, _definitions.IdleAndAimTransitionLength, () => _aim.Target == null, (s, d, t) =>
+            //{
+            //    if (statusNum != 0)
+            //        statusNum = 0;
+            //    (s as ArmAim).Weight = 1 - t;
+            //    banimator.IdleWeight = t;
+            //});
             _stateMachine.AddTransitionFor(_aim, _ammoLoad, _definitions.AimAndReloadTransitionLength, () => _input.Reload, (s, d, t) =>
             {
                 if (statusNum != 2)
@@ -265,12 +195,17 @@ namespace Tests.Behaviours.Arm.Weapons
                   (d as ArmAim).Weight = t;
               });
         }
+        protected virtual bool Enter()
+        {
+            var targets = _targetsCatcher.Targets;
+            return targets.Count > 0;
+        }
+        protected virtual bool Exit()
+        {
+            return (_stateMachine.CurrentState == _aim && _targetsCatcher.Targets.Count == 0);
+        }
         public override void OnEnter()
         {
-            var targetsCount = _targetsCatcher.Targets.Count;
-            var state = targetsCount > 0 ? _aim as IPlayableState<object> : _idle as IPlayableState<object>;
-            if (_stateMachine.CurrentState != state)
-                _stateMachine.ChangeStateTo(state);
             _stateMachine.OnEnter();
         }
 
@@ -282,22 +217,23 @@ namespace Tests.Behaviours.Arm.Weapons
         public override void OnUpdate()
         {
             _stateMachine.OnUpdate();
-            //Debug.Log("Armed launcher state machie: " + _stateMachine + ", animator enabled: " + banimator.enabled);
         }
         public override void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.TransitionBeginWhichOfPreviousState(currentTransition);
-            _stateMachine.OnEnter();
+            //var targetsCount = _targetsCatcher.Targets.Count;
+            _stateMachine.ChangeStateTo(_aim);
+            //_stateMachine.OnEnter();
+            //Debug.Log("armed launcher state machine entered");
         }
         public override void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.TransitionRunningWhichOfPreviousState(currentTransition);
-            var targetsCount = _targetsCatcher.Targets.Count;
             var v = currentTransition.Timeline.NormalizedTime;
-            if (targetsCount > 0)
+            if (_stateMachine.CurrentState == _aim)
             {
                 _aim.Weight = v;
-                _aim.TransitionRunningWhichOfPreviousState(currentTransition);
+                _aim.TransitionRunningWhichToNextState(currentTransition);
             }
             banimator.IdleWeight = 1 - v;
         }
@@ -305,16 +241,28 @@ namespace Tests.Behaviours.Arm.Weapons
         {
             base.TransitionRunningWhichToNextState(currentTransition);
             var v = currentTransition.Timeline.NormalizedTime;
+            //if (_stateMachine.CurrentState == _aim)
+            //{
+            //    _aim.Weight = 1 - v;
+            //    _aim.TransitionRunningWhichToNextState(currentTransition);
+            //}
+            //banimator.IdleWeight = v;
             if (_stateMachine.CurrentState == _aim)
             {
                 _aim.Weight = 1 - v;
+                //Debug.Log("amred launcher aiming weight: " + (1 - v));
                 _aim.TransitionRunningWhichToNextState(currentTransition);
             }
             banimator.IdleWeight = v;
         }
+        public override void TransitionEndWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.TransitionEndWhichToNextState(currentTransition);
+            _stateMachine.OnExit();
+        }
         private void Update()
         {
-
+           
             _targetsCatcher.OnUpdate();
         }
         public override void Initialize(Blackboard blackboard)
@@ -345,10 +293,6 @@ namespace Tests.Behaviours.Arm.Weapons
             {
                 banimator.AimingWeight = v;
             };
-            _aim.targetChangedAction += t =>
-            {
-                banimator.enabled = t != null;
-            };
             _targetsCatcher.OnAwake();
             _targetsCatcher.TargetsChangedAction += targets =>
             {
@@ -360,6 +304,7 @@ namespace Tests.Behaviours.Arm.Weapons
         {
             blackboard.TryUnregisterField(Fields.TargetsCatcher);
         }
+
     }
 }
 

@@ -11,7 +11,6 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
     {
 
         ReloadAnimator _reloadAnimator;
-        internal BAnimator animator;
         ILauncher _launcher;
         public ILauncher Launcher
         {
@@ -37,8 +36,6 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
         public override void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.TransitionBeginWhichOfPreviousState(currentTransition);
-            if (animator != null)
-                animator.enabled = true;
         }
         public override void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
         {

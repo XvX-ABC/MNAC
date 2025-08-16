@@ -1,6 +1,7 @@
 ﻿using System;
 using Tests.Behaviours.Arm.Weapons;
 using Tests.Utilities.MTrees;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -17,6 +18,29 @@ namespace Tests.Character
     }
     public class AnimationPlayableNode : MTContainerNode<IAnimationPlayablePart>, IAnimationPlayablePartNode
     {
+        protected class OutputSetting : IOutputSetting
+        {
+            float _weight;
+            internal IAnimationPlayablePart parent;
+            internal int portNum;
+
+            public OutputSetting(IAnimationPlayablePart parent, int portNum)
+            {
+                this.parent = parent;
+                this.portNum = portNum;
+            }
+
+            public float Weight
+            {
+                get => parent.PlayablePart.GetInputWeight(portNum);
+                set
+                {
+                    var v = Mathf.Clamp01(value);
+                    _weight = v;
+                    parent.PlayablePart.SetInputWeight(portNum, Mathf.Clamp01(value));
+                }
+            }
+        }
         protected PlayableGraph graph;
         protected ushort connectedCount;
         internal AnimationPlayableNode(PlayableGraph graph)
@@ -111,15 +135,17 @@ namespace Tests.Character
         {
             var p = this.value.PlayablePart;
             var idx = this.children == null ? 0 : connectedCount;
-            var outputSetting = new OutputSetting(p, idx);
+            //var outputSetting = new OutputSetting(p, idx);
+            var outputSetting = new OutputSetting(this.value, idx);
             node.Value.OutputSetting = outputSetting;
         }
         protected virtual void ConnectChild(IAnimationPlayablePartNode childNode)
         {
             var p = this.value.PlayablePart;
             var idx = this.children == null ? 0 : connectedCount;
+            var outputSetting = childNode.Value.OutputSetting;
 
-            p.ConnectInput(idx, childNode.Value.PlayablePart, 0);
+            p.ConnectInput(idx, childNode.Value.PlayablePart, 0, outputSetting.Weight);
             connectedCount++;
         }
         protected virtual void DisconnectChild(IAnimationPlayablePartNode childNode)
@@ -151,7 +177,8 @@ namespace Tests.Character
                 return;
             }
             var idx = parentNode.Children == null ? 0 : parentNode.Children.Count;
-            var outputSetting = new OutputSetting(p, idx);
+            //var outputSetting = new OutputSetting(p, idx);
+            var outputSetting = new OutputSetting(v, idx);
             p.ConnectInput(idx, this.value.PlayablePart, 0);
             this.value.OutputSetting = outputSetting;
         }

@@ -44,7 +44,7 @@ namespace Tests.States
 
         public Guid ID => state.ID;
 
-        public ITransition<T>[] Transitions => state.Transitions;
+        public virtual ITransition<T>[] Transitions => state.Transitions;
         protected virtual void Awake()
         {
             state = new State(this.name, this.enabled);

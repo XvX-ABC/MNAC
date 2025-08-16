@@ -110,7 +110,6 @@ namespace Tests.Behaviours.Arm
             }
             else
                 _selectionFunc = selectionFunc;
-
         }
 
 
@@ -136,13 +135,15 @@ namespace Tests.Behaviours.Arm
             timeline.Restart();
             if (_animationCore != null)
                 _animationCore.StatusNum = 0;
+            Debug.Log("switching  enter timeline  length: " + timeline.Length);
         }
 
 
         public override void OnExit()
         {
-            timeline.End();
+            timeline.Pause();
             base.OnExit();
+            Debug.Log("switching  exit timeline  length: " + timeline.Length);
         }
 
 

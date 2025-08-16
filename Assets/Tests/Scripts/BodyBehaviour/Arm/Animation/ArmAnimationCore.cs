@@ -20,7 +20,8 @@ namespace Tests.BodyBehaviour.Arm.Animations
         IdleState _idleState;
         SwitchingState _switchingState;
         ArmedWeaponState _armedState;
-        BlendingState _blendedState;
+        BlendingState _blendingState;
+        DynamicBlendingState _dynamicBlendingState;
         ArmAnimationPlayingState _playingState;
 
         byte _statusNum;
@@ -89,11 +90,11 @@ namespace Tests.BodyBehaviour.Arm.Animations
         }
         class BlendingState : ArmAnimationPlayingState
         {
-            MixerPlayablePart _mixer;
+            internal MixerPlayablePart _mixer;
             SwitchingPlayablePart _switching;
             ArmedWeaponPlayablePart _armedWeapon;
 
-            public BlendingState(ArmAnimationCore_New core) : base("blended_switching_armed_weapon", core)
+            public BlendingState(ArmAnimationCore_New core) : base("blending_state", core)
             {
                 _mixer = core._mixer;
                 _switching = core.switching;
@@ -104,15 +105,58 @@ namespace Tests.BodyBehaviour.Arm.Animations
                 parentNode.AddChild(_mixer.Node);
                 _mixer.Node.AddChild(_switching.Node);
                 _mixer.Node.AddChild(_armedWeapon.Node);
+                //Debug.Log("switching output settting weight: " + _switching.Node.Value.OutputSetting.Weight);
+                //Debug.Log("armedWeapon output settting weight: " + _armedWeapon.Node.Value.OutputSetting.Weight);
                 _mixer.OutputSetting = core.outputSetting;
-                _switching.Reset();
+                //_switching.Reset();
                 core.outputSetting.Weight = 1;
+
             }
             public override void OnExit()
             {
                 _mixer.Node.RemoveChild(_switching.Node);
                 _mixer.Node.RemoveChild(_armedWeapon.Node);
                 parentNode.RemoveChild(_mixer.Node);
+            }
+        }
+        class DynamicBlendingState : ArmAnimationPlayingState
+        {
+            SwitchingState _switching;
+            BlendingState _blending;
+            ArmedWeaponArmAnimator_New _armedAnimator;
+            ArmAnimationPlayingState _currentState;
+            public DynamicBlendingState(ArmAnimationCore_New core, SwitchingState switching, ArmedWeaponState armed, BlendingState blending) : base("dynamic_blending_state", core)
+            {
+                _switching = switching;
+                _blending = blending;
+                _armedAnimator = core.armedAnimator;
+            }
+            void UpdateCurrentState(ArmAnimationPlayingState newState)
+            {
+                if (_currentState == newState)
+                    return;
+                _currentState?.OnExit();
+                newState.OnEnter();
+                _currentState = newState;
+            }
+            public override void OnEnter()
+            {
+                _currentState = _switching;
+                _switching.OnEnter();
+            }
+            public override void OnUpdate()
+            {
+                var p = _blending._mixer.PlayablePart;
+                //if (_currentState == _blending)
+                //    Debug.Log($"blending output: 0 -> {p.GetInputWeight(0)},  1 -> {p.GetInputWeight(1)}");
+                if (_armedAnimator.playablePart.Enabled)
+                    UpdateCurrentState(_blending);
+                else
+                    UpdateCurrentState(_switching);
+            }
+            public override void OnExit()
+            {
+                _currentState?.OnExit();
             }
         }
         class IdleState : ArmAnimationPlayingState
@@ -131,7 +175,14 @@ namespace Tests.BodyBehaviour.Arm.Animations
             set
             {
                 var v = Mathf.Clamp01(value);
-                switching.OutputSetting.Weight = v;
+                if (switching.OutputSetting != null)
+                {
+                    switching.OutputSetting.Weight = v;
+                }
+                //if (armedAnimator.playablePart.OutputSetting != null)
+                //{
+                //    armedAnimator.playablePart.OutputSetting.Weight = 1 - v;
+                //}
             }
         }
         public byte StatusNum
@@ -143,6 +194,7 @@ namespace Tests.BodyBehaviour.Arm.Animations
                     return;
                 if (!_initialized)
                     throw new Exception();
+                //Debug.Log($"change status from '{_statusNum}' to '{value}' ");
                 UpdatePlayingState(value);
                 _statusNum = value;
             }
@@ -278,26 +330,29 @@ namespace Tests.BodyBehaviour.Arm.Animations
             _idleState = new(this);
             _switchingState = new(this);
             _armedState = new(this);
-            _blendedState = new(this);
-
+            _blendingState = new(this);
+            _dynamicBlendingState = new(this, _switchingState, _armedState, _blendingState);
         }
         void UpdatePlayingState(byte statusNum)
         {
             _playingState?.OnExit();
-            var newState = statusNum == 2 && !armedAnimator.playablePart.Enabled ? GetNewState(0) : GetNewState(statusNum);
+            //var newState = statusNum == 2 && !armedAnimator.playablePart.Enabled ? GetNewState(0) : GetNewState(statusNum);
+            var newState = GetNewState(statusNum);
             newState.OnEnter();
             _playingState = newState;
             ArmAnimationPlayingState GetNewState(byte num) => num switch
             {
                 0 => _switchingState,
                 1 => _armedState,
-                2 => _blendedState,
+                2 => _blendingState,
+                //2 => _dynamicBlendingState,
                 3 => _idleState,
                 _ => throw new Exception()
             };
         }
         public void OnUpdate()
         {
+            _playingState.OnUpdate();
             armedAnimator.OnUpdate();
         }
     }

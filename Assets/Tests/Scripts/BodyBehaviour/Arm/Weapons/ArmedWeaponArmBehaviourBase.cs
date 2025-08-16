@@ -35,6 +35,8 @@ namespace Tests.Behaviours.Arm.Weapons
         public byte StatusNum { get => statusNum; }
         public bool IsActivated { get => isActivated; }
         public abstract IPlayableState<object> State { get; }
+        public abstract Func<bool> EntryFunc { get; set; }
+        public abstract Func<bool> ExitFunc { get; set; }
 
         protected override void Awake()
         {
