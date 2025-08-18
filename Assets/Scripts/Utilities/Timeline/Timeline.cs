@@ -3,6 +3,7 @@ using Assets.Scripts.Utilities.Timeline.Event.Point;
 using Assets.Scripts.Utilities.Timeline.Event.Range;
 using System;
 using UnityEngine;
+using UTime = UnityEngine.Time;
 
 namespace Assets.Scripts.Utilities.Timeline
 {
@@ -71,7 +72,7 @@ namespace Assets.Scripts.Utilities.Timeline
             Reset();
             isRunning = true;
         }
-        public void Continue()
+        public void Start()
         {
             isRunning = true;
         }
@@ -84,10 +85,13 @@ namespace Assets.Scripts.Utilities.Timeline
             if (isLoop)
                 throw new NotSupportedException("The loop timeline was not supported early end.");
             time = length;
+            OnUpdate(UTime.deltaTime);
         }
         public void End()
         {
             isRunning = false;
+            var ctx = new TimelineContext() { DeltaTime = UTime.deltaTime, Time = time, NormalizedTime = length == 0 ? 1 : time / length, Duration = length };
+            endAction?.Invoke(ctx);
             Reset();
         }
         public void OnUpdate(float deltaTime)

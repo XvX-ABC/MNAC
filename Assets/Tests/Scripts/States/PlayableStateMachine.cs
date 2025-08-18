@@ -13,7 +13,7 @@ namespace Tests.States
     }
     public partial class PlayableStateMachine<T> : StateMachineBase<IPlayableState<T>, T>, IPlayableState<T>
     {
-        protected const byte INTERRUPTION_SOURCE_DEFAULT_CODE = PlayableTransition<T>.INTERRUPTION_SOURCE_NEXT_CODE;
+        protected const InterruptionSource INTERRUPTION_SOURCE_DEFAULT = PlayableTransition<T>.INTERRUPTION_SOURCE_DEFAULT;
         class TransitionState : PlayableStateBase<T>
         {
             internal IPlayableState<T> srcState;
@@ -52,10 +52,13 @@ namespace Tests.States
 
 
                 var interruptionSource = srcTransition.InterruptionSource;
-                if (interruptionSource > 0)
+                switch (interruptionSource)
                 {
-                    Debug.Log(name + " has interruption source from next");
-                    SetInterruptionSourceByNextState();
+                    case InterruptionSource.None:
+                        break;
+                    case InterruptionSource.Next:
+                        SetInterruptionSourceByNextState();
+                        break;
                 }
             }
             void SetInterruptionSourceByNextState()
@@ -100,33 +103,28 @@ namespace Tests.States
         {
             _transitionState = new();
         }
-
-        protected IPlayableTransition<T> NewTransition(IPlayableState<T> sourceState, IPlayableState<T> destinationState, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent, float duration, byte interruptionSource)
+        protected IPlayableTransition<T> NewTransition(IPlayableState<T> sourceState, IPlayableState<T> destinationState, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent, float duration, InterruptionSource interruptionSource)
         {
             var transition = new PlayableTransition<T>(sourceState, destinationState, triggerEvent, durationEvent, duration, interruptionSource);
             return transition;
         }
         public override void AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, Func<bool> triggerEvent)
         {
-            var transition = NewTransition(state, destinationState, triggerEvent, null, 0, INTERRUPTION_SOURCE_DEFAULT_CODE);
-            AddTransitionFor(transition);
-        }
-        public void AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, Func<bool> triggerEvent, byte interruptionSourceNum)
-        {
-            var transition = NewTransition(state, destinationState, triggerEvent, null, 0, interruptionSourceNum);
+            var transition = NewTransition(state, destinationState, triggerEvent, null, 0, INTERRUPTION_SOURCE_DEFAULT);
             AddTransitionFor(transition);
         }
         public IPlayableTransition<T> AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, float duration, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent)
         {
-            return AddTransitionFor(state, destinationState, duration, triggerEvent, durationEvent, INTERRUPTION_SOURCE_DEFAULT_CODE);
+            return AddTransitionFor(state, destinationState, duration, triggerEvent, durationEvent, INTERRUPTION_SOURCE_DEFAULT);
         }
 
-        public IPlayableTransition<T> AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, float duration, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent, byte interruptionSourceNum)
+        public IPlayableTransition<T> AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, float duration, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent, InterruptionSource interruptionSource)
         {
-            var transition = NewTransition(state, destinationState, triggerEvent, durationEvent, duration, interruptionSourceNum);
+            var transition = NewTransition(state, destinationState, triggerEvent, durationEvent, duration, interruptionSource);
             AddTransitionFor(transition);
             return transition;
         }
+
         public IPlayableTransition<T> AddTransitionFor(IPlayableState<T> state, IPlayableState<T> destinationState, float duration, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent)
         {
             return AddTransitionFor(state, destinationState, duration, null, durationEvent);

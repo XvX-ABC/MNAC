@@ -26,7 +26,7 @@ namespace Tests.Behaviours.Arm
         DefaultWeaponSelector _defaultSelector;
         Func<IWeapon, IWeapon, IWeapon> _switchingEvent;
 
-        ArmAnimationCore_New _animationCore;
+        internal ArmAnimationCore_New animationCore;
         public Func<WeaponDescription[], string> SelectionFunc
         {
             get => _selectionFunc;
@@ -77,10 +77,10 @@ namespace Tests.Behaviours.Arm
                     _mountPoint.LoadObjChangeFunc = null;
             }
         }
+        [Obsolete]
+        internal ArmAnimationCore_New AnimationCore { get => animationCore; set => animationCore = value; }
 
-        internal ArmAnimationCore_New AnimationCore { get => _animationCore; set => _animationCore = value; }
-
-        IAnimationPlayablePartNode IAnimationPlayableState.Node => _animationCore.switching.Node;
+        IAnimationPlayablePartNode IAnimationPlayableState.Node => animationCore.switching.Node;
 
         public ArmWeaponSwitching(IArmWeaponDefinitions definitions, MountPoint mountPoint, WeaponCore weaponCore, Func<WeaponDescription[], string> selectionFunc) : base("switching", definitions.SwitchingDurationTime)
         {
@@ -133,23 +133,40 @@ namespace Tests.Behaviours.Arm
             }
 
             timeline.Restart();
-            if (_animationCore != null)
-                _animationCore.StatusNum = 0;
-            Debug.Log("switching  enter timeline  length: " + timeline.Length);
+            if (animationCore != null)
+                animationCore.StatusNum = 0;
         }
 
 
         public override void OnExit()
         {
-            timeline.Pause();
+            timeline.End();
             base.OnExit();
-            Debug.Log("switching  exit timeline  length: " + timeline.Length);
         }
 
 
         public override void OnUpdate()
         {
             timeline.OnUpdate(Time.deltaTime);
+        }
+
+        public override void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.TransitionRunningWhichOfPreviousState(currentTransition);
+            if (animationCore != null)
+            {
+                var t = currentTransition.Timeline.NormalizedTime;
+                animationCore.SwitchingWeight = t;
+            }
+        }
+        public override void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.TransitionRunningWhichToNextState(currentTransition);
+            if (animationCore != null)
+            {
+                var t = currentTransition.Timeline.NormalizedTime;
+                animationCore.SwitchingWeight = 1 - t;
+            }
         }
 
     }

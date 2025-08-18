@@ -3,6 +3,7 @@ using Tests.Behaviours.Arm;
 using Tests.Behaviours.Arm.Weapons;
 using Tests.Character;
 using Tests.States;
+using Unity.XR.OpenVR;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
@@ -24,7 +25,7 @@ namespace Tests.BodyBehaviour.Arm.Animations
         DynamicBlendingState _dynamicBlendingState;
         ArmAnimationPlayingState _playingState;
 
-        byte _statusNum;
+        byte _statusNum = 3;
         internal bool playing;
         bool _initialized;
 
@@ -64,7 +65,7 @@ namespace Tests.BodyBehaviour.Arm.Animations
             {
                 parentNode.AddChild(_playablePart.Node);
                 _playablePart.OutputSetting = core.outputSetting;
-                core.outputSetting.Weight = 1;
+                //core.outputSetting.Weight = 1;
             }
             public override void OnExit()
             {
@@ -109,7 +110,7 @@ namespace Tests.BodyBehaviour.Arm.Animations
                 //Debug.Log("armedWeapon output settting weight: " + _armedWeapon.Node.Value.OutputSetting.Weight);
                 _mixer.OutputSetting = core.outputSetting;
                 //_switching.Reset();
-                core.outputSetting.Weight = 1;
+                //core.outputSetting.Weight = 1;
 
             }
             public override void OnExit()
@@ -171,19 +172,8 @@ namespace Tests.BodyBehaviour.Arm.Animations
         }
         public float SwitchingWeight
         {
-            get => switching.OutputSetting.Weight;
-            set
-            {
-                var v = Mathf.Clamp01(value);
-                if (switching.OutputSetting != null)
-                {
-                    switching.OutputSetting.Weight = v;
-                }
-                //if (armedAnimator.playablePart.OutputSetting != null)
-                //{
-                //    armedAnimator.playablePart.OutputSetting.Weight = 1 - v;
-                //}
-            }
+            get => switching.Weight;
+            set => switching.Weight = value;
         }
         public byte StatusNum
         {
@@ -194,7 +184,7 @@ namespace Tests.BodyBehaviour.Arm.Animations
                     return;
                 if (!_initialized)
                     throw new Exception();
-                //Debug.Log($"change status from '{_statusNum}' to '{value}' ");
+                Debug.Log($"change status from '{_statusNum}' to '{value}' ");
                 UpdatePlayingState(value);
                 _statusNum = value;
             }
@@ -256,7 +246,29 @@ namespace Tests.BodyBehaviour.Arm.Animations
         {
             IArmWeaponDefinitions _definitions;
             IArmWeaponAnimationDefinitions _animationDefinitions;
+            float _weight;
             internal PlayState State => playablePart.GetPlayState();
+
+            public override IOutputSetting OutputSetting
+            {
+                get => base.OutputSetting;
+                set
+                {
+                    if (value != null)
+                        value.Weight = _weight;
+                    this.outputSetting = value;
+                }
+            }
+            public float Weight
+            {
+                get => _weight;
+                set
+                {
+                    _weight = Mathf.Clamp01(value);
+                    if (outputSetting != null)
+                        outputSetting.Weight = _weight;
+                }
+            }
             public SwitchingPlayablePart(IArmWeaponDefinitions definitions, IArmWeaponAnimationDefinitions animationDefinitions) : base()
             {
                 _definitions = definitions;
@@ -352,7 +364,7 @@ namespace Tests.BodyBehaviour.Arm.Animations
         }
         public void OnUpdate()
         {
-            _playingState.OnUpdate();
+            _playingState?.OnUpdate();
             armedAnimator.OnUpdate();
         }
     }

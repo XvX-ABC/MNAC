@@ -127,10 +127,10 @@ namespace Assets.Scripts.Utilities.Timeline
             return true;
         }
 
-        public void Continue()
+        public void Start()
         {
             foreach (var l in timelines)
-                l.Continue();
+                l.Start();
         }
 
         public void OnUpdate(float deltaTime)

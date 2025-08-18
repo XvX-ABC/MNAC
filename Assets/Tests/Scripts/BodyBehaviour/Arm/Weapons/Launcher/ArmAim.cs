@@ -31,7 +31,6 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
             get => _aimIK.solver.IKPositionWeight;
             set
             {
-
                 var v = Mathf.Clamp01(value);
                 _aimIK.solver.IKPositionWeight = v;
                 weightChangedAction?.Invoke(v);

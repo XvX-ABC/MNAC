@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Utilities.Timeline;
+using System;
+using System.Diagnostics;
 
 namespace Tests.States
 {
@@ -8,7 +10,7 @@ namespace Tests.States
         {
             get;
         }
-        public byte InterruptionSource { get; }
+        public InterruptionSource InterruptionSource { get; }
 
     }
     public interface IReadonlyPlayableTransition<T>

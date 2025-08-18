@@ -16,7 +16,7 @@ namespace Assets.Scripts.Utilities.Timeline
         Action<TimelineContext> StartAction { get; set; }
         Action<float> UpdateAction { get; set; }
         Action<TimelineContext> EndAction { get; set; }
-        void Continue();
+        void Start();
         void OnUpdate(float deltaTime);
         void Restart();
         void Pause();

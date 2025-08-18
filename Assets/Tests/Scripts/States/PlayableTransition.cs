@@ -12,12 +12,13 @@ namespace Tests.States
 {
     internal class PlayableTransition<T> : StateMachineBase<IPlayableState<T>, T>.Transition, IPlayableTransition<T>
     {
-        public const byte INTERRUPTION_SOURCE_NEXT_CODE = 1;
+        public const InterruptionSource INTERRUPTION_SOURCE_DEFAULT = States.InterruptionSource.Next;
         protected ITimeline timeline;
-        byte _interruptionSource;
-        public byte InterruptionSource { get => _interruptionSource; }
+        InterruptionSource _interruptionSource;
+
+        public InterruptionSource InterruptionSource { get => _interruptionSource; }
         protected internal PlayableTransition() : base() { }
-        public PlayableTransition(IPlayableState<T> sourceState, IPlayableState<T> destinationState, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent, float duration, byte interruptionSource) : base(sourceState, destinationState, triggerEvent)
+        public PlayableTransition(IPlayableState<T> sourceState, IPlayableState<T> destinationState, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent, float duration, InterruptionSource interruptionSource) : base(sourceState, destinationState, triggerEvent)
         {
             timeline = new Timeline(duration);
             if (durationEvent != null)
@@ -35,6 +36,7 @@ namespace Tests.States
             timeline.AddPointEvent(1, _ => { destinationState.TransitionEndWhichOfPreviousState(this); });
             _interruptionSource = interruptionSource;
         }
+
 
         public ITimeline Timeline => timeline;
 
