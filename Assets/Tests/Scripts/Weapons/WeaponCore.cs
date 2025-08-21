@@ -4,14 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tests.Assets;
-using Tests.Behaviours.Arm;
-using Tests.Weapons;
 using Tests.Weapons.Launcher;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
-namespace Assets.Tests.Scripts.Weapons
+namespace Tests.Weapons
 {
     public class WeaponNotContainsException : Exception
     {

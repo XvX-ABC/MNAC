@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Assets.Scripts.Utilities.Timeline.Event.Range
+namespace Utilities.Timeline
 {
-    public class TimelineException : Exception
+    internal class TimelineException : Exception
     {
         public TimelineException(string message) : base(message)
         {

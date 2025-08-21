@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Utilities.Timeline.Event;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +7,9 @@ using Tests.Weapons.Launcher;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Utilities.Timeline.Events;
 
-namespace Assets.Scripts.Utilities.Timeline
+namespace Utilities.Timeline
 {
     public class TimelinesGroup : ITimeline
     {
@@ -57,8 +57,8 @@ namespace Assets.Scripts.Utilities.Timeline
         {
             if (launchers.Any(l => l == null))
                 throw new ArgumentNullException($"There have a null element in the argument '{nameof(launchers)}'");
-            this._launchers = launchers;
-            this._timelineGetFunc = getFunc ?? throw new NullReferenceException(nameof(getFunc));
+            _launchers = launchers;
+            _timelineGetFunc = getFunc ?? throw new NullReferenceException(nameof(getFunc));
         }
 
         public bool IsRunning => lastEndTimeline.IsRunning;

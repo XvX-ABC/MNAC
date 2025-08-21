@@ -1,7 +1,7 @@
-﻿using Assets.Scripts.Utilities.Timeline;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities.Timeline;
 
 namespace Tests.States
 {

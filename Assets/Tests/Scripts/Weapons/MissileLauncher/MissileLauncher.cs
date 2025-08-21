@@ -1,11 +1,11 @@
-﻿using Assets.Scripts.Utilities.Timeline;
-using Assets.Scripts.Utilities.Timeline.Event.Point;
-using Assets.Tests.Scripts.Weapons.MVC;
+﻿using Assets.Tests.Scripts.Weapons.MVC;
 using FoundationStone.UI.Tests.MVC;
 using System;
 using Tests.Weapons.Launcher;
 using Tests.Weapons.Projectiles;
 using UnityEngine;
+using Utilities.Timeline;
+using Utilities.Timeline.Events.Point;
 
 namespace Tests.Weapons.MissileLauncher
 {

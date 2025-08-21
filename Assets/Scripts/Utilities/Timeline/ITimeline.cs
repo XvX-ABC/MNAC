@@ -1,7 +1,7 @@
-﻿using Assets.Scripts.Utilities.Timeline.Event;
-using System;
+﻿using System;
+using Utilities.Timeline.Events;
 
-namespace Assets.Scripts.Utilities.Timeline
+namespace Utilities.Timeline
 {
     public interface IReadonlyTimeline
     {

@@ -1,14 +1,14 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Utilities.Timeline
+namespace Utilities.Timeline
 {
     public class RandomLengthTimeline : Timeline
     {
         internal ITimeGenerator timeGenerator;
         public RandomLengthTimeline(ITimeGenerator timeGeneration)
         {
-            this.timeGenerator = timeGeneration;
+            timeGenerator = timeGeneration;
         }
         public RandomLengthTimeline(Vector2 range) : this(new RandomTimeGeneration(range))
         {

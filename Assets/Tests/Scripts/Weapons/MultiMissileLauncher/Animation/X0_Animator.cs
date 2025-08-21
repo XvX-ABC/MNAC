@@ -1,6 +1,4 @@
-﻿using Assets.Scripts.Utilities.Timeline;
-using Assets.Scripts.Utilities.Timeline.Event.Point;
-using System;
+﻿using System;
 using System.Data;
 using System.Linq;
 using Tests.Weapons.Launcher;
@@ -8,6 +6,8 @@ using Tests.Weapons.MissileLauncher;
 using Tests.Weapons.MultiMissileLauncher;
 using TMPro;
 using UnityEngine;
+using Utilities.Timeline;
+using Utilities.Timeline.Events.Point;
 
 namespace Tests.Weapons.MultiMissileLauncher.Animation
 {

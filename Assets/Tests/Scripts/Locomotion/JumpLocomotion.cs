@@ -1,11 +1,11 @@
-﻿using Assets.Scripts.Utilities.Timeline;
-using Assets.Scripts.Utilities.Timeline.Event.Point;
-using Locomotion;
+﻿using Locomotion;
 using System;
 using System.Collections.Generic;
 using Tests.Environment;
 using UnityEngine;
 using UnityEngine.Windows;
+using Utilities.Timeline;
+using Utilities.Timeline.Events.Point;
 namespace Tests.Locomotion
 {
     internal class JumpLocomotion : IModule

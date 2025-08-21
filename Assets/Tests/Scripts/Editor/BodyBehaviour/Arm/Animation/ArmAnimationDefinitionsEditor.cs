@@ -1,9 +1,9 @@
-﻿using Assets.Tests.Scripts.BodyBehaviour.Arm.Animations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tests.Behaviours.Arms.Animations;
 using Tests.Editors.Assets;
 using UnityEditor;
 

@@ -1,13 +1,11 @@
-﻿using NUnit.Framework;
-using NUnit.Framework.Constraints;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UnityEngine.UI;
 
 namespace Tests.States
 {
+    // TODO：完善状态运行时的错误捕获
     public abstract class StateMachineBase<S, T> : StateBase<T> where S : class, IState<T>
     {
         internal class StateNotExistException : Exception
@@ -176,7 +174,7 @@ namespace Tests.States
         {
             AddTransitionFor(state, destinationState, null);
         }
-        void RemoveTransitionFor(ITransition<T> transition)
+        public void RemoveTransitionFor(ITransition<T> transition)
         {
             var srcState = transition.SourceState;
             var desState = transition.DestinationState;

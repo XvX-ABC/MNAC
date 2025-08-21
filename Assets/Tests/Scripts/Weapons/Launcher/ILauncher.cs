@@ -1,6 +1,6 @@
-using Assets.Scripts.Utilities.Timeline;
 using System;
 using Tests.Utilities;
+using Utilities.Timeline;
 
 namespace Tests.Weapons.Launcher
 {

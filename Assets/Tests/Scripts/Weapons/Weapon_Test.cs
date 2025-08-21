@@ -1,9 +1,9 @@
-﻿using Assets.Scripts.Utilities.Timeline;
-using System;
+﻿using System;
 using Tests.Utilities;
 using Tests.Weapons.Launcher;
 using Unity.VisualScripting;
 using UnityEngine;
+using Utilities.Timeline;
 
 namespace Tests.Weapons
 {

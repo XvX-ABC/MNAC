@@ -1,11 +1,8 @@
-﻿using Assets.Tests.Scripts.BodyBehaviour;
-using Locomotion;
+﻿using Locomotion;
 using System;
-using System.Text;
-using Tests.Behaviours.Arm;
+using Tests.Behaviours.Arms.Weapons;
 using Tests.Environment;
 using Tests.Input;
-using Tests.Locomotion.Animation;
 using Tests.Locomotion.Animation.States;
 using UnityEngine;
 namespace Tests.Locomotion
@@ -17,7 +14,7 @@ namespace Tests.Locomotion
         Descending
     }
     [RequireComponent(typeof(Rigidbody))]
-    public class LocomotionCore : MonoBehaviour, IAimer
+    public class LocomotionCore : MonoBehaviour, IAimer_Obsolete
     {
         [SerializeField]
         Camera _camera;
@@ -41,7 +38,7 @@ namespace Tests.Locomotion
         Context _context;
 
         IModule[] _modules;
-        ITarget IAimer.Target { get => _context.Target; set => _context.Target = value; }
+        ITarget IAimer_Obsolete.Target { get => _context.Target; set => _context.Target = value; }
         void Awake()
         {
             _definitions = GetComponent<ILocomotionDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionDefinitions));

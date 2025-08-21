@@ -1,9 +1,9 @@
-﻿using Assets.Scripts.Utilities.Timeline;
-using Assets.Scripts.Utilities.Timeline.Event.Point;
-using Assets.Scripts.Utilities.Timeline.Event.Range;
-using System;
+﻿using System;
 using Tests.Environment;
 using UnityEngine;
+using Utilities.Timeline;
+using Utilities.Timeline.Events.Point;
+using Utilities.Timeline.Events.Range;
 
 namespace Locomotion
 {

@@ -1,10 +1,10 @@
 ﻿using System;
-using Assets.Scripts.Utilities.Timeline;
-using Assets.Scripts.Utilities.Timeline.Event.Point;
-using Assets.Scripts.Utilities.Timeline.Event.Range;
 using Locomotion;
 using Tests.Environment;
 using UnityEngine;
+using Utilities.Timeline;
+using Utilities.Timeline.Events.Point;
+using Utilities.Timeline.Events.Range;
 namespace Tests.Locomotion
 {
     class BoostingLocomotion : IModule

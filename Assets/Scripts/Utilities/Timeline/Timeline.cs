@@ -1,11 +1,11 @@
-﻿using Assets.Scripts.Utilities.Timeline.Event;
-using Assets.Scripts.Utilities.Timeline.Event.Point;
-using Assets.Scripts.Utilities.Timeline.Event.Range;
-using System;
+﻿using System;
 using UnityEngine;
+using Utilities.Timeline.Events;
+using Utilities.Timeline.Events.Point;
+using Utilities.Timeline.Events.Range;
 using UTime = UnityEngine.Time;
 
-namespace Assets.Scripts.Utilities.Timeline
+namespace Utilities.Timeline
 {
     public class Timeline : ITimeline
     {
@@ -160,7 +160,7 @@ namespace Assets.Scripts.Utilities.Timeline
             }
             if (newLength < 0)
                 Debug.LogWarning(new ArgumentException(nameof(newLength)));
-            this.length = newLength;
+            length = newLength;
             return true;
         }
         public override string ToString()

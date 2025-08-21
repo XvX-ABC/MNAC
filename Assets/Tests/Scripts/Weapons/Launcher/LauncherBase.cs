@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Reflection;
-using Assets.Scripts.Utilities.Timeline;
-using Assets.Scripts.Utilities.Timeline.Event.Point;
 using FoundationStone.UI.Tests.MVC;
 using Tests.Utilities;
 using Tests.Weapons.MissileLauncher;
 using UnityEngine;
 using UnityEngine.Pool;
+using Utilities.Timeline;
+using Utilities.Timeline.Events.Point;
 using ActionsEnum = Tests.Weapons.Launcher.ILauncher.ActionsEnum;
 namespace Tests.Weapons.Launcher
 {

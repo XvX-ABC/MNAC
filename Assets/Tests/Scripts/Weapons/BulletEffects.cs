@@ -1,10 +1,10 @@
-﻿using Assets.Scripts.Utilities.Timeline;
-using Assets.Scripts.Utilities.Timeline.Event.Point;
-using Mono.Cecil.Cil;
+﻿using Mono.Cecil.Cil;
 using System;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Pool;
+using Utilities.Timeline;
+using Utilities.Timeline.Events.Point;
 
 namespace Tests.Weapons
 {

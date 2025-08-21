@@ -1,16 +1,11 @@
-﻿using Assets.Scripts.Utilities.Timeline;
-using System;
-using System.Threading;
-using Unity.Collections.LowLevel.Unsafe;
-using UnityEngine;
-using UnityEngine.Playables;
+﻿using System;
+using Utilities.Timeline;
 
 namespace Tests.States
 {
-
     public abstract class PlayableStateBase : PlayableStateBase<object>
     {
-        protected PlayableStateBase(string name, float duration = 0,  bool enabled = true) : base(name, duration, enabled)
+        public PlayableStateBase(string name, float duration = 0, bool enabled = true) : base(name, duration, enabled)
         {
         }
     }

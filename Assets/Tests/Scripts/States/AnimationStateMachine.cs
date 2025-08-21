@@ -1,6 +1,4 @@
-﻿using Tests.Locomotion.Animation;
-
-namespace Tests.States
+﻿namespace Tests.States
 {
     public class AnimationStateMachine<T> : StateMachine<T>
     {

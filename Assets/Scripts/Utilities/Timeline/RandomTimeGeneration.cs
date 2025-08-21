@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Random = Unity.Mathematics.Random;
 
-namespace Assets.Scripts.Utilities.Timeline
+namespace Utilities.Timeline
 {
     internal class RandomTimeGeneration : ITimeGenerator
     {
@@ -20,7 +20,7 @@ namespace Assets.Scripts.Utilities.Timeline
         public RandomTimeGeneration(Vector2 range)
         {
             UpdateRange(range);
-            _random = new((uint)this.GetHashCode());
+            _random = new((uint)GetHashCode());
         }
         public void UpdateRange(Vector2 range)
         {

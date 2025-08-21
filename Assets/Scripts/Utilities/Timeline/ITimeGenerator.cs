@@ -1,6 +1,5 @@
-﻿
-using UnityEngine;
-namespace Assets.Scripts.Utilities.Timeline
+﻿using UnityEngine;
+namespace Utilities.Timeline
 {
     public interface ITimeGenerator
     {

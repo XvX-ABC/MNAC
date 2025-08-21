@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.Utilities.Timeline
+﻿namespace Utilities.Timeline
 {
     public struct TimelineContext
     {

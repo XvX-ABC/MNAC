@@ -8,7 +8,7 @@ using UnityEngine;
 using Action = BehaviorDesigner.Runtime.Tasks.Action;
 using TaskStatus = BehaviorDesigner.Runtime.Tasks.TaskStatus;
 
-namespace Tests.Behaviours.Arm
+namespace Tests.Behaviours.Arms
 {
     public class ArmAimerAction : Action
     {

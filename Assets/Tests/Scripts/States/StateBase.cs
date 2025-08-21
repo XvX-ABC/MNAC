@@ -1,12 +1,10 @@
-﻿using NUnit.Framework.Constraints;
-using System;
-using UnityEditor.Rendering;
+﻿using System;
 
 namespace Tests.States
 {
     public abstract class StateBase : StateBase<object>
     {
-        protected StateBase(string name) : base(name)
+        public StateBase(string name, bool enabled = true) : base(name, enabled)
         {
         }
     }
@@ -34,7 +32,7 @@ namespace Tests.States
             set => enabled = value;
         }
         public virtual T Context { get => context; set => context = value; }
-        protected StateBase(string name, bool enabled = true)
+        public StateBase(string name, bool enabled = true)
         {
             this.name = name;
             this.id = Guid.NewGuid();

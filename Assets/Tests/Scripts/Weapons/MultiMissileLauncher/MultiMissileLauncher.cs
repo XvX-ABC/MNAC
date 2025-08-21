@@ -1,12 +1,11 @@
-﻿using Assets.Scripts.Utilities.Timeline;
-using Assets.Scripts.Utilities.Timeline.Event;
-using Assets.Scripts.Utilities.Timeline.Event.Point;
-using System;
+﻿using System;
 using System.Linq;
 using Tests.Utilities;
 using Tests.Weapons.Launcher;
 using Tests.Weapons.MissileLauncher;
 using UnityEngine;
+using Utilities.Timeline;
+using Utilities.Timeline.Events.Point;
 using UInput = UnityEngine.Input;
 namespace Tests.Weapons.MultiMissileLauncher
 {

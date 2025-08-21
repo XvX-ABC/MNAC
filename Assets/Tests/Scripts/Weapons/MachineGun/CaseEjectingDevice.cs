@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Utilities.Timeline;
-using Cinemachine.Editor;
+﻿using Cinemachine.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,7 @@ using Tests.Weapons.Launcher;
 using Tests.Weapons.MachineGuns;
 using UnityEditorInternal;
 using UnityEngine;
+using Utilities.Timeline;
 
 namespace Tests.Weapons.MachineGuns
 {

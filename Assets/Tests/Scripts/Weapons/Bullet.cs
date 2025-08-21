@@ -1,10 +1,7 @@
-﻿using Assets.Scripts.Utilities;
-using Assets.Scripts.Utilities.Timeline;
-using Assets.Scripts.Utilities.Timeline.Event.Point;
-using System;
+﻿using System;
 using System.Reflection;
-using TMPro;
 using UnityEngine;
+using Utilities.Timeline.Events.Point;
 
 namespace Tests.Weapons
 {
