@@ -1,5 +1,6 @@
 ﻿using System;
 using Tests.Environment;
+using Tests.Locomotion;
 using UnityEngine;
 using Utilities.Timeline;
 using Utilities.Timeline.Events.Point;

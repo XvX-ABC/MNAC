@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using Utilities.Timeline;
 
@@ -9,6 +10,35 @@ namespace Tests.States
     {
         public PlayableStateMachine(string name, bool enabled = true) : base(name, enabled)
         {
+        }
+    }
+    public class WithCallbackPlayableStatemachine<T> : PlayableStateMachine<T>, IWithCallbackPlayableState<T>
+    {
+        protected Action entryAction;
+        protected Action exitAction;
+        protected Action updateAction;
+
+        public WithCallbackPlayableStatemachine(string name, bool enabled = true) : base(name, enabled)
+        {
+        }
+
+        public Action EntryAction { get => entryAction; set => entryAction = value; }
+        public Action ExitAction { get => exitAction; set => exitAction = value; }
+        public Action UpdateAction { get => updateAction; set => updateAction = value; }
+        public override void OnEnter()
+        {
+            entryAction?.Invoke();
+            base.OnEnter();
+        }
+        public override void OnExit()
+        {
+            base.OnExit();
+            exitAction?.Invoke();
+        }
+        public override void OnUpdate()
+        {
+            updateAction?.Invoke();
+            base.OnUpdate();
         }
     }
     public partial class PlayableStateMachine<T> : StateMachineBase<IPlayableState<T>, T>, IPlayableState<T>
@@ -64,6 +94,8 @@ namespace Tests.States
             void SetInterruptionSourceByNextState()
             {
                 _list.Clear();
+                if (desState.Transitions == null || desState.Transitions.Length == 0)
+                    return;
                 foreach (var ts in desState.Transitions)
                     if (ts.TriggerEvents.Count > 0)
                         _list.Add(ts);
@@ -129,9 +161,14 @@ namespace Tests.States
         {
             return AddTransitionFor(state, destinationState, duration, null, durationEvent);
         }
+        [Obsolete]
         public override void AddTransition(ITransition<T> transition)
         {
             AddTransitionFor(transition as IPlayableTransition<T>);
+        }
+        void IState<T>.AddTransition(ITransition<T> transition)
+        {
+            base.AddTransition(transition as IPlayableTransition<T>);
         }
         protected override ITransition<T> CheckTransitions()
         {
@@ -156,6 +193,7 @@ namespace Tests.States
                 }
                 catch (NullReferenceException)
                 {
+                    Debug.Log("Change to destiantion state directly because transition timeline is null.");
                     nextState = transition.DestinationState;
                 }
                 catch (Exception)
@@ -168,41 +206,34 @@ namespace Tests.States
             ChangeState(nextState);
         }
 
-        public override void OnEnter()
+        public virtual void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<T> currentTransition)
         {
-            base.OnEnter();
-        }
-        public override void OnExit()
-        {
-            base.OnExit();
+            currentState?.FromPreviousStateTransitionRunning(currentTransition);
         }
 
-        public virtual void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)
+        public virtual void ToNextStateTransitionRunning(IReadonlyPlayableTransition<T> currentTransition)
         {
+            currentState?.ToNextStateTransitionRunning(currentTransition);
         }
 
-        public virtual void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<T> currentTransition)
+        public void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<T> currentTransition)
         {
+            currentState?.FromPreviousStateTransitionBegin(currentTransition);
         }
 
-        public void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)
+        public void FromPreviousStateTransitionEnd(IReadonlyPlayableTransition<T> currentTransition)
         {
-
+            currentState?.FromPreviousStateTransitionEnd(currentTransition);
         }
 
-        public void TransitionEndWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition)
+        public void ToNextStateTransitionBegin(IReadonlyPlayableTransition<T> currentTransition)
         {
-
+            currentState?.ToNextStateTransitionBegin(currentTransition);
         }
 
-        public void TransitionBeginWhichToNextState(IReadonlyPlayableTransition<T> currentTransition)
+        public void ToNextStateTransitionEnd(IReadonlyPlayableTransition<T> currentTransition)
         {
-
-        }
-
-        public void TransitionEndWhichToNextState(IReadonlyPlayableTransition<T> currentTransition)
-        {
-
+            currentState?.ToNextStateTransitionEnd(currentTransition);
         }
     }
 

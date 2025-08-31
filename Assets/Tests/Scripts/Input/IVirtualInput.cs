@@ -3,8 +3,8 @@ namespace Tests.Input
 {
     public interface IVirtualInput : IInput
     {
-        public new Vector3 HorizontalDirection { get; set; }
-        public new bool IsAscending { get; set; }
-        public new bool IsBoosting { get; set; }
+        public new Vector3 HorizontalVector { get; set; }
+        public new bool Jump { get; set; }
+        public new bool Boost { get; set; }
     }
 }

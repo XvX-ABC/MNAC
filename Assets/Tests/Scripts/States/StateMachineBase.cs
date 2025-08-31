@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Tests.States
 {
@@ -114,9 +115,7 @@ namespace Tests.States
         {
             get
             {
-                if (currentState == null)
-                    return default;
-                return currentState.Context;
+                return context;
             }
             set
             {
@@ -124,9 +123,11 @@ namespace Tests.States
                 {
                     state.Context = value;
                 }
+                context = value;
             }
         }
         public IState<T> CurrentState { get => currentState; }
+        public override string Name => currentState == null ? base.Name : $"{base.Name}.{currentState.Name}";
         public StateMachineBase(string name, bool enabled = true) : base(name, enabled)
         {
             states = new();
@@ -197,6 +198,7 @@ namespace Tests.States
             {
                 try
                 {
+                    //if(currentState.Name=="")
                     currentState.OnExit();
                 }
                 catch (Exception e)
@@ -224,6 +226,7 @@ namespace Tests.States
         }
         public virtual void ChangeStateTo(S state)
         {
+
             if (state == null)
                 throw new ArgumentNullException(nameof(state));
             if (!states.Contains(state))
@@ -269,34 +272,32 @@ namespace Tests.States
             if (currentState == null && states.Count > 0)
             {
                 var state = states.First();
-                //state.OnEnter();
-                //currentState = state;
-
                 ChangeState(state);
             }
             var currentTransition = CheckTransitions();
             if (currentTransition != null)
             {
+                if (currentState.Name == "locomotion_movement_quick_boosting")
+                    Debug.Log("Debug point");
                 ChangeState(currentTransition);
             }
             currentState?.OnUpdate();
         }
         public override void OnEnter()
         {
-            this.enabled = true;
             currentState?.OnEnter();
         }
         public override void OnExit()
         {
             currentState?.OnExit();
-            this.enabled = false;
         }
         public override string ToString()
         {
             if (!this.enabled)
-                return "This state machine is not enabled.";
+                return $"This state machine '{name}' is not enabled.";
             var sb = new StringBuilder();
-            sb.AppendLine("current state: " + currentState.Name);
+            sb.AppendLine("state machine: " + name);
+            sb.AppendLine("current state: " + currentState?.Name);
             return sb.ToString();
         }
     }

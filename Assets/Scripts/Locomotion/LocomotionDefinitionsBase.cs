@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Locomotion;
 using UnityEngine;
 
 namespace Locomotion

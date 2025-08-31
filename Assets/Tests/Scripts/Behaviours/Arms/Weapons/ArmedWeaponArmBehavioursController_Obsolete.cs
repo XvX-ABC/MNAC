@@ -165,31 +165,31 @@ namespace Tests.Behaviours.Arms.Weapons
                 b.StateNode.OnUpdate();
             }
         }
-        public override void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionBeginWhichOfPreviousState(currentTransition);
+            base.FromPreviousStateTransitionBegin(currentTransition);
             if (activatedBehaviours != null)
             {
                 var b = activatedBehaviours[0];
-                b.StateNode.TransitionBeginWhichOfPreviousState(currentTransition);
+                b.StateNode.FromPreviousStateTransitionBegin(currentTransition);
             }
         }
-        public override void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionRunningWhichOfPreviousState(currentTransition);
+            base.FromPreviousStateTransitionRunning(currentTransition);
             if (activatedBehaviours != null)
             {
                 var b = activatedBehaviours[0];
-                b.StateNode.TransitionRunningWhichOfPreviousState(currentTransition);
+                b.StateNode.FromPreviousStateTransitionRunning(currentTransition);
             }
         }
-        public override void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionRunningWhichToNextState(currentTransition);
+            base.ToNextStateTransitionRunning(currentTransition);
             if (activatedBehaviours != null)
             {
                 var b = activatedBehaviours[0];
-                b.StateNode.TransitionRunningWhichToNextState(currentTransition);
+                b.StateNode.ToNextStateTransitionRunning(currentTransition);
             }
         }
     }

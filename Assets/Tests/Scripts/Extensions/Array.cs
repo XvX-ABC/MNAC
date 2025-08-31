@@ -10,6 +10,19 @@ namespace Tests.Extensions
 {
     internal static class ArrayExtensions
     {
+        public static void Append<T>(ref T[] array, T elem)
+        {
+            Array.Resize(ref array, array.Length + 1);
+            array[^1] = elem;
+        }
+        public static T[] Append_D<T>(T[] array, T elem)
+        {
+            Array.Resize(ref array, array.Length + 1);
+            array[^1] = elem;
+            return array;
+        }
+
+        [Obsolete]
         public static void Append<T>(this T[] array, T elem)
         {
             Array.Resize(ref array, array.Length + 1);

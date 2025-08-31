@@ -1,4 +1,5 @@
-﻿using RootMotion.FinalIK;
+﻿using BehaviorDesigner.Runtime.Tasks;
+using RootMotion.FinalIK;
 using System;
 using Tests.Behaviours.Arms;
 using Tests.Behaviours.Arms.Weapons;
@@ -9,11 +10,12 @@ using Tests.Weapons;
 
 namespace Tests.Characters.Arms.Weapons.Launchers
 {
+    [RequiredComponent(typeof(AimIK))]
     internal class ArmedLauncherArmBehaviour : ArmedWeaponArmBehaviourBase_MonoComponent
     {
         Behaviours.Arms.Weapons.Launchers.ArmedLauncherArmBehaviour _behaviour;
         TargetsCatcher_Debug _targetsCatcher;
-        public override WeaponType Type => behaviour.Type;
+        public override WeaponType Type => WeaponType.Launcher;
 
         public override IPlayableState<object> StateNode => behaviour.StateNode;
 
@@ -43,7 +45,6 @@ namespace Tests.Characters.Arms.Weapons.Launchers
 
             _targetsCatcher = new();
             _behaviour = new(definitions, aim, _targetsCatcher);
-            this.enabled = false;
         }
         protected virtual void Update()
         {

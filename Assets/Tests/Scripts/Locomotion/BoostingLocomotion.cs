@@ -39,7 +39,7 @@ namespace Tests.Locomotion
             var currentTime = Time.unscaledTime;
             if (Mathf.Abs(currentTime - _lastTime) < _definitions.Interval)
                 return;
-            var direction = context.World.Input.HorizontalDirection;
+            var direction = context.World.Input.HorizontalVector;
             if (direction == Vector3.zero)
                 return;
             var speed = _baseDefinitions.MaxSpeed * _definitions.Power;
@@ -62,7 +62,7 @@ namespace Tests.Locomotion
         {
             _context = context;
             var input = context.Input;
-            if (input.IsBoosting && !_timeline.IsRunning)
+            if (input.Boost && !_timeline.IsRunning)
             {
                 if (_jumpLocomotion.CurrentState > JumpLocomotion.State.OnGround)
                     _jumpLocomotion.EndJump(context);

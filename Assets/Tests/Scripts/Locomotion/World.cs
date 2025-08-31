@@ -23,9 +23,11 @@ namespace Tests.Locomotion
             }
 
             public IHybridInput.Mode CurrentMode { get => _input.CurrentMode; set => _input.CurrentMode = value; }
-            public Vector3 HorizontalDirection { get => _horizontalDirection; set => _horizontalDirection = value; }
-            public bool IsAscending { get => _input.IsAscending; set => _input.IsAscending = value; }
-            public bool IsBoosting { get => _input.IsBoosting; set => _input.IsBoosting = value; }
+            public Vector3 HorizontalVector { get => _horizontalDirection; set => _horizontalDirection = value; }
+            public bool Jump { get => _input.Jump; set => _input.Jump = value; }
+            public bool Boost { get => _input.Boost; set => _input.Boost = value; }
+
+            public bool QuickBoost => throw new NotImplementedException();
 
             bool IInput.Fire => throw new NotImplementedException();
 
@@ -35,11 +37,11 @@ namespace Tests.Locomotion
 
             public void OnUpdate(IGround? ground)
             {
-                var direction = _input.HorizontalDirection;
+                var direction = _input.HorizontalVector;
                 if (direction == Vector3.zero)
                     _horizontalDirection = Vector3.zero;
                 else
-                    _horizontalDirection = ground == null ? _input.HorizontalDirection : Vector3.ProjectOnPlane(direction, _world.Up).normalized;
+                    _horizontalDirection = ground == null ? _input.HorizontalVector : Vector3.ProjectOnPlane(direction, _world.Up).normalized;
 
             }
         }
@@ -47,6 +49,7 @@ namespace Tests.Locomotion
         public Vector3 Up;
         public Vector3 Right;
         public Vector3 Forward;
+        public Vector3 Gravity;
         private World() { }
         public World(IHybridInput input)
         {
@@ -63,7 +66,7 @@ namespace Tests.Locomotion
                 Forward = DefaultForward;
                 return;
             }
-            var rotation = Quaternion.FromToRotation(DefaultUp,upwards);
+            var rotation = Quaternion.FromToRotation(DefaultUp, upwards);
             Up = upwards;
             Right = rotation * Vector3.right;
             Forward = rotation * Vector3.forward;

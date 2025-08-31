@@ -15,7 +15,7 @@ namespace Tests.States
         protected readonly Guid id;
         protected bool enabled;
         protected T context;
-        int FindTransitionIndex(IState<T> destinationState)
+        protected int FindTransitionIndex(IState<T> destinationState)
         {
             var transitions = this.transitions;
             if (transitions == null)
@@ -24,7 +24,7 @@ namespace Tests.States
             return index;
         }
         public ITransition<T>[] Transitions { get => transitions; }
-        public string Name { get => name; }
+        public virtual string Name { get => name; }
         public Guid ID { get => id; }
         public virtual bool Enabled
         {
@@ -59,7 +59,10 @@ namespace Tests.States
             }
             this.transitions = transitions;
         }
-
+        public virtual void RemoveTransition(ITransition<T> transition)
+        {
+            RemoveTransition(transition.DestinationState);
+        }
         public virtual void RemoveTransition(IState<T> destinationState)
         {
             if (destinationState == null)

@@ -16,7 +16,7 @@ using ArmAnimationCore_Obsolete = Tests.Behaviours.Arms.Animations.ArmAnimationC
 namespace Tests.Behaviours.Arms
 {
 
-    [RequireComponent(typeof(ArmBehaviourDefinitions))]
+    [RequireComponent(typeof(ArmDefinitions))]
     [RequireComponent(typeof(ArmAnimationDefinitions))]
     [Obsolete]
     public class ArmCore_Obsolete : State_MonoComponent, IArmBehaviour, IState
@@ -96,7 +96,7 @@ namespace Tests.Behaviours.Arms
         protected override void Awake()
         {
             base.Awake();
-            definitions = GetComponent<ArmBehaviourDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ArmBehaviourDefinitions));
+            definitions = GetComponent<ArmDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ArmDefinitions));
             animationDefinitions = GetComponent<ArmAnimationDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IArmAnimationDefinitions));
             _node = new(this);
         }

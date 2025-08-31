@@ -35,20 +35,25 @@ namespace Tests.Input
                 }
             }
         }
-        public Vector3 HorizontalDirection
+        public Vector3 HorizontalVector
         {
-            get => _currentInput.HorizontalDirection;
-            set => _virtualInput.HorizontalDirection = value;
+            get => _currentInput.HorizontalVector;
+            set => _virtualInput.HorizontalVector = value;
         }
-        public bool IsAscending
+        public bool Jump
         {
-            get => _currentInput.IsAscending;
-            set => _virtualInput.IsAscending = value;
+            get => _currentInput.Jump;
+            set => _virtualInput.Jump = value;
         }
-        public bool IsBoosting
+        public bool Boost
         {
-            get => _currentInput.IsBoosting;
-            set => _virtualInput.IsBoosting = value;
+            get => _currentInput.Boost;
+            set => _virtualInput.Boost = value;
+        }
+        public bool QuickBoost
+        {
+            get => _currentInput.QuickBoost;
+            set => _virtualInput.QuickBoost = value;
         }
 
         public bool Fire => _currentInput.Fire;

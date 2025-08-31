@@ -6,16 +6,19 @@ using Tests.Behaviours.Arms.Animations;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.Behaviours.Arms.Weapons.Animations;
 using Tests.Characters.Arms.Animations;
+using Tests.Characters.Arms.Weapons;
 using Tests.Input;
 using Tests.States;
 using Tests.Weapons;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 using UnityEngine.Playables;
 using ArmAnimationCore = Tests.Characters.Arms.Animations.ArmAnimationCore;
+using IArmWeaponDefinitions = Tests.Characters.Arms.Weapons.IArmWeaponDefinitions;
 
 namespace Tests.Characters.Arms
 {
-    [RequireComponent(typeof(ArmBehaviourDefinitions))]
+    [RequireComponent(typeof(ArmDefinitions))]
     [RequireComponent(typeof(ArmAnimationDefinitions))]
     public class ArmCore : State_MonoComponent, IArmBehaviour
     {
@@ -30,7 +33,6 @@ namespace Tests.Characters.Arms
             public override void OnEnter()
             {
                 base.OnEnter();
-                //_core.StatusNum = 3;
             }
 
             public override void OnExit()
@@ -54,8 +56,8 @@ namespace Tests.Characters.Arms
         [SerializeField]
         MountPoint[] _mountPoints;
 
-        internal IArmDefinitions definitions;
-        internal IArmAnimationDefinitions animationDefinitions;
+        IArmDefinitions _definitions;
+        IArmAnimationDefinitions animationDefinitions;
 
 
         //internal ArmWeaponSwitching weaponSwitching;
@@ -96,15 +98,15 @@ namespace Tests.Characters.Arms
         protected override void Awake()
         {
             base.Awake();
-            definitions = GetComponent<ArmBehaviourDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ArmBehaviourDefinitions));
+            _definitions = GetComponent<ArmDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ArmDefinitions));
             animationDefinitions = GetComponent<ArmAnimationDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IArmAnimationDefinitions));
             _node = new(this);
         }
 
         private void Start()
         {
-            var mp = FindMountPoint(definitions.Weapon.MountPointName);
-            var n = definitions.Weapon.Origins[0].Name;
+            var mp = FindMountPoint(_definitions.Weapon.MountPointName);
+            var n = _definitions.Weapon.Origins[0].Name;
 
         }
         public MountPoint FindMountPoint(string name)
@@ -124,7 +126,7 @@ namespace Tests.Characters.Arms
         public void Initialize(Blackboard blackboard)
         {
             this.Blackboard = blackboard;
-            var weaponDefinitions = definitions.Weapon;
+            var weaponDefinitions = _definitions.Weapon;
             var weaponMountPoint = FindMountPoint(weaponDefinitions.MountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.MountPointName);
 
 
@@ -137,7 +139,8 @@ namespace Tests.Characters.Arms
             InitializeChildNodes();
 
             //this.animationCore = new(this);
-            this.acore_new = new(this, new ArmedWeaponArmAnimator<IArmedWeaponArmBehaviour>(this.armedWeaponController));
+            //this.acore_new = new(this, new ArmedWeaponArmAnimator<IArmedWeaponArmBehaviour>(this.armedWeaponController));
+            this.acore_new = new(_definitions.Weapon, animationDefinitions.Weapon, new ArmedWeaponArmAnimator<IArmedWeaponArmBehaviour>(this.armedWeaponController));
             InitializeStateMachine();
 
             weaponSwitching.animationCore = acore_new;
@@ -155,8 +158,6 @@ namespace Tests.Characters.Arms
         }
         void InitializeArmedWeaponBehaviours(IArmWeaponDefinitions definitions)
         {
-            var blist = new List<(string, IArmedWeaponArmBehaviour)>();
-            // TODO：修改武器相关行为的来源，目前这种从手臂对象上的组件中加载行为的方式不够灵活
             var behaviours = this.GetComponents<IArmedWeaponArmBehaviour>();
             armedWeaponController = new(_weaponCore, definitions, behaviours);
 
@@ -238,16 +239,7 @@ namespace Tests.Characters.Arms
         int ctx = 0;
         public override void OnUpdate()
         {
-            //if (_stateMachine.CurrentState != null && _stateMachine.CurrentState.Name == "arm_armed_weapon ->  arm_switching")
-            //{
-            //    Debug.Log("dpoint");
-            //}
-            //if (_stateMachine.CurrentState != null && _stateMachine.CurrentState.Name == "arm_switching")
-            //{
-            //    Debug.Log("debug point");
-            //}
             _stateMachine.OnUpdate();
-            //Debug.Log("Arm core state machine: " + _stateMachine);
         }
 
         public override void OnEnter()

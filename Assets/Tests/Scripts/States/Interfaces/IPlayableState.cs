@@ -9,11 +9,11 @@ namespace Tests.States
         [Obsolete]
         public bool ExitWhenEnd { get; set; }
         public new IPlayableTransition<T>[] Transitions { get; }
-        public void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition);
-        public void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition);
-        public void TransitionEndWhichOfPreviousState(IReadonlyPlayableTransition<T> currentTransition);
-        public void TransitionBeginWhichToNextState(IReadonlyPlayableTransition<T> currentTransition);
-        public void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<T> currentTransition);
-        public void TransitionEndWhichToNextState(IReadonlyPlayableTransition<T> currentTransition);
+        public void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<T> currentTransition);
+        public void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<T> currentTransition);
+        public void FromPreviousStateTransitionEnd(IReadonlyPlayableTransition<T> currentTransition);
+        public void ToNextStateTransitionBegin(IReadonlyPlayableTransition<T> currentTransition);
+        public void ToNextStateTransitionRunning(IReadonlyPlayableTransition<T> currentTransition);
+        public void ToNextStateTransitionEnd(IReadonlyPlayableTransition<T> currentTransition);
     }
 }

@@ -26,15 +26,15 @@ namespace Assets.Tests.Scripts.BTD
             switch (type)
             {
                 case InputTypes.HorizontalDirection:
-                    if (input.HorizontalDirection != Vector3.zero)
+                    if (input.HorizontalVector != Vector3.zero)
                         return TaskStatus.Success;
                     break;
                 case InputTypes.IsAscending:
-                    if (input.IsAscending)
+                    if (input.Jump)
                         return TaskStatus.Success;
                     break;
                 case InputTypes.IsBoosting:
-                    if (input.IsBoosting)
+                    if (input.Boost)
                         return TaskStatus.Success;
                     break;
                 case InputTypes.Fire:

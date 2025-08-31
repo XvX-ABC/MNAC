@@ -69,7 +69,8 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
                 if (_activatedAnimators == null)
                     _activatedAnimators = new IArmedWeaponArmAnimationPlayablePart[] { animator };
                 else
-                    _activatedAnimators.Append(animator);
+                    //_activatedAnimators.Append(animator);
+                    ArrayExtensions.Append(ref _activatedAnimators, animator);
                 playablePart.animator = animator;
             }
         }

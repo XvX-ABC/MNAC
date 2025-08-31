@@ -21,18 +21,31 @@ namespace Tests.States
                 {
                     durationEvent.Invoke(sourceState, destinationState, ctx.NormalizedTime);
                 });
-            timeline.AddPointEvent(0, _ => { sourceState.TransitionBeginWhichToNextState(this); });
-            timeline.AddRangeEvent(0, 1, _ => { sourceState.TransitionRunningWhichToNextState(this); });
-            timeline.AddPointEvent(1, _ => { sourceState.TransitionEndWhichToNextState(this); });
+            //timeline.AddPointEvent(0, _ => { sourceState.ToNextStateTransitionBegin(this); });
+            //timeline.AddRangeEvent(0, 1, _ => { sourceState.ToNextStateTransitionRunning(this); });
+            //timeline.AddPointEvent(1, _ => { sourceState.ToNextStateTransitionEnd(this); });
 
 
-            timeline.AddPointEvent(0, _ => { destinationState.TransitionBeginWhichOfPreviousState(this); });
-            timeline.AddRangeEvent(0, 1, _ => { destinationState.TransitionRunningWhichOfPreviousState(this); });
-            timeline.AddPointEvent(1, _ => { destinationState.TransitionEndWhichOfPreviousState(this); });
+            //timeline.AddPointEvent(0, _ => { destinationState.FromPreviousStateTransitionBegin(this); });
+            //timeline.AddRangeEvent(0, 1, _ => { destinationState.FromPreviousStateTransitionRunning(this); });
+            //timeline.AddPointEvent(1, _ => { destinationState.FromPreviousStateTransitionEnd(this); });
+            AddToNextStateTransitionEvents(timeline);
+            AddFromPreviousStateTransitionEvents(timeline);
             _interruptionSource = interruptionSource;
         }
 
-
+        protected virtual void AddToNextStateTransitionEvents(ITimeline timeline)
+        {
+            timeline.AddPointEvent(0, _ => { sourceState.ToNextStateTransitionBegin(this); });
+            timeline.AddRangeEvent(0, 1, _ => { sourceState.ToNextStateTransitionRunning(this); });
+            timeline.AddPointEvent(1, _ => { sourceState.ToNextStateTransitionEnd(this); });
+        }
+        protected virtual void AddFromPreviousStateTransitionEvents(ITimeline timeline)
+        {
+            timeline.AddPointEvent(0, _ => { destinationState.FromPreviousStateTransitionBegin(this); });
+            timeline.AddRangeEvent(0, 1, _ => { destinationState.FromPreviousStateTransitionRunning(this); });
+            timeline.AddPointEvent(1, _ => { destinationState.FromPreviousStateTransitionEnd(this); });
+        }
         public ITimeline Timeline => timeline;
 
         IReadonlyTimeline IReadonlyPlayableTransition<T>.Timeline => Timeline;

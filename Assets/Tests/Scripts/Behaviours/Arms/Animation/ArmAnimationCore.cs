@@ -2,7 +2,6 @@
 using Tests.Behaviours.Animations;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.Behaviours.Arms.Weapons.Animations;
-using Tests.Characters.Arms;
 using Tests.States;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -119,6 +118,7 @@ namespace Tests.Behaviours.Arms.Animations
                 parentNode.RemoveChild(_mixer.Node);
             }
         }
+        [Obsolete]
         class DynamicBlendingState : ArmAnimationPlayingState
         {
             SwitchingState _switching;
@@ -187,10 +187,23 @@ namespace Tests.Behaviours.Arms.Animations
                 _statusNum = value;
             }
         }
-        public ArmAnimationCore(ArmCore core, IArmedWeaponArmAnimator armedAnimator)
+        //public ArmAnimationCore(ArmCore core, IArmedWeaponArmAnimator armedAnimator)
+        //{
+        //    _definitions = core.definitions.Weapon;
+        //    _animationDefinitions = core.animationDefinitions.Weapon;
+        //    this.armedAnimator = armedAnimator ?? throw new ArgumentNullException(nameof(armedAnimator));
+
+
+        //    switching = new(_definitions, _animationDefinitions);
+        //    _mixer = new();
+        //}
+
+        public ArmAnimationCore(IArmWeaponDefinitions weaponDefinitions, IArmWeaponAnimationDefinitions animationDefinitions, IArmedWeaponArmAnimator armedAnimator)
         {
-            _definitions = core.definitions.Weapon;
-            _animationDefinitions = core.animationDefinitions.Weapon;
+            //_definitions = core.definitions.Weapon;
+            //_animationDefinitions = core.animationDefinitions.Weapon;
+            _definitions = weaponDefinitions ?? throw new ArgumentNullException(nameof(weaponDefinitions));
+            _animationDefinitions = animationDefinitions ?? throw new ArgumentNullException(nameof(animationDefinitions));
             this.armedAnimator = armedAnimator ?? throw new ArgumentNullException(nameof(armedAnimator));
 
 
@@ -318,7 +331,6 @@ namespace Tests.Behaviours.Arms.Animations
         void UpdatePlayingState(byte statusNum)
         {
             _playingState?.OnExit();
-            //var newState = statusNum == 2 && !armedAnimator.playablePart.Enabled ? GetNewState(0) : GetNewState(statusNum);
             var newState = GetNewState(statusNum);
             newState.OnEnter();
             _playingState = newState;
@@ -327,7 +339,6 @@ namespace Tests.Behaviours.Arms.Animations
                 0 => _switchingState,
                 1 => _armedState,
                 2 => _blendingState,
-                //2 => _dynamicBlendingState,
                 3 => _idleState,
                 _ => throw new Exception()
             };

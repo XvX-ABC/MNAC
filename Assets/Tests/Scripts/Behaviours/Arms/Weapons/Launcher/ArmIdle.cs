@@ -23,7 +23,7 @@ namespace Tests.Behaviours.Arms.Weapons
         public override void OnExit()
         {
         }
-        public override void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
             var time = currentTransition.Timeline.NormalizedTime;
             if (time >= 1)

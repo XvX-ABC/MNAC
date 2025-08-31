@@ -173,5 +173,15 @@ namespace Utilities.Timeline
         {
             throw new NotImplementedException();
         }
+
+        public bool SetNormalizedTime(float normalizedTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SetTime(float time)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

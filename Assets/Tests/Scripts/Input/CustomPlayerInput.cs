@@ -5,7 +5,7 @@ namespace Tests.Input
 {
     public enum InputTypes
     {
-        HorizontalDirection,    
+        HorizontalDirection,
         IsAscending,
         IsBoosting,
         Fire,
@@ -26,14 +26,16 @@ namespace Tests.Input
         [SerializeField]
         KeyCode _up;
         [SerializeField]
-        KeyCode _qb;
+        KeyCode _boost;
+        [SerializeField]
+        KeyCode _quickBoost;
         [SerializeField]
         KeyCode _fire;
         [SerializeField]
         KeyCode _reload;
         [SerializeField]
         KeyCode _supply;
-        public Vector3 HorizontalDirection
+        public Vector3 HorizontalVector
         {
             get
             {
@@ -51,17 +53,24 @@ namespace Tests.Input
             }
         }
 
-        public bool IsAscending => UInput.GetKey(_up);
+        public bool Jump => UInput.GetKey(_up);
 
-        public bool IsBoosting
+        public bool Boost
         {
             get
             {
-                var direction = HorizontalDirection;
-                return UInput.GetKeyDown(_qb) && direction != Vector3.zero;
+                var direction = HorizontalVector;
+                return UInput.GetKey(_boost) && direction != Vector3.zero;
             }
         }
-
+        public bool QuickBoost
+        {
+            get
+            {
+                var direction = HorizontalVector;
+                return UInput.GetKeyDown(_quickBoost) && direction != Vector3.zero;
+            }
+        }
         bool IInput.Fire => UInput.GetKey(_fire);
 
         bool IInput.Reload => UInput.GetKeyDown(_reload);

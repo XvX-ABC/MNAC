@@ -32,6 +32,15 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
                 weightChangedAction?.Invoke(v);
             }
         }
+        public override bool Enabled
+        {
+            get => base.Enabled;
+            set
+            {
+                base.Enabled = value;
+                _aimIK.enabled = value;
+            }
+        }
         public ArmAim(AimIK aimIK) : base("aim", 0)
         {
             _aimIK = aimIK ?? throw new ArgumentNullException(nameof(aimIK));
@@ -57,18 +66,18 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
         {
             //this.Weight = 0;
         }
-        public override void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionBeginWhichOfPreviousState(currentTransition);
+            base.FromPreviousStateTransitionBegin(currentTransition);
         }
-        public override void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionRunningWhichToNextState(currentTransition);
+            base.ToNextStateTransitionRunning(currentTransition);
             UpdateTarget();
         }
-        public override void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionRunningWhichOfPreviousState(currentTransition);
+            base.FromPreviousStateTransitionRunning(currentTransition);
             UpdateTarget();
         }
     }

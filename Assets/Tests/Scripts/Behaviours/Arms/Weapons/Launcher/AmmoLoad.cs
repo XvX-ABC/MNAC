@@ -30,20 +30,20 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
         {
             _launcher.EndReload();
         }
-        public override void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionBeginWhichOfPreviousState(currentTransition);
+            base.FromPreviousStateTransitionBegin(currentTransition);
         }
-        public override void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionRunningWhichOfPreviousState(currentTransition);
+            base.FromPreviousStateTransitionRunning(currentTransition);
             var time = currentTransition.Timeline.NormalizedTime;
             if (time >= 0.8f)
                 _reloadAnimator.Play();
         }
-        public override void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionRunningWhichToNextState(currentTransition);
+            base.ToNextStateTransitionRunning(currentTransition);
             var time = currentTransition.Timeline.NormalizedTime;
             if (time >= 0.8f)
                 _reloadAnimator.Stop();

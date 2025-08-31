@@ -6,12 +6,8 @@ using Tests.States;
 using Tests.Weapons;
 namespace Tests.Characters.Arms.Weapons.Launchers
 {
-    internal abstract class ArmedWeaponArmBehaviourBase_MonoComponent : StateComponentNode_MonoComponent, IArmedWeaponArmBehaviour
+    public abstract class ArmedWeaponArmBehaviourBase_MonoComponent : StateComponentNode_MonoComponent, IArmedWeaponArmBehaviour
     {
-        protected override void Awake()
-        {
-            base.Awake();
-        }
 
         public bool Activated { get => this.enabled; set => this.enabled = value; }
 
@@ -44,36 +40,36 @@ namespace Tests.Characters.Arms.Weapons.Launchers
             behaviour.OnExit();
         }
 
-        public override void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionBeginWhichOfPreviousState(currentTransition);
-            behaviour.TransitionBeginWhichOfPreviousState(currentTransition);
+            base.FromPreviousStateTransitionBegin(currentTransition);
+            behaviour.FromPreviousStateTransitionBegin(currentTransition);
         }
 
-        public override void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionRunningWhichOfPreviousState(currentTransition);
-            behaviour.TransitionRunningWhichOfPreviousState(currentTransition);
+            base.FromPreviousStateTransitionRunning(currentTransition);
+            behaviour.FromPreviousStateTransitionRunning(currentTransition);
         }
-        public override void TransitionEndWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void FromPreviousStateTransitionEnd(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionEndWhichOfPreviousState(currentTransition);
-            behaviour.TransitionEndWhichOfPreviousState(currentTransition);
+            base.FromPreviousStateTransitionEnd(currentTransition);
+            behaviour.FromPreviousStateTransitionEnd(currentTransition);
         }
-        public override void TransitionBeginWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void ToNextStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionBeginWhichToNextState(currentTransition);
-            behaviour.TransitionBeginWhichToNextState(currentTransition);
+            base.ToNextStateTransitionBegin(currentTransition);
+            behaviour.ToNextStateTransitionBegin(currentTransition);
         }
-        public override void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionRunningWhichToNextState(currentTransition);
-            behaviour.TransitionRunningWhichToNextState(currentTransition);
+            base.ToNextStateTransitionRunning(currentTransition);
+            behaviour.ToNextStateTransitionRunning(currentTransition);
         }
-        public override void TransitionEndWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void ToNextStateTransitionEnd(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionEndWhichToNextState(currentTransition);
-            behaviour.TransitionEndWhichToNextState(currentTransition);
+            base.ToNextStateTransitionEnd(currentTransition);
+            behaviour.ToNextStateTransitionEnd(currentTransition);
         }
     }
 }

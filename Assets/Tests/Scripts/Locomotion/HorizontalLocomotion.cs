@@ -1,9 +1,6 @@
 ﻿using Locomotion;
 using Tests.Environment;
-using TMPro.EditorUtilities;
-using UnityEditor.Networking.PlayerConnection;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 namespace Tests.Locomotion
 {
     class HorizontalLocomotion : IModule
@@ -21,7 +18,7 @@ namespace Tests.Locomotion
         public void OnFixedUpdate(Context context)
         {
             var world = context.World;
-            var direction = world.Input.HorizontalDirection;
+            var direction = world.Input.HorizontalVector;
             if (direction == Vector3.zero)
                 return;
             var currentVelocity = context.Velocity;

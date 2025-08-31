@@ -13,7 +13,7 @@ namespace Tests.States
         public InterruptionSource InterruptionSource { get; }
 
     }
-    public interface IReadonlyPlayableTransition<T>
+    public interface IReadonlyPlayableTransition<T> : IReadonlyTransition<T>
     {
         public IReadonlyTimeline Timeline { get; }
     }

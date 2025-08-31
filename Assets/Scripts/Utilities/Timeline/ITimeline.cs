@@ -24,6 +24,8 @@ namespace Utilities.Timeline
         bool AddEvent(ITimelineEvent evt);
         bool RemoveEvent(ITimelineEvent evt);
         bool UpdateLength(float newLength);
+        bool SetNormalizedTime(float normalizedTime);
+        bool SetTime(float time);
         void End();
     }
 }

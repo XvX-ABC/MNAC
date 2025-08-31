@@ -1,5 +1,4 @@
-﻿using Locomotion;
-using System;
+﻿using System;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.Environment;
 using Tests.Input;

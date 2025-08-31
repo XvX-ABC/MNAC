@@ -113,7 +113,7 @@ namespace Tests.Locomotion
         void ProbesHandle(Context context)
         {
             var pos = context.Position;
-            var rotation = Quaternion.LookRotation(context.Input.HorizontalDirection);
+            var rotation = Quaternion.LookRotation(context.Input.HorizontalVector);
             _probeResults.Clear();
             foreach (var p in _probes)
             {
@@ -147,7 +147,7 @@ namespace Tests.Locomotion
                 else
                     ProbesHandle(context);
             }
-            if (_state == State.OnGround && ground != null && input.IsAscending)
+            if (_state == State.OnGround && ground != null && input.Jump)
             {
                 StartJumpImpl(context);
             }

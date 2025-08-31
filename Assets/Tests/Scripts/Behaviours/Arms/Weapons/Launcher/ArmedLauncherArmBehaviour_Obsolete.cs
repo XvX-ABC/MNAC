@@ -174,28 +174,28 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         {
             _stateMachine?.OnUpdate();
         }
-        public override void TransitionBeginWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionBeginWhichOfPreviousState(currentTransition);
+            base.FromPreviousStateTransitionBegin(currentTransition);
             //var targetsCount = _targetsCatcher.Targets.Count;
             _stateMachine.ChangeStateTo(_aim);
             //_stateMachine.OnEnter();
             //Debug.Log("armed launcher state machine entered");
         }
-        public override void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionRunningWhichOfPreviousState(currentTransition);
+            base.FromPreviousStateTransitionRunning(currentTransition);
             var v = currentTransition.Timeline.NormalizedTime;
             if (_stateMachine.CurrentState == _aim)
             {
                 _aim.Weight = v;
-                _aim.TransitionRunningWhichToNextState(currentTransition);
+                _aim.ToNextStateTransitionRunning(currentTransition);
             }
             banimator.IdleWeight = 1 - v;
         }
-        public override void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionRunningWhichToNextState(currentTransition);
+            base.ToNextStateTransitionRunning(currentTransition);
             var v = currentTransition.Timeline.NormalizedTime;
             //if (_stateMachine.CurrentState == _aim)
             //{
@@ -207,13 +207,13 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
             {
                 _aim.Weight = 1 - v;
                 //Debug.Log("amred launcher aiming weight: " + (1 - v));
-                _aim.TransitionRunningWhichToNextState(currentTransition);
+                _aim.ToNextStateTransitionRunning(currentTransition);
             }
             banimator.IdleWeight = v;
         }
-        public override void TransitionEndWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void ToNextStateTransitionEnd(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionEndWhichToNextState(currentTransition);
+            base.ToNextStateTransitionEnd(currentTransition);
             _stateMachine.OnExit();
         }
         private void Update()

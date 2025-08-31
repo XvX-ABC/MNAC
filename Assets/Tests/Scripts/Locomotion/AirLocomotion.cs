@@ -129,7 +129,7 @@ namespace Tests.Locomotion
             if (_jumpLocomotion.CurrentState > JState.OnGround && _jumpLocomotion.CurrentState <= JState.Ascending)
                 return;
 
-            if (input.IsAscending)
+            if (input.Jump)
             {
                 if (_jumpLocomotion.CurrentState == JState.Descending)
                     _jumpLocomotion.EndJump(context);

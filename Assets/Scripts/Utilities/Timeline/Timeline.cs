@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BehaviorDesigner.Runtime.Tasks.Unity.UnityString;
+using System;
 using UnityEngine;
 using Utilities.Timeline.Events;
 using Utilities.Timeline.Events.Point;
@@ -7,6 +8,35 @@ using UTime = UnityEngine.Time;
 
 namespace Utilities.Timeline
 {
+    public class Timeline_V1 : Timeline
+    {
+        public Timeline_V1(float duration) : base(duration) { }
+        public override void OnUpdate(float deltaTime)
+        {
+            if (!isRunning)
+                return;
+            var context = new TimelineContext() { DeltaTime = deltaTime, Time = time, NormalizedTime = length == 0 ? 1 : time / length, Duration = length };
+
+            if (!startActionExecuted)
+            {
+                startAction?.Invoke(context);
+                startActionExecuted = true;
+            }
+
+            updateAction?.Invoke(time / length);
+            foreach (var executor in executors)
+                executor.Execute(context);
+            // TOOD: 改善计时接近预定时长时，提前结束
+            if (time >= length)
+            {
+                endAction?.Invoke(context);
+                //Reset();
+                Pause();
+            }
+            else
+                time += deltaTime;
+        }
+    }
     public class Timeline : ITimeline
     {
 
@@ -15,7 +45,7 @@ namespace Utilities.Timeline
         internal float length;
         internal bool isLoop;
         internal bool isRunning;
-        bool _startActionExecuted;
+        internal bool startActionExecuted;
 
         internal Action<TimelineContext> startAction;
         internal Action<float> updateAction;
@@ -94,21 +124,22 @@ namespace Utilities.Timeline
             endAction?.Invoke(ctx);
             Reset();
         }
-        public void OnUpdate(float deltaTime)
+        public virtual void OnUpdate(float deltaTime)
         {
             if (!isRunning)
                 return;
             var context = new TimelineContext() { DeltaTime = deltaTime, Time = time, NormalizedTime = length == 0 ? 1 : time / length, Duration = length };
 
-            if (!_startActionExecuted)
+            if (!startActionExecuted)
             {
                 startAction?.Invoke(context);
-                _startActionExecuted = true;
+                startActionExecuted = true;
             }
 
             updateAction?.Invoke(time / length);
             foreach (var executor in executors)
                 executor.Execute(context);
+            // TOOD: 改善计时接近预定时长时，提前结束
             if (time >= length)
             {
                 endAction?.Invoke(context);
@@ -129,7 +160,7 @@ namespace Utilities.Timeline
             else
                 time = 0;
             isRunning = isLoop;
-            _startActionExecuted = false;
+            startActionExecuted = false;
             ResetExecutors();
         }
 
@@ -161,6 +192,28 @@ namespace Utilities.Timeline
             if (newLength < 0)
                 Debug.LogWarning(new ArgumentException(nameof(newLength)));
             length = newLength;
+            return true;
+        }
+        public bool SetTime(float time)
+        {
+            if (isRunning)
+            {
+                Debug.LogWarning("This timeline can't set time. because it's running right now.");
+                return false;
+            }
+            time = Mathf.Clamp(time, 0, length);
+            this.time = time;
+            return true;
+        }
+        public bool SetNormalizedTime(float normalizedTime)
+        {
+            if (isRunning)
+            {
+                Debug.LogWarning("This timeline can't set normalized time. because it's running right now.");
+                return false;
+            }
+            normalizedTime = Mathf.Clamp01(normalizedTime);
+            this.time = normalizedTime * length;
             return true;
         }
         public override string ToString()

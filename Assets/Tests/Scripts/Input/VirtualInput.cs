@@ -6,10 +6,11 @@ namespace Tests.Input
         Vector3 _horizontalDirection;
         bool _isAscending;
         bool _isBoosting;
-
-        public Vector3 HorizontalDirection { get => _horizontalDirection; set => _horizontalDirection = value; }
-        public bool IsAscending { get => _isAscending; set => _isAscending = value; }
-        public bool IsBoosting { get => _isBoosting; set => _isBoosting = value; }
+        bool _isQuickBoosting;
+        public Vector3 HorizontalVector { get => _horizontalDirection; set => _horizontalDirection = value; }
+        public bool Jump { get => _isAscending; set => _isAscending = value; }
+        public bool Boost { get => _isBoosting; set => _isBoosting = value; }
+        public bool QuickBoost { get => _isQuickBoosting; set => _isQuickBoosting = value; }
 
         bool IInput.Fire => throw new System.NotImplementedException();
 

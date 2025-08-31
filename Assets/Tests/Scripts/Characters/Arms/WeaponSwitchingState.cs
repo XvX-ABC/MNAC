@@ -61,18 +61,18 @@ namespace Tests.Characters.Arms
             timeline.End();
             base.OnExit();
         }
-        public override void TransitionRunningWhichOfPreviousState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionRunningWhichOfPreviousState(currentTransition);
+            base.FromPreviousStateTransitionRunning(currentTransition);
             if (animationCore != null)
             {
                 var t = currentTransition.Timeline.NormalizedTime;
                 animationCore.SwitchingWeight = t;
             }
         }
-        public override void TransitionRunningWhichToNextState(IReadonlyPlayableTransition<object> currentTransition)
+        public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
-            base.TransitionRunningWhichToNextState(currentTransition);
+            base.ToNextStateTransitionRunning(currentTransition);
             if (animationCore != null)
             {
                 var t = currentTransition.Timeline.NormalizedTime;

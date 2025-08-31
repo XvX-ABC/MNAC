@@ -22,7 +22,7 @@ namespace Tests.Behaviours.Arms.Weapons
 
         [Obsolete]
         public byte StatusNum { get => statusNum; }
-        public bool Activated { get => base.Enabled; set => base.Enabled = value; }
+        public virtual bool Activated { get => base.Enabled; set => base.Enabled = value; }
         [Obsolete]
         public IPlayableState<object> StateNode { get => throw new NotImplementedException(); }
         public abstract Func<bool> EntryFunc { get; }
