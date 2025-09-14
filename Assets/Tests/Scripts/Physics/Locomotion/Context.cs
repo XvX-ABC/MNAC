@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using static Tests.TPhysics.Context;
 using IGroundDetector = Tests.TPhysics.Environment.IGroundDetector;
@@ -29,6 +30,7 @@ namespace Tests.TPhysics.Locomotion
         public ushort UpdatedCount => _physicsContext.UpdatedCount;
 
         public IGroundDetector GroundDetector { get => _groundDetector; }
+
         internal VerticalPosture VerticalPosture { get => _posture; set => _posture = value; }
 
         public void Synchronise()

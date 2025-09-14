@@ -7,6 +7,7 @@ namespace Tests.Characters.Locomotion
 {
     internal class LocomotionStateContext
     {
+        //TODO: 不应该绑定固定对象
         Core _core;
         IInput _input;
         Action<IInput> _inputBoundAction;

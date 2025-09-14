@@ -26,7 +26,7 @@ namespace Tests.States
             fixedExitTime,
             interruptionSource)
         {
-            timeline.AddPointEvent(0, _ => { Debug.Log("abc"); subStatemachine.ChangeStateTo(destinationState); });
+            timeline.AddPointEvent(0, _ => { subStatemachine.ChangeStateTo(destinationState); });
         }
     }
 

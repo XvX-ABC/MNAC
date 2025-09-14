@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Tests.Input;
 using Tests.States;
+using Tests.TPhysics.Locomotion;
 using UnityEngine;
 using Utilities.Timeline;
 
@@ -50,6 +51,22 @@ namespace Tests.Characters.Locomotion
                 false)
         {
         }
+        //public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<LocomotionStateContext> currentTransition)
+        //{
+        //    //base.FromPreviousStateTransitionBegin(currentTransition);
+        //    locomotion.HorizontalVector = context.Input.HorizontalVector;
+        //}
+        //public override void OnUpdate()
+        //{
+        //    base.OnUpdate();
+        //    if (module.State == LocomotionModuleState.Started)
+        //        context.Core.DisableModule(module);
+        //}
+        //public override void OnExit()
+        //{
+        //    locomotion.HorizontalVector = Vector3.zero;
+        //    base.OnExit();
+        //}
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<LocomotionStateContext> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);

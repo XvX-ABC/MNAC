@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 using static Tests.Behaviours.Arms.Weapons.Launchers.ArmedLauncherArmBehaviour_Obsolete;
-using ArmAim = Tests.BodyBehaviour.Arm.Weapons.Launcher.ArmAim;
+using ArmAim = Tests.BodyBehaviour.Arms.ArmAim;
 
 namespace Tests.Behaviours.Arms.Weapons
 {

@@ -19,7 +19,7 @@ namespace Tests.Characters
                 blackboard = value;
             }
         }
-        public string Name { get => this.name; }
+        public virtual string Name { get => this.name; }
         public bool Enabled { get => enabled; set => enabled = value; }
         protected virtual void Awake()
         {

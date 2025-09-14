@@ -31,11 +31,17 @@
 
         protected bool enabled;
         protected World world;
+        protected LocomotionModuleState state;
         public LocomotionModuleBase()
         {
             world = World.Default;
+            state = LocomotionModuleState.Ready;
         }
-        public bool Enabled { get => enabled; set => enabled = value; }
+        public bool Enabled
+        {
+            get => enabled;
+            set => enabled = value;
+        }
         public virtual World World
         {
             get => world;
@@ -45,10 +51,31 @@
             }
         }
 
-        public abstract Context Start(Context context);
-        public abstract Context Update(Context context);
-        public abstract Context End(Context context);
+        public LocomotionModuleState State { get => state; }
 
+        public abstract Context OnStart(Context context);
+        public abstract Context OnUpdate(Context context);
+        public abstract Context OnEnd(Context context);
 
+        public Context Start(Context context)
+        {
+            context = OnStart(context);
+            state = LocomotionModuleState.Started;
+            return context;
+        }
+
+        public Context Update(Context context)
+        {
+            context = OnUpdate(context);
+            state = LocomotionModuleState.Updating;
+            return context;
+        }
+
+        public Context End(Context context)
+        {
+            context = OnEnd(context);
+            state = LocomotionModuleState.Ended;
+            return context;
+        }
     }
 }

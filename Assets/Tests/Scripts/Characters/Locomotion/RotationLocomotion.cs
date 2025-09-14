@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Tests.Blackboards;
 using Tests.Input;
+using Tests.Locomotion;
 using Tests.TPhysics.Locomotion;
 using UnityEngine;
 
@@ -73,7 +74,13 @@ namespace Tests.Characters.Locomotion
         }
         public void OnUpdate()
         {
-            _locomotion.OriginalPos = _camera.WorldToScreenPoint(_rb.position);
+            var cpos = _camera.transform.position;
+            var bpos = _rb.position;
+            var world = _locomotion.World;
+            var r = Quaternion.LookRotation(Vector3.ProjectOnPlane(bpos - cpos, world.Up), world.Up);
+            _locomotion.RotationOffset = r;
+
+            _locomotion.OriginalPos = _camera.WorldToScreenPoint(bpos);
             _locomotion.TargetPos = _target == null ? _input.MousePosition : _target.Position;
         }
     }

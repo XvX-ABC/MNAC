@@ -51,32 +51,33 @@ namespace Tests.TPhysics.Locomotion
             var direction = _horizontalVector;
             var grounds = context.GroundDetector.Grounds;
 
-            var groundNormal = CalculateNormalInGrounds(grounds);
+            //var groundNormal = CalculateNormalInGrounds(grounds);
+            var groundNormal = context.GroundDetector.GroundsNormal;
             if (groundNormal == Vector3.zero)
                 return direction;
 
             return world.rotation * Quaternion.FromToRotation(world.Up, groundNormal) * direction;
 
 
-            Vector3 CalculateNormalInGrounds(IReadOnlyList<Ground> grounds)
-            {
-                if (grounds.Count == 0)
-                    return Vector3.zero;
+            //Vector3 CalculateNormalInGrounds(IReadOnlyList<Ground> grounds)
+            //{
+            //    if (grounds.Count == 0)
+            //        return Vector3.zero;
 
-                var result = Vector3.zero;
-                foreach (var g in grounds)
-                {
-                    result += g.Normal;
-                }
-                return result / grounds.Count;
-            }
+            //    var result = Vector3.zero;
+            //    foreach (var g in grounds)
+            //    {
+            //        result += g.Normal;
+            //    }
+            //    return result / grounds.Count;
+            //}
         }
-        public override Context Start(Context context)
+        public override Context OnStart(Context context)
         {
-            return Update(context);
+            return OnUpdate(context);
         }
 
-        public override Context Update(Context context)
+        public override Context OnUpdate(Context context)
         {
             var worldUp = world.Up;
             var direction = CalculateDirection(context);
@@ -115,9 +116,9 @@ namespace Tests.TPhysics.Locomotion
             return context;
         }
 
-        public override Context End(Context context)
+        public override Context OnEnd(Context context)
         {
-            return Update(context);
+            return OnUpdate(context);
         }
     }
 }

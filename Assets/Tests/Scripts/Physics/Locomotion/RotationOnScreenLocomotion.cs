@@ -6,6 +6,7 @@ namespace Tests.TPhysics.Locomotion
 {
     internal class RotationOnScreenLocomotion : LocomotionModuleBase
     {
+        Quaternion _rotationOffset;
         Vector2 _bodyPos;
         Vector2 _targetPos;
         Camera _camera;
@@ -15,8 +16,8 @@ namespace Tests.TPhysics.Locomotion
         {
             _origin = new Vector3(0.5f, 0.5f);
             _forward = new Vector2(0, 0.5f);
+            _rotationOffset = Quaternion.identity;
         }
-
         public Vector2 OriginalPos { get => _bodyPos; set => _bodyPos = value; }
         public Vector2 TargetPos { get => _targetPos; set => _targetPos = value; }
         public Camera Camera
@@ -28,14 +29,16 @@ namespace Tests.TPhysics.Locomotion
             }
         }
 
-        public override Context End(Context context)
+        public Quaternion RotationOffset { get => _rotationOffset; set => _rotationOffset = value; }
+
+        public override Context OnEnd(Context context)
         {
-            return Update(context);
+            return OnUpdate(context);
         }
 
-        public override Context Start(Context context)
+        public override Context OnStart(Context context)
         {
-            return Update(context);
+            return OnUpdate(context);
         }
 
         Quaternion CalculateRotation(Context context)
@@ -62,16 +65,20 @@ namespace Tests.TPhysics.Locomotion
                 return result / grounds.Count;
             }
         }
-        public override Context Update(Context context)
+        public override Context OnUpdate(Context context)
         {
             if (_camera == null)
                 return context;
-            var baseRotation = CalculateRotation(context);
+
+            //var baseRotation = CalculateRotation(context);
             var tpos = _camera.ScreenToViewportPoint(_targetPos) - _origin;
             var bpos = _camera.ScreenToViewportPoint(_bodyPos) - _origin;
             var z = Quaternion.FromToRotation(_forward, tpos - bpos).eulerAngles.z;
             var r = Quaternion.Euler(0, -z, 0);
-            context.CurrentRotation = baseRotation * Quaternion.Slerp(context.CurrentRotation, r, Time.deltaTime * 30);
+            if (_rotationOffset != Quaternion.identity)
+                context.CurrentRotation = Quaternion.Slerp(context.CurrentRotation, _rotationOffset* r, Time.deltaTime * 15);
+            else
+                context.CurrentRotation = Quaternion.Slerp(context.CurrentRotation, r, Time.deltaTime * 15);
             return context;
         }
     }

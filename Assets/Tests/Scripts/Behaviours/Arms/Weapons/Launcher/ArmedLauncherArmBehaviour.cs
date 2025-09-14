@@ -9,7 +9,7 @@ using Tests.Input;
 using Tests.States;
 using Tests.Weapons;
 using Tests.Weapons.Launcher;
-using ArmAim = Tests.BodyBehaviour.Arm.Weapons.Launcher.ArmAim;
+using ArmAim = Tests.BodyBehaviour.Arms.ArmAim;
 
 namespace Tests.Behaviours.Arms.Weapons.Launchers
 {

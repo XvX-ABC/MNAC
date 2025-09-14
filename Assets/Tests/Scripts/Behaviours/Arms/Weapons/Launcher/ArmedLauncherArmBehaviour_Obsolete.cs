@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 using Utilities.Timeline;
-using ArmAim = Tests.BodyBehaviour.Arm.Weapons.Launcher.ArmAim;
+using ArmAim = Tests.BodyBehaviour.Arms.ArmAim;
 using Fields = Tests.Characters.CharacterBlackboardFields;
 
 namespace Tests.Behaviours.Arms.Weapons.Launchers

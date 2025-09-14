@@ -7,15 +7,21 @@ using UnityEngine.Playables;
 
 namespace Tests.Characters
 {
-    internal class CharacterAnimator : IDisposable
+    internal partial class CharacterAnimator : CharacterComponentBase, IDisposable
     {
         ICharacterAnimationDefinitions _definitions;
         CharacterCore _core;
         Animator _animator;
+
+
         bool _enabled;
+
 
         internal PlayableGraph graph;
         AnimationPlayablePartTree _appt;
+        ControllerPlayable _controller;
+
+
         Blackboard _blackboard;
         class LayersMixerPlayable : AnimationPlayablePartBase
         {
@@ -36,30 +42,7 @@ namespace Tests.Characters
                 return true;
             }
         }
-        internal class ControllerPlayable : AnimationPlayablePartBase
-        {
-            Animator _animator;
-            public override IOutputSetting OutputSetting
-            {
-                get => base.OutputSetting;
-                set
-                {
-                    base.OutputSetting = value;
-                    outputSetting.Weight = 1;
-                }
-            }
-            public ControllerPlayable(Animator animator)
-            {
-                _animator = animator ?? throw new ArgumentNullException(nameof(animator));
-            }
-
-            public override bool Initialize(PlayableGraph graph)
-            {
-                playablePart = AnimatorControllerPlayable.Create(graph, _animator.runtimeAnimatorController);
-                return true;
-            }
-        }
-        public bool Enabled
+        public new bool Enabled
         {
             get => _enabled;
             set
@@ -78,6 +61,9 @@ namespace Tests.Characters
                 }
             }
         }
+
+        public override string Name => "character_animator";
+
         public CharacterAnimator(CharacterCore core)
         {
             _definitions = core.GetComponent<ICharacterAnimationDefinitions>() ?? throw new ComponentCantFindException(core.gameObject, typeof(ICharacterAnimationDefinitions));
@@ -92,16 +78,16 @@ namespace Tests.Characters
             graph = PlayableGraph.Create(_core.name + "_animator");
             _appt = new(graph);
             var root = _appt.Root;
-            var controller = new ControllerPlayable(_animator);
+            _controller = new ControllerPlayable(_animator);
             var layersMixer = new LayersMixerPlayable(_definitions);
 
 
 
 
             root.AddChild(layersMixer.Node);
-            layersMixer.Node.AddChild(controller.Node);
+            layersMixer.Node.AddChild(_controller.Node);
 
-            controller.OutputSetting.Weight = 1;
+            _controller.OutputSetting.Weight = 1;
 
             var leftArm = _core.leftArm;
 
@@ -116,8 +102,14 @@ namespace Tests.Characters
             output.SetSourcePlayable(layersMixer.PlayablePart);
         }
 
-        public void Dispose()
+        public override void Initialize(Blackboard blackboard)
         {
+            base.Initialize(blackboard);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Animator_Main, _controller);
+        }
+        public override void Dispose()
+        {
+            base.Dispose();
             graph.Destroy();
         }
     }

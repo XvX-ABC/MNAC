@@ -16,7 +16,7 @@ namespace Tests.TPhysics.Locomotion
             _timeline = new Timeline(0);
         }
 
-        public override Context Start(Context context)
+        public override Context OnStart(Context context)
         {
             var jv = Mathf.Sqrt(-2 * world.Gravity.y * _definitions.Height);
             var ov = context.CurrentVelocity;
@@ -27,7 +27,7 @@ namespace Tests.TPhysics.Locomotion
             var nv = context.CurrentVelocity;
             return context;
         }
-        public override Context Update(Context context)
+        public override Context OnUpdate(Context context)
         {
             _timeline.OnUpdate(Time.deltaTime);
             return context;
@@ -35,7 +35,7 @@ namespace Tests.TPhysics.Locomotion
 
 
 
-        public override Context End(Context context)
+        public override Context OnEnd(Context context)
         {
             _timeline.End();
             return context;

@@ -21,46 +21,45 @@ namespace Tests.TPhysics.Environment
             result /= contactPoints.Length;
             return result;
         }
-        Collision _collisionInfo;
         ContactPoint[] _contactPoints;
         Vector3 _normal;
         GameObject _obj;
 
-        internal Collision CollisionInfo { get => _collisionInfo; }
         internal ContactPoint[] ContactPoints { get => _contactPoints; }
         public Vector3 Normal { get => _normal; }
         public GameObject Obj { get => _obj; }
 
-
         internal Ground(Collision collisionInfo)
         {
-            _collisionInfo = collisionInfo;
             _contactPoints = null;
             _normal = Vector3.zero;
             _obj = null;
 
 
             _obj = collisionInfo.collider.gameObject;
-            Update();
+            Update(collisionInfo);
         }
-        internal void Update()
+        internal void Update(Collision collision)
         {
-            //_collisionInfo.GetContacts(_contactPoints);
-            _contactPoints = _collisionInfo.contacts;
+            var obj = collision.gameObject;
+            if (obj != _obj)
+                return;
+            _obj = obj;
+            _contactPoints = collision.contacts;
             _normal = CalculateNormal(this);
         }
         public override bool Equals(object obj)
         {
             if (obj is Collision collision)
-                return this._collisionInfo == collision;
+                return this._obj == collision.gameObject;
             else if (obj is Ground ground)
-                return this._collisionInfo == ground._collisionInfo;
+                return this._obj == ground._obj;
             else
                 throw new InvalidCastException();
         }
         public override int GetHashCode()
         {
-            return _collisionInfo.GetHashCode();
+            return _obj.GetHashCode();
         }
     }
 }

@@ -277,8 +277,6 @@ namespace Tests.States
             var currentTransition = CheckTransitions();
             if (currentTransition != null)
             {
-                if (currentState.Name == "locomotion_movement_quick_boosting")
-                    Debug.Log("Debug point");
                 ChangeState(currentTransition);
             }
             currentState?.OnUpdate();

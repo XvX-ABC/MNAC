@@ -7,6 +7,7 @@ using Tests.TPhysics.Environment;
 using Tests.TPhysics.Locomotion;
 using UnityEngine;
 using Core = Tests.TPhysics.Locomotion.LocomotionCore;
+using LContext = Tests.TPhysics.Locomotion.Context;
 namespace Tests.Characters.Locomotion
 {
 
@@ -17,9 +18,9 @@ namespace Tests.Characters.Locomotion
         IInput _input;
 
         Core _core;
-        LocomotionStatemachine _movementStatemachine;
-        LocomotionStatemachine _statemachine;
-        LocomotionStateContext _context;
+        internal LocomotionStatemachine movementStatemachine;
+        internal LocomotionStatemachine statemachine;
+        internal LocomotionStateContext context;
 
         internal QuickBoostingHelper quickBoostingHelper;
 
@@ -28,6 +29,8 @@ namespace Tests.Characters.Locomotion
         internal WalkingState walking;
         internal JumpLocomotionState jump;
         internal RotationLocomotion rotation;
+
+        internal LContext LocomotionContext => _core.Context;
 
         protected override void Awake()
         {
@@ -39,7 +42,10 @@ namespace Tests.Characters.Locomotion
             quickBoosting = quickBoostingHelper.State;
             boosting = new(_definitions.Walking, _definitions.Boosting);
         }
-
+        void InitializeRigidbody(Rigidbody rbody)
+        {
+            rbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        }
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
@@ -49,7 +55,11 @@ namespace Tests.Characters.Locomotion
                 throw new Exception();
             if (!blackboard.TryReadValue<Rigidbody>(CharacterBlackboardFields.Rigidbody, out var rbody))
                 throw new Exception();
-            blackboard.TryReadValue<World>(CharacterBlackboardFields.World, out var world);
+            else
+                InitializeRigidbody(rbody);
+
+            if (!blackboard.TryReadValue<World>(CharacterBlackboardFields.World, out var world))
+                throw new Exception();
             if (!blackboard.TryReadValue<IGroundDetector>(CharacterBlackboardFields.GroundDetector, out var groundDetector))
                 throw new Exception();
 
@@ -60,7 +70,9 @@ namespace Tests.Characters.Locomotion
             InitializeMovementStatemachine();
             InitializeMainStatemachine(camera, rbody, world, groundDetector);
 
-            _core.EvaluationModules = ArrayExtensions.Append_D(_core.EvaluationModules, _statemachine);
+            _core.EvaluationModules = ArrayExtensions.Append_D(_core.EvaluationModules, statemachine);
+
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Locomotion_Core, _core);
         }
         void InitializeLocomotionCore(Rigidbody rbody, IGroundDetector groundDetector, World world)
         {
@@ -74,52 +86,52 @@ namespace Tests.Characters.Locomotion
         }
         void InitializeMovementStatemachine()
         {
-            _context = new LocomotionStateContext(_core, _input);
+            context = new LocomotionStateContext(_core, _input);
 
-            _movementStatemachine = new("movement", _context);
-            _movementStatemachine.AddState(walking);
-            _movementStatemachine.AddState(boosting);
+            movementStatemachine = new("movement", context);
+            movementStatemachine.AddState(walking);
+            movementStatemachine.AddState(boosting);
 
-            _movementStatemachine.AddTransitionFor(boosting, walking, () => _input.HorizontalVector == Vector3.zero);
+            movementStatemachine.AddTransitionFor(boosting, walking, () => _input.HorizontalVector == Vector3.zero);
 
         }
         void InitializeMainStatemachine(Camera camera, Rigidbody rigidbody, World world, IGroundDetector groundDetector)
         {
 
-            _statemachine = new("main", _context);
-            _statemachine.AddState(_movementStatemachine);
-            _statemachine.AddState(jump);
-            _statemachine.AddState(quickBoosting);
+            statemachine = new("main", context);
+            statemachine.AddState(movementStatemachine);
+            statemachine.AddState(jump);
+            statemachine.AddState(quickBoosting);
 
-            _statemachine.AddTransitionFor(_movementStatemachine, quickBoosting, () => quickBoostingHelper.TriggerEvent);
-            _statemachine.AddTransitionFor(_movementStatemachine, jump, () => groundDetector.Grounds.Count > 0 && _input.Jump);
+            statemachine.AddTransitionFor(movementStatemachine, quickBoosting, () => quickBoostingHelper.TriggerEvent);
+            statemachine.AddTransitionFor(movementStatemachine, jump, () => groundDetector.Grounds.Count > 0 && _input.Jump);
 
-            var j_m = new BlendingTransition<LocomotionStateContext>(jump, _movementStatemachine, () => _core.Context.VerticalPosture == VerticalPosture.Descending, null, 0, 0, 1);
+            var j_m = new BlendingTransition<LocomotionStateContext>(jump, movementStatemachine, () => _core.Context.VerticalPosture == VerticalPosture.Descending, null, 0, 0, 1);
             var j_qb = new BlendingTransition<LocomotionStateContext>(jump, quickBoosting, () => quickBoostingHelper.TriggerEvent, null, 0, 0, 0);
-            _statemachine.AddTransitionFor(j_qb);
-            _statemachine.AddTransitionFor(j_m);
+            statemachine.AddTransitionFor(j_qb);
+            statemachine.AddTransitionFor(j_m);
 
 
-            var qb_b = new SubStatemachineTransition<LocomotionStateContext>(quickBoosting, _movementStatemachine, boosting, null, null, 0, 0, 1);
-            _statemachine.AddTransitionFor(qb_b);
+            var qb_b = new SubStatemachineTransition<LocomotionStateContext>(quickBoosting, movementStatemachine, boosting, null, null, 0, 0, 1);
+            statemachine.AddTransitionFor(qb_b);
 
 
 
-            _core.EvaluationModules = ArrayExtensions.Append_D(_core.EvaluationModules, _statemachine);
+            _core.EvaluationModules = ArrayExtensions.Append_D(_core.EvaluationModules, statemachine);
         }
         void InitializeStatemachine(Rigidbody rigidbody, World world, IGroundDetector groundDetector)
         {
             _core = new Core(rigidbody, groundDetector, new VerticalPostureEvaluator(_definitions.PostureEvaluationFramesQuantity));
             _core.World = world;
-            _context = new LocomotionStateContext(_core, _input);
-            _statemachine = new("main", _context);
+            context = new LocomotionStateContext(_core, _input);
+            statemachine = new("main", context);
 
             quickBoostingHelper.Input = _input;
 
-            _statemachine.AddState(walking);
-            _statemachine.AddState(boosting);
-            _statemachine.AddState(quickBoosting);
-            _statemachine.AddState(jump);
+            statemachine.AddState(walking);
+            statemachine.AddState(boosting);
+            statemachine.AddState(quickBoosting);
+            statemachine.AddState(jump);
 
             var w_t_qb = new BlendingTransition<LocomotionStateContext>(walking, quickBoosting, () => quickBoostingHelper.TriggerEvent, null, 0, 0, 0);
             var w_t_j = new BlendingTransition<LocomotionStateContext>(walking, jump, () => _input.Jump, null, 0, 0, 0);
@@ -148,21 +160,21 @@ namespace Tests.Characters.Locomotion
             var j_t_qb = new BlendingTransition<LocomotionStateContext>(jump, quickBoosting, () => quickBoostingHelper.TriggerEvent, null, 0, 0, 0);
 
 
-            _statemachine.AddTransition(w_t_qb);
-            _statemachine.AddTransition(w_t_j);
+            statemachine.AddTransition(w_t_qb);
+            statemachine.AddTransition(w_t_j);
 
-            _statemachine.AddTransition(b_t_j);
-            _statemachine.AddTransition(b_t_w);
+            statemachine.AddTransition(b_t_j);
+            statemachine.AddTransition(b_t_w);
 
-            _statemachine.AddTransition(qb_t_b);
+            statemachine.AddTransition(qb_t_b);
 
-            _statemachine.AddTransition(j_t_qb);
-            _statemachine.AddTransition(j_t_b);
-            _statemachine.AddTransition(j_t_w);
+            statemachine.AddTransition(j_t_qb);
+            statemachine.AddTransition(j_t_b);
+            statemachine.AddTransition(j_t_w);
 
 
             //_core.EvaluationModules = _core.EvaluationModules.Append(_statemachine).ToArray();
-            _core.EvaluationModules = ArrayExtensions.Append_D(_core.EvaluationModules, _statemachine);
+            _core.EvaluationModules = ArrayExtensions.Append_D(_core.EvaluationModules, statemachine);
         }
         private void LateUpdate()
         {
@@ -170,9 +182,12 @@ namespace Tests.Characters.Locomotion
         }
         public void FixedUpdate()
         {
-            _context.Update();
+            context.Update();
             quickBoostingHelper.Update();
             _core.Update();
+            var pos = _core.Context.CurrentPosition;
+            Debug.DrawLine(pos, pos + _core.Context.CurrentVelocity, Color.magenta);
+            Debug.Log(statemachine);
 
         }
     }

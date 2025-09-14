@@ -1,5 +1,6 @@
 ﻿using System;
 using Tests.Characters.Arms;
+using Tests.Characters.Legs;
 using Tests.Characters.Locomotion;
 using Tests.Input;
 using Tests.TPhysics.Environment;
@@ -16,6 +17,10 @@ namespace Tests.Characters
         Camera _camera;
         [SerializeField]
         internal ArmCore leftArm;
+        [SerializeField]
+        internal LegCore leftLeg;
+        [SerializeField]
+        internal LegCore rightLeg;
         //[SerializeField]
         //internal ArmCore rightArm;
         [SerializeField]
@@ -25,29 +30,10 @@ namespace Tests.Characters
         [SerializeField]
         Target _target;
 
-        Blackboard _blackboard;
         CharacterAnimator _animator;
 
         LocomotionCore _locomotionCore;
         EnvironmentCore _environmentCore;
-        //public override Blackboard Blackboard
-        //{
-        //    get => base.Blackboard;
-        //    set
-        //    {
-        //        var old = blackboard;
-        //        base.Blackboard = value;
-        //        if (old != null)
-        //        {
-        //            old.TryUnregisterField(CharacterBlackboardFields.Input);
-        //            old.TryUnregisterField(CharacterBlackboardFields.WeaponCore);
-        //        }
-        //        if (value != null)
-        //        {
-
-        //        }
-        //    }
-        //}
 
         protected override void Awake()
         {
@@ -64,9 +50,14 @@ namespace Tests.Characters
         void Start()
         {
             InitializeEnvironmentCore();
-            //InitializeChildNodes();
+
             InitializeLocomotionCore();
             //InitializeAnimator();
+
+            this.node.AddChild(leftLeg.node);
+            this.node.AddChild(rightLeg.node);
+            leftLeg.Weight = 1;
+            rightLeg.Weight = 1;
         }
         void Update()
         {

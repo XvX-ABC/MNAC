@@ -20,6 +20,8 @@ namespace Tests.TPhysics.Environment
         GroundVerticalProbe _probe;
 
         List<Ground> _grounds;
+        Vector3 _groundsNormal;
+
 
         Vector3 _worldUpVector => _world == null ? World.DefaultUp : _world.Up;
         public bool Enabled
@@ -73,30 +75,31 @@ namespace Tests.TPhysics.Environment
                 return;
             if (collision == null)
                 throw new ArgumentNullException(nameof(collision));
+
             var layer = collision.gameObject.layer;
             if (((1 << layer) & _groundMask.value) == 0)
                 return;
             var ground = new Ground(collision);
-            if (!CheckGroundSlope(ground))
-                return;
             _grounds.Add(ground);
-
 
 
             if (_grounds.Count > 0)
             {
                 _probe.enabled = false;
             }
-     
+
         }
         public void OnCollisionStay(Collision collision)
         {
             if (!_enabled)
                 return;
-            var index = _grounds.FindIndex(g => g.Equals(collision));
+            var layer = collision.gameObject.layer;
+            if (((1 << layer) & _groundMask) == 0)
+                return;
+            var index = _grounds.FindIndex(g => g.Obj == collision.gameObject);
             if (index == -1)
                 return;
-            _grounds[index].Update();
+            _grounds[index].Update(collision);
         }
         public void OnCollisionExit(Collision collision)
         {
@@ -104,8 +107,10 @@ namespace Tests.TPhysics.Environment
                 return;
             if (collision == null)
                 throw new ArgumentNullException(nameof(collision));
-            var ground = new Ground(collision);
-            _grounds.Remove(ground);
+            var index = _grounds.FindIndex(g => g.Obj == collision.gameObject);
+            if (index == -1)
+                return;
+            _grounds.RemoveAt(index);
 
 
 
@@ -113,12 +118,35 @@ namespace Tests.TPhysics.Environment
             if (_grounds.Count == 0)
                 _probe.enabled = true;
         }
-        public void OnFixedUpdate()
+        public Vector3 GroundsNormal
         {
-
+            get
+            {
+                return _groundsNormal;
+            }
+        }
+        Vector3 CalculateGroundsNormal()
+        {
+            if (_grounds.Count == 0)
+                return Vector3.zero;
+            var result = Vector3.zero;
+            foreach (var g in _grounds)
+            {
+                if (CheckGroundSlope(g))
+                    result += g.Normal;
+            }
+            return (result / _grounds.Count).normalized;
+        }
+        public void OnLateUpdate()
+        {
             if (!_enabled)
                 return;
-            Debug.Log("grounds count:  " + _grounds.Count);
+            _groundsNormal = CalculateGroundsNormal();
+        }
+        public void OnFixedUpdate()
+        {
+            if (!_enabled)
+                return;
             _probe.OnFixedUpdate();
         }
     }

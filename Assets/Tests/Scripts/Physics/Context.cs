@@ -92,13 +92,13 @@ namespace Tests.TPhysics
             rbody.velocity = _currentVelocity;
             rbody.MovePosition(_currentPosition);
             if (_currentRotation != Quaternion.identity)
-                rbody.MoveRotation(_currentRotation.normalized);
+                rbody.MoveRotation(_currentRotation);
         }
         public void SynchronizeFromRigidbody()
         {
-            CurrentVelocity = rbody.velocity;
-            CurrentPosition = rbody.position;
-            CurrentRotation = rbody.rotation;
+            _currentVelocity = rbody.velocity;
+            _currentPosition = rbody.position;
+            _currentRotation = rbody.rotation;
         }
         public void ResetUpdatedCount() => _updatedCount = 0;
     }

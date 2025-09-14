@@ -46,6 +46,10 @@ namespace Tests.Characters.Environment
             groundDetector.Position = _rbody.position;
             groundDetector.OnFixedUpdate();
         }
+        private void LateUpdate()
+        {
+            groundDetector.OnLateUpdate();
+        }
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);

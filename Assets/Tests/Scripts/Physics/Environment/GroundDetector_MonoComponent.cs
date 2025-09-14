@@ -14,6 +14,9 @@ namespace Tests.TPhysics.Environment
         public IReadOnlyList<Ground> Grounds => _detector.Grounds;
 
         public GroundVerticalProbe Probe => _detector.Probe;
+
+        public Vector3 GroundsNormal => _detector.GroundsNormal;
+
         void Awake()
         {
             var definitions = GetComponent<IGroundDetectionDefinitions>();
