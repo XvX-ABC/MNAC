@@ -1,6 +1,6 @@
-﻿using Tests.States;
+﻿using Tests.Behaviours.Arms.Weapons.Launchers;
+using Tests.States;
 using Tests.Weapons.Launcher;
-using ReloadAnimator = Tests.Behaviours.Arms.Weapons.Launchers.ArmedLauncherArmBehaviour_Obsolete.ReloadAnimator;
 
 namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
 {

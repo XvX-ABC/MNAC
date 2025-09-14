@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 namespace Tests.States
@@ -152,6 +154,12 @@ namespace Tests.States
                 return;
             state.Context = default;
             states.Remove(state);
+        }
+        public bool Contains(S state)
+        {
+            if (state == null)
+                return false;
+            return states.Contains(state);
         }
         public void AddTransitionFor(ITransition<T> transition)
         {

@@ -27,5 +27,6 @@ namespace Utilities.Timeline
         bool SetNormalizedTime(float normalizedTime);
         bool SetTime(float time);
         void End();
+        void Reset();
     }
 }

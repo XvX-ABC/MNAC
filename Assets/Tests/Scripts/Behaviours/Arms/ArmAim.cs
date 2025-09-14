@@ -1,27 +1,42 @@
 ﻿using RootMotion.FinalIK;
 using System;
-using Tests.Behaviours.Arms.Weapons;
 using Tests.BodyBehaviour.Arm.Weapons.Launcher;
+using Tests.Input;
+using Tests.Interaction;
 using Tests.States;
+using Tests.Weapons.Launcher;
 using UnityEngine;
 
 namespace Tests.BodyBehaviour.Arms
 {
-    internal class ArmAim : ArmedArmStateBase, IAimer_Obsolete
+    internal class ArmAim : ArmedArmStateBase
     {
         AimIK _aimIK;
+        IInput _input;
         ITarget _target;
         internal Action<float> weightChangedAction;
         internal Action<ITarget> targetChangedAction;
+        private ILauncher _weapon;
+
         public ITarget Target
         {
             get => _target;
             set
             {
+                if (value != _target)
+                {
+                    Debug.Log("target changed: ");
+                }
                 _target = value;
                 targetChangedAction?.Invoke(value);
             }
 
+        }
+
+        public IInput Input
+        {
+            get => _input;
+            set => _input = value;
         }
         public float Weight
         {
@@ -31,6 +46,16 @@ namespace Tests.BodyBehaviour.Arms
                 var v = Mathf.Clamp01(value);
                 _aimIK.solver.IKPositionWeight = v;
                 weightChangedAction?.Invoke(v);
+            }
+        }
+        public ILauncher Weapon
+        {
+            get => _weapon;
+            set
+            {
+                _weapon = value;
+
+                _aimIK.solver.transform = _weapon?.Obj == null ? null : _weapon.Obj.transform;
             }
         }
         public override bool Enabled
@@ -50,6 +75,10 @@ namespace Tests.BodyBehaviour.Arms
 
         public override void OnUpdate()
         {
+            if (_input.Fire)
+            {
+                _weapon.StartLaunch();
+            }
             UpdateTarget();
         }
         void UpdateTarget()
@@ -58,14 +87,6 @@ namespace Tests.BodyBehaviour.Arms
             {
                 _aimIK.solver.SetIKPosition(_target.Position);
             }
-        }
-        public override void OnEnter()
-        {
-            //this.Weight = 1;
-        }
-        public override void OnExit()
-        {
-            //this.Weight = 0;
         }
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {

@@ -39,39 +39,39 @@ namespace Tests.Behaviours.Arms.Weapons
             get => _switchingEvent;
             set
             {
-                _switchingEvent = value;
-                if (value != null)
-                {
-                    _mountPoint.LoadObjChangeFunc = (ob, nb) =>
-                    {
-                        var ow = default(IWeapon);
-                        var nw = default(IWeapon);
-                        if (ob != null)
-                        {
-                            ow = ob.GetComponent<IWeapon>() ?? throw new ComponentCantFindException(ob, typeof(IWeapon));
-                        }
-                        if (nb != null)
-                        {
-                            nw = nb.GetComponent<IWeapon>() ?? throw new ComponentCantFindException(nb, typeof(IWeapon));
-                        }
-                        var w = _switchingEvent?.Invoke(ow, nw);
+                //_switchingEvent = value;
+                //if (value != null)
+                //{
+                //    _mountPoint.LoadObjChangeFunc = (ob, nb) =>
+                //    {
+                //        var ow = default(IWeapon);
+                //        var nw = default(IWeapon);
+                //        if (ob != null)
+                //        {
+                //            ow = ob.GetComponent<IWeapon>() ?? throw new ComponentCantFindException(ob, typeof(IWeapon));
+                //        }
+                //        if (nb != null)
+                //        {
+                //            nw = nb.GetComponent<IWeapon>() ?? throw new ComponentCantFindException(nb, typeof(IWeapon));
+                //        }
+                //        var w = _switchingEvent?.Invoke(ow, nw);
 
-                        var result = default(GameObject);
-                        if (w == ow)
-                        {
-                            result = ob;
-                        }
-                        else
-                        {
-                            ob?.SetActive(false);
-                            nb?.SetActive(true);
-                            result = nb;
-                        }
-                        return result;
-                    };
-                }
-                else
-                    _mountPoint.LoadObjChangeFunc = null;
+                //        var result = default(GameObject);
+                //        if (w == ow)
+                //        {
+                //            result = ob;
+                //        }
+                //        else
+                //        {
+                //            ob?.SetActive(false);
+                //            nb?.SetActive(true);
+                //            result = nb;
+                //        }
+                //        return result;
+                //    };
+                //}
+                //else
+                //    _mountPoint.LoadObjChangeFunc = null;
             }
         }
         [Obsolete]
@@ -86,7 +86,7 @@ namespace Tests.Behaviours.Arms.Weapons
             timeline.AddPointEvent(_definitions.SwitchingMountedProportion, _ =>
             {
                 _weaponObj = GetWeaponObj();
-                _mountPoint.LoadObj = _weaponObj;
+                //_mountPoint.Load = _weaponObj;
             });
 
 

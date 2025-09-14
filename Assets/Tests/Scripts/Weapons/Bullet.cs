@@ -5,6 +5,37 @@ using Utilities.Timeline.Events.Point;
 
 namespace Tests.Weapons
 {
+    public class Bullet_New : MonoBehaviour
+    {
+        [SerializeField]
+        float _speed;
+        [SerializeField]
+        float _radius;
+        [SerializeField]
+        LayerMask _mask;
+        Rigidbody _rbody;
+        CapsuleCollider _capsule;
+        private void Awake()
+        {
+            _capsule = GetComponent<CapsuleCollider>();
+            _rbody = GetComponent<Rigidbody>();
+        }
+        private void FixedUpdate()
+        {
+            var length = _rbody.velocity.magnitude * Time.deltaTime;
+            var ray = new Ray(_rbody.position, this.transform.forward);
+
+            var d = _capsule.direction;
+
+            var start = Vector3.forward * _capsule.height / 2;
+            var end = Vector3.forward * -_capsule.height / 2;
+
+            if (Physics.CheckCapsule(start, end, _capsule.radius, _mask))
+            {
+
+            }
+        }
+    }
     public interface IBullet : IProjectile
     {
         public Action<IProjectile, GameObject> DisableAction { get; set; }
@@ -67,6 +98,7 @@ namespace Tests.Weapons
         }
         private void OnCollisionEnter(Collision collision)
         {
+            Debug.Log(" obj.name: " + collision.gameObject.name);
             _speed = 0;
             var obj = collision.gameObject;
             _hitAction?.Invoke(this, obj);

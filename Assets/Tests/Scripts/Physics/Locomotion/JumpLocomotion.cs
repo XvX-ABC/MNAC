@@ -10,10 +10,11 @@ namespace Tests.TPhysics.Locomotion
     {
         IJumpDefinitions _definitions;
         ITimeline _timeline;
+        internal ITimeline timeline { get => _timeline; }
         public JumpLocomotion(IJumpDefinitions definitions)
         {
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
-            _timeline = new Timeline(0);
+            _timeline = new Timeline_V1(0);
         }
 
         public override Context OnStart(Context context)
@@ -23,7 +24,7 @@ namespace Tests.TPhysics.Locomotion
             context.CurrentVelocity += Quaternion.FromToRotation(World.DefaultUp, world.Up) * new Vector3(0, jv, 0);
             var time = jv / -world.Gravity.y;
             _timeline.UpdateLength(time);
-            _timeline.Start();
+            _timeline.Restart();
             var nv = context.CurrentVelocity;
             return context;
         }
@@ -37,7 +38,7 @@ namespace Tests.TPhysics.Locomotion
 
         public override Context OnEnd(Context context)
         {
-            _timeline.End();
+            _timeline.Pause();
             return context;
         }
     }

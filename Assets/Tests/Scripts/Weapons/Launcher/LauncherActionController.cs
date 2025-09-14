@@ -29,7 +29,7 @@ namespace Tests.Weapons.Launcher
         }
         private void Start()
         {
-            _launcher.Target = _target.GetComponent<ITarget>();
+            _launcher.Target = _target.GetComponent<ITarget_Obsolete>();
         }
         private void Update()
         {

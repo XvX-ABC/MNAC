@@ -189,18 +189,22 @@ namespace Tests.Characters.Arms.Animations
                 _statusNum = value;
             }
         }
-        public ArmAnimationCore(ArmCore_Obsolete core)
+        public ArmAnimationCore(ArmCore_Obsolete core) : base(default)
         {
             _definitions = core.definitions.Weapon;
             _animationDefinitions = core.animationDefinitions.Weapon;
             armedAnimator = new(core.armedWeaponController);
 
 
-            switching = new(_definitions, _animationDefinitions);
-            _mixer = new();
+            switching = new(graph, _definitions, _animationDefinitions);
+            _mixer = new(graph);
         }
         class MixerPlayablePart : AnimationPlayablePartBase
         {
+            public MixerPlayablePart(PlayableGraph graph) : base(graph)
+            {
+
+            }
             public override bool Initialize(PlayableGraph graph)
             {
                 if (playablePart.IsNull())
@@ -241,7 +245,7 @@ namespace Tests.Characters.Arms.Animations
                         outputSetting.Weight = _weight;
                 }
             }
-            public SwitchingPlayablePart(IArmWeaponDefinitions definitions, IArmWeaponAnimationDefinitions animationDefinitions) : base()
+            public SwitchingPlayablePart(PlayableGraph graph, IArmWeaponDefinitions definitions, IArmWeaponAnimationDefinitions animationDefinitions) : base(graph)
             {
                 _definitions = definitions;
                 _animationDefinitions = animationDefinitions;

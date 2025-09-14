@@ -1,34 +1,42 @@
-﻿using Cinemachine.Editor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tests.Weapons;
+﻿using System;
 using Tests.Weapons.Launcher;
-using Tests.Weapons.MachineGuns;
-using UnityEditorInternal;
 using UnityEngine;
 using Utilities.Timeline;
 
 namespace Tests.Weapons.MachineGuns
 {
-    internal class CaseEjectingDevice : LauncherBase
+    internal class CaseEjectingDevice : LauncherBase, ILauncherEffector
     {
-        [SerializeField]
+        [Obsolete]
         GameObject _definitionsObj;
+        ILauncher _owner;
         [SerializeField]
         Vector3 _direction;
         [SerializeField, Range(0, 50)]
         float _force = 10f;
-        internal new IMachineGunDefinitions definitions { get => (IMachineGunDefinitions)base.definitions; }
-        protected override void Awake()
+        internal new ICaseEjectingDeviceDefinitions definitions { get => (ICaseEjectingDeviceDefinitions)base.definitions; }
+
+        public ILauncher Owner => _owner;
+        public void Initialize(ILauncher owner)
         {
-            actionsLock = new();
-            base.definitions = _definitionsObj.GetComponent<IMachineGunDefinitions>() ?? throw new ComponentCantFindException(_definitionsObj, typeof(MachineGunDefinitions));
+            _owner = owner ?? throw new ArgumentNullException(nameof(owner));
+            _owner.LaunchAction += FollowOwnerLaunch;
+            base.definitions = _owner.Definitions;
             var origin = definitions.CaseOrigin;
             if (!origin.TryGetComponent<Rigidbody>(out _))
                 throw new ComponentCantFindException(origin, typeof(Rigidbody));
+        }
+        public void Dispose()
+        {
+            _owner.LaunchAction -= FollowOwnerLaunch;
+        }
+        protected override void Awake()
+        {
+            actionsLock = new();
+            //base.definitions = _definitionsObj.GetComponent<ICaseEjectingDeviceDefinitions>() ?? throw new ComponentCantFindException(_definitionsObj, typeof(Obsolete_MachineGunDefinitions));
+            //var origin = definitions.CaseOrigin;
+            //if (!origin.TryGetComponent<Rigidbody>(out _))
+            //    throw new ComponentCantFindException(origin, typeof(Rigidbody));
         }
         private void OnValidate()
         {
@@ -82,6 +90,7 @@ namespace Tests.Weapons.MachineGuns
             var obj = ammoPool.Get();
             EjectCase(obj);
             ammoInMagazineQuantity--;
+            launchAction?.Invoke(this);
         }
         public override bool StartLaunch()
         {
@@ -100,6 +109,11 @@ namespace Tests.Weapons.MachineGuns
             if (launchDurationTimeline.IsRunning)
                 launchDurationTimeline.Pause();
             return true;
+        }
+
+        void FollowOwnerLaunch(ILauncher owner)
+        {
+            this.Launch();
         }
     }
 }

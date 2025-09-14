@@ -1,4 +1,7 @@
-﻿namespace Tests.TPhysics.Locomotion
+﻿using Unity.Properties;
+using UnityEngine.Rendering;
+
+namespace Tests.TPhysics.Locomotion
 {
     public abstract class EvaluationModuleBase : IEvaluationModule
     {
@@ -18,12 +21,9 @@
             }
         }
 
-        protected abstract Context OnUpdate(Context context);
-        public Context Update(Context context)
+        public virtual Context Update(Context context)
         {
-            if (!enabled)
-                return context;
-            return OnUpdate(context);
+            return context;
         }
     }
     public abstract class LocomotionModuleBase : ILocomotionModule

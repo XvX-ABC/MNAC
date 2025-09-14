@@ -23,7 +23,7 @@ namespace Tests.States
             var index = Array.FindIndex(transitions, t => t.DestinationState == destinationState);
             return index;
         }
-        public ITransition<T>[] Transitions { get => transitions; }
+        public virtual ITransition<T>[] Transitions { get => transitions; }
         public virtual string Name { get => name; }
         public Guid ID { get => id; }
         public virtual bool Enabled

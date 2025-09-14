@@ -1,4 +1,5 @@
 ﻿using Locomotion;
+using Tests.Locomotion.Animation;
 
 namespace Tests.Characters.Locomotion
 {
@@ -9,5 +10,6 @@ namespace Tests.Characters.Locomotion
         public IJumpDefinitions Jump { get; }
         public IQuickBoostingDefinitions QuickBoosting { get; }
         public ushort PostureEvaluationFramesQuantity { get; }
+        public Animations.ILocomotionAnimatorDefinitions Animation { get; }
     }
 }

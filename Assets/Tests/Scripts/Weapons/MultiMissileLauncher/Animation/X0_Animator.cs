@@ -84,7 +84,7 @@ namespace Tests.Weapons.MultiMissileLauncher.Animation
             //    _prepareLaunchTimeline.Stop();
 
         }
-        void TargetChange(IMissileLauncher launcher, ITarget newTarget)
+        void TargetChange(IMissileLauncher launcher, ITarget_Obsolete newTarget)
         {
             var actionsLock = launcher.actionsLock;
             var currentTarget = launcher.Target;

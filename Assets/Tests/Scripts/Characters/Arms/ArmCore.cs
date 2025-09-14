@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
+using Tests.Behaviours;
 using Tests.Behaviours.Animations;
 using Tests.Behaviours.Arms;
 using Tests.Behaviours.Arms.Animations;
-using Tests.Behaviours.Arms.Weapons;
 using Tests.Behaviours.Arms.Weapons.Animations;
-using Tests.Characters.Arms.Animations;
 using Tests.Characters.Arms.Weapons;
 using Tests.Input;
 using Tests.States;
 using Tests.Weapons;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 using UnityEngine.Playables;
-using ArmAnimationCore = Tests.Characters.Arms.Animations.ArmAnimationCore;
 using IArmWeaponDefinitions = Tests.Characters.Arms.Weapons.IArmWeaponDefinitions;
 
 namespace Tests.Characters.Arms
@@ -48,7 +44,7 @@ namespace Tests.Characters.Arms
 
         public static implicit operator StateBase<object>(ArmCore core)
         {
-            return core._stateMachine;
+            return core.stateMachine;
         }
 
         WeaponCore _weaponCore;
@@ -60,8 +56,6 @@ namespace Tests.Characters.Arms
         IArmAnimationDefinitions animationDefinitions;
 
 
-        //internal ArmWeaponSwitching weaponSwitching;
-        //internal ArmedWeaponArmBehavioursController armedWeaponController;
         internal WeaponSwitchingState weaponSwitching;
         internal ArmedWeaponArmBehaviourControllerState armedWeaponController;
         internal IdleState idle;
@@ -71,10 +65,10 @@ namespace Tests.Characters.Arms
         BlendingTransition<object> transition_sti;
 
         //internal ArmAnimationCore animationCore;
-        internal Behaviours.Arms.Animations.ArmAnimationCore acore_new;
+        internal ArmAnimationCore animatorCore;
         Blackboard _blackboard;
         ComponentNode _node;
-        PlayableStateMachine _stateMachine;
+        internal PlayableStateMachine stateMachine;
         public Blackboard Blackboard
         {
             get => _blackboard;
@@ -93,7 +87,7 @@ namespace Tests.Characters.Arms
             get => _node;
         }
 
-        public IOutputSetting OutputSetting { get => acore_new.OutputSetting; set => acore_new.OutputSetting = value; }
+        public IOutputSetting OutputSetting { get => animatorCore.OutputSetting; set => animatorCore.OutputSetting = value; }
         public Action<Playable> UpdateAction { get => throw new Exception(); set => throw new Exception(); }
         protected override void Awake()
         {
@@ -126,9 +120,11 @@ namespace Tests.Characters.Arms
         public void Initialize(Blackboard blackboard)
         {
             this.Blackboard = blackboard;
+
+            if (!blackboard.TryReadValue<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph)) ;
+
             var weaponDefinitions = _definitions.Weapon;
             var weaponMountPoint = FindMountPoint(weaponDefinitions.MountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.MountPointName);
-
 
             InitializeSwitchingBehaviour(weaponDefinitions, weaponMountPoint);
 
@@ -138,16 +134,14 @@ namespace Tests.Characters.Arms
 
             InitializeChildNodes();
 
-            //this.animationCore = new(this);
-            //this.acore_new = new(this, new ArmedWeaponArmAnimator<IArmedWeaponArmBehaviour>(this.armedWeaponController));
-            this.acore_new = new(_definitions.Weapon, animationDefinitions.Weapon, new ArmedWeaponArmAnimator<IArmedWeaponArmBehaviour>(this.armedWeaponController));
+            this.animatorCore = new(graph, _definitions.Weapon, animationDefinitions.Weapon, new ArmedWeaponArmAnimator<IArmedWeaponArmBehaviour>(graph, this.armedWeaponController));
             InitializeStateMachine();
 
-            weaponSwitching.animationCore = acore_new;
-            armedWeaponController.animationCore = acore_new;
-            idle.animationCore = acore_new;
-            transition_ats.animationCore = acore_new;
-            transition_sta.animationCore = acore_new;
+            weaponSwitching.animationCore = animatorCore;
+            armedWeaponController.animationCore = animatorCore;
+            idle.animationCore = animatorCore;
+            transition_ats.animationCore = animatorCore;
+            transition_sta.animationCore = animatorCore;
 
             SetDefaultWeapon(weaponMountPoint, weaponDefinitions.Origins[0].Name, _weaponCore);
 
@@ -179,50 +173,36 @@ namespace Tests.Characters.Arms
         void InitializeStateMachine()
         {
             idle = new IdleState();
-            _stateMachine = new(this.name);
-            _stateMachine.AddState(idle);
-            _stateMachine.AddState(armedWeaponController);
-            _stateMachine.AddState(weaponSwitching);
+            stateMachine = new(this.name);
+            stateMachine.AddState(idle);
+            stateMachine.AddState(armedWeaponController);
+            stateMachine.AddState(weaponSwitching);
 
-            //var length = definitions.Weapon.SwitchingToBehavioursDurationTime;
             var length = 10;
-
 
 
 
 
             #region from idle to other states
             transition_its = new(0, idle, weaponSwitching, () => _input.Supply, null, 0.07f, 0, 0, InterruptionSource.Next);
-            //_stateMachine.AddTransitionFor(idle, weaponSwitching, 0.05f, () => _input.Supply, (_, _, t) =>
-            //{
-            //});
-            _stateMachine.AddTransition(transition_its);
-            _stateMachine.AddTransitionFor(idle, armedWeaponController, length / 4, () => armedWeaponController.EntryFunc(), (_, _, t) =>
-            {
-                //acore_new.StatusNum = 1;
-            });
+            stateMachine.AddTransitionFor(transition_its);
+            stateMachine.AddTransitionFor(idle, armedWeaponController, 0.3f, () => armedWeaponController.EntryFunc(), null);
             #endregion
 
             #region from armed weapon to other states
 
-            transition_ats = new AnimationTransition(2, armedWeaponController, weaponSwitching, () => _input.Supply, (s, d, t) =>
-            {
-            }, 1, 0, -1, InterruptionSource.None);
-            _stateMachine.AddTransitionFor(armedWeaponController, idle, length / 4, () => armedWeaponController.ExitFunc(), (s, d, t) =>
-            {
-                acore_new.StatusNum = 1;
-            });
-            _stateMachine.AddTransition(transition_ats);
+            transition_ats = new AnimationTransition(2, armedWeaponController, weaponSwitching, () => _input.Supply, null, 1, 0, -1, InterruptionSource.None);
+            stateMachine.AddTransitionFor(armedWeaponController, idle, 0.3f, () => armedWeaponController.ExitFunc(), null);
+            stateMachine.AddTransitionFor(transition_ats);
             #endregion
 
             #region from switching to other states
             transition_sta = new(2, weaponSwitching, armedWeaponController, () => armedWeaponController.EntryFunc(), (s, d, t) =>
             {
             }, 1, 0, 0.5f, InterruptionSource.Next);
-            transition_sti = new(weaponSwitching, idle, () => !armedWeaponController.EntryFunc(), (_, _, t) => acore_new.StatusNum = 0, 0.07f, 0, 1, InterruptionSource.None);
-            //_stateMachine.AddTransitionFor(weaponSwitching, idle, 1, () => armedWeaponController.ExitFunc(), null);
-            _stateMachine.AddTransition(transition_sti);
-            _stateMachine.AddTransition(transition_sta);
+            transition_sti = new(weaponSwitching, idle, () => !armedWeaponController.EntryFunc(), (_, _, t) => animatorCore.StatusNum = 0, 0.07f, 0, 1, InterruptionSource.None);
+            stateMachine.AddTransitionFor(transition_sti);
+            stateMachine.AddTransitionFor(transition_sta);
             #endregion
         }
 
@@ -231,15 +211,12 @@ namespace Tests.Characters.Arms
         {
             if (!weaponCore.TryGetWeaponObj(weaponName, out var obj))
                 throw new Exception();
-            var weapon = obj.GetComponent<IWeapon>();
-            //armedWeaponController.ActivateBehaviourBy(weapon);
             weaponMountPoint.LoadObj = obj;
 
         }
-        int ctx = 0;
         public override void OnUpdate()
         {
-            _stateMachine.OnUpdate();
+            stateMachine.OnUpdate();
         }
 
         public override void OnEnter()
@@ -254,8 +231,7 @@ namespace Tests.Characters.Arms
         void Update()
         {
             this.OnUpdate();
-            acore_new.OnUpdate();
-            //animationCore.OnUpdate();
+            animatorCore.OnUpdate();
         }
 
         public void Dispose()

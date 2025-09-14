@@ -92,7 +92,7 @@ namespace Tests.TPhysics.Locomotion
                 _ => throw new NotImplementedException()
             };
         }
-        protected override Context OnUpdate(Context context)
+        public override Context Update(Context context)
         {
             var v = this.world.InverseTransformVector(context.CurrentVelocity);
             _data[_sampleQuantity - 1] = v;

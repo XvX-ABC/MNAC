@@ -58,6 +58,7 @@ namespace Tests.Weapons
                     a.Load();
                     var obj = a.Asset;
                     result = Instantiate(obj);
+                    result.name = obj.name;
                     return result;
                 }
 

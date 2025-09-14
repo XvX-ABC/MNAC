@@ -18,7 +18,7 @@ namespace Tests.Characters.Locomotion
             locomotion = new HorizontalLocomotion(maxSpeed, acceleratedSpeed);
             _bindHorizontalVector = bindHorizontalVector;
         }
-        public override LocomotionStateContext Context
+        public override object Context
         {
             get => base.Context;
             set
@@ -27,16 +27,16 @@ namespace Tests.Characters.Locomotion
                 {
                     if (base.Context != null && base.Context != value)
                     {
-                        base.Context.InputBoundAction -= UpdateHorizontalVector;
+                        (base.Context as LocomotionStateContext).InputBoundAction -= UpdateHorizontalVector;
                     }
                     if (value != null)
-                        value.InputBoundAction += UpdateHorizontalVector;
+                        (value as LocomotionStateContext).InputBoundAction += UpdateHorizontalVector;
                 }
                 base.Context = value;
             }
         }
         protected override ILocomotionModule module => locomotion;
-        public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<LocomotionStateContext> currentTransition)
+        public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
             context.Core.EnableModule(module);

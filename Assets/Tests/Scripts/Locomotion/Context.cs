@@ -35,13 +35,13 @@ _expectedLocomotion.SquareSpeed;
         public LocomotionContext OriginalLocomotion { get => _originalLocomotion; }
         public LocomotionContext ExpectedLocomotion { get => _expectedLocomotion; }
         public IHybridInput Input;
-        public ITarget Target;
+        public ITarget_Obsolete Target;
         public float DeltaTime;
         public IGround Ground;
         public IGroundDetector GroundDetector;
         public State State;
         public Transform Transform;
-        public Context(Rigidbody rb, Transform transform, IHybridInput input, ITarget target, Collider collider, IGroundDetector groundDetector)
+        public Context(Rigidbody rb, Transform transform, IHybridInput input, ITarget_Obsolete target, Collider collider, IGroundDetector groundDetector)
         {
             this.Transform = transform;
             _originalLocomotion = new(rb);

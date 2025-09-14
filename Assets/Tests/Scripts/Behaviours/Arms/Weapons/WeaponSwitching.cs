@@ -6,7 +6,7 @@ using Utilities.Timeline.Events.Point;
 
 namespace Tests.Behaviours.Arms.Weapons
 {
-  
+
     public class WeaponSwitching
     {
         internal IArmWeaponDefinitions definitions;
@@ -27,32 +27,38 @@ namespace Tests.Behaviours.Arms.Weapons
                 _switchingEvent = value;
                 if (value != null)
                 {
-                    _mountPoint.LoadObjChangeFunc = (ob, nb) =>
+                    _mountPoint.LoadObjChangeFunc = (ol, nl) =>
                     {
                         var ow = default(IWeapon);
                         var nw = default(IWeapon);
-                        if (ob != null)
+
+
+                        if (ol != null)
                         {
+                            var ob = ol.Obj;
                             ow = ob.GetComponent<IWeapon>() ?? throw new ComponentCantFindException(ob, typeof(IWeapon));
+                            ob.SetActive(false);
                         }
-                        if (nb != null)
+                        if (nl != null)
                         {
+                            var nb = nl.Obj;
                             nw = nb.GetComponent<IWeapon>() ?? throw new ComponentCantFindException(nb, typeof(IWeapon));
+                            nb.SetActive(true);
                         }
                         var w = _switchingEvent?.Invoke(ow, nw);
 
-                        var result = default(GameObject);
-                        if (w == ow)
-                        {
-                            result = ob;
-                        }
-                        else
-                        {
-                            ob?.SetActive(false);
-                            nb?.SetActive(true);
-                            result = nb;
-                        }
-                        return result;
+                        //var result = default(GameObject);
+                        //if (w == ow)
+                        //{
+                        //    result = ob;
+                        //}
+                        //else
+                        //{
+                        //    ob?.SetActive(false);
+                        //    nb?.SetActive(true);
+                        //    result = nb;
+                        //}
+                        return nl;
                     };
                 }
                 else
@@ -69,7 +75,7 @@ namespace Tests.Behaviours.Arms.Weapons
             timeline.AddPointEvent(this.definitions.SwitchingMountedProportion, _ =>
             {
                 _weaponObj = GetWeaponObj();
-                _mountPoint.LoadObj = _weaponObj;
+                _mountPoint.Load = _weaponObj.GetComponent<ILoad>() ?? throw new ComponentCantFindException(_weaponObj, typeof(ILoad));
             });
 
 
@@ -98,6 +104,19 @@ namespace Tests.Behaviours.Arms.Weapons
             if (!_weaponCore.TryGetWeaponObj(name, out var obj))
                 throw new WeaponObjGetFailedByName(name);
             return obj;
+        }
+        public void Begin()
+        {
+            timeline.Restart();
+        }
+        public void Update()
+        {
+            timeline.OnUpdate(Time.deltaTime);
+        }
+        public void End()
+        {
+            timeline.End();
+            timeline.Reset();
         }
     }
 }

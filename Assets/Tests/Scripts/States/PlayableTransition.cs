@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using Utilities.Timeline;
 using Utilities.Timeline.Events.Point;
 using Utilities.Timeline.Events.Range;
@@ -15,7 +16,7 @@ namespace Tests.States
         protected internal PlayableTransition() : base() { }
         public PlayableTransition(IPlayableState<T> sourceState, IPlayableState<T> destinationState, Func<bool> triggerEvent, Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent, float duration, InterruptionSource interruptionSource) : base(sourceState, destinationState, triggerEvent)
         {
-            timeline = new Timeline(duration);
+            timeline = new Timeline_V1(duration);
             if (durationEvent != null)
                 timeline.AddRangeEvent(0, 1, ctx =>
                 {
@@ -36,15 +37,19 @@ namespace Tests.States
 
         protected virtual void AddToNextStateTransitionEvents(ITimeline timeline)
         {
-            timeline.AddPointEvent(0, _ => { sourceState.ToNextStateTransitionBegin(this); });
+            //timeline.AddPointEvent(0, _ => { sourceState.ToNextStateTransitionBegin(this); });
+            timeline.StartAction += _ => sourceState.ToNextStateTransitionBegin(this);
             timeline.AddRangeEvent(0, 1, _ => { sourceState.ToNextStateTransitionRunning(this); });
-            timeline.AddPointEvent(1, _ => { sourceState.ToNextStateTransitionEnd(this); });
+            //timeline.AddPointEvent(1, _ => { sourceState.ToNextStateTransitionEnd(this); });
+            timeline.EndAction += _ => sourceState.ToNextStateTransitionEnd(this);
         }
         protected virtual void AddFromPreviousStateTransitionEvents(ITimeline timeline)
         {
-            timeline.AddPointEvent(0, _ => { destinationState.FromPreviousStateTransitionBegin(this); });
+            //timeline.AddPointEvent(0, _ => { destinationState.FromPreviousStateTransitionBegin(this); });
+            timeline.StartAction += _ => destinationState.FromPreviousStateTransitionBegin(this);
             timeline.AddRangeEvent(0, 1, _ => { destinationState.FromPreviousStateTransitionRunning(this); });
-            timeline.AddPointEvent(1, _ => { destinationState.FromPreviousStateTransitionEnd(this); });
+            //timeline.AddPointEvent(1, _ => { destinationState.FromPreviousStateTransitionEnd(this); });
+            timeline.EndAction += _ => destinationState.FromPreviousStateTransitionEnd(this);
         }
         public ITimeline Timeline => timeline;
 

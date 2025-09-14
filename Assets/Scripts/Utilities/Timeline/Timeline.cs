@@ -122,7 +122,6 @@ namespace Utilities.Timeline
             isRunning = false;
             var ctx = new TimelineContext() { DeltaTime = UTime.deltaTime, Time = time, NormalizedTime = length == 0 ? 1 : time / length, Duration = length };
             endAction?.Invoke(ctx);
-            Reset();
         }
         public virtual void OnUpdate(float deltaTime)
         {
@@ -153,7 +152,7 @@ namespace Utilities.Timeline
             foreach (var executor in executors)
                 executor.Reset();
         }
-        protected virtual void Reset()
+        public virtual void Reset()
         {
             if (isLoop && time >= length)
                 time -= length;

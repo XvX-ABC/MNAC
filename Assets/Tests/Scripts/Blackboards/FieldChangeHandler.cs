@@ -40,7 +40,11 @@ namespace Tests.Blackboards
                 throw new ArgumentNullException(nameof(action));
             RegisterAction(key, (e, o, n) =>
             {
-                if (o is T oldValue)
+                if (o == null)
+                {
+                    action(e, default, (T)n);
+                }
+                else if (o is T oldValue)
                 {
                     action(e, oldValue, (T)n);
                 }

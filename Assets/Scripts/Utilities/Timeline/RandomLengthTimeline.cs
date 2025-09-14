@@ -20,7 +20,7 @@ namespace Utilities.Timeline
                 length = timeGenerator.Time;
             base.Restart();
         }
-        protected override void Reset()
+        public override void Reset()
         {
             base.Reset();
             time = 0;

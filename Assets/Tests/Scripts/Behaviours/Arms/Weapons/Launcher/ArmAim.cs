@@ -9,10 +9,10 @@ namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
     internal class ArmAim : ArmedArmStateBase, IAimer_Obsolete
     {
         AimIK _aimIK;
-        ITarget _target;
+        ITarget_Obsolete _target;
         internal Action<float> weightChangedAction;
-        internal Action<ITarget> targetChangedAction;
-        public ITarget Target
+        internal Action<ITarget_Obsolete> targetChangedAction;
+        public ITarget_Obsolete Target
         {
             get => _target;
             set

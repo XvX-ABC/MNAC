@@ -19,7 +19,7 @@ namespace Tests.Characters
                 outputSetting.Weight = 1;
             }
         }
-        public ControllerPlayable(Animator animator)
+        public ControllerPlayable(PlayableGraph graph, Animator animator) : base(graph)
         {
             _animator = animator ?? throw new ArgumentNullException(nameof(animator));
         }
@@ -29,6 +29,12 @@ namespace Tests.Characters
             controller = AnimatorControllerPlayable.Create(graph, _animator.runtimeAnimatorController);
             playablePart = controller;
             return true;
+        }
+        public float GetFloat(string name)
+        {
+            if (playablePart.IsNull())
+                throw new NullReferenceException(nameof(playablePart));
+            return controller.GetFloat(name);
         }
         public void SetFloat(string name, float value)
         {

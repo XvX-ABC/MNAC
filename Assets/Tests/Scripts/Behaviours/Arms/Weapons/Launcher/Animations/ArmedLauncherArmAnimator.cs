@@ -1,8 +1,9 @@
-﻿using Tests.Behaviours.Animations;
+﻿using System;
+using Tests.Behaviours.Animations;
+using Tests.Behaviours.Arms.Weapons.Launchers;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
-using static Tests.Behaviours.Arms.Weapons.Launchers.ArmedLauncherArmBehaviour_Obsolete;
 using ArmAim = Tests.BodyBehaviour.Arms.ArmAim;
 
 namespace Tests.Behaviours.Arms.Weapons
@@ -26,8 +27,6 @@ namespace Tests.Behaviours.Arms.Weapons
                 var v = Mathf.Clamp01(value);
                 _idleWeight = v;
                 UpdateWeight();
-                this.enabled = v < 0.9f;
-                //Debug.Log("Animator.enabled: " + this.enabled + " weight: " + v);
                 if (outputSetting != null)
                     outputSetting.Weight = 1 - v;
             }
@@ -38,7 +37,7 @@ namespace Tests.Behaviours.Arms.Weapons
             set
             {
                 var v = Mathf.Clamp01(value);
-                _aimingWeight = value;
+                _aimingWeight = v;
                 UpdateWeight();
             }
         }
@@ -53,6 +52,7 @@ namespace Tests.Behaviours.Arms.Weapons
                 outputSetting = value;
             }
         }
+        [Obsolete]
 
         public bool Enabled { get => enabled; set => enabled = value; }
         void UpdateWeight()
@@ -77,9 +77,11 @@ namespace Tests.Behaviours.Arms.Weapons
                 var ap = aiming.GetPlayablePart(graph);
                 var rp = reload.GetPlayablePart(graph);
                 _playable = AnimationMixerPlayable.Create(graph, 2);
-                graph.Connect(ap, 0, _playable, 0);
-                graph.Connect(rp, 0, _playable, 1);
-                AimingWeight = _aimingWeight;
+                _playable.ConnectInput(0, ap, 0, 0);
+                _playable.ConnectInput(1, rp, 0, 0);
+                //graph.Connect(ap, 0, _playable, 0);
+                //graph.Connect(rp, 0, _playable, 1);
+                //AimingWeight = _aimingWeight;
             }
             return _playable;
         }

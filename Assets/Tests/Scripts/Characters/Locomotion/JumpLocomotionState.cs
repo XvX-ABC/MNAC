@@ -1,21 +1,26 @@
 ﻿using Locomotion;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tests.TPhysics.Locomotion;
+using UnityEngine;
 
 namespace Tests.Characters.Locomotion
 {
     internal class JumpLocomotionState : LocomotionStateBase
     {
-        JumpLocomotion _locomotion;
+        internal JumpLocomotion locomotion;
         public JumpLocomotionState(IJumpDefinitions definitions, bool enabled = true) : base("jump", 0, enabled)
         {
-            _locomotion = new(definitions);
+            locomotion = new(definitions);
+            timeline = locomotion.timeline;
         }
 
-        protected override ILocomotionModule module => _locomotion;
+        protected override ILocomotionModule module => locomotion;
+        public override void OnEnter()
+        {
+            context.Core.EnableModule(locomotion);
+        }
+        public override void OnExit()
+        {
+            context.Core.DisableModule(locomotion);
+        }
     }
 }

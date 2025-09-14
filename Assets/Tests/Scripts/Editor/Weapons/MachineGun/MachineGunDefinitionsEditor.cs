@@ -10,7 +10,7 @@ using UnityEditor;
 
 namespace Tests.Editors.Weapons.MachineGun
 {
-    [CustomEditor(typeof(MachineGunDefinitions))]
+    [CustomEditor(typeof(Obsolete_MachineGunDefinitions))]
     public class MachineGunDefinitionsEditor : AssetEditor
     {
     }

@@ -1,13 +1,11 @@
-﻿using Mono.Cecil.Cil;
-using System;
-using System.Reflection;
+﻿using System;
 using UnityEngine;
-using UnityEngine.Pool;
 using Utilities.Timeline;
 using Utilities.Timeline.Events.Point;
 
 namespace Tests.Weapons
 {
+
     [Serializable]
     [RequireComponent(typeof(MeshRenderer))]
     [RequireComponent(typeof(CapsuleCollider))]
@@ -55,16 +53,17 @@ namespace Tests.Weapons
         }
         public void Update()
         {
-            if (timeline.IsRunning)
-                timeline.OnUpdate(Time.deltaTime);
+            timeline.OnUpdate(Time.deltaTime);
         }
-        public void OnCollisionEnter(Collision other)
+        public void OnCollisionStay(Collision collision)
         {
+            if (timeline.isRunning)
+                return;
             _projectileEffect.Stop();
             _projectileEffect.Clear();
             _meshRender.enabled = false;
 
-            if (Physics.SphereCast(shootingRay, _collider.radius, out var hitInfo, Mathf.Infinity))
+            if (Physics.SphereCast(shootingRay, _collider.radius, out var hitInfo, Mathf.Infinity, _mask))
             {
                 var point = hitInfo.point;
                 var normal = hitInfo.normal;
@@ -74,6 +73,25 @@ namespace Tests.Weapons
                 _hitEffect.Play();
                 timeline.Restart();
             }
+
+        }
+        public void OnCollisionEnter(Collision collision)
+        {
+            //Debug.Log("effect obj.name: " + collision.gameObject.name);
+            //_projectileEffect.Stop();
+            //_projectileEffect.Clear();
+            //_meshRender.enabled = false;
+
+            //if (Physics.SphereCast(shootingRay, _collider.radius, out var hitInfo, Mathf.Infinity, _mask))
+            //{
+            //    var point = hitInfo.point;
+            //    var normal = hitInfo.normal;
+            //    _hitEffect.transform.SetParent(null);
+            //    _hitEffect.transform.position = point;
+            //    _hitEffect.transform.rotation = Quaternion.FromToRotation(Vector3.up, normal);
+            //    _hitEffect.Play();
+            //    timeline.Restart();
+            //}
 
             //if (Physics.Raycast(shootingRay, out var hitInfo, Mathf.Infinity, _mask))
             //{

@@ -37,7 +37,7 @@ namespace Tests.Locomotion
         Context _context;
 
         IModule[] _modules;
-        ITarget IAimer_Obsolete.Target { get => _context.Target; set => _context.Target = value; }
+        ITarget_Obsolete IAimer_Obsolete.Target { get => _context.Target; set => _context.Target = value; }
         void Awake()
         {
             _definitions = GetComponent<ILocomotionDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILocomotionDefinitions));

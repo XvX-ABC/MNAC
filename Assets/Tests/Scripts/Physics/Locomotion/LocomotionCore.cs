@@ -171,7 +171,8 @@ namespace Tests.TPhysics.Locomotion
                 for (int i = 0; i < _evaluationModules.Length; i++)
                 {
                     var m = _evaluationModules[i];
-                    _context = m.Update(_context);
+                    if (m.Enabled)
+                        _context = m.Update(_context);
                 }
             }
             if (_moduleWrappers != null)

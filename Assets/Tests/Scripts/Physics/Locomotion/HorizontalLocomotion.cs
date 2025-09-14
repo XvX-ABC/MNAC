@@ -51,26 +51,12 @@ namespace Tests.TPhysics.Locomotion
             var direction = _horizontalVector;
             var grounds = context.GroundDetector.Grounds;
 
-            //var groundNormal = CalculateNormalInGrounds(grounds);
             var groundNormal = context.GroundDetector.GroundsNormal;
             if (groundNormal == Vector3.zero)
                 return direction;
 
             return world.rotation * Quaternion.FromToRotation(world.Up, groundNormal) * direction;
 
-
-            //Vector3 CalculateNormalInGrounds(IReadOnlyList<Ground> grounds)
-            //{
-            //    if (grounds.Count == 0)
-            //        return Vector3.zero;
-
-            //    var result = Vector3.zero;
-            //    foreach (var g in grounds)
-            //    {
-            //        result += g.Normal;
-            //    }
-            //    return result / grounds.Count;
-            //}
         }
         public override Context OnStart(Context context)
         {
@@ -79,18 +65,21 @@ namespace Tests.TPhysics.Locomotion
 
         public override Context OnUpdate(Context context)
         {
-            var worldUp = world.Up;
+            var up = world.Up;
+            if (context.GroundDetector.Grounds.Count > 0)
+            {
+                up = context.GroundDetector.GroundsNormal;
+            }
             var direction = CalculateDirection(context);
 
             if (direction == Vector3.zero)
                 return context;
 
-            var currentVelocity = Vector3.ProjectOnPlane(context.CurrentVelocity, worldUp);
+            var currentVelocity = Vector3.ProjectOnPlane(context.CurrentVelocity, up);
             var currentSpeed = currentVelocity.magnitude;
 
-            var maxSpeed = _maxSpeed;
+            var maxSpeed = _maxSpeed + _acceleratedSpeed;
             currentSpeed = maxSpeed - Mathf.MoveTowards(currentSpeed, maxSpeed, _acceleratedSpeed);
-            //Debug.Log($"max speed: {maxSpeed}, current speed: {currentSpeed}, accelerated speed: {_acceleratedSpeed}");
             context.CurrentVelocity += direction * currentSpeed * Time.deltaTime;
             return context;
         }

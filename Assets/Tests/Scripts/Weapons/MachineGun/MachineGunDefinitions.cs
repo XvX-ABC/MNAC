@@ -1,38 +1,46 @@
-﻿using Tests.Assets;
-using Tests.Weapons.Launcher;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Tests.Weapons.MachineGuns
 {
     public class MachineGunDefinitions : MonoBehaviour, IMachineGunDefinitions
     {
         [SerializeField]
-        JsonAssetAgent_Managed<MachineGunNumericalDefinitions> _numericalDefinitionsAsset;
+        float _PRS;
         [SerializeField]
-        PrefabAssetAgent_Managed _ammoOriginAsset;
+        GameObject _ammoOrigin;
         [SerializeField]
-        PrefabAssetAgent_Managed _caseOriginAsset;
-        public float PRS => _numericalDefinitionsAsset.Asset.RPS;
+        GameObject _caseOrigin;
+        [SerializeField]
+        Vector3 _magazinePosition;
+        [SerializeField]
+        Vector3 _muzzlePosition;
+        [SerializeField]
+        ushort _ammoTotalQuantity;
+        [SerializeField]
+        ushort _ammoInMagazineQuantity;
+        [SerializeField]
+        float _reloadDurationTime;
 
-        public GameObject AmmoOrigin => _ammoOriginAsset.Asset;
-        public GameObject CaseOrigin=>_caseOriginAsset.Asset;
-        public Vector3 MagazinePosition => _numericalDefinitionsAsset.Asset.MagazinePosition;
+        public float PRS => _PRS;
 
-        public Vector3 MuzzlePosition => _numericalDefinitionsAsset.Asset.MuzzlePosition;
+        public GameObject CaseOrigin => _caseOrigin;
 
-        public ushort AmmoTotalQuantity => (ushort)(AmmoSpareQuantity + AmmoTotalQuantity);
+        public GameObject AmmoOrigin => _ammoOrigin;
+
+        public Vector3 MagazinePosition => _magazinePosition;
+
+        public Vector3 MuzzlePosition => _muzzlePosition;
+
+        public ushort AmmoTotalQuantity => (ushort)(AmmoInMagazineQuantity + AmmoSpareQuantity);
 
         public ushort AmmoSpareQuantity => 0;
 
-        public ushort AmmoInMagazineQuantity => _numericalDefinitionsAsset.Asset.AmmoInMagazineQuantity;
+        public ushort AmmoInMagazineQuantity => _ammoInMagazineQuantity;
 
-        public float ReloadDurationTime => _numericalDefinitionsAsset.Asset.ReloadDuration;
+        public float ReloadDurationTime => _reloadDurationTime;
 
-        public float LaunchDurationTime => 1 / _numericalDefinitionsAsset.Asset.RPS;
+        public float LaunchDurationTime => 1 / _PRS;
 
         public Vector2 LaunchDelayRange => Vector2.zero;
-
-
-
     }
 }

@@ -51,5 +51,9 @@ namespace Tests.TPhysics.Environment
             _detector.OnFixedUpdate();
         }
 
+        public void OnLateUpdate()
+        {
+            _detector.OnLateUpdate();
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tests.Extensions;
 using Tests.Weapons;
+using UnityEngine.Playables;
 using IAnimationPlayablePart = Tests.Behaviours.Animations.IAnimationPlayablePart;
 
 namespace Tests.Behaviours.Arms.Weapons.Animations
@@ -19,7 +20,7 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
         internal Action<bool, IAnimationPlayablePart> stateAction { get => _stateAction; set => _stateAction = value; }
         public ArmedWeaponPlayablePart PlayablePart { get => _playablePart; set => _playablePart = value; }
 
-        public ArmedWeaponArmAnimator(IArmedWeaponArmBehavioursController<T> controller)
+        public ArmedWeaponArmAnimator(PlayableGraph graph, IArmedWeaponArmBehavioursController<T> controller)
         {
             _animators = new();
             _controller = controller ?? throw new ArgumentNullException(nameof(controller));
@@ -28,10 +29,11 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
                 var name = kv.Key;
                 var animator = kv.Value.Animator;
                 _animators.Add(name, animator);
+                animator.GetPlayablePart(graph);
             }
             _controller.ActivatedAction += ActivatedAnimator;
             _controller.UnactivatedAction += UnactivatedAnimator;
-            _playablePart = new();
+            _playablePart = new(graph);
         }
         void ActivatedAnimator(IWeapon weapon, T behaviour)
         {

@@ -8,11 +8,11 @@ using UnityEngine;
 
 namespace Tests.Weapons.MachineGuns
 {
-    [RequireComponent(typeof(MachineGun))]
     [RequireComponent(typeof(CustomPlayerInput))]
     public class MachineGun_Test : MonoBehaviour
     {
         IInput _input;
+        [SerializeField]
         MachineGun _machineGun;
         [SerializeField]
         float _speed;
@@ -23,12 +23,12 @@ namespace Tests.Weapons.MachineGuns
         private void Awake()
         {
             _input = GetComponent<CustomPlayerInput>();
-            _machineGun = GetComponent<MachineGun>();
         }
         private void Update()
         {
             var d = _speed * Time.deltaTime;
-            this.transform.position += _toRight ? this.transform.right*d : -this.transform.right * d;
+            var ts = _machineGun.transform;
+            ts.position += _toRight ? ts.right * d : -ts.right * d;
             _distance += d;
             if (_distance >= _moveValue)
             {

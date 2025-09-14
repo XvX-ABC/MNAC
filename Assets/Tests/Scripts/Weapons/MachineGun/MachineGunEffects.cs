@@ -7,28 +7,30 @@ using Unity.Mathematics;
 using Random = Unity.Mathematics.Random;
 using Utilities.Timeline.Events;
 using Utilities.Timeline.Events.Point;
+using Tests.Weapons.Launcher;
 
 namespace Tests.Weapons.MachineGuns
 {
-    [RequireComponent(typeof(MachineGun))]
-    public class MachineGunEffects : MonoBehaviour
+    public class MachineGunEffects : MonoBehaviour, ILauncherEffector
     {
         [SerializeField]
         MuzzleFlashEffect[] _flashEffects;
         MachineGun _gun;
+
+        ILauncher _owner;
         Random _random;
-        IMachineGunDefinitions _definitions;
+        ILauncherDefinitions _definitions;
         ITimelineEvent _event;
         private void Awake()
         {
             _random = new Random((uint)gameObject.GetInstanceID());
-            _definitions = GetComponent<IMachineGunDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IMachineGunDefinitions));
-            _gun = GetComponent<MachineGun>() ?? throw new ComponentCantFindException(this.gameObject, typeof(MachineGun));
-            _gun.InitializationAction += g =>
-            {
-                var timeline = g.LaunchDurationTimeline;
-                timeline.AddPointEvent(0, _ => { PlayFlame(); });
-            };
+            //_definitions = GetComponent<IMachineGunDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IMachineGunDefinitions));
+            //_gun = GetComponent<MachineGun>() ?? throw new ComponentCantFindException(this.gameObject, typeof(MachineGun));
+            //_gun.InitializationAction += g =>
+            //{
+            //    var timeline = g.LaunchDurationTimeline;
+            //    timeline.AddPointEvent(0, _ => { PlayFlame(); });
+            //};
             if (_flashEffects.Length == 0)
             {
                 Debug.LogWarning($"This game object '{this.gameObject.name}' is disabled, because the flash effects is empty.");
@@ -44,11 +46,9 @@ namespace Tests.Weapons.MachineGuns
                 effect.gameObject.SetActive(true);
             }
         }
-        float current;
-        private void Update()
-        {
-            current++;
-        }
+
+        public ILauncher Owner => _owner;
+
 
         void PlayFlame()
         {
@@ -56,6 +56,21 @@ namespace Tests.Weapons.MachineGuns
                 return;
             var effect = _flashEffects[_random.NextInt(0, _flashEffects.Length)];
             effect.Play();
+        }
+        void FollowOwnerPlay(ILauncher launcher)
+        {
+            PlayFlame();
+        }
+        public void Initialize(ILauncher owner)
+        {
+            _owner = owner;
+            _definitions = _owner.Definitions;
+            _owner.LaunchAction += FollowOwnerPlay;
+        }
+
+        public void Dispose()
+        {
+            _owner.LaunchAction -= FollowOwnerPlay;
         }
     }
 }

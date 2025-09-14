@@ -12,6 +12,7 @@ namespace Tests.Behaviours.Arms.Animations
     {
         IArmWeaponDefinitions _definitions;
         IArmWeaponAnimationDefinitions _animationDefinitions;
+
         MixerPlayablePart _mixer;
         internal SwitchingPlayablePart switching;
         internal IArmedWeaponArmAnimator armedAnimator;
@@ -181,6 +182,7 @@ namespace Tests.Behaviours.Arms.Animations
             {
                 if (value == _statusNum)
                     return;
+                //Debug.Log($"change  status num from {_statusNum} to {value}");
                 if (!_initialized)
                     throw new Exception();
                 UpdatePlayingState(value);
@@ -198,27 +200,26 @@ namespace Tests.Behaviours.Arms.Animations
         //    _mixer = new();
         //}
 
-        public ArmAnimationCore(IArmWeaponDefinitions weaponDefinitions, IArmWeaponAnimationDefinitions animationDefinitions, IArmedWeaponArmAnimator armedAnimator)
+        public ArmAnimationCore(PlayableGraph graph, IArmWeaponDefinitions weaponDefinitions, IArmWeaponAnimationDefinitions animationDefinitions, IArmedWeaponArmAnimator armedAnimator) : base(graph)
         {
-            //_definitions = core.definitions.Weapon;
-            //_animationDefinitions = core.animationDefinitions.Weapon;
             _definitions = weaponDefinitions ?? throw new ArgumentNullException(nameof(weaponDefinitions));
             _animationDefinitions = animationDefinitions ?? throw new ArgumentNullException(nameof(animationDefinitions));
             this.armedAnimator = armedAnimator ?? throw new ArgumentNullException(nameof(armedAnimator));
 
 
-            switching = new(_definitions, _animationDefinitions);
-            _mixer = new();
+            switching = new(graph, _definitions, _animationDefinitions);
+            _mixer = new(graph);
         }
         class MixerPlayablePart : AnimationPlayablePartBase
         {
+            public MixerPlayablePart(PlayableGraph graph) : base(graph)
+            {
+                var mixer = AnimationMixerPlayable.Create(graph, 2);
+                playablePart = mixer;
+            }
+
             public override bool Initialize(PlayableGraph graph)
             {
-                if (playablePart.IsNull())
-                {
-                    var mixer = AnimationMixerPlayable.Create(graph, 2);
-                    playablePart = mixer;
-                }
                 return true;
             }
             public override void Dispose()
@@ -252,24 +253,22 @@ namespace Tests.Behaviours.Arms.Animations
                         outputSetting.Weight = _weight;
                 }
             }
-            public SwitchingPlayablePart(IArmWeaponDefinitions definitions, IArmWeaponAnimationDefinitions animationDefinitions) : base()
+            public SwitchingPlayablePart(PlayableGraph graph, IArmWeaponDefinitions definitions, IArmWeaponAnimationDefinitions animationDefinitions) : base(graph)
             {
                 _definitions = definitions;
                 _animationDefinitions = animationDefinitions;
                 enabled = true;
+
+                var clip = _animationDefinitions.Switching.Clip ?? throw new NullReferenceException("definitions.Switching.Clip");
+                var length = clip.length;
+                var c = AnimationClipPlayable.Create(graph, clip);
+                var speed = _definitions.SwitchingDurationTime > 0 ? length / _definitions.SwitchingDurationTime : 1;
+                c.SetSpeed(speed);
+                playablePart = c;
             }
 
             public override bool Initialize(PlayableGraph graph)
             {
-                if (playablePart.IsNull())
-                {
-                    var clip = _animationDefinitions.Switching.Clip ?? throw new NullReferenceException("definitions.Switching.Clip");
-                    var length = clip.length;
-                    var c = AnimationClipPlayable.Create(graph, clip);
-                    var speed = _definitions.SwitchingDurationTime > 0 ? length / _definitions.SwitchingDurationTime : 1;
-                    c.SetSpeed(speed);
-                    playablePart = c;
-                }
                 return true;
             }
             public override void Dispose()

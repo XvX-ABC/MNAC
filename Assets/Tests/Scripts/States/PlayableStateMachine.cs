@@ -12,35 +12,6 @@ namespace Tests.States
         {
         }
     }
-    public class WithCallbackPlayableStatemachine<T> : PlayableStateMachine<T>, IWithCallbackPlayableState<T>
-    {
-        protected Action entryAction;
-        protected Action exitAction;
-        protected Action updateAction;
-
-        public WithCallbackPlayableStatemachine(string name, bool enabled = true) : base(name, enabled)
-        {
-        }
-
-        public Action EntryAction { get => entryAction; set => entryAction = value; }
-        public Action ExitAction { get => exitAction; set => exitAction = value; }
-        public Action UpdateAction { get => updateAction; set => updateAction = value; }
-        public override void OnEnter()
-        {
-            entryAction?.Invoke();
-            base.OnEnter();
-        }
-        public override void OnExit()
-        {
-            base.OnExit();
-            exitAction?.Invoke();
-        }
-        public override void OnUpdate()
-        {
-            updateAction?.Invoke();
-            base.OnUpdate();
-        }
-    }
     public partial class PlayableStateMachine<T> : StateMachineBase<IPlayableState<T>, T>, IPlayableState<T>
     {
         protected const InterruptionSource INTERRUPTION_SOURCE_DEFAULT = PlayableTransition<T>.INTERRUPTION_SOURCE_DEFAULT;
@@ -112,7 +83,7 @@ namespace Tests.States
             }
             public override void OnExit()
             {
-                timeline.Pause();
+                timeline.End();
             }
             public override void OnUpdate()
             {
@@ -121,7 +92,7 @@ namespace Tests.States
 
         }
         TransitionState _transitionState;
-        public ITimeline Timeline => currentState?.Timeline;
+        public virtual ITimeline Timeline => currentState?.Timeline;
 
         public bool ExitWhenEnd
         {
@@ -216,22 +187,22 @@ namespace Tests.States
             currentState?.ToNextStateTransitionRunning(currentTransition);
         }
 
-        public void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<T> currentTransition)
+        public virtual void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<T> currentTransition)
         {
             currentState?.FromPreviousStateTransitionBegin(currentTransition);
         }
 
-        public void FromPreviousStateTransitionEnd(IReadonlyPlayableTransition<T> currentTransition)
+        public virtual void FromPreviousStateTransitionEnd(IReadonlyPlayableTransition<T> currentTransition)
         {
             currentState?.FromPreviousStateTransitionEnd(currentTransition);
         }
 
-        public void ToNextStateTransitionBegin(IReadonlyPlayableTransition<T> currentTransition)
+        public virtual void ToNextStateTransitionBegin(IReadonlyPlayableTransition<T> currentTransition)
         {
             currentState?.ToNextStateTransitionBegin(currentTransition);
         }
 
-        public void ToNextStateTransitionEnd(IReadonlyPlayableTransition<T> currentTransition)
+        public virtual void ToNextStateTransitionEnd(IReadonlyPlayableTransition<T> currentTransition)
         {
             currentState?.ToNextStateTransitionEnd(currentTransition);
         }

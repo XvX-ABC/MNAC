@@ -20,8 +20,6 @@ namespace Tests.Behaviours.Arms.Weapons
         public abstract IArmedWeaponArmAnimationPlayablePart Animator { get; }
 
 
-        [Obsolete]
-        public byte StatusNum { get => statusNum; }
         public virtual bool Activated { get => base.Enabled; set => base.Enabled = value; }
         [Obsolete]
         public IPlayableState<object> StateNode { get => throw new NotImplementedException(); }

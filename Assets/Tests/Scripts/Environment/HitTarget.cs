@@ -2,7 +2,7 @@
 using UnityEngine;
 namespace Tests.Environment
 {
-    internal class HitTarget : ITarget
+    internal class HitTarget : ITarget_Obsolete
     {
         internal RaycastHit hitInfo;
         public GameObject Obj { get => hitInfo.collider.gameObject; set => throw new NotImplementedException(); }

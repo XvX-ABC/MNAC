@@ -1,6 +1,6 @@
 ﻿using System;
+using Tests.Behaviours;
 using Tests.Behaviours.Animations;
-using Tests.Behaviours.Arms;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.States;
 using Tests.Weapons;
@@ -47,18 +47,21 @@ namespace Tests.Characters.Arms
                 Debug.LogWarning("This weapon switching behaviour is still continuing");
                 return;
             }
-            timeline.Restart();
+            //timeline.Restart();
+            _switching.Begin();
             if (animationCore != null)
                 animationCore.StatusNum = 0;
         }
         public override void OnUpdate()
         {
             base.OnUpdate();
-            timeline.OnUpdate(Time.deltaTime);
+            //timeline.OnUpdate(Time.deltaTime);
+            _switching.Update();
         }
         public override void OnExit()
         {
-            timeline.End();
+            _switching.End();
+            //timeline.End();
             base.OnExit();
         }
         public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)

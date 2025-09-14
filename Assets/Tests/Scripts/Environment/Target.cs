@@ -4,7 +4,7 @@ using UnityEngine;
 using UInput = UnityEngine.Input;
 namespace Tests.Environment
 {
-    class Target : ITarget
+    class Target : ITarget_Obsolete
     {
         Camera _camera;
         ThirdPersonCameraController _controller;

@@ -5,8 +5,8 @@ namespace Tests.Weapons.MissileLauncher
 {
     public interface IMissileLauncher : ILauncher
     {
-        public ITarget Target { get; set; }
-        public Action<IMissileLauncher, ITarget> TargetChangeAction { get; set; }
+        public ITarget_Obsolete Target { get; set; }
+        public Action<IMissileLauncher, ITarget_Obsolete> TargetChangeAction { get; set; }
         public new IMissileLauncherDefinitions Definitions { get; }
     }
 }

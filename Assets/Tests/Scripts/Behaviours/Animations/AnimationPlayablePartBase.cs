@@ -5,6 +5,7 @@ namespace Tests.Behaviours.Animations
     public abstract class AnimationPlayablePartBase : IAnimationPlayablePart
     {
         protected bool enabled;
+        protected PlayableGraph graph;
         protected Playable playablePart;
         protected IOutputSetting outputSetting;
         protected AnimationPlayableNode node;
@@ -17,9 +18,10 @@ namespace Tests.Behaviours.Animations
             set => outputSetting = value;
         }
         public virtual IAnimationPlayablePartNode Node { get => node; }
-        protected AnimationPlayablePartBase()
+        protected AnimationPlayablePartBase(PlayableGraph graph)
         {
             node = new(this);
+            this.graph = graph;
         }
 
         public virtual void Dispose()

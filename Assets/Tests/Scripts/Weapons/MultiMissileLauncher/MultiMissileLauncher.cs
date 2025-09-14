@@ -24,8 +24,8 @@ namespace Tests.Weapons.MultiMissileLauncher
         ushort _ammoSpareQuantity;
         ushort _ammoInMagazineQuantity;
         Action<ILauncher> _initializationAction;
-        Action<IMissileLauncher, ITarget> _targetChangeAction;
-        ITarget _target;
+        Action<IMissileLauncher, ITarget_Obsolete> _targetChangeAction;
+        ITarget_Obsolete _target;
         ILauncherActionsLock _actionsLock;
         ITimeline _reloadTimeline;
         ITimeline _delayLaunchTimeline;
@@ -37,7 +37,7 @@ namespace Tests.Weapons.MultiMissileLauncher
         public ILauncherDefinitions Definitions { get => definitions; }
         IMissileLauncherDefinitions IMissileLauncher.Definitions => definitions;
         public Action<ILauncher> InitializationAction { get => _initializationAction; set => _initializationAction = value; }
-        public ITarget Target
+        public ITarget_Obsolete Target
         {
             get => _target;
             set
@@ -52,7 +52,7 @@ namespace Tests.Weapons.MultiMissileLauncher
         public ITimeline LaunchDurationTimeline { get => _launchDurationTimeline; }
         public ITimeline ReloadTimeline { get => _reloadTimeline; }
         public ITimeline DelayLaunchTimeline { get => _delayLaunchTimeline; }
-        public Action<IMissileLauncher, ITarget> TargetChangeAction
+        public Action<IMissileLauncher, ITarget_Obsolete> TargetChangeAction
         {
             get
             {
@@ -69,6 +69,11 @@ namespace Tests.Weapons.MultiMissileLauncher
         string IWeapon.Name => this.gameObject.name;
 
         WeaponType IWeapon.Type => WeaponType.Launcher;
+
+        public Action<ILauncher> LaunchAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Action<ILauncher> ReloadAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public GameObject Obj => this.gameObject;
 
         public IMissileLauncher this[int index]
         {
@@ -192,7 +197,7 @@ namespace Tests.Weapons.MultiMissileLauncher
             if (UInput.GetKeyDown(KeyCode.S))
             {
                 if (Target == null)
-                    Target = GetComponent<ITarget>() ?? throw new ComponentCantFindException(gameObject, typeof(ITarget));
+                    Target = GetComponent<ITarget_Obsolete>() ?? throw new ComponentCantFindException(gameObject, typeof(ITarget_Obsolete));
                 else
                     Target = null;
             }
@@ -326,6 +331,16 @@ namespace Tests.Weapons.MultiMissileLauncher
                 GUI.Label(new Rect(0, 200, 100, 100), "NULL", style);
             else
                 GUI.Label(new Rect(0, 200, 100, 100), Target.Obj.name, style);
+        }
+
+        public void WhenMounted(GameObject mountPoint)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WhenUnmounted(GameObject mountPoint)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -238,7 +238,7 @@ namespace Tests.Behaviours.Arms
                 throw new Exception();
             var weapon = obj.GetComponent<IWeapon>();
             //armedWeaponController.ActivateBehaviourBy(weapon);
-            weaponMountPoint.LoadObj = obj;
+            //weaponMountPoint.Load = obj;
 
         }
         int ctx = 0;

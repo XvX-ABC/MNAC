@@ -20,7 +20,7 @@ namespace Tests.Characters
         }
         public ICharacterComponentNode Node { get => node; }
         public abstract string Name { get; }
-        public bool Enabled { get => enabled; set => enabled = value; }
+        public virtual bool Enabled { get => enabled; set => enabled = value; }
 
         protected CharacterComponentBase()
         {

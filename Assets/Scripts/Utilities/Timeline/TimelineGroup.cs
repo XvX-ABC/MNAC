@@ -183,5 +183,10 @@ namespace Utilities.Timeline
         {
             throw new NotImplementedException();
         }
+
+        public void Reset()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

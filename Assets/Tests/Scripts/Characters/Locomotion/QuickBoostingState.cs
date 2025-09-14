@@ -51,23 +51,7 @@ namespace Tests.Characters.Locomotion
                 false)
         {
         }
-        //public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<LocomotionStateContext> currentTransition)
-        //{
-        //    //base.FromPreviousStateTransitionBegin(currentTransition);
-        //    locomotion.HorizontalVector = context.Input.HorizontalVector;
-        //}
-        //public override void OnUpdate()
-        //{
-        //    base.OnUpdate();
-        //    if (module.State == LocomotionModuleState.Started)
-        //        context.Core.DisableModule(module);
-        //}
-        //public override void OnExit()
-        //{
-        //    locomotion.HorizontalVector = Vector3.zero;
-        //    base.OnExit();
-        //}
-        public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<LocomotionStateContext> currentTransition)
+        public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
             locomotion.HorizontalVector = context.Input.HorizontalVector;

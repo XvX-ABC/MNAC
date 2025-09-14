@@ -36,6 +36,8 @@ namespace Tests.Characters
         }
         public override void AddChild(IMTNode node)
         {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
             if (node is not ICharacterComponentNode cnode)
                 throw new InvalidCastException(nameof(node));
             base.AddChild(cnode);

@@ -12,16 +12,6 @@ using Utilities.Timeline;
 
 namespace Tests.Weapons.MachineGuns
 {
-    public interface IMachineGunDefinitions : ILauncherDefinitions
-    {
-
-        public float PRS { get; }
-        public GameObject CaseOrigin { get; }
-    }
-    public interface IMachineGun : ILauncher
-    {
-        public new IMachineGunDefinitions Definitions { get; }
-    }
 
     public class MachineGun : LauncherBase, IMachineGun
     {
@@ -66,7 +56,6 @@ namespace Tests.Weapons.MachineGuns
                 return false;
             if (ammoInMagazineQuantity <= 0)
                 return false;
-            Launch();
             launchDurationTimeline.Restart();
             return true;
         }

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Reflection;
-using FoundationStone.UI.Tests.MVC;
+using System.Collections.Generic;
 using Tests.Utilities;
-using Tests.Weapons.MissileLauncher;
+using Tests.Weapons.MachineGuns;
 using UnityEngine;
 using UnityEngine.Pool;
 using Utilities.Timeline;
@@ -13,6 +12,38 @@ namespace Tests.Weapons.Launcher
     [DisallowMultipleComponent]
     public class LauncherBase : MonoBehaviour, ILauncher
     {
+        [Serializable]
+        protected internal class EffectorSupporter : ILauncherEffector
+        {
+            ILauncherEffector[] _effectors;
+            ILauncher _owner;
+            public EffectorSupporter(ILauncherEffector[] effectors)
+            {
+                _effectors = effectors;
+            }
+
+            public ILauncher Owner => _effectors[0].Owner;
+
+
+            public void Initialize(ILauncher owner)
+            {
+                _owner = owner ?? throw new ArgumentNullException(nameof(owner));
+                foreach (var e in _effectors)
+                    e.Initialize(owner);
+            }
+            public void Dispose()
+            {
+                foreach (var e in _effectors)
+                {
+                    e.Dispose();
+                }
+            }
+
+        }
+        [SerializeField]
+        GameObject[] _effectorObjs;
+        protected EffectorSupporter effectorSupporter;
+
         protected ObjectPool<GameObject> ammoPool;
         protected ILauncherDefinitions definitions;
         [SerializeField]
@@ -29,9 +60,12 @@ namespace Tests.Weapons.Launcher
         protected ITimeline reloadTimeline;
 
 
+        internal WeaponLoad load;
+
 
         protected LauncherActionsLock actionsLock;
-
+        protected Action<ILauncher> launchAction;
+        protected Action<ILauncher> reloadAction;
 
         public string Name { get => this.name; }
         public ushort SpareCount { get => ammoSpareQuantity; }
@@ -47,23 +81,15 @@ namespace Tests.Weapons.Launcher
 
         WeaponType IWeapon.Type => WeaponType.Launcher;
 
+        public Action<ILauncher> LaunchAction { get => launchAction; set => launchAction = value; }
+        public Action<ILauncher> ReloadAction { get => reloadAction; set => reloadAction = value; }
+
+        public GameObject Obj => this.gameObject;
+
         protected virtual void Awake()
         {
             definitions = GetComponent<ILauncherDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(ILauncherDefinitions));
             actionsLock = new();
-
-        }
-
-        protected virtual void Start()
-        {
-            actionsLock = new();
-
-            ammoPool = new(
-             CreateAmmo,
-             GetAmmo,
-             ReleaseAmmo,
-             DestroyAmmo
-                );
 
             reloadTimeline = CreateReloadTimeline();
             delayLaunchTimeline = CreateDelayLaunchTimeline();
@@ -72,6 +98,46 @@ namespace Tests.Weapons.Launcher
 
             ammoInMagazineQuantity = definitions.AmmoInMagazineQuantity;
             ammoSpareQuantity = definitions.AmmoSpareQuantity;
+
+
+            InitializeEffectors();
+            effectorSupporter?.Initialize(this);
+
+            load = GetComponent<WeaponLoad>();
+        }
+        protected virtual void InitializeEffectors()
+        {
+            var effectors = new List<ILauncherEffector>();
+            foreach (var obj in _effectorObjs)
+            {
+                if (obj == null)
+                {
+                    Debug.LogWarning(new NullReferenceException(nameof(obj)));
+                    continue;
+                }
+                var e = obj.GetComponents<ILauncherEffector>();
+                if (e == null)
+                {
+                    Debug.LogWarning($"The obj '{obj.name}' doesn't have a effector.");
+                    continue;
+                }
+                effectors.AddRange(e);
+            }
+            if (effectors.Count > 0)
+                effectorSupporter = new(effectors.ToArray());
+        }
+        protected virtual void Start()
+        {
+
+
+            ammoPool = new(
+             CreateAmmo,
+             GetAmmo,
+             ReleaseAmmo,
+             DestroyAmmo
+                );
+
+
             initializationAction?.Invoke(this);
             InitializationAction = null;
         }
@@ -87,6 +153,7 @@ namespace Tests.Weapons.Launcher
         protected void OnDestroy()
         {
             ammoPool.Dispose();
+            effectorSupporter?.Dispose();
         }
         protected virtual GameObject CreateAmmo()
         {
@@ -138,7 +205,7 @@ namespace Tests.Weapons.Launcher
             timeline.AddPointEvent(0, _ => actionsLock.LockStartReload());
             timeline.AddPointEvent(1, _ =>
             {
-                DoReload();
+                Reload();
                 actionsLock.UnlockAll();
             });
             return timeline;
@@ -149,7 +216,7 @@ namespace Tests.Weapons.Launcher
             timeline.AddPointEvent(0, _ => actionsLock.LockStartLaunch());
             timeline.AddPointEvent(1, _ =>
             {
-                Launch();
+
                 actionsLock.UnlockAll();
                 launchDurationTimeline.Restart();
             });
@@ -158,7 +225,11 @@ namespace Tests.Weapons.Launcher
         protected virtual ITimeline CreateLaunchDurationTimeline()
         {
             var timeline = new Timeline(definitions.LaunchDurationTime);
-            timeline.AddPointEvent(0, _ => actionsLock.LockAll());
+            timeline.AddPointEvent(0, _ =>
+            {
+                Launch();
+                actionsLock.LockAll();
+            });
             timeline.AddPointEvent(1, _ => actionsLock.UnlockAll());
             return timeline;
         }
@@ -194,7 +265,7 @@ namespace Tests.Weapons.Launcher
             reloadTimeline.Pause();
             return true;
         }
-        internal virtual void DoReload()
+        internal virtual void Reload()
         {
             if (!enabled)
                 return;
@@ -202,6 +273,7 @@ namespace Tests.Weapons.Launcher
             var num = (ushort)Mathf.Min(ammoSpareQuantity, definitions.AmmoInMagazineQuantity - ammoInMagazineQuantity);
             ammoInMagazineQuantity += num;
             ammoSpareQuantity -= num;
+            reloadAction?.Invoke(this);
             return;
         }
 
@@ -231,6 +303,7 @@ namespace Tests.Weapons.Launcher
         {
             var obj = ammoPool.Get();
             ammoInMagazineQuantity--;
+            launchAction?.Invoke(this);
         }
 
 #if UNITY_EDITOR
@@ -250,6 +323,16 @@ namespace Tests.Weapons.Launcher
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawSphere(MagazinePosition, 0.1f);
             }
+        }
+
+        public virtual void WhenMounted(GameObject mountPoint)
+        {
+            load?.WhenMounted(mountPoint);
+        }
+
+        public virtual void WhenUnmounted(GameObject mountPoint)
+        {
+            load?.WhenUnmounted(mountPoint);
         }
 #endif
 

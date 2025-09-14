@@ -15,9 +15,9 @@ namespace Tests.Weapons.MissileLauncher
         protected IMissile missile;
         //protected ITimeline delayLaunchTimeline;
         //protected ITimeline launchDurationTimeline;
-        public ITarget Target;
-        private Action<IMissileLauncher, ITarget> targetChangedAction;
-        ITarget IMissileLauncher.Target
+        public ITarget_Obsolete Target;
+        private Action<IMissileLauncher, ITarget_Obsolete> targetChangedAction;
+        ITarget_Obsolete IMissileLauncher.Target
         {
             get => Target;
             set
@@ -30,7 +30,7 @@ namespace Tests.Weapons.MissileLauncher
         {
             get => (IMissileLauncherDefinitions)definitions;
         }
-        public Action<IMissileLauncher, ITarget> TargetChangeAction { get => targetChangedAction; set => targetChangedAction = value; }
+        public Action<IMissileLauncher, ITarget_Obsolete> TargetChangeAction { get => targetChangedAction; set => targetChangedAction = value; }
 
         protected override void Awake()
         {
@@ -52,7 +52,7 @@ namespace Tests.Weapons.MissileLauncher
             //launchDurationTimeline.AddPointEvent(0, _ => actionsLock.LockAll());
             //launchDurationTimeline.AddPointEvent(1, _ => actionsLock.UnlockAll());
             base.Start();
-            DoReload();
+            Reload();
         }
         protected override ITimeline CreateDelayLaunchTimeline()
         {
@@ -78,9 +78,9 @@ namespace Tests.Weapons.MissileLauncher
             var missile = obj.GetComponent<IMissile>();
             missile.Enabled = false;
         }
-        internal override void DoReload()
+        internal override void Reload()
         {
-            base.DoReload();
+            base.Reload();
             if (missileObj == null)
             {
                 missileObj = ammoPool.Get();

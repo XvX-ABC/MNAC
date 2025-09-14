@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Tests.Blackboards;
 using Tests.Input;
-using Tests.Locomotion;
+using Tests.Interaction;
 using Tests.TPhysics.Locomotion;
 using UnityEngine;
 
@@ -70,7 +70,7 @@ namespace Tests.Characters.Locomotion
         }
         void CatchTarget(IList<ITarget> targets)
         {
-            _target = targets.Count > 0 ? targets[0] : null;
+            _target = targets.Count > 0 ? targets[^1] : null;
         }
         public void OnUpdate()
         {

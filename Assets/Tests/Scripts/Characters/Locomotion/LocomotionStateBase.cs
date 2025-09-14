@@ -2,19 +2,24 @@
 using Tests.States;
 using Tests.TPhysics.Locomotion;
 using UnityEngine;
+using Utilities.Timeline;
 using Core = Tests.TPhysics.Locomotion.LocomotionCore;
 namespace Tests.Characters.Locomotion
 {
-    internal abstract class LocomotionStateBase : WithCallbackPlayableState<LocomotionStateContext>
+    internal abstract class LocomotionStateBase : WithCallbackPlayableState<object>
     {
 
 
         public LocomotionStateBase(string name, float duration = 0, bool enabled = true) : base($"locomotion_{name}", duration, enabled)
         {
-
         }
+        protected override ITimeline NewTimeline(float duration)
+        {
+            return new Timeline_V1(duration);
+        }
+        protected new LocomotionStateContext context { get => (LocomotionStateContext)base.context; }
         protected abstract ILocomotionModule module { get; }
-        public override LocomotionStateContext Context
+        public override object Context
         {
             get => base.Context;
             set
@@ -22,13 +27,13 @@ namespace Tests.Characters.Locomotion
                 var core = default(Core);
                 if (base.Context != null)
                 {
-                    core = base.Context.Core;
+                    core = (base.Context as LocomotionStateContext).Core;
                     core.RemoveModule(this.module);
                 }
 
                 if (value == null)
                     throw new NullReferenceException(nameof(value));
-                core = value.Core;
+                core = (value as LocomotionStateContext).Core;
                 core.AddModule(this.module);
 
                 base.Context = value;
@@ -49,7 +54,7 @@ namespace Tests.Characters.Locomotion
         public override void OnExit()
         {
             context.Core.DisableModule(module);
-            timeline.End();
+            timeline.Pause();
             base.OnExit();
         }
     }

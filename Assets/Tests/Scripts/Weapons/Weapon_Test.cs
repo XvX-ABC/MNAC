@@ -33,6 +33,11 @@ namespace Tests.Weapons
 
         ILauncherActionsLock ILauncher.actionsLock => throw new NotImplementedException();
 
+        public Action<ILauncher> LaunchAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Action<ILauncher> ReloadAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public GameObject Obj => this.gameObject;
+
         bool ILauncher.EndLaunch()
         {
             throw new NotImplementedException();
@@ -69,6 +74,16 @@ namespace Tests.Weapons
         {
             if (_reloadTimeline.IsRunning)
                 _reloadTimeline.OnUpdate(Time.deltaTime);
+        }
+
+        public void WhenMounted(GameObject mountPoint)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WhenUnmounted(GameObject mountPoint)
+        {
+            throw new NotImplementedException();
         }
     }
 }

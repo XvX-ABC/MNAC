@@ -73,6 +73,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
                 {
                     _playable = AnimationClipPlayable.Create(graph, _clip);
                     _playable.SetSpeed(_speed);
+
                 }
                 return _playable;
             }
@@ -93,7 +94,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         AmmoLoad _ammoLoad;
         internal ArmedLauncherArmAnimator banimator;
         [SerializeField]
-        TargetsCatcher_Debug _targetsCatcher;
+        TargetsCatcher_Obsolete _targetsCatcher;
         IArmedLauncherArmBehaviourDefinitions _definitions;
         IInput _input;
         public override IWeapon Weapon
@@ -150,7 +151,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
 
 
         }
-      
+
         protected virtual bool Enter()
         {
             var targets = _targetsCatcher.Targets;
@@ -300,8 +301,8 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
             _targetsCatcher.OnAwake();
             _targetsCatcher.TargetsChangedAction += targets =>
             {
-                var target = targets.Count > 0 ? targets[0] : null;
-                _aim.Target = target;
+                //var target = targets.Count > 0 ? targets[0] : null;
+                //_aim.Target = target;
             };
         }
         public override void Dispose()

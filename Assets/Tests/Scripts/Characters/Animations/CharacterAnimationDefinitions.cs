@@ -8,9 +8,12 @@ namespace Tests.Characters.Animations
         CharacterArmAnimationDefinitions _leftArm;
         [SerializeField]
         CharacterArmAnimationDefinitions _rightArm;
-
+        [SerializeField]
+        StunningAnimationDefinitions _stunning;
         public ICharacterArmAnimationDefinitions LeftArmDefinitions => _leftArm;
 
         public ICharacterArmAnimationDefinitions RightArmDefinitions => _rightArm;
+
+        public IStunningAnimationDefinitions Stunning => _stunning;
     }
 }

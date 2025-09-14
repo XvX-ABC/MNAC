@@ -59,7 +59,7 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
             }
             _controller.ActivatedAction += ActivatedAnimator;
             _controller.UnactivatedAction += UnactivatedAnimator;
-            playablePart = new();
+            playablePart = new(default);
         }
         void ActivatedAnimator(IWeapon weapon, IArmedWeaponArmBehaviour_Obsolete behaviour)
         {

@@ -7,27 +7,6 @@ using UnityEngine;
 
 namespace Tests.Characters.Legs
 {
-    public class LegsCore : CharacterComponentBase_MonoComponent
-    {
-        [SerializeField]
-        LegCore _leftLeg;
-        [SerializeField]
-        LegCore _rightLeg;
-        public float Weight
-        {
-            get => _leftLeg.Weight;
-            set
-            {
-                _leftLeg.Weight = value;
-                _rightLeg.Weight = value;
-            }
-        }
-        public override void Initialize(Blackboard blackboard)
-        {
-            base.Initialize(blackboard);
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Legs_Core, this);
-        }
-    }
     [RequiredComponent(typeof(LegIK))]
     public class LegCore : CharacterComponentBase_MonoComponent
     {
@@ -36,11 +15,30 @@ namespace Tests.Characters.Legs
         ILegDefinitions _definitions;
         LegIK _legIk;
         SimpleFootIK _footIk;
+        float _weight;
         World _world;
         public float Weight
         {
-            get => _footIk.Weight;
-            set => _footIk.Weight = value;
+            get => _weight;
+            set
+            {
+                if (_footIk != null)
+                    _footIk.Weight = value;
+                _weight = value;
+            }
+        }
+        internal SimpleFootIK footIK
+        {
+            get => _footIk;
+            set
+            {
+                _footIk = value;
+                _footIk.Weight = _weight;
+            }
+        }
+        protected Vector3 worldUp
+        {
+            get => _world == null ? World.DefaultUp : _world.Up;
         }
 
         protected override void Awake()
@@ -58,7 +56,7 @@ namespace Tests.Characters.Legs
         }
         private void LateUpdate()
         {
-            _footIk.WorldUpward = _world.Up;
+            _footIk.WorldUpward = worldUp;
             _footIk.OnLateUpdate();
         }
     }

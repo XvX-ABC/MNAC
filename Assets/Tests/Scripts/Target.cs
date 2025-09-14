@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Tests
 {
-    public class Target : MonoBehaviour, ITarget
+    public class Target : MonoBehaviour, ITarget_Obsolete
     {
         [SerializeField]
         GameObject _obj;

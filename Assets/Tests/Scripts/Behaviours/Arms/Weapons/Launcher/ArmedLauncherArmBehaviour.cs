@@ -1,14 +1,15 @@
 ﻿using RootMotion.FinalIK;
 using System;
 using System.Collections.Generic;
-using Tests.Behaviours.Arms.Animations;
 using Tests.BodyBehaviour.Arm.Weapons.Launcher;
 using Tests.Characters;
-using Tests.Characters.Arms.Weapons.Launchers;
 using Tests.Input;
+using Tests.Interaction;
 using Tests.States;
 using Tests.Weapons;
 using Tests.Weapons.Launcher;
+using UnityEngine;
+using Utilities.Timeline;
 using ArmAim = Tests.BodyBehaviour.Arms.ArmAim;
 
 namespace Tests.Behaviours.Arms.Weapons.Launchers
@@ -33,6 +34,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
                     _launcher = launcher;
                     _ammoLoad.Launcher = launcher;
                     banimator.reload.ReloadTimeline = launcher.ReloadTimeline;
+                    _aim.Weapon = _launcher;
                 }
                 else
                     throw new Exception("Weapon");
@@ -46,7 +48,11 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         public IInput Input
         {
             get => _input;
-            set => _input = value;
+            set
+            {
+                _aim.Input = value;
+                _input = value;
+            }
         }
         internal ITargetsCatcher targetsCatcher
         {
@@ -81,7 +87,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
             this.targetsCatcher = targetsCatcher ?? throw new ArgumentNullException(nameof(targetsCatcher));
 
             banimator = new(_definitions, _aim);
-
             InitializeAmmoReload();
             InitializeStateMachine();
 
@@ -93,7 +98,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         }
         void TargetsChanged(IList<ITarget> targets)
         {
-            var target = targets.Count > 0 ? targets[0] : null;
+            var target = targets.Count > 0 ? targets[^1] : null;
             _aim.Target = target;
         }
         void InitializeAmmoReload()
@@ -109,16 +114,12 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
 
             _stateMachine.AddTransitionFor(_aim, _ammoLoad, _definitions.AimAndReloadTransitionLength, () => _input == null ? false : _input.Reload, (s, d, t) =>
             {
-                if (statusNum != 2)
-                    statusNum = 2;
                 (s as ArmAim).Weight = 1 - t;
             });
 
 
             _stateMachine.AddTransitionFor(_ammoLoad, _aim, _definitions.AimAndReloadTransitionLength, (s, d, t) =>
             {
-                if (statusNum != 1)
-                    statusNum = 1;
                 (d as ArmAim).Weight = t;
             });
         }
@@ -145,10 +146,14 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         {
             _stateMachine?.OnUpdate();
         }
+        float v0;
+        float v1;
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
             _stateMachine.ChangeStateTo(_aim);
+            v0 = banimator.IdleWeight;
+            v1 = _aim.Weight;
         }
         public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
@@ -156,10 +161,19 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
             var v = currentTransition.Timeline.NormalizedTime;
             if (_stateMachine.CurrentState == _aim)
             {
-                _aim.Weight = v;
+                _aim.Weight = Mathf.Lerp(v1, 1, v);
                 _aim.ToNextStateTransitionRunning(currentTransition);
             }
-            banimator.IdleWeight = 1 - v;
+            banimator.IdleWeight = Mathf.Lerp(v0, 0, v);
+        }
+
+
+
+        public override void ToNextStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.ToNextStateTransitionBegin(currentTransition);
+            v0 = banimator.IdleWeight;
+            v1 = _aim.Weight;
         }
         public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
@@ -167,10 +181,10 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
             var v = currentTransition.Timeline.NormalizedTime;
             if (_stateMachine.CurrentState == _aim)
             {
-                _aim.Weight = 1 - v;
+                _aim.Weight = Mathf.Lerp(v1, 0, v);
                 _aim.ToNextStateTransitionRunning(currentTransition);
             }
-            banimator.IdleWeight = v;
+            banimator.IdleWeight = Mathf.Lerp(v0, 1, v);
         }
         public override void ToNextStateTransitionEnd(IReadonlyPlayableTransition<object> currentTransition)
         {

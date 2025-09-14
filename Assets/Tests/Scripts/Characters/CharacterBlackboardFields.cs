@@ -6,10 +6,14 @@ namespace Tests.Characters
     {
         static CharacterBlackboardFields()
         {
-            Character_Animator_Main = Guid.NewGuid();
+            Character_Obj_Main = Guid.NewGuid();
+            World = Guid.NewGuid();
+            Character_Animation_Animator = Guid.NewGuid();
+            Character_Animation_Graph = Guid.NewGuid();
             Character_Camera_Main = Guid.NewGuid();
             Character_Legs_Core = Guid.NewGuid();
             Character_Locomotion_Core = Guid.NewGuid();
+            Character_Influence_Receiving_Core = Guid.NewGuid();
             FieldChangeHandler = Guid.NewGuid();
             TargetsCatcher = Guid.NewGuid();
             Input = Guid.NewGuid();
@@ -18,9 +22,12 @@ namespace Tests.Characters
             Rigidbody = Guid.NewGuid();
             GroundDetector = Guid.NewGuid();
         }
-        public static readonly Guid Character_Animator_Main;
+        public static readonly Guid Character_Obj_Main;
+        public static readonly Guid Character_Animation_Animator;
+        public static readonly Guid Character_Animation_Graph;
         public static readonly Guid Character_Camera_Main;
         public static readonly Guid Character_Legs_Core;
+        public static readonly Guid Character_Influence_Receiving_Core;
         public static readonly Guid FieldChangeHandler;
         public static readonly Guid TargetsCatcher;
         public static readonly Guid Input;

@@ -16,8 +16,10 @@ namespace Tests.Weapons.Launcher
             Supply = 16,
             All = 255,
         }
+        [Obsolete]
         public Action<ILauncher> InitializationAction { get; set; }
-
+        public Action<ILauncher> LaunchAction { get; set; }
+        public Action<ILauncher> ReloadAction { get; set; }
         public ITimeline DelayLaunchTimeline { get; }
         public ITimeline LaunchDurationTimeline { get; }
         public ITimeline ReloadTimeline { get; }

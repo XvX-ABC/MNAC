@@ -5,18 +5,18 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
     public class ArmedLauncherArmBehavioursDefinitions : MonoBehaviour, IArmedLauncherArmBehaviourDefinitions
     {
         [SerializeField]
-        AnimationClip _aimingClip;
+        protected AnimationClip aimingClip;
         [SerializeField]
-        AnimationClip _reloadClip;
+        protected AnimationClip reloadClip;
         [SerializeField]
-        float _idleAndAimTransitionLength;
+        protected float idleAndAimTransitionLength;
         [SerializeField]
-        float _aimAndReloadTransitionsLength;
-        public AnimationClip AimingClip => _aimingClip;
-        public AnimationClip ReloadClip => _reloadClip;
+        protected float aimAndReloadTransitionsLength;
+        public AnimationClip AimingClip => aimingClip;
+        public AnimationClip ReloadClip => reloadClip;
 
-        public float IdleAndAimTransitionLength => _idleAndAimTransitionLength;
+        public float IdleAndAimTransitionLength => idleAndAimTransitionLength;
 
-        public float AimAndReloadTransitionLength => _aimAndReloadTransitionsLength;
+        public float AimAndReloadTransitionLength => aimAndReloadTransitionsLength;
     }
 }

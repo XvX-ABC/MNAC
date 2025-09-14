@@ -5,7 +5,7 @@ namespace Tests.Weapons.Projectiles
 {
     public interface IMissile : IProjectile
     {
-        public ITarget Target { get; set; }
+        public ITarget_Obsolete Target { get; set; }
     }
     public interface IMissileDefinitions : IProjectileDefinitions
     {
@@ -19,19 +19,19 @@ namespace Tests.Weapons.Projectiles
         //public GameObject Object => this.gameObject;
         Rigidbody _rb;
         IMissileDefinitions _definition;
-        ITarget _target;
+        ITarget_Obsolete _target;
         [SerializeField]
         float _acceleratedAngle;
         [SerializeField]
         AnimationCurve _curve;
 
         Action<IProjectile, GameObject> _hitAction;
-        public ITarget Target
+        public ITarget_Obsolete Target
         {
             get => _target;
             set
             {
-                    _target = value;
+                _target = value;
             }
         }
         public Action<IProjectile, GameObject> HitAction { get => _hitAction; set => _hitAction = value; }
@@ -41,7 +41,7 @@ namespace Tests.Weapons.Projectiles
             _definition = GetComponent<IMissileDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IMissileDefinitions));
             _rb = GetComponent<Rigidbody>();
             _rb.useGravity = false;
-            _target = GetComponent<ITarget>();
+            _target = GetComponent<ITarget_Obsolete>();
             //_rb.isKinematic = true;
         }
         private void OnEnable()
@@ -76,7 +76,7 @@ namespace Tests.Weapons.Projectiles
             var pos = this.transform.position;
             if (_target == null)
                 return;
-            var targetPos = _target.Locomotion.Position;
+            var targetPos = _target.Position;
             Gizmos.color = Color.red;
             Gizmos.DrawLine(pos, targetPos);
         }
@@ -87,7 +87,7 @@ namespace Tests.Weapons.Projectiles
         Quaternion CalculateNextRotation(float deltaTime)
         {
             var currentPos = this.transform.position;
-            var targetPos = _target.Locomotion.Position;
+            var targetPos = _target.Position;
 
             var tv = targetPos - currentPos;
 

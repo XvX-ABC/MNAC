@@ -62,12 +62,28 @@ namespace Tests.Characters.Arms.Weapons
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
+
             controller.currentActivatedBehaviour?.FromPreviousStateTransitionBegin(currentTransition);
         }
         public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionRunning(currentTransition);
             controller.currentActivatedBehaviour?.FromPreviousStateTransitionRunning(currentTransition);
+        }
+        public override void FromPreviousStateTransitionEnd(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.FromPreviousStateTransitionEnd(currentTransition);
+            controller.currentActivatedBehaviour?.FromPreviousStateTransitionEnd(currentTransition);
+        }
+        public override void ToNextStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.ToNextStateTransitionBegin(currentTransition);
+            controller.currentActivatedBehaviour?.ToNextStateTransitionBegin(currentTransition);
+        }
+        public override void ToNextStateTransitionEnd(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.ToNextStateTransitionEnd(currentTransition);
+            controller.currentActivatedBehaviour?.ToNextStateTransitionEnd(currentTransition);
         }
         public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
