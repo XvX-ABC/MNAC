@@ -1,5 +1,5 @@
 ﻿using System;
-using Tests.Behaviours.Animations;
+using Tests.Animations;
 using Tests.States;
 using UnityEngine.Playables;
 using Utilities.Timeline;

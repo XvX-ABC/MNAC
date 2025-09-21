@@ -62,7 +62,6 @@ namespace Tests.Characters.Arms.Weapons
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
-
             controller.currentActivatedBehaviour?.FromPreviousStateTransitionBegin(currentTransition);
         }
         public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)

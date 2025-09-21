@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Tests.Characters.Legs
 {
     [RequiredComponent(typeof(LegIK))]
-    public class LegCore : CharacterComponentBase_MonoComponent
+    public class LegCore : ComponentBase_MonoComponent
     {
         [SerializeField]
         GameObject _footObj;

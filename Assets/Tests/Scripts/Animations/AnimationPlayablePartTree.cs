@@ -1,0 +1,14 @@
+﻿using Tests.Utilities.MTrees;
+using UnityEngine.Playables;
+
+namespace Tests.Animations
+{
+    public class AnimationPlayablePartTree : MTree
+    {
+        public AnimationPlayablePartTree(PlayableGraph graph)
+        {
+            root = new AnimationPlayableNode(graph);
+            enumerator = new(root);
+        }
+    }
+}

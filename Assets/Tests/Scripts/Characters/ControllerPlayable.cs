@@ -1,5 +1,5 @@
 ﻿using System;
-using Tests.Behaviours.Animations;
+using Tests.Animations;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
@@ -8,7 +8,9 @@ namespace Tests.Characters
 {
     internal class ControllerPlayable : AnimationPlayablePartBase
     {
+        [Obsolete]
         Animator _animator;
+        RuntimeAnimatorController _controller;
         AnimatorControllerPlayable controller;
         public override IOutputSetting OutputSetting
         {
@@ -16,17 +18,19 @@ namespace Tests.Characters
             set
             {
                 base.OutputSetting = value;
-                outputSetting.Weight = 1;
             }
         }
-        public ControllerPlayable(PlayableGraph graph, Animator animator) : base(graph)
+        public ControllerPlayable(PlayableGraph graph, Animator animator) : this(graph, animator.runtimeAnimatorController)
         {
-            _animator = animator ?? throw new ArgumentNullException(nameof(animator));
         }
-
+        public ControllerPlayable(PlayableGraph graph, RuntimeAnimatorController controller) : base(graph)
+        {
+            _controller = controller ?? throw new ArgumentNullException(nameof(controller));
+        }
+        // TODO: 动画系统优化，将动画初始化动作移动到Initialize方法中
         public override bool Initialize(PlayableGraph graph)
         {
-            controller = AnimatorControllerPlayable.Create(graph, _animator.runtimeAnimatorController);
+            controller = AnimatorControllerPlayable.Create(this.graph, _controller);
             playablePart = controller;
             return true;
         }

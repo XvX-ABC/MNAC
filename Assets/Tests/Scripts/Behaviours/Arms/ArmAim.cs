@@ -1,13 +1,13 @@
 ﻿using RootMotion.FinalIK;
 using System;
-using Tests.BodyBehaviour.Arm.Weapons.Launcher;
+using Tests.Behaviours.Arm.Weapons;
 using Tests.Input;
 using Tests.Interaction;
 using Tests.States;
 using Tests.Weapons.Launcher;
 using UnityEngine;
 
-namespace Tests.BodyBehaviour.Arms
+namespace Tests.Behaviours.Arms
 {
     internal class ArmAim : ArmedArmStateBase
     {
@@ -87,10 +87,6 @@ namespace Tests.BodyBehaviour.Arms
             {
                 _aimIK.solver.SetIKPosition(_target.Position);
             }
-        }
-        public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
-        {
-            base.FromPreviousStateTransitionBegin(currentTransition);
         }
         public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {

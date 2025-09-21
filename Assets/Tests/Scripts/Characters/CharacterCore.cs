@@ -1,127 +1,54 @@
-﻿using Cinemachine.Editor;
-using System;
-using System.Linq;
+﻿using System;
 using Tests.Characters.Animations;
 using Tests.Characters.Arms;
+using Tests.Characters.Interaction;
 using Tests.Characters.Legs;
 using Tests.Characters.Locomotion;
 using Tests.Input;
+using Tests.Interaction.Influence;
 using Tests.States;
 using Tests.Weapons;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
-using Utilities.Timeline;
 using EnvironmentCore = Tests.Characters.Environment.EnvironmentCore;
 
 namespace Tests.Characters
 {
 
-    public interface IInfluenceReceptor : ICharacterComponent
-    {
-        public bool TryGetValue<T>(out T value, object key = null);
-        public bool TrySetValue<T>(T value, object key = null);
-        public void Update();
-    }
-    public abstract class InfluenceReceptorBase : CharacterComponentBase, IInfluenceReceptor
-    {
-        public virtual new bool Enabled { get => enabled; set => enabled = value; }
-        public virtual void Update()
-        {
-        }
+    //public class InfluenceReceivingCore : CharacterComponentBase
+    //{
+    //    IInfluenceReceptor[] _receptors;
 
-        public abstract bool TryGetValue<T>(out T value, object key = null);
-        public abstract bool TrySetValue<T>(T value, object key = null);
-    }
-    public class StunReceptor : InfluenceReceptorBase, IInfluenceReceptor
-    {
-        internal ITimeline timeline;
-        public StunReceptor()
-        {
-            timeline = new Timeline_V1(0);
-            timeline.EndAction += _ => base.Enabled = false;
-        }
-        public override bool Enabled
-        {
-            get => base.Enabled;
-            set
-            {
-                if (value)
-                    timeline.Restart();
-                else if (timeline.IsRunning)
-                    timeline.End();
-                base.Enabled = value;
-            }
-        }
-        public override string Name => "stun_receptor";
+    //    public InfluenceReceivingCore(params IInfluenceReceptor[] receptors)
+    //    {
+    //        _receptors = receptors;
+    //    }
 
-        public override bool TryGetValue<T>(out T value, object key = null)
-        {
-            value = default;
-            if (key == null)
-            {
-                var r = typeof(T) == typeof(float);
-                value = r ? (T)Convert.ChangeType(timeline.Length, typeof(T)) : default;
-                return r;
-            }
-            return false;
-        }
-
-        public override bool TrySetValue<T>(T value, object key = null)
-        {
-            if (key == null)
-            {
-                if (value is float f)
-                {
-                    timeline.UpdateLength(f);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public override void Update()
-        {
-            timeline.OnUpdate(Time.deltaTime);
-        }
-
-    }
-    public class InfluenceReceivingCore : CharacterComponentBase
-    {
-        IInfluenceReceptor[] _receptors;
-
-        public InfluenceReceivingCore(params IInfluenceReceptor[] receptors)
-        {
-            _receptors = receptors;
-        }
-
-        public override string Name => "influence_receiving_core";
-        public override void Initialize(Blackboard blackboard)
-        {
-            base.Initialize(blackboard);
-            foreach (var r in _receptors)
-            {
-                r?.Initialize(blackboard);
-            }
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Influence_Receiving_Core, this);
-        }
-        public T FindReceptor<T>() where T : IInfluenceReceptor
-        {
-            return (T)_receptors.FirstOrDefault(r => r is T);
-        }
-        public IInfluenceReceptor FindReceptor(string name)
-        {
-            return _receptors.FirstOrDefault(r => r.Name == name);
-        }
-        public void Update()
-        {
-            foreach (var r in _receptors)
-                if (r != null && r.Enabled)
-                    r.Update();
-        }
-    }
-    public class CharacterCore : CharacterComponentBase_MonoComponent, ICharacterComponent
+    //    public override string Name => "influence_receiving_core";
+    //    public override void Initialize(Blackboard blackboard)
+    //    {
+    //        base.Initialize(blackboard);
+    //        foreach (var r in _receptors)
+    //        {
+    //            r?.Initialize(blackboard);
+    //        }
+    //        blackboard.TryRegisterField(CharacterBlackboardFields.Character_Influence_Receiving_Core, this);
+    //    }
+    //    public T FindReceptor<T>() where T : IInfluenceReceptor
+    //    {
+    //        return (T)_receptors.FirstOrDefault(r => r is T);
+    //    }
+    //    public IInfluenceReceptor FindReceptor(string name)
+    //    {
+    //        return _receptors.FirstOrDefault(r => r.Name == name);
+    //    }
+    //    public void Update()
+    //    {
+    //        foreach (var r in _receptors)
+    //            if (r != null && r.Enabled)
+    //                r.Update();
+    //    }
+    //}
+    public class CharacterCore : ComponentBase_MonoComponent, ICharacterComponent
     {
         [SerializeField]
         Camera _camera;
@@ -236,10 +163,9 @@ namespace Tests.Characters
         }
         void InitializeInfluenceCore()
         {
-            var stunReceptor = new StunReceptor();
-            _influenceReceivingCore = new(stunReceptor);
-
-            node.AddChild(_influenceReceivingCore.Node);
+            var wrapper = new InfluenceReceivingCoreComponent();
+            _influenceReceivingCore = wrapper.component;
+            node.AddChild(wrapper.node);
         }
 
 
@@ -264,8 +190,8 @@ namespace Tests.Characters
 
         public override void Initialize(Blackboard blackboard)
         {
-            blackboard.TryRegisterField(CharacterBlackboardFields.Input, _input);
-            blackboard.TryRegisterField(CharacterBlackboardFields.WeaponCore, _weaponCore);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Input_Main, _input);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Weapon_Core, _weaponCore);
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Camera_Main, _camera);
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Main, this.gameObject);
 

@@ -1,6 +1,6 @@
 ﻿using System;
+using Tests.Animations;
 using Tests.Behaviours;
-using Tests.Behaviours.Animations;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.States;
 using Tests.Weapons;

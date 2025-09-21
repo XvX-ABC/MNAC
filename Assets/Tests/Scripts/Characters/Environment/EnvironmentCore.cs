@@ -5,7 +5,7 @@ using Core = Tests.TPhysics.Environment.EnvironmentCore;
 namespace Tests.Characters.Environment
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class EnvironmentCore : CharacterComponentBase_MonoComponent
+    public class EnvironmentCore : ComponentBase_MonoComponent
     {
         Rigidbody _rbody;
         Core _core;

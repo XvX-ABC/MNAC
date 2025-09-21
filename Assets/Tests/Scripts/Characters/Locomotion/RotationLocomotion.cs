@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Tests.Characters.Locomotion
 {
-    public class RotationLocomotion : CharacterComponentBase
+    public class RotationLocomotion : ComponentBase
     {
         TPhysics.Locomotion.LocomotionCore _core;
         Camera _camera;
@@ -48,7 +48,7 @@ namespace Tests.Characters.Locomotion
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            if (!blackboard.TryReadValue<IInput>(CharacterBlackboardFields.Input, out _input))
+            if (!blackboard.TryReadValue<IInput>(CharacterBlackboardFields.Character_Input_Main, out _input))
                 throw new Exception();
             if (blackboard.TryReadValue<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler))
             {

@@ -1,8 +1,8 @@
-﻿using Microsoft.Win32.SafeHandles;
-using System;
-using Tests.Behaviours.Animations;
+﻿using System;
+using Tests.Animations;
 using Tests.Characters.Locomotion;
 using Tests.Characters.Locomotion.Animations;
+using Tests.Interaction.Influence;
 using Tests.States;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -43,7 +43,7 @@ namespace Tests.Characters.Animations
 
         }
     }
-    internal partial class CharacterAnimator : CharacterComponentBase, IDisposable
+    internal partial class CharacterAnimator : ComponentBase, IDisposable
     {
         ICharacterAnimationDefinitions _definitions;
         CharacterCore _core;

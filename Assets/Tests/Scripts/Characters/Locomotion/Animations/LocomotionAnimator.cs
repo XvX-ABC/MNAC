@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Tests.Characters.Locomotion.Animations
 {
 
-    internal class LocomotionAnimator : CharacterComponentBase
+    internal class LocomotionAnimator : ComponentBase
     {
         ILocomotionAnimatorDefinitions _definitions;
         IGroundDetector groundDetector;
@@ -38,7 +38,7 @@ namespace Tests.Characters.Locomotion.Animations
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            if (!blackboard.TryReadValue<IInput>(CharacterBlackboardFields.Input, out _input))
+            if (!blackboard.TryReadValue<IInput>(CharacterBlackboardFields.Character_Input_Main, out _input))
                 throw new Exception();
             if (!blackboard.TryReadValue<ControllerPlayable>(CharacterBlackboardFields.Character_Animation_Animator, out var controller))
                 throw new Exception();
@@ -59,7 +59,7 @@ namespace Tests.Characters.Locomotion.Animations
             var d = _core.definitions;
             {
                 var maxSpeed = d.Walking.MaxSpeed;
-                var animator = new MovementAnimator(_definitions, maxSpeed, rigidbody, world, groundDetector, controller);
+                var animator = new MovementAnimator(_definitions, maxSpeed, d.Walking.AcceleratedSpeed, rigidbody, world, groundDetector, controller);
                 //_airMovementState = new(null, 0, animator);
                 groundedMovement = new(null, 0, legs, animator);
             }
@@ -77,7 +77,7 @@ namespace Tests.Characters.Locomotion.Animations
                 var timeline = _core.quickBoosting.Timeline;
                 var qbDefinitions = d.Boosting;
                 var maxSpeed = d.Walking.MaxSpeed * qbDefinitions.MaxSpeedPower;
-                var qbAnimator = new MovementAnimator(_definitions, maxSpeed, rigidbody, world, groundDetector, controller);
+                var qbAnimator = new MovementAnimator(_definitions, maxSpeed, maxSpeed, rigidbody, world, groundDetector, controller);
                 quickBoosting = new(null, timeline, _definitions, controller, qbAnimator);
             }
 

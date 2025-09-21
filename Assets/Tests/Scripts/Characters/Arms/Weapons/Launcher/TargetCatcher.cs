@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Tests.Characters.Arms.Weapons.Launchers
 {
-    public class TargetCatcher : CharacterComponentBase, ITargetsCatcher
+    public class TargetCatcher : ComponentBase, ITargetsCatcher
     {
         LeadingActorTargetsCather _catcher;
         ITargetsCatcherDefinitions _definitions;
@@ -35,7 +35,7 @@ namespace Tests.Characters.Arms.Weapons.Launchers
             base.Initialize(blackboard);
             if (!blackboard.TryReadValue<Camera>(CharacterBlackboardFields.Character_Camera_Main, out var camera))
                 throw new Exception();
-            if (!blackboard.TryReadValue<IInput>(CharacterBlackboardFields.Input, out var input))
+            if (!blackboard.TryReadValue<IInput>(CharacterBlackboardFields.Character_Input_Main, out var input))
                 throw new Exception();
             if (!blackboard.TryReadValue<LocomotionCore>(CharacterBlackboardFields.Character_Locomotion_Core, out var locomotion))
                 throw new Exception();

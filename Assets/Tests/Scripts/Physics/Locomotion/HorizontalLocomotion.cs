@@ -72,6 +72,27 @@ namespace Tests.TPhysics.Locomotion
             }
             var direction = CalculateDirection(context);
 
+
+            if (direction == Vector3.zero)
+                return context;
+            var velocity = context.CurrentVelocity;
+            var speed = velocity.magnitude;
+
+            var dv = _maxSpeed - speed;
+
+            var fs = Mathf.Min(dv < 0 ? 0 : dv, _acceleratedSpeed * Time.deltaTime);
+            context.CurrentVelocity += direction * fs;
+            return context;
+        }
+        public Context OnUpdate_1(Context context)
+        {
+            var up = world.Up;
+            if (context.GroundDetector.Grounds.Count > 0)
+            {
+                up = context.GroundDetector.GroundsNormal;
+            }
+            var direction = CalculateDirection(context);
+
             if (direction == Vector3.zero)
                 return context;
 
@@ -79,7 +100,7 @@ namespace Tests.TPhysics.Locomotion
             var currentSpeed = currentVelocity.magnitude;
 
             var maxSpeed = _maxSpeed + _acceleratedSpeed;
-            currentSpeed = maxSpeed - Mathf.MoveTowards(currentSpeed, maxSpeed, _acceleratedSpeed);
+            currentSpeed = maxSpeed - Mathf.MoveTowards(currentSpeed, maxSpeed, _acceleratedSpeed * Time.deltaTime);
             context.CurrentVelocity += direction * currentSpeed * Time.deltaTime;
             return context;
         }

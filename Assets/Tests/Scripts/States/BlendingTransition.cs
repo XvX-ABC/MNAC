@@ -46,7 +46,6 @@ namespace Tests.States
             var newLength = _oldLength - (offset + ctx.Duration);
             newLength = newLength < 0 ? 0 : newLength;
 
-
             timeline.UpdateLength(newLength);
             ((IWithCallbackPlayableState<T>)destinationState).ExitAction += ResetDestinationState;
         }

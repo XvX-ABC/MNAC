@@ -21,10 +21,8 @@ namespace Tests.Characters.Locomotion.Animations
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             var clipLength = definitions.Boosting_Clip_Length;
-            //var m = timeline.Length /( clipLength <= 0 ? 1 : clipLength);
             var m = clipLength / (timeline.Length <= 0 ? 1 : timeline.Length);
             controller.SetFloat(definitions.Boosting_Multiplier, m);
-            //Debug.Log(((AnimatorControllerPlayable)controller.PlayablePart).GetFloat(definitions.Boosting_Multiplier) + ", timeline");
             controller.SetTrigger(definitions.Boosting_Trigger);
             base.FromPreviousStateTransitionBegin(currentTransition);
         }

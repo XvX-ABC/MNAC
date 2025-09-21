@@ -1,29 +1,42 @@
-﻿using RootMotion.FinalIK;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Tests.Behaviours.Arms.Weapons.Launchers.Animations;
 using Tests.BodyBehaviour.Arm.Weapons.Launcher;
-using Tests.Characters;
 using Tests.Input;
 using Tests.Interaction;
 using Tests.States;
 using Tests.Weapons;
 using Tests.Weapons.Launcher;
 using UnityEngine;
-using Utilities.Timeline;
-using ArmAim = Tests.BodyBehaviour.Arms.ArmAim;
 
 namespace Tests.Behaviours.Arms.Weapons.Launchers
 {
-    public class ArmedLauncherArmBehaviour : ArmedWeaponArmBehaviourBase
+    internal class ArmedLauncherArmBehaviour : ArmedWeaponArmBehaviourBase
     {
-        ILauncher _launcher;
-        PlayableStateMachine _stateMachine;
-        ArmAim _aim;
-        AmmoLoad _ammoLoad;
-        internal ArmedLauncherArmAnimator banimator;
-        ITargetsCatcher _targetsCatcher;
         IArmedLauncherArmBehaviourDefinitions _definitions;
+        ITargetsCatcher _targetsCatcher;
         IInput _input;
+        ILauncher _launcher;
+        internal ITarget target;
+
+
+        internal Idle idle;
+        internal ArmAiming aiming;
+        internal BodyBehaviour.Arm.Weapons.Launcher.AmmoLoad ammoLoad;
+        internal WithCallbackPlayableStatemachine<object> statemachine;
+        ArmedLauncherArmBehaviourState _state;
+
+        internal ArmedLauncherArmAnimator animator;
+
+        public ArmedLauncherArmBehaviour(IArmedLauncherArmBehaviourDefinitions definitions, ArmedLauncherArmAnimator animator)
+        {
+            _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
+            this.animator = animator ?? throw new ArgumentNullException(nameof(animator));
+            InitializeStatemachine();
+        }
+
+        public override WeaponType Type => WeaponType.Launcher;
+
         public override IWeapon Weapon
         {
             get => _launcher;
@@ -32,166 +45,87 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
                 if (value is ILauncher launcher)
                 {
                     _launcher = launcher;
-                    _ammoLoad.Launcher = launcher;
-                    banimator.reload.ReloadTimeline = launcher.ReloadTimeline;
-                    _aim.Weapon = _launcher;
+                    ammoLoad.TargetLauncher = launcher;
+                    animator.Launcher = launcher;
+                    aiming.ControlledWeapon = launcher;
                 }
                 else
                     throw new Exception("Weapon");
             }
         }
-        public override IArmedWeaponArmAnimationPlayablePart Animator { get => banimator; }
 
+        public override IArmedWeaponArmAnimationPlayablePart Animator => animator;
 
-        public override Func<bool> EntryFunc { get => Enter; }
-        public override Func<bool> ExitFunc { get => Exit; }
+        public override Func<bool> EntryFunc => () => this.enabled;
+
+        public override Func<bool> ExitFunc => () => !this.enabled;
+
         public IInput Input
         {
             get => _input;
             set
             {
-                _aim.Input = value;
+                aiming.Input = value;
                 _input = value;
             }
         }
-        internal ITargetsCatcher targetsCatcher
+        public ITargetsCatcher TargetsCatcher
         {
             get => _targetsCatcher;
             set
             {
                 if (_targetsCatcher != null)
                 {
-                    _targetsCatcher.TargetsChangedAction -= TargetsChanged;
+                    _targetsCatcher.TargetsChangedAction -= WhenTargetsChanged;
                 }
                 if (value != null)
-                    value.TargetsChangedAction += TargetsChanged;
+                    value.TargetsChangedAction += WhenTargetsChanged;
                 _targetsCatcher = value;
             }
         }
 
+        public override IWithCallbackPlayableState<object> State => _state;
 
-        public override WeaponType Type => WeaponType.Launcher;
-        public override bool Activated
+        void WhenTargetsChanged(IList<ITarget> targets)
         {
-            get => base.Activated;
-            set
+            target = targets.Count > 0 ? targets[^1] : null;
+            animator.AimingTarget = target;
+        }
+        void InitializeStatemachine()
+        {
+            statemachine = new("armed_launcher_statemachine");
+            idle = new Idle();
+            aiming = new ArmAiming();
+            ammoLoad = new BodyBehaviour.Arm.Weapons.Launcher.AmmoLoad();
+
+            statemachine.AddState(idle);
+            statemachine.AddState(aiming);
+            statemachine.AddState(ammoLoad);
+
+            var length = _definitions.AimAndReloadTransitionLength;
+
+            statemachine.AddTransitionFor(idle, aiming, length, () => target != null, null);
+            statemachine.AddTransitionFor(idle, ammoLoad, 0, ReloadTriggered, null, InterruptionSource.None);
+
+
+            statemachine.AddTransitionFor(aiming, idle, length, () => target == null, null);
+            statemachine.AddTransitionFor(aiming, ammoLoad, length, ReloadTriggered, null, InterruptionSource.None);
+
+            var l_i = new BlendingTransition<object>(ammoLoad, idle, () => target == null, null, 0, 0, 1);
+            var l_a = new BlendingTransition<object>(ammoLoad, aiming, () => target != null, null, length, 0, 0.75f);
+            statemachine.AddTransitionFor(l_i);
+            statemachine.AddTransitionFor(l_a);
+
+            _state = new(this);
+
+            bool ReloadTriggered()
             {
-                base.Activated = value;
-                _aim.Enabled = value;
+                return _input == null ? false : _input.Reload;
             }
         }
-        protected internal ArmedLauncherArmBehaviour(IArmedLauncherArmBehaviourDefinitions definitions, AimIK aimIK, ITargetsCatcher targetsCatcher) : base("launcher")
+        public void FixedUpdate()
         {
-            this._definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
-            this._aim = new(aimIK ?? throw new ArgumentNullException(nameof(aimIK)));
-            this.targetsCatcher = targetsCatcher ?? throw new ArgumentNullException(nameof(targetsCatcher));
-
-            banimator = new(_definitions, _aim);
-            InitializeAmmoReload();
-            InitializeStateMachine();
-
-            _aim.weightChangedAction += v =>
-            {
-                banimator.AimingWeight = v;
-            };
-
+            animator.Update();
         }
-        void TargetsChanged(IList<ITarget> targets)
-        {
-            var target = targets.Count > 0 ? targets[^1] : null;
-            _aim.Target = target;
-        }
-        void InitializeAmmoReload()
-        {
-            _ammoLoad = new(banimator.reload);
-            _ammoLoad.ExitWhenEnd = true;
-        }
-        void InitializeStateMachine()
-        {
-            _stateMachine = new("armed_launcher_statemachine");
-            _stateMachine.AddState(_aim);
-            _stateMachine.AddState(_ammoLoad);
-
-            _stateMachine.AddTransitionFor(_aim, _ammoLoad, _definitions.AimAndReloadTransitionLength, () => _input == null ? false : _input.Reload, (s, d, t) =>
-            {
-                (s as ArmAim).Weight = 1 - t;
-            });
-
-
-            _stateMachine.AddTransitionFor(_ammoLoad, _aim, _definitions.AimAndReloadTransitionLength, (s, d, t) =>
-            {
-                (d as ArmAim).Weight = t;
-            });
-        }
-        protected virtual bool Enter()
-        {
-            var targets = _targetsCatcher.Targets;
-            return targets.Count > 0;
-        }
-        protected virtual bool Exit()
-        {
-            return _stateMachine.CurrentState == _aim && _targetsCatcher.Targets.Count == 0;
-        }
-        public override void OnEnter()
-        {
-            _stateMachine?.OnEnter();
-        }
-
-        public override void OnExit()
-        {
-            _stateMachine?.OnExit();
-        }
-
-        public override void OnUpdate()
-        {
-            _stateMachine?.OnUpdate();
-        }
-        float v0;
-        float v1;
-        public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
-        {
-            base.FromPreviousStateTransitionBegin(currentTransition);
-            _stateMachine.ChangeStateTo(_aim);
-            v0 = banimator.IdleWeight;
-            v1 = _aim.Weight;
-        }
-        public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
-        {
-            base.FromPreviousStateTransitionRunning(currentTransition);
-            var v = currentTransition.Timeline.NormalizedTime;
-            if (_stateMachine.CurrentState == _aim)
-            {
-                _aim.Weight = Mathf.Lerp(v1, 1, v);
-                _aim.ToNextStateTransitionRunning(currentTransition);
-            }
-            banimator.IdleWeight = Mathf.Lerp(v0, 0, v);
-        }
-
-
-
-        public override void ToNextStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
-        {
-            base.ToNextStateTransitionBegin(currentTransition);
-            v0 = banimator.IdleWeight;
-            v1 = _aim.Weight;
-        }
-        public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
-        {
-            base.ToNextStateTransitionRunning(currentTransition);
-            var v = currentTransition.Timeline.NormalizedTime;
-            if (_stateMachine.CurrentState == _aim)
-            {
-                _aim.Weight = Mathf.Lerp(v1, 0, v);
-                _aim.ToNextStateTransitionRunning(currentTransition);
-            }
-            banimator.IdleWeight = Mathf.Lerp(v0, 1, v);
-        }
-        public override void ToNextStateTransitionEnd(IReadonlyPlayableTransition<object> currentTransition)
-        {
-            base.ToNextStateTransitionEnd(currentTransition);
-            _stateMachine.OnExit();
-        }
-
     }
 }
-

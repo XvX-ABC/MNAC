@@ -16,8 +16,8 @@ namespace Tests.Characters
             Character_Influence_Receiving_Core = Guid.NewGuid();
             FieldChangeHandler = Guid.NewGuid();
             TargetsCatcher = Guid.NewGuid();
-            Input = Guid.NewGuid();
-            WeaponCore = Guid.NewGuid();
+            Character_Input_Main = Guid.NewGuid();
+            Character_Weapon_Core = Guid.NewGuid();
             AnimationPB = Guid.NewGuid();
             Rigidbody = Guid.NewGuid();
             GroundDetector = Guid.NewGuid();
@@ -30,8 +30,8 @@ namespace Tests.Characters
         public static readonly Guid Character_Influence_Receiving_Core;
         public static readonly Guid FieldChangeHandler;
         public static readonly Guid TargetsCatcher;
-        public static readonly Guid Input;
-        public static readonly Guid WeaponCore;
+        public static readonly Guid Character_Input_Main;
+        public static readonly Guid Character_Weapon_Core;
         public static readonly Guid AnimationPB;
         public static readonly Guid Rigidbody;
         public static readonly Guid GroundDetector;

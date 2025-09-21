@@ -1,17 +1,14 @@
 ﻿using System;
+using Tests.Behaviours.Arm.Weapons;
 using Tests.Behaviours.Arms.Weapons.Launchers;
-using Tests.BodyBehaviour.Arm.Weapons.Launcher;
 using Tests.States;
-using TMPro;
-using UnityEngine.Assertions.Must;
-using static Tests.Behaviours.Arms.Weapons.Launchers.ArmedLauncherArmBehaviour_Obsolete;
 
 namespace Tests.Behaviours.Arms.Weapons
 {
     internal class ArmIdle : ArmedArmStateBase
     {
-        ArmedLauncherArmAnimator _animator;
-        public ArmIdle(ArmedLauncherArmAnimator animator) : base("idle", 0)
+        ArmedLauncherArmAnimator_Obsolete _animator;
+        public ArmIdle(ArmedLauncherArmAnimator_Obsolete animator) : base("idle", 0)
         {
             _animator = animator ?? throw new ArgumentNullException(nameof(animator));
         }

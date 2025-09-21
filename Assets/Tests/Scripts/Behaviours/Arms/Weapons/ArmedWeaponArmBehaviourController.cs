@@ -49,7 +49,7 @@ namespace Tests.Behaviours.Arms.Weapons
                 }
                 var type = description.Type;
                 var b = behaviours.First(b => b.Type == type);
-                b.Activated = false;
+                // TODO: b.Activated = false;
                 weaponBehavioursMapping.Add(od.Name, b);
             }
         }

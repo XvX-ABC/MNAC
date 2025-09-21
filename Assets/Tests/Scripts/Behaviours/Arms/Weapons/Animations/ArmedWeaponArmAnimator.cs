@@ -4,7 +4,7 @@ using System.Linq;
 using Tests.Extensions;
 using Tests.Weapons;
 using UnityEngine.Playables;
-using IAnimationPlayablePart = Tests.Behaviours.Animations.IAnimationPlayablePart;
+using IAnimationPlayablePart = Tests.Animations.IAnimationPlayablePart;
 
 namespace Tests.Behaviours.Arms.Weapons.Animations
 {
@@ -16,7 +16,7 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
         IArmedWeaponArmBehavioursController<T> _controller;
         ArmedWeaponPlayablePart _playablePart;
         Action<bool, IAnimationPlayablePart> _stateAction;
-
+        [Obsolete]
         internal Action<bool, IAnimationPlayablePart> stateAction { get => _stateAction; set => _stateAction = value; }
         public ArmedWeaponPlayablePart PlayablePart { get => _playablePart; set => _playablePart = value; }
 

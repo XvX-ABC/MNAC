@@ -4,7 +4,7 @@ namespace Tests.Characters.Locomotion.Animations
 {
     internal class MovementState : LocomotionAnimationStateBase
     {
-        protected MovementAnimator animator;
+        protected internal MovementAnimator animator;
         public MovementState(string name, float duration, MovementAnimator animator, bool enabled = true) : base(name == null ? "movement" : $"movement_{name}", duration, enabled)
         {
             this.animator = animator;

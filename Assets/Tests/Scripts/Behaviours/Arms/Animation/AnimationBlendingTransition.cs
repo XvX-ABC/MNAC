@@ -1,8 +1,6 @@
 ﻿using System;
-using Tests.Characters.Arms.Animations;
 using Tests.States;
 using Utilities.Timeline;
-using ArmAnimationCore = Tests.Behaviours.Arms.Animations.ArmAnimationCore_Obsolete;
 
 namespace Tests.Behaviours.Arms.Animations
 {

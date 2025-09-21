@@ -12,7 +12,7 @@ using Tests.Characters.Locomotion.Animations;
 namespace Tests.Characters.Locomotion
 {
 
-    internal class LocomotionCore : CharacterComponentBase_MonoComponent
+    internal class LocomotionCore : ComponentBase_MonoComponent
     {
         internal ILocomotionDefinitions definitions;
 
@@ -68,7 +68,7 @@ namespace Tests.Characters.Locomotion
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            if (!blackboard.TryReadValue<IInput>(CharacterBlackboardFields.Input, out _input))
+            if (!blackboard.TryReadValue<IInput>(CharacterBlackboardFields.Character_Input_Main, out _input))
                 throw new Exception();
             if (!blackboard.TryReadValue<Camera>(CharacterBlackboardFields.Character_Camera_Main, out var camera))
                 throw new Exception();

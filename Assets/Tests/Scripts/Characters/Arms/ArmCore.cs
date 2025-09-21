@@ -1,6 +1,6 @@
 ﻿using System;
+using Tests.Animations;
 using Tests.Behaviours;
-using Tests.Behaviours.Animations;
 using Tests.Behaviours.Arms;
 using Tests.Behaviours.Arms.Animations;
 using Tests.Behaviours.Arms.Weapons.Animations;
@@ -76,8 +76,8 @@ namespace Tests.Characters.Arms
             {
                 if (value != null)
                 {
-                    value.TryReadValue(CharacterBlackboardFields.Input, out _input);
-                    value.TryReadValue(CharacterBlackboardFields.WeaponCore, out _weaponCore);
+                    value.TryReadValue(CharacterBlackboardFields.Character_Input_Main, out _input);
+                    value.TryReadValue(CharacterBlackboardFields.Character_Weapon_Core, out _weaponCore);
                 }
                 _blackboard = value;
             }

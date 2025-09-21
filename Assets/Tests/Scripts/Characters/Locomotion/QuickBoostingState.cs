@@ -45,7 +45,7 @@ namespace Tests.Characters.Locomotion
             bool enabled = true) : base(
                 "quick_boosting",
                 movementDefinitions.MaxSpeed * (definitions.MaxSpeedPower < 1 ? 1 : definitions.MaxSpeedPower),
-                movementDefinitions.AcceleratedSpeed * (definitions.AcceleratedSpeedPower < 1 ? 1 : definitions.AcceleratedSpeedPower),
+               movementDefinitions.MaxSpeed * (definitions.MaxSpeedPower < 1 ? 1 : definitions.MaxSpeedPower),
                 definitions.Duration,
                 enabled,
                 false)

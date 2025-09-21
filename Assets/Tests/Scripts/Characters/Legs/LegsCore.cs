@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Tests.Characters.Legs
 {
-    public class LegsCore : CharacterComponentBase_MonoComponent
+    public class LegsCore : ComponentBase_MonoComponent
     {
         [SerializeField]
         LegCore _leftLeg;
