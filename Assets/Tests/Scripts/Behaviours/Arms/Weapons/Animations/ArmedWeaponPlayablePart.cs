@@ -17,7 +17,7 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
                 this.outputSetting = animator.OutputSetting as OutputSetting;
             }
         }
-        public override bool Enabled => _animator.Enabled;
+        //public override bool Enabled => _animator.Enabled;
         //public override IOutputSetting OutputSetting { get => _animator.OutputSetting; set => _animator.OutputSetting = value; }
         public ArmedWeaponPlayablePart(PlayableGraph graph) : base(graph)
         {

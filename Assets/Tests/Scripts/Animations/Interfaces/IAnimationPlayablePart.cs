@@ -5,7 +5,6 @@ namespace Tests.Animations
 {
     public interface IAnimationPlayablePart : IDisposable
     {
-        public bool Enabled { get; }
         public bool Initialize(PlayableGraph graph);
         public Playable PlayablePart { get; }
         public IOutputSetting OutputSetting { get; set; }

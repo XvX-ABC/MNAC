@@ -10,7 +10,8 @@ namespace Tests.Animations
         protected Playable playablePart;
         internal OutputSetting outputSetting;
         protected AnimationPlayableNode node;
-        public virtual bool Enabled => enabled;
+        internal bool initialized;
+        //public virtual bool Enabled => enabled;
 
         public Playable PlayablePart => playablePart;
         public virtual IOutputSetting OutputSetting
