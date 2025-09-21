@@ -30,11 +30,10 @@ namespace Tests.Behaviours.Arms.Animations
         class ArmAnimationPlayingState : StateBase
         {
             protected ArmAnimationCore core;
-            protected IAnimationPlayablePartNode parentNode;
+            protected IAnimationPlayablePartNode parentNode { get => core.node.PlayableParent; }
             public ArmAnimationPlayingState(string name, ArmAnimationCore core) : base($"arm_animation_core_{name}")
             {
                 this.core = core ?? throw new ArgumentNullException(nameof(core));
-                parentNode = core.node.PlayableParent;
             }
 
             public override void OnEnter()
@@ -79,6 +78,7 @@ namespace Tests.Behaviours.Arms.Animations
             }
             public override void OnEnter()
             {
+                Debug.Log("State enter");
                 parentNode.AddChild(_playablePart.Node);
                 _playablePart.OutputSetting = core.outputSetting;
             }
@@ -141,13 +141,10 @@ namespace Tests.Behaviours.Arms.Animations
             {
                 if (value == _statusNum)
                     return;
-                if (!_initialized)
-                    throw new Exception();
                 UpdatePlayingState(value);
                 _statusNum = value;
             }
         }
-
         public ArmAnimationCore(PlayableGraph graph, IArmWeaponDefinitions weaponDefinitions, IArmWeaponAnimationDefinitions animationDefinitions, IArmedWeaponArmAnimator armedAnimator) : base(graph)
         {
             _definitions = weaponDefinitions ?? throw new ArgumentNullException(nameof(weaponDefinitions));
@@ -157,23 +154,28 @@ namespace Tests.Behaviours.Arms.Animations
 
             switching = new(graph, _definitions, _animationDefinitions);
             _mixer = new(graph);
+
+            InitializeStates();
         }
         class MixerPlayablePart : AnimationPlayablePartBase
         {
-            // TODO: 动画系统优化，将动画初始化动作移动到Initialize方法中
             public MixerPlayablePart(PlayableGraph graph) : base(graph)
             {
-                var mixer = AnimationMixerPlayable.Create(graph, 2);
-                playablePart = mixer;
+                playablePart = AnimationMixerPlayable.Create(graph,2);
             }
 
-            public override bool Initialize(PlayableGraph graph)
-            {
-                return true;
-            }
-            public override void Dispose()
-            {
-            }
+            //public override bool Initialize(PlayableGraph graph)
+            //{
+            //    if (playablePart.IsNull())
+            //    {
+            //        var mixer = AnimationMixerPlayable.Create(graph, 2);
+            //        playablePart = mixer;
+            //    }
+            //    return true;
+            //}
+            //public override void Dispose()
+            //{
+            //}
         }
         internal class SwitchingPlayablePart : AnimationPlayablePartBase
         {
@@ -202,7 +204,6 @@ namespace Tests.Behaviours.Arms.Animations
                         outputSetting.Weight = _weight;
                 }
             }
-            // TODO: 动画系统优化，将动画初始化动作移动到Initialize方法中
             public SwitchingPlayablePart(PlayableGraph graph, IArmWeaponDefinitions definitions, IArmWeaponAnimationDefinitions animationDefinitions) : base(graph)
             {
                 _definitions = definitions;
@@ -217,13 +218,6 @@ namespace Tests.Behaviours.Arms.Animations
                 playablePart = c;
             }
 
-            public override bool Initialize(PlayableGraph graph)
-            {
-                return true;
-            }
-            public override void Dispose()
-            {
-            }
             public void Reset()
             {
                 if (playablePart.IsNull())
@@ -245,16 +239,16 @@ namespace Tests.Behaviours.Arms.Animations
                 playablePart.Pause();
             }
         }
-        public override bool Initialize(PlayableGraph graph)
-        {
-            _initialized = true;
-            InitializeStates();
-            return true;
-        }
-        public override void Dispose()
-        {
-            _initialized = false;
-        }
+        //public override bool Initialize(PlayableGraph graph)
+        //{
+        //    _initialized = true;
+        //    InitializeStates();
+        //    return true;
+        //}
+        //public override void Dispose()
+        //{
+        //    _initialized = false;
+        //}
         public void ReplaySwitching()
         {
             if (playing)

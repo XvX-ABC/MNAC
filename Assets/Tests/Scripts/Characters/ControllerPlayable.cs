@@ -26,13 +26,8 @@ namespace Tests.Characters
         public ControllerPlayable(PlayableGraph graph, RuntimeAnimatorController controller) : base(graph)
         {
             _controller = controller ?? throw new ArgumentNullException(nameof(controller));
-        }
-        // TODO: 动画系统优化，将动画初始化动作移动到Initialize方法中
-        public override bool Initialize(PlayableGraph graph)
-        {
-            controller = AnimatorControllerPlayable.Create(this.graph, _controller);
-            playablePart = controller;
-            return true;
+            this.controller = AnimatorControllerPlayable.Create(graph, _controller);
+            playablePart = this.controller;
         }
         public float GetFloat(string name)
         {

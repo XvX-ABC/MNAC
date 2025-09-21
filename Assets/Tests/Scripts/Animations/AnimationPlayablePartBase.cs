@@ -10,7 +10,6 @@ namespace Tests.Animations
         protected Playable playablePart;
         internal OutputSetting outputSetting;
         protected AnimationPlayableNode node;
-        //public virtual bool Enabled => enabled;
 
         public Playable PlayablePart => playablePart;
         public virtual IOutputSetting OutputSetting
@@ -22,6 +21,7 @@ namespace Tests.Animations
             }
         }
         public virtual IAnimationPlayablePartNode Node { get => node; }
+
         protected AnimationPlayablePartBase(PlayableGraph graph)
         {
             node = new(this);
@@ -36,11 +36,11 @@ namespace Tests.Animations
             this.outputSetting.parent = os.parent;
             this.outputSetting.Weight = os.Weight;
         }
+
         public virtual void Dispose()
         {
-            playablePart.Destroy();
+            if (!playablePart.IsNull())
+                playablePart.Destroy();
         }
-        [Obsolete]
-        public abstract bool Initialize(PlayableGraph graph);
     }
 }

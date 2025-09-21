@@ -15,21 +15,14 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
             {
                 _animator = value;
                 this.outputSetting = animator.OutputSetting as OutputSetting;
+                playablePart = _animator.GetPlayablePart(graph);
             }
         }
         //public override bool Enabled => _animator.Enabled;
         //public override IOutputSetting OutputSetting { get => _animator.OutputSetting; set => _animator.OutputSetting = value; }
         public ArmedWeaponPlayablePart(PlayableGraph graph) : base(graph)
         {
+        }
 
-        }
-        public override bool Initialize(PlayableGraph graph)
-        {
-            playablePart = _animator.GetPlayablePart(graph);
-            return true;
-        }
-        public override void Dispose()
-        {
-        }
     }
 }

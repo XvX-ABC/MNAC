@@ -85,11 +85,11 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
         }
         public Playable GetPlayablePart(PlayableGraph graph)
         {
-            if (_controller.PlayablePart.IsNull())
-            {
-                _controller.Initialize(graph);
+            //if (_controller.PlayablePart.IsNull())
+            //{
+            //    _controller.Initialize(graph);
 
-            }
+            //}
             return _controller.PlayablePart;
 
 

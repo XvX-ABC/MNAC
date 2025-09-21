@@ -70,16 +70,11 @@ namespace Tests.Characters.Animations
             public LayersMixerPlayable(PlayableGraph graph, ICharacterAnimationDefinitions definitions) : base(graph)
             {
                 _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
-            }
-
-            public override bool Initialize(PlayableGraph graph)
-            {
                 var mixer = AnimationLayerMixerPlayable.Create(graph, 3);
                 mixer.SetLayerMaskFromAvatarMask(1, _definitions.LeftArmDefinitions.Mask);
 
                 mixer.SetInputWeight(0, 1);
                 playablePart = mixer;
-                return true;
             }
         }
         public new bool Enabled
@@ -142,7 +137,7 @@ namespace Tests.Characters.Animations
         public void InitializeArmsAnimation()
         {
             var leftArm = _core.leftArm;
-
+            Debug.Log("Initialize arm animation");
             if (leftArm != null)
             {
 

@@ -67,18 +67,17 @@ namespace Tests.Animations
         {
             if (node is not IAnimationPlayablePartNode pnode)
                 throw new InvalidCastException(nameof(node));
-
             NodeValidityCheck(pnode);
             base.AddChild(pnode);
-            if (pnode.Value.Initialize(graph))
+            //if (pnode.Value.Initialize(graph))
+            //{
+            if (!IsRoot(this) && value != null)
             {
-                if (!IsRoot(this) && value != null)
-                {
-                    SetOutputSettingForNode(pnode);
-                    if (NodePlayablePartCheck(pnode))
-                        ConnectChild(pnode);
-                }
+                SetOutputSettingForNode(pnode);
+                if (NodePlayablePartCheck(pnode))
+                    ConnectChild(pnode);
             }
+            //}
             pnode.Graph = graph;
 
         }
@@ -92,7 +91,7 @@ namespace Tests.Animations
             if (NodePlayablePartCheck(pnode))
             {
                 DisconnectChild(pnode);
-                pnode.Value.Dispose();
+                //pnode.Value.Dispose();
             }
             base.RemoveChild(pnode);
             pnode.Graph = default;
