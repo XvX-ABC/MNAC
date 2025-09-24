@@ -31,6 +31,7 @@ namespace Tests.Behaviours.Arms
             base.OnUpdate();
             if (_input != null && _input.Fire)
             {
+                Debug.Log("fire");
                 _controlledWeapon.StartLaunch();
             }
         }
