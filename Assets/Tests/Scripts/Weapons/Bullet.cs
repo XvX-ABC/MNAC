@@ -98,7 +98,6 @@ namespace Tests.Weapons
         }
         private void OnCollisionEnter(Collision collision)
         {
-            Debug.Log(" obj.name: " + collision.gameObject.name);
             _speed = 0;
             var obj = collision.gameObject;
             _hitAction?.Invoke(this, obj);
