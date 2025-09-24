@@ -35,9 +35,9 @@ namespace Tests.Weapons.Launcher
             get => numericalDefinitions.MuzzlePosition;
             set => numericalDefinitions.MuzzlePosition = value;
         }
-        public ushort AmmoTotalQuantity { get => (ushort)(AmmoSpareQuantity + AmmoInMagazineQuantity); }
+        public ushort AmmoTotalQuantity { get => (ushort)(AmmoReservesQuantity + AmmoInMagazineQuantity); }
 
-        public virtual ushort AmmoSpareQuantity { get => numericalDefinitions.AmmoSpareQuantity; set => numericalDefinitions.AmmoSpareQuantity = value; }
+        public virtual ushort AmmoReservesQuantity { get => numericalDefinitions.AmmoSpareQuantity; set => numericalDefinitions.AmmoSpareQuantity = value; }
         public virtual ushort AmmoInMagazineQuantity { get => numericalDefinitions.AmmoInMagazineQuantity; set => numericalDefinitions.AmmoInMagazineQuantity = value; }
         public virtual float ReloadDurationTime { get => numericalDefinitions.ReloadDuration; set => numericalDefinitions.ReloadDuration = value; }
         public virtual float LaunchDurationTime { get => numericalDefinitions.LaunchDurationTime; set => numericalDefinitions.LaunchDurationTime = value; }

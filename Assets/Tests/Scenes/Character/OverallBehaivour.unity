@@ -604,7 +604,7 @@ MonoBehaviour:
   _velocity_y: Velocity_Y
   _aiming: Aiming
   _reloadClipLength: 2.458
-  _reloadTrigger: Reload_Trigger
+  _reloadTrigger: Reload_Trigger_0
   _reloadMultiplier: Reload_Multiplier
 --- !u!1 &695791029
 GameObject:

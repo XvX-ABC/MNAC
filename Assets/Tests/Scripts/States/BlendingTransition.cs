@@ -34,6 +34,13 @@ namespace Tests.States
                 fixedExitTime = Mathf.Clamp01(fixedExitTime);
                 this.fixedExitTime = fixedExitTime;
                 this.AddTriggerEvent(() => this.sourceState.Timeline.NormalizedTime >= this.fixedExitTime);
+                //this.AddTriggerEvent(() =>
+                //{
+                //    var r = this.sourceState.Timeline.NormalizedTime >= this.fixedExitTime;
+                //    if (r)
+                //        Debug.Log("transition triggered: timeline: " + this.sourceState.Timeline.NormalizedTime);
+                //    return r;
+                //});
             }
             this.timeline.StartAction += Begin;
 

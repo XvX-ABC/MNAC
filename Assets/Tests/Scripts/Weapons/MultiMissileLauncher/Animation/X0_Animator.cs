@@ -56,7 +56,7 @@ namespace Tests.Weapons.MultiMissileLauncher.Animation
             InitializeSpeedMultiplierForClip(FindClip(clips, _definition.MagazineEmptyClipName), _definition.MagazineEmptySpeedMultiplierName, _actionDefinition.MagazineFullOrEmptyDuration);
             var ml = (IMissileLauncher)l;
             var target = ml.Target;
-            var quantity = ml.MagazineCount;
+            var quantity = ml.MagazineAmmoCount;
             var reloadTimeline = ml.ReloadTimeline;
             var delayLaunchTimeline = ml.DelayLaunchTimeline;
 

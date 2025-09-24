@@ -1,7 +1,6 @@
 ﻿using System;
 using Tests.Behaviours.Arms.Weapons.Launchers.Animations;
 using Tests.States;
-using TMPro;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Launchers
@@ -22,11 +21,11 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
+            statemachine.ChangeStateTo(_behaviour.target == null ? _behaviour.idle : _behaviour.aiming);
             _animationState.FromPreviousStateTransitionBegin(currentTransition);
             if (_animator.OutputSetting != null)
             {
                 _w = _animator.OutputSetting.Weight;
-                Debug.Log("b w: " + _w);
             }
         }
 
@@ -43,8 +42,8 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
             _animationState.FromPreviousStateTransitionRunning(currentTransition);
             if (_animator.OutputSetting != null)
             {
-                Debug.Log("b weight: " + _animator.OutputSetting.Weight);
-                _animator.OutputSetting.Weight = currentTransition.Timeline.NormalizedTime;
+                var t = currentTransition.Timeline.NormalizedTime;
+                _animator.OutputSetting.Weight = Mathf.Lerp(_w, 1, t);
             }
 
         }
@@ -52,7 +51,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         public override void OnEnter()
         {
 
-            statemachine.ChangeStateTo(_behaviour.target == null ? _behaviour.idle : _behaviour.aiming);
+
             base.OnEnter();
             _animationState.OnEnter();
             if (_animator.OutputSetting != null)
@@ -68,6 +67,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         public override void OnUpdate()
         {
             base.OnUpdate();
+            Debug.Log(statemachine);
         }
 
         public override void ToNextStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
@@ -77,7 +77,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
             if (_animator.OutputSetting != null)
             {
                 _w = _animator.OutputSetting.Weight;
-                Debug.Log("a w: " + _w);
             }
 
         }
@@ -94,8 +93,8 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
             _animationState.ToNextStateTransitionRunning(currentTransition);
             if (_animator.OutputSetting != null)
             {
-                _animator.OutputSetting.Weight = 1 - currentTransition.Timeline.NormalizedTime;
-                Debug.Log("a weight: " + _animator.OutputSetting.Weight);
+                var t = currentTransition.Timeline.NormalizedTime;
+                _animator.OutputSetting.Weight = Mathf.Lerp(_w, 0, t);
             }
         }
     }

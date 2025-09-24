@@ -75,13 +75,13 @@ namespace Assets.Tests.Scripts.Weapons.MVC
         [RequestMapping("/{c_url}/Ammo/SpareQuantity")]
         public void GetSpareQuantity(IRequest request, IResponse<ushort> response)
         {
-            response.Data = launcher.SpareCount;
+            response.Data = launcher.SpareAmmoCount;
             response.Code = (ushort)ResponseCode.Succeeded;
         }
         [RequestMapping("/{c_url}/Ammo/MagazineQuantity")]
         public void GetMagazineQuantity(IRequest request, IResponse<ushort> response)
         {
-            response.Data = launcher.MagazineCount;
+            response.Data = launcher.MagazineAmmoCount;
             response.Code = (ushort)ResponseCode.Succeeded;
         }
     }
