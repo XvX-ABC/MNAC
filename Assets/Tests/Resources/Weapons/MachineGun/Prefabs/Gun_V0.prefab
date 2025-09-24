@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _effectorObjs: []
   ammoInMagazineQuantity: 0
-  ammoSpareQuantity: 0
+  ammoReservesQuantity: 0
   _direction: {x: 1, y: 0, z: 0}
   _force: 9.7
 --- !u!1 &6652517120845360468
@@ -389,6 +389,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1400f1f946b256a49af4cd982c7541b4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5232627393660835655, guid: 1400f1f946b256a49af4cd982c7541b4,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -448,7 +453,7 @@ MonoBehaviour:
   - {fileID: 1811564297329348430}
   - {fileID: 1443056349653897283}
   ammoInMagazineQuantity: 0
-  ammoSpareQuantity: 0
+  ammoReservesQuantity: 0
 --- !u!114 &5228123280440907395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,7 +473,7 @@ MonoBehaviour:
     type: 3}
   _magazinePosition: {x: 0, y: -0.61, z: 0}
   _muzzlePosition: {x: 0, y: 0, z: 3.59}
-  _ammoTotalQuantity: 0
+  _ammoReservesQuantity: 2000
   _ammoInMagazineQuantity: 500
   _reloadDurationTime: 1
 --- !u!114 &6268007492913773410
