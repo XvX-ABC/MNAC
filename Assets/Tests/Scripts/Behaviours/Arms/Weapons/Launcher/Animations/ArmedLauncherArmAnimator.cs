@@ -33,10 +33,10 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
         AimingHelper _aimingHelper;
 
 
-        Idle idle;
-        ArmAiming aiming;
-        AmmoLoad reload;
-        WithCallbackPlayableStatemachine<object> _statemachine;
+        internal Idle idle;
+        internal ArmAiming aiming;
+        internal AmmoLoad reload;
+        internal WithCallbackPlayableStatemachine<object> statemachine;
         internal ArmedLauncherAnimationState state;
         public ArmedLauncherArmAnimator(
             PlayableGraph graph,
@@ -106,34 +106,34 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
             var length = _definitions.AimAndReloadTransitionLength;
 
 
-            _statemachine = new("armed_launcher_statemachine");
-            _statemachine.AddState(idle);
-            _statemachine.AddState(aiming);
-            _statemachine.AddState(reload);
+            statemachine = new("armed_launcher_statemachine");
+            statemachine.AddState(idle);
+            statemachine.AddState(aiming);
+            statemachine.AddState(reload);
 
 
-            _statemachine.AddTransitionFor(idle, aiming, length, () => AimingTarget != null, null);
-            _statemachine.AddTransitionFor(idle, reload, 0, TriggeredReload, null, InterruptionSource.None);
+            statemachine.AddTransitionFor(idle, aiming, length, () => AimingTarget != null, null);
+            statemachine.AddTransitionFor(idle, reload, 0, TriggeredReload, null, InterruptionSource.None);
 
             var a_r = new BlendingTransition<object>(aiming, reload, TriggeredReload, null, length, 0, 1, InterruptionSource.None);
-            _statemachine.AddTransitionFor(aiming, idle, length, () => AimingTarget == null, null);
+            statemachine.AddTransitionFor(aiming, idle, length, () => AimingTarget == null, null);
             //_statemachine.AddTransitionFor(aiming, reload, length, TriggeredReload, null, InterruptionSource.None);
-            _statemachine.AddTransitionFor(a_r);
+            statemachine.AddTransitionFor(a_r);
 
             var r_i = new BlendingTransition<object>(reload, idle, () => AimingTarget == null, null, 0, 0, 1);
-            var r_a = new BlendingTransition<object>(reload, aiming, () => AimingTarget != null, null, 1, 0, 0.75f);
+            var r_a = new BlendingTransition<object>(reload, aiming, () => AimingTarget != null, null, 0.25f, 0, 0.75f);
 
-            _statemachine.AddTransitionFor(r_i);
-            _statemachine.AddTransitionFor(r_a);
+            statemachine.AddTransitionFor(r_i);
+            statemachine.AddTransitionFor(r_a);
 
-            state = new(_statemachine);
+            state = new(this);
 
             bool TriggeredReload() => _input == null ? false : _input.Reload;
         }
         public void Update()
         {
-            _statemachine.OnUpdate();
-            //Debug.Log(_statemachine);
+            statemachine.OnUpdate();
+            Debug.Log("animation: " + statemachine);
         }
     }
 }
