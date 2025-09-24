@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons.Launchers.Animations;
-using Tests.BodyBehaviour.Arm.Weapons.Launcher;
 using Tests.Input;
 using Tests.Interaction;
 using Tests.States;
 using Tests.Weapons;
 using Tests.Weapons.Launcher;
-using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Launchers
 {
@@ -118,9 +116,13 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
 
             _state = new(this);
 
+            bool WeaponCanToReload()
+            {
+                return _launcher.Definitions.AmmoInMagazineQuantity > _launcher.MagazineAmmoCount && _launcher.SpareAmmoCount > 0;
+            }
             bool ReloadTriggered()
             {
-                return _input == null ? false : _input.Reload;
+                return _input == null ? false : _input.Reload && WeaponCanToReload();
             }
         }
         public void FixedUpdate()
