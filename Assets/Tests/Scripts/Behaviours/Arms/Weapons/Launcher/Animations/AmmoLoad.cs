@@ -9,12 +9,12 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
     internal class AmmoLoad : ArmedLauncherAnimationStateBase
     {
         ILauncher _launcher;
-        string _trigger;
+        string _animationName;
         string _multiplierName;
         float _clipLength;
         public AmmoLoad(ControllerPlayable controller, string animationTrigger, string animationMultiplier, float clipLength, bool enabled = true) : base(controller, "ammo_load", 0, enabled)
         {
-            _trigger = animationTrigger ?? throw new ArgumentNullException(nameof(animationTrigger));
+            _animationName = animationTrigger ?? throw new ArgumentNullException(nameof(animationTrigger));
             _multiplierName = animationMultiplier ?? throw new ArgumentNullException(nameof(animationMultiplier));
             _clipLength = Mathf.Max(0, clipLength);
         }
@@ -34,7 +34,8 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
 
-            controller.SetTrigger(_trigger);
+            //controller.SetTrigger(_trigger);
+            controller.SetBool(_animationName, true);
         }
         public override void OnEnter()
         {
@@ -49,6 +50,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
         public override void OnExit()
         {
             timeline.End();
+            controller.SetBool(_animationName, false);
             base.OnExit();
         }
     }
