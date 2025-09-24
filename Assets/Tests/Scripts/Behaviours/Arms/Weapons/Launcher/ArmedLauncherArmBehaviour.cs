@@ -118,7 +118,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
 
             bool WeaponCanToReload()
             {
-                return _launcher.Definitions.AmmoInMagazineQuantity > _launcher.MagazineAmmoCount && _launcher.SpareAmmoCount > 0;
+                return _launcher.Definitions.AmmoInMagazineQuantity > _launcher.MagazineAmmoCount && _launcher.ReservesAmmoCount > 0;
             }
             bool ReloadTriggered()
             {

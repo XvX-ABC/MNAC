@@ -24,8 +24,8 @@ namespace Tests.Weapons.Launcher
         public ITimeline LaunchDurationTimeline { get; }
         public ITimeline ReloadTimeline { get; }
         public ILauncherDefinitions Definitions { get; }
-        public ushort SpareCount { get; }
-        public ushort MagazineCount { get; }
+        public ushort ReservesAmmoCount { get; }
+        public ushort MagazineAmmoCount { get; }
         internal ILauncherActionsLock actionsLock { get; }
         public int Fill(int num);
         public bool StartReload();

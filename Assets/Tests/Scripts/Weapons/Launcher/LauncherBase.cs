@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Pool;
 using Utilities.Timeline;
 using Utilities.Timeline.Events.Point;
+using Utilities.Timeline.Events.Range;
 using ActionsEnum = Tests.Weapons.Launcher.ILauncher.ActionsEnum;
 namespace Tests.Weapons.Launcher
 {
@@ -49,7 +50,7 @@ namespace Tests.Weapons.Launcher
         [SerializeField]
         protected ushort ammoInMagazineQuantity;
         [SerializeField]
-        protected ushort ammoSpareQuantity;
+        protected ushort ammoReservesQuantity;
 
         protected Action<ILauncher> initializationAction;
         protected float lastLaunchTime;
@@ -68,8 +69,8 @@ namespace Tests.Weapons.Launcher
         protected Action<ILauncher> reloadAction;
 
         public string Name { get => this.name; }
-        public ushort SpareCount { get => ammoSpareQuantity; }
-        public ushort MagazineCount { get => ammoInMagazineQuantity; set => ammoInMagazineQuantity = value; }
+        public ushort ReservesAmmoCount { get => ammoReservesQuantity; }
+        public ushort MagazineAmmoCount { get => ammoInMagazineQuantity; set => ammoInMagazineQuantity = value; }
         public ILauncherDefinitions Definitions { get => definitions; protected set => definitions = value; }
         public Vector3 MagazinePosition => this.transform.TransformPoint(definitions.MagazinePosition);
         public Vector3 MuzzlePosition => this.transform.TransformPoint(definitions.MuzzlePosition);
@@ -97,7 +98,7 @@ namespace Tests.Weapons.Launcher
 
 
             ammoInMagazineQuantity = definitions.AmmoInMagazineQuantity;
-            ammoSpareQuantity = definitions.AmmoSpareQuantity;
+            ammoReservesQuantity = definitions.AmmoReservesQuantity;
 
 
             InitializeEffectors();
@@ -148,13 +149,16 @@ namespace Tests.Weapons.Launcher
             if (launchDurationTimeline != null && launchDurationTimeline.IsRunning)
                 launchDurationTimeline.OnUpdate(Time.deltaTime);
             if (reloadTimeline != null && reloadTimeline.IsRunning)
+            {
                 reloadTimeline.OnUpdate(Time.deltaTime);
+            }
         }
         protected void OnDestroy()
         {
             ammoPool.Dispose();
             effectorSupporter?.Dispose();
         }
+
         protected virtual GameObject CreateAmmo()
         {
             var origin = definitions.AmmoOrigin;
@@ -202,12 +206,19 @@ namespace Tests.Weapons.Launcher
         protected virtual ITimeline CreateReloadTimeline()
         {
             var timeline = new Timeline(definitions.ReloadDurationTime);
-            timeline.AddPointEvent(0, _ => actionsLock.LockStartReload());
-            timeline.AddPointEvent(1, _ =>
+            timeline.StartAction += _ => actionsLock.LockStartReload();
+            timeline.EndAction += _ =>
             {
                 Reload();
                 actionsLock.UnlockAll();
-            });
+            };
+            //timeline.AddPointEvent(0, _ => actionsLock.LockStartReload());
+            //timeline.AddPointEvent(1, _ =>
+            //{
+            //    Reload();
+            //    actionsLock.UnlockAll();
+            //});
+
             return timeline;
         }
         protected virtual ITimeline CreateDelayLaunchTimeline()
@@ -241,10 +252,10 @@ namespace Tests.Weapons.Launcher
                 return 0;
             var suppNum = 0;
             if (num > 0)
-                suppNum = Mathf.Min(definitions.AmmoSpareQuantity - ammoSpareQuantity, num);
+                suppNum = Mathf.Min(definitions.AmmoReservesQuantity - ammoReservesQuantity, num);
             else
-                suppNum = Mathf.Min(-(definitions.AmmoSpareQuantity - ammoSpareQuantity), num);
-            ammoSpareQuantity += (ushort)suppNum;
+                suppNum = Mathf.Min(-(definitions.AmmoReservesQuantity - ammoReservesQuantity), num);
+            ammoReservesQuantity += (ushort)suppNum;
             return suppNum;
         }
         public virtual bool StartReload()
@@ -253,7 +264,7 @@ namespace Tests.Weapons.Launcher
                 return false;
             if (actionsLock.StartReloadLocked()
                 || ammoInMagazineQuantity == definitions.AmmoInMagazineQuantity
-                || ammoSpareQuantity <= 0)
+                || ammoReservesQuantity <= 0)
                 return false;
             reloadTimeline.Restart();
             return true;
@@ -262,17 +273,17 @@ namespace Tests.Weapons.Launcher
         {
             if (!enabled || actionsLock.EndReloadLocked())
                 return false;
-            reloadTimeline.Pause();
+            //reloadTimeline.Pause();
+            reloadTimeline.End();
             return true;
         }
         internal virtual void Reload()
         {
             if (!enabled)
                 return;
-
-            var num = (ushort)Mathf.Min(ammoSpareQuantity, definitions.AmmoInMagazineQuantity - ammoInMagazineQuantity);
+            var num = (ushort)Mathf.Min(ammoReservesQuantity, definitions.AmmoInMagazineQuantity - ammoInMagazineQuantity);
             ammoInMagazineQuantity += num;
-            ammoSpareQuantity -= num;
+            ammoReservesQuantity -= num;
             reloadAction?.Invoke(this);
             return;
         }

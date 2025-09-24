@@ -15,7 +15,7 @@ namespace Tests.Weapons.MachineGuns
         [SerializeField]
         Vector3 _muzzlePosition;
         [SerializeField]
-        ushort _ammoTotalQuantity;
+        ushort _ammoReservesQuantity;
         [SerializeField]
         ushort _ammoInMagazineQuantity;
         [SerializeField]
@@ -31,9 +31,9 @@ namespace Tests.Weapons.MachineGuns
 
         public Vector3 MuzzlePosition => _muzzlePosition;
 
-        public ushort AmmoTotalQuantity => (ushort)(AmmoInMagazineQuantity + AmmoSpareQuantity);
+        public ushort AmmoTotalQuantity => (ushort)(AmmoInMagazineQuantity + AmmoReservesQuantity);
 
-        public ushort AmmoSpareQuantity => 0;
+        public ushort AmmoReservesQuantity => _ammoReservesQuantity;
 
         public ushort AmmoInMagazineQuantity => _ammoInMagazineQuantity;
 

@@ -33,7 +33,7 @@ namespace Tests.Weapons.MultiMissileLauncher
 
         public virtual ushort AmmoTotalQuantity { get => (ushort)(numericalDefinitions.AmmoSpareQuantity + numericalDefinitions.AmmoInMagazineQuantity); }
 
-        public virtual ushort AmmoSpareQuantity { get => numericalDefinitions.AmmoSpareQuantity; set => numericalDefinitions.AmmoSpareQuantity = value; }
+        public virtual ushort AmmoReservesQuantity { get => numericalDefinitions.AmmoSpareQuantity; set => numericalDefinitions.AmmoSpareQuantity = value; }
 
         public virtual ushort AmmoInMagazineQuantity { get => numericalDefinitions.AmmoInMagazineQuantity; set => numericalDefinitions.AmmoInMagazineQuantity = value; }
 
@@ -73,7 +73,7 @@ namespace Tests.Weapons.MultiMissileLauncher
             editor.MuzzlePosition = numericalDefinitions.MuzzlePosition;
             editor.LaunchDurationTime = numericalDefinitions.LaunchDurationTime;
 
-            editor.AmmoSpareQuantity = 1;
+            editor.AmmoReservesQuantity = 1;
             editor.AmmoInMagazineQuantity = 1;
             editor.ReloadDurationTime = numericalDefinitions.ReloadDuration;
             editor.LaunchDelayRange = numericalDefinitions.LaunchDelayRange;

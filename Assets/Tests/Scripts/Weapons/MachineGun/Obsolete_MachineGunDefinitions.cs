@@ -20,9 +20,9 @@ namespace Tests.Weapons.MachineGuns
 
         public Vector3 MuzzlePosition => _numericalDefinitionsAsset.Asset.MuzzlePosition;
 
-        public ushort AmmoTotalQuantity => (ushort)(AmmoSpareQuantity + AmmoSpareQuantity);
+        public ushort AmmoTotalQuantity => (ushort)(AmmoReservesQuantity + AmmoReservesQuantity);
 
-        public ushort AmmoSpareQuantity => 0;
+        public ushort AmmoReservesQuantity => 0;
 
         public ushort AmmoInMagazineQuantity => _numericalDefinitionsAsset.Asset.AmmoInMagazineQuantity;
 

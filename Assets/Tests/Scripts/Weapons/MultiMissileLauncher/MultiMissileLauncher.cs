@@ -32,8 +32,8 @@ namespace Tests.Weapons.MultiMissileLauncher
         ITimeline _launchDurationTimeline;
         protected IMissileLauncherDefinitions definitions;
         internal IMissileLauncher[] subLaunchers;
-        public ushort SpareCount { get => _ammoSpareQuantity; }
-        public ushort MagazineCount { get => _ammoInMagazineQuantity; }
+        public ushort ReservesAmmoCount { get => _ammoSpareQuantity; }
+        public ushort MagazineAmmoCount { get => _ammoInMagazineQuantity; }
         public ILauncherDefinitions Definitions { get => definitions; }
         IMissileLauncherDefinitions IMissileLauncher.Definitions => definitions;
         public Action<ILauncher> InitializationAction { get => _initializationAction; set => _initializationAction = value; }
@@ -118,13 +118,13 @@ namespace Tests.Weapons.MultiMissileLauncher
         {
             l.InitializationAction += launcher =>
             {
-                launcher.Fill(-launcher.Definitions.AmmoSpareQuantity);
+                launcher.Fill(-launcher.Definitions.AmmoReservesQuantity);
                 if (launcher is not IMissileLauncher mlauncher)
                     throw new Exception($"The sublaunchers of the type '{GetType().Name}' must to implement the interface '{typeof(IMissileLauncher).Name}'");
 
 
                 var definition = mlauncher.Definitions;
-                if (definition.AmmoSpareQuantity == 0)
+                if (definition.AmmoReservesQuantity == 0)
                 {
                     if ((object)mlauncher is GameObject obj)
                         throw new Exception($"The parameter 'AmmoSpareQuantity' of the subluncher '{obj.name}' can't less than or equals to zero.");
@@ -144,7 +144,7 @@ namespace Tests.Weapons.MultiMissileLauncher
         }
         protected void Start()
         {
-            _ammoSpareQuantity = (ushort)Mathf.Max(0, definitions.AmmoSpareQuantity - subLaunchers.Length);
+            _ammoSpareQuantity = (ushort)Mathf.Max(0, definitions.AmmoReservesQuantity - subLaunchers.Length);
 
             var quantity = subLaunchers.Length;
             _ammoInMagazineQuantity = (ushort)quantity;
@@ -315,7 +315,7 @@ namespace Tests.Weapons.MultiMissileLauncher
             if (_ammoSpareQuantity + num < 0 || _actionsLock.SupplyLocked())
                 return 0;
             //var suppNum = Mathf.Min(definitions.AmmoTotalQuantity - subLaunchers.Length - _ammoSpareQuantity, num);
-            var suppNum = Mathf.Min(definitions.AmmoSpareQuantity - _ammoSpareQuantity, num);
+            var suppNum = Mathf.Min(definitions.AmmoReservesQuantity - _ammoSpareQuantity, num);
             _ammoSpareQuantity += (ushort)suppNum;
             return suppNum;
         }

@@ -27,7 +27,7 @@ namespace Tests.Weapons.Launcher
         public Vector3 MuzzlePosition { get => _muzzlePosition; }
         public float LaunchRate { get => _launchRate; }
         public ushort AmmoTotalQuantity { get => (ushort)(_ammoSpareQuantity + _ammoQuantityInMagazine); }
-        public ushort AmmoSpareQuantity { get => _ammoSpareQuantity; }
+        public ushort AmmoReservesQuantity { get => _ammoSpareQuantity; }
         public ushort AmmoInMagazineQuantity { get => _ammoQuantityInMagazine; }
         public float ReloadDurationTime { get => _reloadDuration; }
 

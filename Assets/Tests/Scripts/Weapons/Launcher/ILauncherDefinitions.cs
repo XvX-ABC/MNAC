@@ -11,7 +11,7 @@ namespace Tests.Weapons.Launcher
         public GameObject AmmoOrigin { get; set; }
         public Vector3 MagazinePosition { get; set; }
         public Vector3 MuzzlePosition { get; set; }
-        public ushort AmmoSpareQuantity { get; set; }
+        public ushort AmmoReservesQuantity { get; set; }
         public ushort AmmoInMagazineQuantity { get; set; }
         public float ReloadDurationTime { get; set; }
         public float LaunchDurationTime { get; set; }
@@ -29,7 +29,7 @@ namespace Tests.Weapons.Launcher
         public Vector3 MagazinePosition { get; }
         public Vector3 MuzzlePosition { get; }
         public ushort AmmoTotalQuantity { get; }
-        public ushort AmmoSpareQuantity { get; }
+        public ushort AmmoReservesQuantity { get; }
         public ushort AmmoInMagazineQuantity { get; }
         public float ReloadDurationTime { get; }
         public float LaunchDurationTime { get; }

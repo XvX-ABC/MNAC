@@ -27,9 +27,9 @@ namespace Tests.Weapons
         ITimeline ILauncher.ReloadTimeline => _reloadTimeline;
         ILauncherDefinitions ILauncher.Definitions => throw new NotImplementedException();
 
-        ushort ILauncher.SpareCount => throw new NotImplementedException();
+        ushort ILauncher.ReservesAmmoCount => throw new NotImplementedException();
 
-        ushort ILauncher.MagazineCount => throw new NotImplementedException();
+        ushort ILauncher.MagazineAmmoCount => throw new NotImplementedException();
 
         ILauncherActionsLock ILauncher.actionsLock => throw new NotImplementedException();
 
