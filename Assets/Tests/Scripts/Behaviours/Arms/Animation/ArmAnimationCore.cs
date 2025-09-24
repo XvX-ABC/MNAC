@@ -78,7 +78,6 @@ namespace Tests.Behaviours.Arms.Animations
             }
             public override void OnEnter()
             {
-                Debug.Log("State enter");
                 parentNode.AddChild(_playablePart.Node);
                 _playablePart.OutputSetting = core.outputSetting;
             }

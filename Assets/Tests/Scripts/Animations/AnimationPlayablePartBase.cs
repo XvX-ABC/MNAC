@@ -30,11 +30,10 @@ namespace Tests.Animations
         }
         protected void UpdateOutputSetting(IOutputSetting setting)
         {
-            if (setting is not OutputSetting os)
-                throw new InvalidCastException();
-            this.outputSetting.portNum = os.portNum;
-            this.outputSetting.parent = os.parent;
-            this.outputSetting.Weight = os.Weight;
+            this.outputSetting.PortNum = setting.PortNum;
+            this.outputSetting.Parent = setting.Parent;
+            this.outputSetting.Weight = setting.Weight;
+
         }
 
         public virtual void Dispose()

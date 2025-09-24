@@ -21,6 +21,10 @@ namespace Tests.Animations
                 parentPart.SetInputWeight(portNum, _weight);
             }
         }
+
+        public int PortNum { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IAnimationPlayablePart Parent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public OutputSetting_Obsolete(Playable parent, int portNum)
         {
             parentPart = parent;

@@ -36,10 +36,12 @@ namespace Tests.Animations
             {
                 var v = Mathf.Clamp01(value);
                 _weight = v;
-                Debug.Log("weight: " + v);
                 if (parent != null && !parent.PlayablePart.IsNull() && portNum > -1)
                     parent.PlayablePart.SetInputWeight(portNum, _weight);
             }
         }
+
+        public int PortNum { get => portNum; set => portNum = value; }
+        public IAnimationPlayablePart Parent { get => parent; set => parent = value; }
     }
 }

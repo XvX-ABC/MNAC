@@ -113,11 +113,8 @@ namespace Tests.Animations
             //var outputSetting = new OutputSetting(p, idx);
             //var outputSetting = new OutputSetting(value, idx);
             //node.Value.OutputSetting = outputSetting;
-            if (outputSetting is OutputSetting os)
-            {
-                os.portNum = idx;
-                os.parent = value;
-            }
+            outputSetting.PortNum = idx;
+            outputSetting.Parent = value;
         }
         protected virtual void ConnectChild(IAnimationPlayablePartNode childNode)
         {
