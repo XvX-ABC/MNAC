@@ -1,5 +1,5 @@
 ﻿using System;
-using Tests.Characters;
+using Tests.Animations;
 using Tests.States;
 using Utilities.Timeline;
 

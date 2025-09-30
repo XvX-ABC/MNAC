@@ -6,4 +6,10 @@
         public string Multiplier { get; }
         public string Trigger { get; }
     }
+    public interface IDeathAnimationDefinitions
+    {
+        public float ClipLength { get; }
+        public string Multiplier { get; }
+        public string Trigger { get; }
+    }
 }

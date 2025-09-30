@@ -1,6 +1,6 @@
 ﻿namespace Tests.Interaction.Influence
 {
-    public abstract class InfluenceReceptorBase : IInfluenceReceptor
+    public abstract class InfluenceBase : Influence
     {
         protected bool enabled;
 
@@ -11,7 +11,5 @@
         {
         }
 
-        public abstract bool TryGetValue<T>(out T value, object key = null);
-        public abstract bool TrySetValue<T>(T value, object key = null);
     }
 }

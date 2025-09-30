@@ -1,13 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Tests.Weapons.Launcher;
-using Unity.VisualScripting;
-using UnityEditor.Timeline;
+﻿using Tests.Weapons.Launcher;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 using Utilities.Timeline;
 
 namespace Tests.Weapons.MachineGuns
@@ -68,12 +60,5 @@ namespace Tests.Weapons.MachineGuns
                 launchDurationTimeline.Pause();
             return true;
         }
-#if UNITY_EDITOR
-        void OnGUI()
-        {
-            GUI.Label(new Rect(0, 50, 280, 60), $"Magazine ammo count: {ammoInMagazineQuantity}");
-            GUI.Label(new Rect(0, 110, 280, 60), $"Spare ammo count: {ammoReservesQuantity}");
-        }
-#endif
     }
 }

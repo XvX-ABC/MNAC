@@ -47,7 +47,6 @@ namespace Tests.Characters.Arms
                 Debug.LogWarning("This weapon switching behaviour is still continuing");
                 return;
             }
-            //timeline.Restart();
             _switching.Begin();
             if (animationCore != null)
                 animationCore.StatusNum = 0;
@@ -55,13 +54,11 @@ namespace Tests.Characters.Arms
         public override void OnUpdate()
         {
             base.OnUpdate();
-            //timeline.OnUpdate(Time.deltaTime);
             _switching.Update();
         }
         public override void OnExit()
         {
             _switching.End();
-            //timeline.End();
             base.OnExit();
         }
         public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)

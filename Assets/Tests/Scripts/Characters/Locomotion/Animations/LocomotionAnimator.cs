@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security;
+using Tests.Animations;
 using Tests.Characters.Legs;
 using Tests.Input;
 using Tests.States;

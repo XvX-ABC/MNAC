@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Animations;
 using Tests.TPhysics;
 using Tests.TPhysics.Environment;
 using UnityEngine;

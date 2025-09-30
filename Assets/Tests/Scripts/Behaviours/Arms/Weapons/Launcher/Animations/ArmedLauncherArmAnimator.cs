@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using Tests.Animations;
-using Tests.Characters;
 using Tests.Characters.Locomotion;
 using Tests.Input;
 using Tests.Interaction;
@@ -133,7 +132,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
         public void Update()
         {
             statemachine.OnUpdate();
-            Debug.Log("animation: " + statemachine);
         }
     }
 }

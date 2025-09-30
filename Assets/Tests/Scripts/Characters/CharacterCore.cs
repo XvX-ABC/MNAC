@@ -1,7 +1,6 @@
 ﻿using System;
 using Tests.Characters.Animations;
 using Tests.Characters.Arms;
-using Tests.Characters.Interaction;
 using Tests.Characters.Legs;
 using Tests.Characters.Locomotion;
 using Tests.Input;
@@ -10,44 +9,10 @@ using Tests.States;
 using Tests.Weapons;
 using UnityEngine;
 using EnvironmentCore = Tests.Characters.Environment.EnvironmentCore;
+using Stun = Tests.Interaction.Influence.Stun;
 
 namespace Tests.Characters
 {
-
-    //public class InfluenceReceivingCore : CharacterComponentBase
-    //{
-    //    IInfluenceReceptor[] _receptors;
-
-    //    public InfluenceReceivingCore(params IInfluenceReceptor[] receptors)
-    //    {
-    //        _receptors = receptors;
-    //    }
-
-    //    public override string Name => "influence_receiving_core";
-    //    public override void Initialize(Blackboard blackboard)
-    //    {
-    //        base.Initialize(blackboard);
-    //        foreach (var r in _receptors)
-    //        {
-    //            r?.Initialize(blackboard);
-    //        }
-    //        blackboard.TryRegisterField(CharacterBlackboardFields.Character_Influence_Receiving_Core, this);
-    //    }
-    //    public T FindReceptor<T>() where T : IInfluenceReceptor
-    //    {
-    //        return (T)_receptors.FirstOrDefault(r => r is T);
-    //    }
-    //    public IInfluenceReceptor FindReceptor(string name)
-    //    {
-    //        return _receptors.FirstOrDefault(r => r.Name == name);
-    //    }
-    //    public void Update()
-    //    {
-    //        foreach (var r in _receptors)
-    //            if (r != null && r.Enabled)
-    //                r.Update();
-    //    }
-    //}
     public class CharacterCore : ComponentBase_MonoComponent, ICharacterComponent
     {
         [SerializeField]
@@ -61,8 +26,8 @@ namespace Tests.Characters
         WeaponCore _weaponCore;
         [SerializeField]
         CustomPlayerInput _input;
-        [SerializeField]
-        Target _target;
+
+        ICharacterDefinitions _definitions;
 
 
         CharacterAnimator _animator;
@@ -70,17 +35,20 @@ namespace Tests.Characters
         LocomotionCore _locomotionCore;
         EnvironmentCore _environmentCore;
 
-        InfluenceReceivingCore _influenceReceivingCore;
+        internal InfluenceCore influenceCore;
 
 
         CharacterBehavioursStatemachine _statemachine;
         CharacterBehavioursStateContext _context;
+        internal DiedState diedState;
 
         protected override void Awake()
         {
             base.Awake();
+            _definitions = GetComponent<ICharacterDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ICharacterDefinitions));
             _environmentCore = GetComponent<EnvironmentCore>() ?? throw new ComponentCantFindException(this.gameObject, typeof(EnvironmentCore));
             _locomotionCore = GetComponent<LocomotionCore>() ?? throw new ComponentCantFindException(this.gameObject, typeof(EnvironmentCore));
+            InitializeInfluenceCore();
 
             Initialize(new Blackboard());
         }
@@ -88,6 +56,7 @@ namespace Tests.Characters
         {
             if (_animator != null)
                 _animator.Enabled = true;
+
         }
         void Start()
         {
@@ -99,42 +68,31 @@ namespace Tests.Characters
 
             InitializeArmCore();
 
-            InitializeInfluenceCore();
 
-            InitializeStatemachine(_influenceReceivingCore);
+
+            InitializeStatemachine(influenceCore);
 
 
             _animator.InitializeArmsAnimation();
             _animator.InitializeStatemachine();
 
-            //InitializeLocomotionAnimator();
-        }
-        void Update()
-        {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.P))
-            {
-                var repecptor = _influenceReceivingCore.FindReceptor<StunReceptor>();
-                repecptor.TrySetValue(10f);
-                repecptor.Enabled = true;
-            }
         }
         void FixedUpdate()
         {
-            _influenceReceivingCore.Update();
+            influenceCore.Update();
             _statemachine.OnUpdate();
             _animator.Update();
-            //Debug.Log(_statemachine);
         }
         void OnDisable()
         {
             if (_animator != null)
                 _animator.Enabled = false;
         }
-
         void OnDestroy()
         {
             if (_animator != null)
                 _animator.Dispose();
+            this.Dispose();
         }
         void InitializeAnimator()
         {
@@ -163,29 +121,40 @@ namespace Tests.Characters
         }
         void InitializeInfluenceCore()
         {
-            var wrapper = new InfluenceReceivingCoreComponent();
-            _influenceReceivingCore = wrapper.component;
-            node.AddChild(wrapper.node);
+            var stun = new Stun();
+            var health = new Health();
+            influenceCore = new(stun, health);
         }
 
 
-        void InitializeStatemachine(InfluenceReceivingCore influenceCore)
+        void InitializeStatemachine(InfluenceCore influenceCore)
         {
-            var stunReceptor = influenceCore.FindReceptor<StunReceptor>() ?? throw new NullReferenceException("stunReceptor");
+            var stun = influenceCore.FindInfluence<Stun>();
+            var health = influenceCore.FindInfluence<Health>();
 
-            var stunningState = new StunningState(stunReceptor.timeline);
+            var stunningState = new StunningState(stun.timeline);
             var normalState = new NormalState(_locomotionCore, leftArm);
+            diedState = new DiedState(gameObject, obj => Destroy(obj), _definitions.DeathDurationTime);
             _context = new();
             _statemachine = new(_context, this.gameObject.name);
             _statemachine.AddState(normalState);
             _statemachine.AddState(stunningState);
-
-            var l_s = new BlendingTransition<object>(normalState, stunningState, () => stunReceptor.Enabled, null, 0.5f);
-            var s_l = new SubStatemachineTransition<object>(stunningState, normalState, _locomotionCore.movementStatemachine, () => !stunReceptor.Enabled, null, 0.5f, 0, 1);
+            _statemachine.AddState(diedState);
 
 
-            _statemachine.AddTransitionFor(l_s);
-            _statemachine.AddTransitionFor(s_l);
+            {
+                var l_s = new BlendingTransition<object>(normalState, stunningState, () => stun.Enabled, null, 0.5f);
+                var l_d = new BlendingTransition<object>(normalState, diedState, () => !health.IsAlive, null, 0.25f);
+                _statemachine.AddTransitionFor(l_s);
+                _statemachine.AddTransitionFor(l_d);
+            }
+
+            {
+
+                var s_l = new SubStatemachineTransition<object>(stunningState, normalState, _locomotionCore.movementStatemachine, () => !stun.Enabled, null, 0.5f, 0, 1);
+                var s_d = new BlendingTransition<object>(stunningState, diedState, () => !health.IsAlive, null, 0.25f);
+                _statemachine.AddTransitionFor(s_l);
+            }
         }
 
         public override void Initialize(Blackboard blackboard)
@@ -195,8 +164,7 @@ namespace Tests.Characters
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Camera_Main, _camera);
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Main, this.gameObject);
 
-
-            blackboard.TryReadValue<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Influence_Core, influenceCore);
 
             var rbody = GetComponent<Rigidbody>() ?? throw new ComponentCantFindException(this.gameObject, typeof(Rigidbody));
             blackboard.TryRegisterField(CharacterBlackboardFields.Rigidbody, rbody);

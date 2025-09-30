@@ -1,10 +1,9 @@
 ﻿using System;
-using Tests.Animations;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
-namespace Tests.Characters
+namespace Tests.Animations
 {
     internal class ControllerPlayable : AnimationPlayablePartBase
     {

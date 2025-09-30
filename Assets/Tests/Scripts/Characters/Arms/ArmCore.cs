@@ -8,6 +8,8 @@ using Tests.Characters.Arms.Weapons;
 using Tests.Input;
 using Tests.States;
 using Tests.Weapons;
+using TMPro.EditorUtilities;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Playables;
 using IArmWeaponDefinitions = Tests.Characters.Arms.Weapons.IArmWeaponDefinitions;
@@ -95,6 +97,9 @@ namespace Tests.Characters.Arms
             _definitions = GetComponent<ArmDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ArmDefinitions));
             animationDefinitions = GetComponent<ArmAnimationDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IArmAnimationDefinitions));
             _node = new(this);
+
+            if (_definitions.Part != HumanPartDof.LeftArm && _definitions.Part != HumanPartDof.RightArm)
+                throw new Exception("The part of definitions must is left arm or right arm.");
         }
 
         private void Start()
@@ -121,7 +126,8 @@ namespace Tests.Characters.Arms
         {
             this.Blackboard = blackboard;
 
-            if (!blackboard.TryReadValue<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph)) ;
+            if (!blackboard.TryReadValue<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph))
+                throw new Exception();
 
             var weaponDefinitions = _definitions.Weapon;
             var weaponMountPoint = FindMountPoint(weaponDefinitions.MountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.MountPointName);
@@ -164,6 +170,20 @@ namespace Tests.Characters.Arms
                 }
                 if (nw != null)
                 {
+                    var field = Guid.Empty;
+                    switch (_definitions.Part)
+                    {
+                        case HumanPartDof.LeftArm:
+                            field = CharacterBlackboardFields.Character_Weapon_LeftArm_Armed;
+                            break;
+                        case HumanPartDof.RightArm:
+                            field = CharacterBlackboardFields.Character_Weapon_RightArm_Armed;
+                            break;
+                    }
+                    if (_blackboard.Contains(field))
+                        _blackboard.TryWriteValue(field, nw);
+                    else
+                        _blackboard.TryRegisterField(field, nw);
                     armedWeaponController.ActivateBehaviourBy(nw);
                 }
 

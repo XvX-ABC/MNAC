@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Animations;
 using Tests.States;
 
 namespace Tests.Characters.Locomotion.Animations

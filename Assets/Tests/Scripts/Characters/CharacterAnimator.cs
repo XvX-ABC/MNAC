@@ -43,6 +43,26 @@ namespace Tests.Characters.Animations
 
         }
     }
+    internal class DiedState : CharacterAnimationStateBase
+    {
+        ControllerPlayable _controller;
+        IDeathAnimationDefinitions _definitions;
+        public DiedState(ITimeline timeline, ControllerPlayable controller, IDeathAnimationDefinitions definitions, bool enabled = true) : base("stunning", 0, enabled)
+        {
+            this.timeline = timeline ?? throw new ArgumentNullException(nameof(timeline));
+            _controller = controller ?? throw new ArgumentNullException(nameof(controller));
+            _definitions = definitions;
+        }
+        public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.FromPreviousStateTransitionBegin(currentTransition);
+            var clipLength = _definitions.ClipLength;
+            var m = clipLength / (timeline.Length <= 0 ? 1 : timeline.Length);
+            _controller.SetFloat(_definitions.Multiplier, m);
+            _controller.SetTrigger(_definitions.Trigger);
+
+        }
+    }
     internal partial class CharacterAnimator : ComponentBase, IDisposable
     {
         ICharacterAnimationDefinitions _definitions;
@@ -152,10 +172,13 @@ namespace Tests.Characters.Animations
         {
             if (!blackboard.TryReadValue<LocomotionCore>(CharacterBlackboardFields.Character_Locomotion_Core, out var locomotionCore))
                 throw new Exception();
-            if (!blackboard.TryReadValue<InfluenceReceivingCore>(CharacterBlackboardFields.Character_Influence_Receiving_Core, out var influenceCore))
+            if (!blackboard.TryReadValue<InfluenceCore>(CharacterBlackboardFields.Character_Influence_Core, out var influenceCore))
                 throw new Exception();
-            var stunReceptor = influenceCore.FindReceptor<StunReceptor>();
-            var stunningState = new StunningState(stunReceptor.timeline, _controller, _definitions.Stunning);
+            var stun = influenceCore.FindInfluence<Stun>() ?? throw new ArgumentNullException("stun");
+            var health = influenceCore.FindInfluence<Health>() ?? throw new ArgumentNullException("died");
+
+            var stunningState = new StunningState(stun.timeline, _controller, _definitions.Stunning);
+            var diedState = new DiedState(_core.diedState.Timeline, _controller, _definitions.Death);
 
             lanimator = locomotionCore.animator;
             var groundedMovement = new SubStatemachineState<object>(lanimator.statemachine, lanimator.groundedMovement, "groundMovement");
@@ -163,12 +186,20 @@ namespace Tests.Characters.Animations
             _statemachine = new();
             _statemachine.AddState(groundedMovement);
             _statemachine.AddState(stunningState);
+            _statemachine.AddState(diedState);
 
-            var g_s = new BlendingTransition<object>(groundedMovement, stunningState, () => stunReceptor.Enabled, null, 0);
-            _statemachine.AddTransitionFor(g_s);
-
-            var s_g = new BlendingTransition<object>(stunningState, groundedMovement, () => !stunReceptor.Enabled, null, 0);
-            _statemachine.AddTransitionFor(s_g);
+            {
+                var g_s = new BlendingTransition<object>(groundedMovement, stunningState, () => stun.Enabled, null, 0);
+                var g_d = new BlendingTransition<object>(groundedMovement, diedState, () => !health.IsAlive, null, 0);
+                _statemachine.AddTransitionFor(g_s);
+                _statemachine.AddTransitionFor(g_d);
+            }
+            {
+                var s_g = new BlendingTransition<object>(stunningState, groundedMovement, () => !stun.Enabled, null, 0);
+                var s_d = new BlendingTransition<object>(stunningState, diedState, () => !health.IsAlive, null, 0);
+                _statemachine.AddTransitionFor(s_g);
+                _statemachine.AddTransitionFor(s_d);
+            }
 
 
         }

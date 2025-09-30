@@ -8,5 +8,6 @@ namespace Tests.Characters.Animations
         public ICharacterArmAnimationDefinitions LeftArmDefinitions { get; }
         public ICharacterArmAnimationDefinitions RightArmDefinitions { get; }
         public IStunningAnimationDefinitions Stunning { get; }
+        public IDeathAnimationDefinitions Death { get; }
     }
 }
