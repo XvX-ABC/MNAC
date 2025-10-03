@@ -7,6 +7,7 @@ using Tests.States;
 using Tests.TPhysics;
 using Tests.TPhysics.Environment;
 using Tests.TPhysics.Locomotion;
+using Tests.Utilities.Composable;
 using UnityEditor.Rendering;
 using UnityEngine;
 

@@ -4,18 +4,6 @@ using Utilities.Timeline;
 
 namespace Tests.Interaction.Influence
 {
-    public class Health : InfluenceBase
-    {
-        float _minPoint;
-        float _point;
-        private float _maxPoint;
-
-        public float MaxPoint { get => _maxPoint; set => _maxPoint = value; }
-        public float MinPoint { get => _minPoint; set => _minPoint = value; }
-        public float Point { get => _point; set => _point = Mathf.Max(_minPoint, value); }
-        public override string Name => "health";
-        public bool IsAlive { get => _point <= _minPoint; }
-    }
     public class Stun : InfluenceBase
     {
         internal ITimeline timeline;

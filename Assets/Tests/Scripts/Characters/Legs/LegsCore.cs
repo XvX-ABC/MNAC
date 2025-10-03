@@ -1,4 +1,5 @@
 ﻿using Tests.TPhysics;
+using Tests.Utilities.Composable;
 using UnityEngine;
 
 namespace Tests.Characters.Legs

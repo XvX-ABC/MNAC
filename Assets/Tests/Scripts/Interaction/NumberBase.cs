@@ -25,7 +25,7 @@ namespace Tests.Interaction
 
         public void ReceivePoint(float point)
         {
-            point = Mathf.Clamp(point, INumerical.MINPOINT, maxPoint);
+            this.point += Mathf.Clamp(point, -this.point, maxPoint - point);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Utilities.Composable;
 
 namespace Tests.Characters
 {
@@ -21,7 +22,7 @@ namespace Tests.Characters
 
             Character_Influence_Core = Guid.NewGuid();
 
-            FieldChangeHandler = Guid.NewGuid();
+            FieldChangeHandler = MiddlewareFields.FieldChangeHandler;
             TargetsCatcher = Guid.NewGuid();
 
             Character_Input_Main = Guid.NewGuid();

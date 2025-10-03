@@ -7,6 +7,8 @@ using Tests.Behaviours.Arms.Weapons.Animations;
 using Tests.Characters.Arms.Weapons;
 using Tests.Input;
 using Tests.States;
+using Tests.Utilities.Blackboards;
+using Tests.Utilities.Composable;
 using Tests.Weapons;
 using TMPro.EditorUtilities;
 using UnityEditor.Rendering;
@@ -96,6 +98,7 @@ namespace Tests.Characters.Arms
             base.Awake();
             _definitions = GetComponent<ArmDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ArmDefinitions));
             animationDefinitions = GetComponent<ArmAnimationDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IArmAnimationDefinitions));
+         
             _node = new(this);
 
             if (_definitions.Part != HumanPartDof.LeftArm && _definitions.Part != HumanPartDof.RightArm)

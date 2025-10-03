@@ -4,6 +4,7 @@ using System;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.Input;
 using Tests.States;
+using Tests.Utilities.Composable;
 using Tests.Weapons;
 
 namespace Tests.Characters.Arms.Weapons.Launchers

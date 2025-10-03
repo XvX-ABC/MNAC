@@ -3,9 +3,11 @@ using Tests.Characters.Animations;
 using Tests.Characters.Arms;
 using Tests.Characters.Legs;
 using Tests.Characters.Locomotion;
+using Tests.Characters.UI;
 using Tests.Input;
 using Tests.Interaction.Influence;
 using Tests.States;
+using Tests.Utilities.Composable;
 using Tests.Weapons;
 using UnityEngine;
 using EnvironmentCore = Tests.Characters.Environment.EnvironmentCore;
@@ -13,7 +15,7 @@ using Stun = Tests.Interaction.Influence.Stun;
 
 namespace Tests.Characters
 {
-    public class CharacterCore : ComponentBase_MonoComponent, ICharacterComponent
+    public class CharacterCore : ComponentBase_MonoComponent, IComponent
     {
         [SerializeField]
         Camera _camera;
@@ -26,6 +28,8 @@ namespace Tests.Characters
         WeaponCore _weaponCore;
         [SerializeField]
         CustomPlayerInput _input;
+        [SerializeField]
+        UICore _uiCore;
 
         ICharacterDefinitions _definitions;
 
@@ -51,6 +55,8 @@ namespace Tests.Characters
             InitializeInfluenceCore();
 
             Initialize(new Blackboard());
+
+            InitializeUI();
         }
         void OnEnable()
         {
@@ -81,6 +87,7 @@ namespace Tests.Characters
         {
             influenceCore.Update();
             _statemachine.OnUpdate();
+            Debug.Log(_statemachine);
             _animator.Update();
         }
         void OnDisable()
@@ -125,7 +132,10 @@ namespace Tests.Characters
             var health = new Health();
             influenceCore = new(stun, health);
         }
-
+        void InitializeUI()
+        {
+            this.node.AddChild(_uiCore.node);
+        }
 
         void InitializeStatemachine(InfluenceCore influenceCore)
         {
@@ -134,7 +144,7 @@ namespace Tests.Characters
 
             var stunningState = new StunningState(stun.timeline);
             var normalState = new NormalState(_locomotionCore, leftArm);
-            diedState = new DiedState(gameObject, obj => Destroy(obj), _definitions.DeathDurationTime);
+            diedState = new DiedState(gameObject, obj => { Destroy(obj); Debug.Log("Destory"); }, _definitions.DeathDurationTime);
             _context = new();
             _statemachine = new(_context, this.gameObject.name);
             _statemachine.AddState(normalState);

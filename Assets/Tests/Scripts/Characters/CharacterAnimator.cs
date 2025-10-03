@@ -4,6 +4,7 @@ using Tests.Characters.Locomotion;
 using Tests.Characters.Locomotion.Animations;
 using Tests.Interaction.Influence;
 using Tests.States;
+using Tests.Utilities.Composable;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;

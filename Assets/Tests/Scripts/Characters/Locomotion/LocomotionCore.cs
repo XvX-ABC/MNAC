@@ -9,6 +9,7 @@ using UnityEngine;
 using LCore = Tests.TPhysics.Locomotion.LocomotionCore;
 using LContext = Tests.TPhysics.Locomotion.Context;
 using Tests.Characters.Locomotion.Animations;
+using Tests.Utilities.Composable;
 namespace Tests.Characters.Locomotion
 {
 

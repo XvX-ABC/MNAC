@@ -1,5 +1,6 @@
 ﻿using Tests.TPhysics;
 using Tests.TPhysics.Environment;
+using Tests.Utilities.Composable;
 using UnityEngine;
 using Core = Tests.TPhysics.Environment.EnvironmentCore;
 namespace Tests.Characters.Environment

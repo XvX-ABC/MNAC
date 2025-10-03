@@ -26,5 +26,20 @@ namespace Tests.Characters
             if (_obj != null)
                 _action?.Invoke(_obj);
         }
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            timeline.Restart();
+        }
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+            timeline.OnUpdate(Time.deltaTime);
+        }
+        public override void OnExit()
+        {
+            timeline.End();
+            base.OnExit();
+        }
     }
 }

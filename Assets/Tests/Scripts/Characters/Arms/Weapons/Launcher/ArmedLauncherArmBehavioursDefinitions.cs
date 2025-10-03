@@ -6,6 +6,10 @@ namespace Tests.Characters.Arms.Weapons.Launchers
     {
         [SerializeField]
         TargetsCatcherDefinitions targetsCatcher;
+        [SerializeField]
+        TargetsCatcherDefinitions_V0 targetsCatcherV0;
         public ITargetsCatcherDefinitions TargetsCatcher => targetsCatcher;
+
+        public ITargetsCatcherDefinitions_V0 TargetsCatcher_V0 => targetsCatcherV0;
     }
 }

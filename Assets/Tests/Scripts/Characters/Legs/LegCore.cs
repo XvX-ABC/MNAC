@@ -3,6 +3,7 @@ using RootMotion.FinalIK;
 using System;
 using Tests.Behaviours.Foots;
 using Tests.TPhysics;
+using Tests.Utilities.Composable;
 using UnityEngine;
 
 namespace Tests.Characters.Legs

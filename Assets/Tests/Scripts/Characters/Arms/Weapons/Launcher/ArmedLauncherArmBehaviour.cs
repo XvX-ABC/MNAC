@@ -7,6 +7,7 @@ using Tests.Characters.Locomotion;
 using Tests.Input;
 using Tests.TPhysics;
 using Tests.TPhysics.Environment;
+using Tests.Utilities.Composable;
 using Tests.Weapons;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -23,6 +24,7 @@ namespace Tests.Characters.Arms.Weapons.Launchers
 
         AimIK _aimIK;
         TargetCatcher _targetsCatcher;
+        //TargetsCatcher_V0 _targetsCatcher;
         public override WeaponType Type => WeaponType.Launcher;
 
         public override IWeapon Weapon { get => _behaviour.Weapon; set => _behaviour.Weapon = value; }
@@ -50,6 +52,7 @@ namespace Tests.Characters.Arms.Weapons.Launchers
             _animationDefinitions = GetComponent<IArmedLauncherArmAnimationDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IArmedLauncherArmAnimationDefinitions));
             _aimIK = GetComponent<AimIK>();
             _targetsCatcher = new(_definitions.TargetsCatcher);
+            //_targetsCatcher = new(_definitions.TargetsCatcher_V0);
         }
         public override void Initialize(Blackboard blackboard)
         {
@@ -70,12 +73,20 @@ namespace Tests.Characters.Arms.Weapons.Launchers
             if (!blackboard.TryReadValue<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph))
                 throw new Exception();
             blackboard.TryReadValue<IInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
+
             this.node.AddChild(_targetsCatcher.node);
 
             _animator = new(graph, _aimIK, rbody, world, groundDetector, locomotionCore, _definitions, _animationDefinitions, _targetsCatcher, input);
             _behaviour = new(_definitions, _animator);
             _behaviour.TargetsCatcher = _targetsCatcher;
             _behaviour.Input = input;
+
+            //StartCoroutine(_targetsCatcher.FilterUpdateWithCoroutine());
+            //StartCoroutine(_targetsCatcher.CatcherUpdateWithCoroutine());
+        }
+        private void Update()
+        {
+            //_targetsCatcher.Update();
         }
         private void FixedUpdate()
         {

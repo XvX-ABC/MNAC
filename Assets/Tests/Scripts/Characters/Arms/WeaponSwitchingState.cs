@@ -3,6 +3,7 @@ using Tests.Animations;
 using Tests.Behaviours;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.States;
+using Tests.Utilities.Composable;
 using Tests.Weapons;
 using UnityEngine;
 

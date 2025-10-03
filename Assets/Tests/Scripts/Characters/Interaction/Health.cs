@@ -1,5 +1,5 @@
 ﻿using Tests.Interaction;
-using Tests.Interaction.Influence;
+using UnityEngine;
 using HealthInfluence = Tests.Interaction.Influence.Health;
 namespace Tests.Characters.Interaction
 {

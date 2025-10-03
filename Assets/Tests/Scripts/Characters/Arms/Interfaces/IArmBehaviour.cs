@@ -1,6 +1,8 @@
-﻿namespace Tests.Characters.Arms
+﻿using Tests.Utilities.Composable;
+
+namespace Tests.Characters.Arms
 {
-    public interface IArmBehaviour : ICharacterComponent
+    public interface IArmBehaviour : IComponent
     {
     }
 }

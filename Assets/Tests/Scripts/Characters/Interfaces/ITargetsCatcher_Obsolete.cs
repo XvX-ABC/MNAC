@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Tests.Input;
 using Tests.TPhysics;
+using Tests.Utilities.Composable;
 using UnityEngine;
 
 namespace Tests.Characters

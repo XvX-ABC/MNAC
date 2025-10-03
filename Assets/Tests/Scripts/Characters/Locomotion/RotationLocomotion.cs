@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Tests.Blackboards;
 using Tests.Input;
 using Tests.Interaction;
 using Tests.TPhysics.Locomotion;
+using Tests.Utilities.Blackboards;
+using Tests.Utilities.Composable;
 using UnityEngine;
 
 namespace Tests.Characters.Locomotion

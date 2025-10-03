@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,12 +34,19 @@ namespace Tests.Interaction
             if (targets.Remove(target))
                 targetsChangedAction?.Invoke(targets);
         }
-        protected virtual void ClearAllTargets()
+        protected virtual void CleanAllTargets()
         {
             targets.TrimExcess();
             targets.Clear();
             targetsChangedAction?.Invoke(targets);
         }
-        public abstract void Update();
+        public virtual void Update()
+        {
+
+        }
+        public virtual IEnumerator UpdateWithCoroutine()
+        {
+            yield return null;
+        }
     }
 }

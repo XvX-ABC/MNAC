@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.States;
+using Tests.Utilities.Composable;
 using Tests.Weapons;
 
 namespace Tests.Characters.Arms.Weapons
