@@ -1,0 +1,154 @@
+﻿using System;
+using System.Collections.Generic;
+using Tests.Behaviours.Arms.Weapons.Sword.Animations;
+using Tests.Input;
+using Tests.Interaction;
+using Tests.Interaction.Targets;
+using Tests.States;
+using Tests.TPhysics.Locomotion;
+using Tests.Weapons;
+using UnityEngine;
+
+namespace Tests.Behaviours.Arms.Weapons.Sword
+{
+    internal class ArmedSwordArmBehaviour : ArmedWeaponArmBehaviourBase
+    {
+        IArmedSwordArmBehaviourDefinitions _definitions;
+        ISword _sword;
+        ISphereTriggerTargetsCatcher _targetsCatcher;
+
+        ITarget _target;
+
+        internal Idle idle;
+        internal BoostingHelper boostingHelper;
+        internal Boosting boosting;
+        internal SlashHelper slashHelper;
+        internal Slash slash;
+        internal WithCallbackPlayableStatemachine<object> statemachine;
+
+        BoostingLocomotion _boostingLocomotion;
+        IInput _input;
+
+        internal ArmedSwordArmAnimator animator;
+        ArmedSwordArmBehaviourState _state;
+        public override WeaponType Type => WeaponType.Sword;
+
+        public override IWeapon Weapon
+        {
+            get => _sword;
+            set
+            {
+                if (value is ISword sword)
+                {
+                    _sword = sword;
+                    if (_targetsCatcher != null)
+                        _targetsCatcher.Radius = _sword.SlashRadius * 0.5f;
+                }
+                else
+                    throw new Exception("Weapon");
+            }
+        }
+
+        public override IArmedWeaponArmAnimationPlayablePart Animator => animator;
+
+        public override Func<bool> EntryFunc => () => this.enabled;
+
+        public override Func<bool> ExitFunc => () => !this.enabled;
+
+        public override IWithCallbackPlayableState<object> State => _state;
+
+        public ISphereTriggerTargetsCatcher TargetsCatcher
+        {
+            get => _targetsCatcher;
+            set
+            {
+                if (_targetsCatcher != null)
+                {
+                    _targetsCatcher.TargetsChangedAction -= WhenTargetsChanged;
+                }
+                if (value != null)
+                    value.TargetsChangedAction += WhenTargetsChanged;
+                value.Radius = _sword == null ? 0 : _sword.SlashRadius;
+                _targetsCatcher = value;
+
+                boosting.TargetsCatcher = _targetsCatcher;
+            }
+        }
+
+        //TODO: 删除定义中增量速度相关内容
+        public ArmedSwordArmBehaviour(IArmedSwordArmBehaviourDefinitions definitions, LocomotionCore locomotionCore, Camera camera, IInput input)
+        {
+            _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
+            var boostingDefinitions = _definitions.Boosting;
+            _boostingLocomotion = new BoostingLocomotion(boostingDefinitions.MaxSpeed, 0);
+            _input = input ?? throw new ArgumentNullException(nameof(input));
+
+
+            InitializeStates(locomotionCore, _boostingLocomotion, _input, camera ?? throw new ArgumentNullException(nameof(camera)), definitions);
+
+            InitializeStatemachine();
+
+        }
+        public ArmedSwordArmBehaviour(IArmedSwordArmBehaviourDefinitions definitions, BoostingHelper boostingHelper, SlashHelper slashHelper, ArmedSwordArmAnimator animator)
+        {
+            _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
+
+            this.animator = animator ?? throw new ArgumentNullException(nameof(animator));
+
+            InitializeStates(boostingHelper, slashHelper);
+
+            InitializeStatemachine();
+
+        }
+        void InitializeStates(LocomotionCore locomotionCore, BoostingLocomotion locomotion, IInput input, Camera camera, IArmedSwordArmBehaviourDefinitions definitions)
+        {
+            idle = new();
+            boostingHelper = new(locomotionCore, camera, input, definitions.Boosting);
+            boosting = boostingHelper.state;
+        }
+        void InitializeStates(BoostingHelper boostingHelper, SlashHelper slashHelper)
+        {
+            idle = new();
+            this.boostingHelper = boostingHelper ?? throw new ArgumentNullException(nameof(boostingHelper));
+            boosting = this.boostingHelper.state;
+            this.slashHelper = slashHelper ?? throw new ArgumentNullException(nameof(slashHelper));
+            slash = this.slashHelper.state;
+        }
+        void InitializeStatemachine()
+        {
+            statemachine = new("armed_sword_statemachine");
+            statemachine.AddState(idle);
+            statemachine.AddState(boosting);
+            statemachine.AddState(slash);
+
+
+            statemachine.AddTransitionFor(idle, boosting, () => boostingHelper.EntryEvent);
+
+            //var b_i = new BlendingTransition<object>(boosting, idle, null, null, 0, 0, 1, InterruptionSource.None);
+            var b_s = new BlendingTransition<object>(boosting, slash, () => slashHelper.EntryEvent, null, 0);
+            statemachine.AddTransitionFor(b_s);
+
+            var b_i = new BlendingTransition<object>(boosting, idle, () => boostingHelper.ExitEvent, null, 0, 0, BlendingTransition<object>.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.None);
+            statemachine.AddTransitionFor(b_i);
+
+
+            var s_i = new BlendingTransition<object>(slash, idle, () => slashHelper.ExitEvent, null, 0, 0, -1, InterruptionSource.None);
+            statemachine.AddTransitionFor(s_i);
+
+            _state = new(this);
+        }
+        void WhenTargetsChanged(IList<ITarget> targets)
+        {
+            slashHelper.Target = targets.Count > 0 ? targets[^1] : null;
+            Debug.Log(_targetsCatcher);
+        }
+        public void Update()
+        {
+            boostingHelper.Update();
+        }
+        public void FixedUpdate()
+        {
+            animator.Update();
+        }
+    }
+}

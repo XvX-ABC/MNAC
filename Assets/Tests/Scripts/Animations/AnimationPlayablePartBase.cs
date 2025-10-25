@@ -24,9 +24,13 @@ namespace Tests.Animations
 
         protected AnimationPlayablePartBase(PlayableGraph graph)
         {
-            node = new(this);
+            node = CreateNode();
             outputSetting = new OutputSetting();
             this.graph = graph;
+        }
+        protected virtual AnimationPlayableNode CreateNode()
+        {
+            return new(this);
         }
         protected void UpdateOutputSetting(IOutputSetting setting)
         {
@@ -37,6 +41,10 @@ namespace Tests.Animations
         }
 
         public virtual void Dispose()
+        {
+        }
+
+        ~AnimationPlayablePartBase()
         {
             if (!playablePart.IsNull())
                 playablePart.Destroy();

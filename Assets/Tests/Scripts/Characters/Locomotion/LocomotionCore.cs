@@ -10,6 +10,7 @@ using LCore = Tests.TPhysics.Locomotion.LocomotionCore;
 using LContext = Tests.TPhysics.Locomotion.Context;
 using Tests.Characters.Locomotion.Animations;
 using Tests.Utilities.Composable;
+using Tests.Utilities.Blackboards;
 namespace Tests.Characters.Locomotion
 {
 
@@ -99,7 +100,7 @@ namespace Tests.Characters.Locomotion
 
         void InitializeLocomotionCore(Rigidbody rbody, IGroundDetector groundDetector, World world)
         {
-            _core = new LCore(rbody, groundDetector, new VerticalPostureEvaluator(definitions.PostureEvaluationFramesQuantity));
+            _core = new LCore(world, rbody, groundDetector, new VerticalPostureEvaluator(definitions.PostureEvaluationFramesQuantity));
             _core.World = world;
         }
         void InitializeRotation(Camera camera, Rigidbody rigidbody)
@@ -129,18 +130,18 @@ namespace Tests.Characters.Locomotion
             statemachine.AddTransitionFor(movementStatemachine, quickBoosting, () => quickBoostingHelper.TriggerEvent);
             statemachine.AddTransitionFor(movementStatemachine, jump, () => groundDetector.Grounds.Count > 0 && _input.Jump);
 
-            var j_m = new BlendingTransition<object>(jump, movementStatemachine, () => _core.Context.VerticalPosture == VerticalPosture.Descending, null, 0, 0, 1);
+            var j_m = new BlendingTransition<object>(jump, movementStatemachine, () => _core.Context.verticalPosture == VerticalPosture.Descending, null, 0, 0, 1);
             var j_qb = new BlendingTransition<object>(jump, quickBoosting, () => quickBoostingHelper.TriggerEvent, null, 0, 0);
             statemachine.AddTransitionFor(j_qb);
             statemachine.AddTransitionFor(j_m);
 
 
-            var qb_b = new SubStatemachineTransition<object>(quickBoosting, movementStatemachine, boosting, null, null, 0, 0, 1);
+            var qb_b = new SubStatemachineTransition<object>(quickBoosting, movementStatemachine, boosting, null, null, 0, 0, 1, InterruptionSource.None);
             statemachine.AddTransitionFor(qb_b);
 
 
 
-            _core.EvaluationModules = ArrayExtensions.Append_D(_core.EvaluationModules, statemachine);
+            //_core.EvaluationModules = ArrayExtensions.Append_D(_core.EvaluationModules, statemachine);
 
 
         }
@@ -159,5 +160,15 @@ namespace Tests.Characters.Locomotion
             //Debug.Log(statemachine);
 
         }
+
+        private void OnDrawGizmos()
+        {
+            var pos = this.transform.position;
+            var fpos = pos + this.transform.forward * 500;
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(pos, fpos);
+        }
+
     }
 }

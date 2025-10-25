@@ -1,5 +1,4 @@
 ﻿using Tests.Animations;
-using Tests.Behaviours.Arms.Weapons;
 using UnityEngine.Playables;
 
 namespace Tests.Behaviours.Arms.Weapons.Animations
@@ -14,12 +13,18 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
             set
             {
                 _animator = value;
-                this.outputSetting = animator.OutputSetting as OutputSetting;
-                playablePart = _animator.GetPlayablePart(graph);
+                if (value != null)
+                {
+                    this.outputSetting = animator.OutputSetting as OutputSetting;
+                    playablePart = _animator.GetPlayablePart(graph);
+                }
+                else
+                {
+                    this.outputSetting = null;
+                    playablePart = Playable.Null;
+                }
             }
         }
-        //public override bool Enabled => _animator.Enabled;
-        //public override IOutputSetting OutputSetting { get => _animator.OutputSetting; set => _animator.OutputSetting = value; }
         public ArmedWeaponPlayablePart(PlayableGraph graph) : base(graph)
         {
         }

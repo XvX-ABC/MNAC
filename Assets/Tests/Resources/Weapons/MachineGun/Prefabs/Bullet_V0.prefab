@@ -151,7 +151,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5491845722830817326}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 662768966a0a4904a8aed88bcf2335e4, type: 3}
+  m_Script: {fileID: 11500000, guid: 70dfbda70f540c24b96d5074b380cce4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &3208738258081403210
@@ -176,14 +176,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5491845722830817326}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed798d62c2c20954da5e25e48b37eca8, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c06b18f465c85e40ac5facc3552e35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _hitEffect: {fileID: 8335714546119776495}
   _projectileEffect: {fileID: 817468974133546940}
   _mask:
     serializedVersion: 2
-    m_Bits: 127
+    m_Bits: 4294967295
 --- !u!1001 &466567056804824859
 PrefabInstance:
   m_ObjectHideFlags: 0

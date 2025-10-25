@@ -392,7 +392,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 1400f1f946b256a49af4cd982c7541b4,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5232627393660835655, guid: 1400f1f946b256a49af4cd982c7541b4,
         type: 3}
@@ -473,9 +473,11 @@ MonoBehaviour:
     type: 3}
   _magazinePosition: {x: 0, y: -0.61, z: 0}
   _muzzlePosition: {x: 0, y: 0, z: 3.59}
-  _ammoReservesQuantity: 2000
-  _ammoInMagazineQuantity: 500
+  _ammoReservesQuantity: 200
+  _ammoInMagazineQuantity: 10
   _reloadDurationTime: 1
+  _targetLock:
+    _radius: 0.3
 --- !u!114 &6268007492913773410
 MonoBehaviour:
   m_ObjectHideFlags: 0

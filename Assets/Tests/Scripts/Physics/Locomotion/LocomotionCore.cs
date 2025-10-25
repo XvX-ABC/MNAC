@@ -67,12 +67,12 @@ namespace Tests.TPhysics.Locomotion
         IEvaluationModule[] _evaluationModules;
         Wrapper[] _moduleWrappers;
         Context _context;
-        public LocomotionCore([NotNull] Rigidbody rbody, [NotNull] IGroundDetector groundDetector, params IEvaluationModule[] evaluationModules) : this(new(new TPhysics.Context(rbody), groundDetector), evaluationModules)
+        public LocomotionCore(World world, [NotNull] Rigidbody rbody, [NotNull] IGroundDetector groundDetector, params IEvaluationModule[] evaluationModules) : this(new(world, new TPhysics.Context(rbody), groundDetector), evaluationModules)
         {
         }
         public LocomotionCore(Context context, params IEvaluationModule[] evaluationModules)
         {
-            if (context.rbody == null || context.GroundDetector == null)
+            if (context.rbody == null || context.groundDetector == null)
                 throw new ArgumentException("This context is invalidate");
             _context = context;
             EvaluationModules = evaluationModules;
@@ -84,6 +84,7 @@ namespace Tests.TPhysics.Locomotion
             set
             {
                 _world = value == null ? World.Default : value;
+                _context.world = _world;
                 if (_moduleWrappers != null)
                     for (int i = 0; i < _moduleWrappers.Length; i++)
                     {

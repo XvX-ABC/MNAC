@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tests.Assets;
 using Tests.Weapons;
+using Tests.Weapons.Launcher;
 using Tests.Weapons.MissileLauncher;
 using UnityEngine;
 
@@ -43,6 +44,8 @@ namespace Tests.Weapons.MultiMissileLauncher
 
         public AssetDefinitions OriginAssetDefinitions { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public AssetDefinitions NumericalAssetDefinitions { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public ITargetLockDefinitions TargetLock => throw new NotImplementedException();
 
         public void LoadOrigin()
         {

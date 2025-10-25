@@ -7,7 +7,6 @@ using Utilities.Timeline;
 
 namespace Tests.Characters.Locomotion.Animations
 {
-    //TODO: quick boostring 和 jump 可以向上提取一个共同基类
     internal class QuickBoostingState : MovementState
     {
         protected ILocomotionAnimatorDefinitions definitions;

@@ -12,10 +12,10 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
         Vector2 _horizontalVelocity;
         string _velocity_x;
         string _velocity_y;
-        Rigidbody _rbody;
-        World _world;
         float _maxSpeed;
         float _accelerationSpeed;
+        Rigidbody _rbody;
+        World _world;
         IGroundDetector _groundDetector;
         public Idle(Rigidbody rbody, World world, IGroundDetector groundDetector, ControllerPlayable controller, float maxSpeed, float accelerationSpeed, string velocity_x, string velocity_y, bool enabled = true) : base(controller, "idle", 0, enabled)
         {

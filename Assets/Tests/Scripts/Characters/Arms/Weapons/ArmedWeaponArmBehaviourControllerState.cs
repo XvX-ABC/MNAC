@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.States;
+using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using Tests.Weapons;
+using UnityEngine;
 
 namespace Tests.Characters.Arms.Weapons
 {
@@ -33,7 +35,7 @@ namespace Tests.Characters.Arms.Weapons
 
         public void UnactivateBehaviourBy(IWeapon weapon)
         {
-            controller.ActivateBehaviourBy(weapon);
+            controller.UnactivateBehaviourBy(weapon);
         }
 
         public override void Initialize(Blackboard blackboard)

@@ -8,8 +8,6 @@ using Tests.Interaction;
 using Tests.States;
 using Tests.TPhysics.Environment;
 using Tests.Weapons.Launcher;
-using TMPro.EditorUtilities;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
 using World = Tests.TPhysics.World;
@@ -37,6 +35,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
         internal AmmoLoad reload;
         internal WithCallbackPlayableStatemachine<object> statemachine;
         internal ArmedLauncherAnimationState state;
+        //TODO: 不该从LocomotionCore.definitions获取速度，将LocomotionCore修改为速度字段
         public ArmedLauncherArmAnimator(
             PlayableGraph graph,
             AimIK aimIK,

@@ -97,7 +97,7 @@ namespace Tests.TPhysics.Locomotion
             var v = this.world.InverseTransformVector(context.CurrentVelocity);
             _data[_sampleQuantity - 1] = v;
             _data.HeadIndex++;
-            context.VerticalPosture = Evaluate();
+            context.verticalPosture = Evaluate();
             return context;
         }
     }

@@ -110,7 +110,7 @@ namespace Utilities.Timeline
         {
             isRunning = false;
         }
-        public void EarlyEnd()
+        public void EndEarly()
         {
             if (isLoop)
                 throw new NotSupportedException("The loop timeline was not supported early end.");

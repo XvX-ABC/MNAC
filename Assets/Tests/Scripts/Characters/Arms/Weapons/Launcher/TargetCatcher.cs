@@ -2,24 +2,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using Tests.Characters.Locomotion;
+using Tests.Characters.UI;
 using Tests.Input;
 using Tests.Interaction;
+using Tests.UI;
+using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
 
 namespace Tests.Characters.Arms.Weapons.Launchers
 {
-    public class TargetsCatcher_V0 : ComponentBase, ITargetsCatcher
+    public class ScreenCircleTargetsCatcher : ComponentBase, ITargetsCatcher
     {
         GameObjsInScreenFilter _filter;
-        CircleRangeTargetsCatcher _catcher;
+        Tests.Interaction.ScreenCircleTargetsCatcher _catcher;
+        RingCatcher _ringCatcher;
+        TargetsDisplay _targetDisplay;
+        Camera _camera;
 
         IInput _input;
 
         ITargetsCatcherDefinitions_V0 _definitions;
 
         GameObject _actorObj;
-        public TargetsCatcher_V0(ITargetsCatcherDefinitions_V0 definitions)
+        public ScreenCircleTargetsCatcher(ITargetsCatcherDefinitions_V0 definitions)
         {
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
         }
@@ -28,7 +34,27 @@ namespace Tests.Characters.Arms.Weapons.Launchers
         public IReadOnlyList<ITarget> Targets => _catcher.Targets;
 
         public Action<IList<ITarget>> TargetsChangedAction { get => _catcher.TargetsChangedAction; set => _catcher.TargetsChangedAction = value; }
-        internal CircleRangeTargetsCatcher catcher
+        public float CatchingRadius
+        {
+            get => _catcher.Radius;
+            set
+            {
+                _catcher.Radius = value;
+            }
+        }
+        public override bool Enabled
+        {
+            get => base.Enabled;
+            //set => base.Enabled = value;
+            set
+            {
+                base.Enabled = value;
+                _catcher.Enabled = value;
+                _ringCatcher.HIde = !value;
+                _filter.enabled = value;
+            }
+        }
+        internal Tests.Interaction.ScreenCircleTargetsCatcher catcher
         {
             get
             {
@@ -40,20 +66,44 @@ namespace Tests.Characters.Arms.Weapons.Launchers
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            if (!blackboard.TryReadValue<Camera>(CharacterBlackboardFields.Character_Camera_Main, out var camera))
+            if (!blackboard.TryReadValue<Camera>(CharacterBlackboardFields.Character_Camera_Main, out _camera))
                 throw new Exception();
             if (!blackboard.TryReadValue<IInput>(CharacterBlackboardFields.Character_Input_Main, out _input))
                 throw new Exception();
             if (!blackboard.TryReadValue<GameObject>(CharacterBlackboardFields.Character_Obj_Main, out _actorObj))
                 throw new Exception();
-            _filter = new(_definitions.CatchingObjsTag, camera, _definitions.FilterCountOneFrame);
-            _catcher = new(_filter.ObjsInScreen, _actorObj, _definitions.TargetsMask, _definitions.FilterCountOneFrame);
+            blackboard.TryReadUIValueOrThrowException(CharacterUIBlackboardFields.Catcher_Ring, out _ringCatcher);
+            blackboard.TryReadUIValueOrThrowException(CharacterUIBlackboardFields.Targets_Display, out _targetDisplay);
+            _filter = new(_definitions.CatchingObjsTag, _camera, _definitions.FilterCountOneFrame);
+            _catcher = new(_filter.ObjsInScreen, _actorObj, _camera, _definitions.TargetsMask, _definitions.FilterCountOneFrame);
+
+            _ringCatcher.Camera = _camera;
+
+            this.Enabled = base.Enabled;
+        }
+        void ShowAllWaitingForSelectObjs()
+        {
+            if (_filter.ObjsInScreen.Count == 0)
+                return;
+            var obj = _filter.ObjsInScreen[0];
+            _targetDisplay.Activated = obj != null;
+            if (_targetDisplay.Activated)
+            {
+                _targetDisplay.TargetWorldPos = obj.transform.position;
+            }
         }
         public void Update()
         {
             _catcher.ActorPosition = _actorObj.transform.position;
             _catcher.MousePosition = _input.MousePosition;
-            _catcher.ViewPortRadius = _definitions.CatchingViewPortRadius;
+            UpdateRingCatcher();
+            ShowAllWaitingForSelectObjs();
+        }
+        void UpdateRingCatcher()
+        {
+            _ringCatcher.MousePosition = _input.MousePosition;
+            var pixelSize = _camera.pixelRect.size;
+            _ringCatcher.RingRadius = Mathf.Min(pixelSize.x, pixelSize.y) * _catcher.Radius;
         }
         public IEnumerator FilterUpdateWithCoroutine()
         {
@@ -66,13 +116,13 @@ namespace Tests.Characters.Arms.Weapons.Launchers
     }
     public class TargetCatcher : ComponentBase, ITargetsCatcher
     {
-        SimpleLeadingActorTargetsCather _catcher;
+        SimpleLeadingActorTargetsCatcher _catcher;
         ITargetsCatcherDefinitions _definitions;
         public TargetCatcher(ITargetsCatcherDefinitions definitions)
         {
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
         }
-        internal SimpleLeadingActorTargetsCather catcher
+        internal SimpleLeadingActorTargetsCatcher catcher
         {
             get
             {
@@ -86,7 +136,6 @@ namespace Tests.Characters.Arms.Weapons.Launchers
         public Action<IList<ITarget>> TargetsChangedAction { get => catcher.TargetsChangedAction; set => catcher.TargetsChangedAction = value; }
 
         public override string Name => "launcher_targets_catcher";
-        // TODO: 逻辑需要优化
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);

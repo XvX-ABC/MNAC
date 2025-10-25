@@ -1,8 +1,11 @@
-﻿namespace Tests.Characters.Interaction
+﻿using Tests.Interaction.Influence;
+
+namespace Tests.Characters.Interaction
 {
     public interface ICharacter_T0 : ICharacter
     {
         public IStun Stun { get; }
         public IHealth HP { get; }
+        public InfluenceCore InfluenceCore { get; }
     }
 }

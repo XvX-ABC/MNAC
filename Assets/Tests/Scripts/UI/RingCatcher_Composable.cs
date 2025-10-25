@@ -1,6 +1,7 @@
 ﻿using BehaviorDesigner.Runtime.Tasks;
 using System;
 using Tests.Input;
+using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEditorInternal;
 using UnityEngine;
@@ -28,9 +29,8 @@ namespace Tests.UI
                 throw new NullReferenceException(nameof(_input));
             if (camera == null)
                 throw new NullReferenceException(nameof(camera));
-
             _catcher.Camera = camera;
-            blackboard.TryWriteValue(UIBlackboardFields.Catcher_Ring, _catcher);
+            blackboard.TryRegisterField(UIBlackboardFields.Catcher_Ring, _catcher);
 
         }
         private void Update()

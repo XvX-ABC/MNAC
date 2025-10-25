@@ -36,7 +36,7 @@ namespace Tests.Behaviours.Foots
         {
             var pos = _footObj.transform.position;
             var ray = new Ray(pos, -_worldUpward);
-            if (_weight != 0 && Physics.Raycast(ray, out var hitInfo))
+            if (_weight != 0 && Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, (1 << _layer)))
             {
                 _ik.solver.IKPositionWeight = _weight;
                 _ik.solver.IKRotationWeight = _weight;

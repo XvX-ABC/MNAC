@@ -67,7 +67,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         public override void OnUpdate()
         {
             base.OnUpdate();
-            Debug.Log(statemachine);
         }
 
         public override void ToNextStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)

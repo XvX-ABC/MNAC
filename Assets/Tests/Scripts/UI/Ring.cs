@@ -117,8 +117,9 @@ namespace Tests.UI
         }
         void UpdateRadius()
         {
-            _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _radius);
-            _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _radius);
+            var d = _radius * 2;
+            _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, d);
+            _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, d);
         }
     }
 }

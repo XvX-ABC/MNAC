@@ -1,5 +1,6 @@
 ﻿using System;
 using Tests.Input;
+using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
 
@@ -34,7 +35,6 @@ namespace Tests.UI
             {
                 var child = transform.GetChild(i);
                 var obj = child.gameObject;
-                Debug.Log("obj.name: " + obj.name);
                 if (obj.TryGetComponent<UIComponent>(out var component))
                     node.AddChild(component.node);
             }

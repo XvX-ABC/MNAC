@@ -4,6 +4,7 @@ using Tests.Characters.Locomotion;
 using Tests.Characters.Locomotion.Animations;
 using Tests.Interaction.Influence;
 using Tests.States;
+using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -138,7 +139,6 @@ namespace Tests.Characters.Animations
 
 
 
-
             root.AddChild(_layersMixer.Node);
             _layersMixer.Node.AddChild(_controller.Node);
 
@@ -152,13 +152,12 @@ namespace Tests.Characters.Animations
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Animation_Animator, _controller);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, _controller);
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Animation_Graph, graph);
         }
         public void InitializeArmsAnimation()
         {
             var leftArm = _core.leftArm;
-            Debug.Log("Initialize arm animation");
             if (leftArm != null)
             {
 
@@ -193,7 +192,7 @@ namespace Tests.Characters.Animations
                 var g_s = new BlendingTransition<object>(groundedMovement, stunningState, () => stun.Enabled, null, 0);
                 var g_d = new BlendingTransition<object>(groundedMovement, diedState, () => !health.IsAlive, null, 0);
                 _statemachine.AddTransitionFor(g_s);
-                _statemachine.AddTransitionFor(g_d);
+                //_statemachine.AddTransitionFor(g_d);
             }
             {
                 var s_g = new BlendingTransition<object>(stunningState, groundedMovement, () => !stun.Enabled, null, 0);
@@ -206,11 +205,9 @@ namespace Tests.Characters.Animations
         }
         public void Update()
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.X))
-                Debug.Log("debug point");
 
             _statemachine.OnUpdate();
-            //Debug.Log(lanimator.statemachine);
+            Debug.Log(lanimator.statemachine);
             //Debug.Log("character animator statemahcine: " + _statemachine);
         }
         public override void Dispose()

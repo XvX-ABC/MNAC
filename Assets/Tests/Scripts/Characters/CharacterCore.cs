@@ -1,12 +1,13 @@
-﻿using System;
-using Tests.Characters.Animations;
+﻿using Tests.Characters.Animations;
 using Tests.Characters.Arms;
 using Tests.Characters.Legs;
 using Tests.Characters.Locomotion;
+using Tests.Characters.MountPoints;
 using Tests.Characters.UI;
 using Tests.Input;
 using Tests.Interaction.Influence;
 using Tests.States;
+using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using Tests.Weapons;
 using UnityEngine;
@@ -19,6 +20,8 @@ namespace Tests.Characters
     {
         [SerializeField]
         Camera _camera;
+        [SerializeField]
+        CharacterMountPointManager _mountPointManager;
         [SerializeField]
         internal ArmCore leftArm;
 
@@ -56,7 +59,7 @@ namespace Tests.Characters
 
             Initialize(new Blackboard());
 
-            InitializeUI();
+
         }
         void OnEnable()
         {
@@ -66,6 +69,8 @@ namespace Tests.Characters
         }
         void Start()
         {
+            InitializeUI();
+
             InitializeEnvironmentCore();
 
             InitializeAnimator();
@@ -87,7 +92,6 @@ namespace Tests.Characters
         {
             influenceCore.Update();
             _statemachine.OnUpdate();
-            Debug.Log(_statemachine);
             _animator.Update();
         }
         void OnDisable()
@@ -156,7 +160,7 @@ namespace Tests.Characters
                 var l_s = new BlendingTransition<object>(normalState, stunningState, () => stun.Enabled, null, 0.5f);
                 var l_d = new BlendingTransition<object>(normalState, diedState, () => !health.IsAlive, null, 0.25f);
                 _statemachine.AddTransitionFor(l_s);
-                _statemachine.AddTransitionFor(l_d);
+                //_statemachine.AddTransitionFor(l_d);
             }
 
             {
@@ -178,6 +182,8 @@ namespace Tests.Characters
 
             var rbody = GetComponent<Rigidbody>() ?? throw new ComponentCantFindException(this.gameObject, typeof(Rigidbody));
             blackboard.TryRegisterField(CharacterBlackboardFields.Rigidbody, rbody);
+
+            _mountPointManager.Initialize(blackboard);
 
             this.blackboard = blackboard;
         }

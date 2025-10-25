@@ -99,7 +99,7 @@ namespace Tests.Locomotion
             if (_preparationTimeline.IsRunning)
                 _preparationTimeline.Pause();
             if (_ascendingTimeline.IsRunning)
-                _ascendingTimeline.EarlyEnd();
+                _ascendingTimeline.EndEarly();
             _state = State.OnGround;
             _jumpEndAction?.Invoke(_state, _context);
             _probeResults.TrimExcess();

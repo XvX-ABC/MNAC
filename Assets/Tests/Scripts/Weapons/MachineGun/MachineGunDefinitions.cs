@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Tests.Weapons.Launcher;
+using UnityEngine;
 
 namespace Tests.Weapons.MachineGuns
 {
@@ -20,6 +21,8 @@ namespace Tests.Weapons.MachineGuns
         ushort _ammoInMagazineQuantity;
         [SerializeField]
         float _reloadDurationTime;
+        [SerializeField]
+        TargetLockDefinitions _targetLock;
 
         public float PRS => _PRS;
 
@@ -42,5 +45,7 @@ namespace Tests.Weapons.MachineGuns
         public float LaunchDurationTime => 1 / _PRS;
 
         public Vector2 LaunchDelayRange => Vector2.zero;
+
+        public ITargetLockDefinitions TargetLock => _targetLock;
     }
 }

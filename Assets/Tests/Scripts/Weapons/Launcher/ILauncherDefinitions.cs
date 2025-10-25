@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Tests.Assets;
+﻿using Tests.Assets;
 using UnityEngine;
 
 namespace Tests.Weapons.Launcher
@@ -22,9 +20,13 @@ namespace Tests.Weapons.Launcher
         public void Load();
 #endif
     }
+    public interface ITargetLockDefinitions
+    {
+        public float ViewPortRadius { get; }
+    }
     public interface ILauncherDefinitions
     {
-     
+
         public GameObject AmmoOrigin { get; }
         public Vector3 MagazinePosition { get; }
         public Vector3 MuzzlePosition { get; }
@@ -34,5 +36,6 @@ namespace Tests.Weapons.Launcher
         public float ReloadDurationTime { get; }
         public float LaunchDurationTime { get; }
         public Vector2 LaunchDelayRange { get; }
+        public ITargetLockDefinitions TargetLock { get; }
     }
 }

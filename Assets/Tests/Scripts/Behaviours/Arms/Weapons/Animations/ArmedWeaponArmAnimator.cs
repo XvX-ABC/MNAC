@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Tests.Extensions;
 using Tests.Weapons;
+using UnityEngine;
 using UnityEngine.Playables;
 using IAnimationPlayablePart = Tests.Animations.IAnimationPlayablePart;
 
@@ -18,7 +18,7 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
         Action<bool, IAnimationPlayablePart> _stateAction;
         [Obsolete]
         internal Action<bool, IAnimationPlayablePart> stateAction { get => _stateAction; set => _stateAction = value; }
-        public ArmedWeaponPlayablePart PlayablePart { get => _playablePart; set => _playablePart = value; }
+        public ArmedWeaponPlayablePart PlayablePart { get => _playablePart; /*set => _playablePart = value;*/ }
 
         public ArmedWeaponArmAnimator(PlayableGraph graph, IArmedWeaponArmBehavioursController<T> controller)
         {
@@ -28,6 +28,11 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
             {
                 var name = kv.Key;
                 var animator = kv.Value.Animator;
+                if (animator == null)
+                {
+                    Debug.LogWarning(new NullReferenceException(nameof(animator)));
+                    continue;
+                }
                 _animators.Add(name, animator);
                 animator.GetPlayablePart(graph);
             }
@@ -45,6 +50,10 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
                 else
                     ArrayExtensions.Append(ref _activatedAnimators, animator);
                 _playablePart.animator = animator;
+            }
+            else
+            {
+                Debug.LogWarning($"No animator found for weapon '{name}'");
             }
         }
         void UnactivatedAnimator(IWeapon weapon, T behaviour)

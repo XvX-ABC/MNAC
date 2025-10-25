@@ -25,7 +25,6 @@ namespace Tests.Behaviours.Arms.Animations
 
         byte _statusNum = 3;
         internal bool playing;
-        bool _initialized;
 
         class ArmAnimationPlayingState : StateBase
         {
@@ -140,6 +139,8 @@ namespace Tests.Behaviours.Arms.Animations
             {
                 if (value == _statusNum)
                     return;
+                if ((value == 1 || value == 2) && !CheckArmedAnimator())
+                    value = 3;
                 UpdatePlayingState(value);
                 _statusNum = value;
             }
@@ -160,7 +161,7 @@ namespace Tests.Behaviours.Arms.Animations
         {
             public MixerPlayablePart(PlayableGraph graph) : base(graph)
             {
-                playablePart = AnimationMixerPlayable.Create(graph,2);
+                playablePart = AnimationMixerPlayable.Create(graph, 2);
             }
 
             //public override bool Initialize(PlayableGraph graph)
@@ -248,6 +249,10 @@ namespace Tests.Behaviours.Arms.Animations
         //{
         //    _initialized = false;
         //}
+        protected bool CheckArmedAnimator()
+        {
+            return armedAnimator.PlayablePart.animator != null;
+        }
         public void ReplaySwitching()
         {
             if (playing)

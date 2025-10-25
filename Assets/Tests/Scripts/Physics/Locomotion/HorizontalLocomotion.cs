@@ -1,15 +1,9 @@
-﻿using Locomotion;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
-using Ground = Tests.TPhysics.Environment.Ground;
+﻿using UnityEngine;
 
 namespace Tests.TPhysics.Locomotion
 {
     public class HorizontalLocomotion : LocomotionModuleBase
     {
-        [Obsolete]
-        IBaseDefinitions _definitions;
         Vector3 _horizontalVector;
         float _maxSpeed;
         float _acceleratedSpeed;
@@ -21,24 +15,18 @@ namespace Tests.TPhysics.Locomotion
         public float MaxSpeed
         {
             get => _maxSpeed;
-            set => _maxSpeed = value < 0 ? 0 : value;
+            set => _maxSpeed = Mathf.Max(0, value);
         }
         public float AcceleratedSpeed
         {
             get => _acceleratedSpeed;
-            set => _acceleratedSpeed = value < 0 ? 0 : value;
-        }
-
-        [Obsolete]
-        public HorizontalLocomotion(IBaseDefinitions definitions)
-        {
-            _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
+            set => _acceleratedSpeed = Mathf.Max(0, value);
         }
 
         public HorizontalLocomotion(float maxSpeed, float acceleratedSpeed, Vector3 horizontalVector)
         {
-            _maxSpeed = maxSpeed;
-            _acceleratedSpeed = acceleratedSpeed;
+            MaxSpeed = maxSpeed;
+            AcceleratedSpeed = acceleratedSpeed;
             _horizontalVector = horizontalVector;
         }
         public HorizontalLocomotion(float maxSpeed, float acceleratedSpeed) : this(maxSpeed, acceleratedSpeed, Vector3.zero)
@@ -49,9 +37,9 @@ namespace Tests.TPhysics.Locomotion
         Vector3 CalculateDirection(Context context)
         {
             var direction = _horizontalVector;
-            var grounds = context.GroundDetector.Grounds;
+            var grounds = context.groundDetector.Grounds;
 
-            var groundNormal = context.GroundDetector.GroundsNormal;
+            var groundNormal = context.groundDetector.GroundsNormal;
             if (groundNormal == Vector3.zero)
                 return direction;
 
@@ -60,15 +48,20 @@ namespace Tests.TPhysics.Locomotion
         }
         public override Context OnStart(Context context)
         {
-            return OnUpdate(context);
+            //return OnUpdate(context);
+            return context;
         }
-
         public override Context OnUpdate(Context context)
         {
+            //return OnUpdate_0(context);
+            return OnUpdate_1(context);
+        }
+        public Context OnUpdate_0(Context context)
+        {
             var up = world.Up;
-            if (context.GroundDetector.Grounds.Count > 0)
+            if (context.groundDetector.Grounds.Count > 0)
             {
-                up = context.GroundDetector.GroundsNormal;
+                up = context.groundDetector.GroundsNormal;
             }
             var direction = CalculateDirection(context);
 
@@ -78,57 +71,43 @@ namespace Tests.TPhysics.Locomotion
             var velocity = context.CurrentVelocity;
             var speed = velocity.magnitude;
 
+            //TODO: 完善实现方式
             var dv = _maxSpeed - speed;
-
-            var fs = Mathf.Min(dv < 0 ? 0 : dv, _acceleratedSpeed * Time.deltaTime);
+            var fs = Mathf.Max(0, dv);
+            if (_acceleratedSpeed > 0)
+                fs = Mathf.Min(fs, _acceleratedSpeed) * Time.deltaTime;
             context.CurrentVelocity += direction * fs;
+            Debug.Log($"dv: {dv}, as: {_acceleratedSpeed}, ms: {_maxSpeed}, fs: {fs},  iv: {(direction * fs).magnitude / Time.deltaTime}, velocity: {context.CurrentVelocity.magnitude}");
             return context;
         }
         public Context OnUpdate_1(Context context)
         {
             var up = world.Up;
-            if (context.GroundDetector.Grounds.Count > 0)
+            if (context.groundDetector.Grounds.Count > 0)
             {
-                up = context.GroundDetector.GroundsNormal;
+                up = context.groundDetector.GroundsNormal;
             }
             var direction = CalculateDirection(context);
-
-            if (direction == Vector3.zero)
-                return context;
-
-            var currentVelocity = Vector3.ProjectOnPlane(context.CurrentVelocity, up);
-            var currentSpeed = currentVelocity.magnitude;
-
-            var maxSpeed = _maxSpeed + _acceleratedSpeed;
-            currentSpeed = maxSpeed - Mathf.MoveTowards(currentSpeed, maxSpeed, _acceleratedSpeed * Time.deltaTime);
-            context.CurrentVelocity += direction * currentSpeed * Time.deltaTime;
+            context.CurrentVelocity = Accelerate(direction, context.CurrentVelocity, _acceleratedSpeed, _maxSpeed);
             return context;
         }
-        public Context OnUpdate_0(Context context)
+        Vector3 Accelerate(Vector3 accelDir, Vector3 prevVelocity, float accelerate, float maxSpeed)
         {
-            var worldUp = world.Up;
-            var direction = CalculateDirection(context);
-            if (direction == Vector3.zero)
-                return context;
-
-            var currentVelocity = context.CurrentVelocity;
-            var currentSpeed = context.CurrentSpeed;
-
-
-            var speed = _maxSpeed;
-            if (currentSpeed <= _maxSpeed)
+            float projVel = Vector3.Dot(prevVelocity, accelDir);
+            float accelVel = accelerate == 0 ? _maxSpeed : accelerate * Time.deltaTime;
+            if (projVel + accelVel > maxSpeed)
             {
-                speed = Mathf.MoveTowards(currentSpeed, speed, _acceleratedSpeed);
+                accelVel = maxSpeed - projVel;
             }
-            var velocity = direction * speed - currentVelocity;
-            context.CurrentVelocity += velocity;
-
-            return context;
+            var r = prevVelocity + accelDir * accelVel;
+            if (r.magnitude >= maxSpeed)
+                r = r.normalized * maxSpeed;
+            return r;
         }
-
         public override Context OnEnd(Context context)
         {
-            return OnUpdate(context);
+            //return OnUpdate(context);
+            return context;
         }
     }
 }

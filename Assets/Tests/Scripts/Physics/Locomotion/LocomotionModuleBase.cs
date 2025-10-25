@@ -1,4 +1,6 @@
-﻿using Unity.Properties;
+﻿using System;
+using System.Reflection;
+using Unity.Properties;
 using UnityEngine.Rendering;
 
 namespace Tests.TPhysics.Locomotion
@@ -6,12 +8,14 @@ namespace Tests.TPhysics.Locomotion
     public abstract class EvaluationModuleBase : IEvaluationModule
     {
         protected bool enabled;
+        [Obsolete]
         protected World world;
         public bool Enabled { get => enabled; set => enabled = value; }
         protected EvaluationModuleBase()
         {
             world = World.Default;
         }
+        [Obsolete]
         public virtual World World
         {
             get => world;

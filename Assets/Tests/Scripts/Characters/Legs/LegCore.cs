@@ -3,6 +3,7 @@ using RootMotion.FinalIK;
 using System;
 using Tests.Behaviours.Foots;
 using Tests.TPhysics;
+using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
 

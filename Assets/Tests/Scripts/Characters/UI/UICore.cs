@@ -1,5 +1,6 @@
 using BehaviorDesigner.Runtime.Tasks;
 using Tests.Input;
+using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
 using Core = Tests.UI.UICore;
@@ -21,6 +22,11 @@ namespace Tests.Characters.UI
             blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Character_Camera_Main, out var camera);
 
             _core.Initialize(camera, input);
+
+            //blackboard.TryRegisterField(CharacterUIBlackboardFields.Blackboard_Main, _core.Blackboard);
+            blackboard.TryRegisterUIBlackboard(_core.Blackboard);
+
+
         }
     }
 }

@@ -32,7 +32,6 @@ namespace Tests.Weapons.MachineGuns
 
         public Vector2 LaunchDelayRange => Vector2.zero;
 
-
-
+        public ITargetLockDefinitions TargetLock => throw new System.NotImplementedException();
     }
 }

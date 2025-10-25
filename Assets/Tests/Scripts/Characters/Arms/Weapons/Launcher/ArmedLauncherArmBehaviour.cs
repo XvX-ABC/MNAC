@@ -7,8 +7,9 @@ using Tests.Characters.Locomotion;
 using Tests.Input;
 using Tests.TPhysics;
 using Tests.TPhysics.Environment;
-using Tests.Utilities.Composable;
+using Tests.Utilities.Blackboards;
 using Tests.Weapons;
+using Tests.Weapons.Launcher;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -23,11 +24,23 @@ namespace Tests.Characters.Arms.Weapons.Launchers
         IArmedLauncherArmAnimationDefinitions _animationDefinitions;
 
         AimIK _aimIK;
-        TargetCatcher _targetsCatcher;
-        //TargetsCatcher_V0 _targetsCatcher;
+        ScreenCircleTargetsCatcher _targetsCatcher;
         public override WeaponType Type => WeaponType.Launcher;
 
-        public override IWeapon Weapon { get => _behaviour.Weapon; set => _behaviour.Weapon = value; }
+        public override IWeapon Weapon
+        {
+            get => _behaviour.Weapon;
+            //set => _behaviour.Weapon = value;
+            set
+            {
+                _behaviour.Weapon = value;
+                if (value is ILauncher launcher)
+                {
+                    var definitions = launcher.Definitions;
+                    _targetsCatcher.CatchingRadius = definitions.TargetLock.ViewPortRadius;
+                }
+            }
+        }
 
         public override IArmedWeaponArmAnimationPlayablePart Animator => _behaviour.Animator;
 
@@ -44,6 +57,17 @@ namespace Tests.Characters.Arms.Weapons.Launchers
                 return _behaviour;
             }
         }
+        public override bool Activated
+        {
+            get => base.Activated;
+            set
+            {
+                base.Activated = value;
+                //_targetsCatcher.Enabled = value;
+                UpdateTargetsCatcherFor(blackboard);
+                _targetsCatcher.Enabled = value;
+            }
+        }
         protected override void Awake()
         {
             base.Awake();
@@ -51,17 +75,14 @@ namespace Tests.Characters.Arms.Weapons.Launchers
             _definitions = GetComponent<IArmedLauncherArmBehaviourDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IArmedLauncherArmBehaviourDefinitions));
             _animationDefinitions = GetComponent<IArmedLauncherArmAnimationDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IArmedLauncherArmAnimationDefinitions));
             _aimIK = GetComponent<AimIK>();
-            _targetsCatcher = new(_definitions.TargetsCatcher);
-            //_targetsCatcher = new(_definitions.TargetsCatcher_V0);
+            //_targetsCatcher = new(_definitions.TargetsCatcher);
+            _targetsCatcher = new(_definitions.TargetsCatcher_V0);
         }
+
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
 
-            if (blackboard.Contains(CharacterBlackboardFields.TargetsCatcher))
-                blackboard.TryWriteValue(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
-            else
-                blackboard.TryRegisterField(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
             if (!blackboard.TryReadValue<Rigidbody>(CharacterBlackboardFields.Rigidbody, out var rbody))
                 throw new Exception();
             if (!blackboard.TryReadValue<World>(CharacterBlackboardFields.World, out var world))
@@ -81,16 +102,35 @@ namespace Tests.Characters.Arms.Weapons.Launchers
             _behaviour.TargetsCatcher = _targetsCatcher;
             _behaviour.Input = input;
 
-            //StartCoroutine(_targetsCatcher.FilterUpdateWithCoroutine());
-            //StartCoroutine(_targetsCatcher.CatcherUpdateWithCoroutine());
+            StartCoroutine(_targetsCatcher.FilterUpdateWithCoroutine());
+            StartCoroutine(_targetsCatcher.CatcherUpdateWithCoroutine());
+        }
+        public override void Dispose()
+        {
+            base.Dispose();
+            blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
+        }
+        void UpdateTargetsCatcherFor(Blackboard blackboard)
+        {
+            if (this.Activated)
+                WriteTargetsCatcherTo(blackboard);
+            else
+                blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher);
+        }
+        void WriteTargetsCatcherTo(Blackboard blackboard)
+        {
+            if (!blackboard.TryWriteValue(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher))
+                blackboard.TryRegisterField(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
         }
         private void Update()
         {
-            //_targetsCatcher.Update();
+            //if (UnityEngine.Input.GetKeyDown(KeyCode.V))
+            //    _targetsCatcher.Enabled = !_targetsCatcher.Enabled;
+            _targetsCatcher.Update();
         }
         private void FixedUpdate()
         {
-            _targetsCatcher.Update();
+            //_targetsCatcher.Update();
             _behaviour.FixedUpdate();
         }
     }

@@ -6,6 +6,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
     {
         public Idle() : base("idle", 0)
         {
+
         }
     }
 }

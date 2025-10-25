@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Utilities.Blackboards;
 using Tests.Utilities.MTrees;
 using UnityEngine;
 
@@ -9,6 +10,11 @@ namespace Tests.Utilities.Composable
         Guid _id;
         protected Blackboard blackboard;
         internal ComponentNode node;
+        protected ComponentBase_MonoComponent()
+        {
+            _id = Guid.NewGuid();
+            node = new(this);
+        }
         public Guid ID { get => _id; }
         public ICharacterComponentNode Node { get => node; }
         public virtual Blackboard Blackboard
@@ -23,8 +29,7 @@ namespace Tests.Utilities.Composable
         public bool Enabled { get => enabled; set => enabled = value; }
         protected virtual void Awake()
         {
-            _id = Guid.NewGuid();
-            node = new(this);
+        
         }
 
         public virtual void Initialize(Blackboard blackboard)

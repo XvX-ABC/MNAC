@@ -1,20 +1,19 @@
 ﻿using System;
 using Tests.Animations;
-using Tests.Behaviours;
 using Tests.Behaviours.Arms;
 using Tests.Behaviours.Arms.Animations;
 using Tests.Behaviours.Arms.Weapons.Animations;
 using Tests.Characters.Arms.Weapons;
+using Tests.Characters.MountPoints;
 using Tests.Input;
 using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using Tests.Weapons;
-using TMPro.EditorUtilities;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Playables;
 using IArmWeaponDefinitions = Tests.Characters.Arms.Weapons.IArmWeaponDefinitions;
+using MountPoint = Tests.Characters.MountPoints.MountPoint;
 
 namespace Tests.Characters.Arms
 {
@@ -98,7 +97,7 @@ namespace Tests.Characters.Arms
             base.Awake();
             _definitions = GetComponent<ArmDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ArmDefinitions));
             animationDefinitions = GetComponent<ArmAnimationDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IArmAnimationDefinitions));
-         
+
             _node = new(this);
 
             if (_definitions.Part != HumanPartDof.LeftArm && _definitions.Part != HumanPartDof.RightArm)
@@ -111,7 +110,7 @@ namespace Tests.Characters.Arms
             var n = _definitions.Weapon.Origins[0].Name;
 
         }
-        public MountPoint FindMountPoint(string name)
+        internal MountPoint FindMountPoint(string name)
         {
             foreach (var m in _mountPoints)
             {
@@ -134,6 +133,14 @@ namespace Tests.Characters.Arms
 
             var weaponDefinitions = _definitions.Weapon;
             var weaponMountPoint = FindMountPoint(weaponDefinitions.MountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.MountPointName);
+            weaponMountPoint.field = _definitions.Part switch
+            {
+                HumanPartDof.LeftArm => MountPointFields.Enum.Left_Arm_Hand_Weapon,
+                HumanPartDof.RightArm => MountPointFields.Enum.Right_Arm_Hand_Weapon,
+                _ => throw new Exception("The part of definitions must is left arm or right arm.")
+            };
+
+            blackboard.TryRegisterMountPoint(weaponMountPoint);
 
             InitializeSwitchingBehaviour(weaponDefinitions, weaponMountPoint);
 
@@ -142,7 +149,6 @@ namespace Tests.Characters.Arms
 
 
             InitializeChildNodes();
-
             this.animatorCore = new(graph, _definitions.Weapon, animationDefinitions.Weapon, new ArmedWeaponArmAnimator<IArmedWeaponArmBehaviour>(graph, this.armedWeaponController));
             InitializeStateMachine();
 
@@ -207,14 +213,14 @@ namespace Tests.Characters.Arms
 
 
             #region from idle to other states
-            transition_its = new(0, idle, weaponSwitching, () => _input.Supply, null, 0.07f, 0, 0, InterruptionSource.Next);
+            transition_its = new(0, idle, weaponSwitching, () => _input.Supply, null, 0.07f, 0, AnimationTransition.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.Next);
             stateMachine.AddTransitionFor(transition_its);
             stateMachine.AddTransitionFor(idle, armedWeaponController, 0.3f, () => armedWeaponController.EntryFunc(), null);
             #endregion
 
             #region from armed weapon to other states
 
-            transition_ats = new AnimationTransition(2, armedWeaponController, weaponSwitching, () => _input.Supply, null, 1, 0, -1, InterruptionSource.None);
+            transition_ats = new AnimationTransition(2, armedWeaponController, weaponSwitching, () => _input.Supply, null, 1, 0, AnimationTransition.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.None);
             stateMachine.AddTransitionFor(armedWeaponController, idle, 0.3f, () => armedWeaponController.ExitFunc(), null);
             stateMachine.AddTransitionFor(transition_ats);
             #endregion

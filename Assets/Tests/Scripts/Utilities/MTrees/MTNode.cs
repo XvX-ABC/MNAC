@@ -9,6 +9,11 @@ namespace Tests.Utilities.MTrees
         protected T value;
         public T Value { get => value; set => this.value = value; }
         public T ParentValue { get => Parent is IMTContainerNode<T> parentNode ? parentNode.Value : default; }
+        //public new virtual IMTContainerNode<T> Parent { get => (IMTContainerNode<T>)base.Parent; set => base.Parent = value; }
+        public IMTContainerNode<T> GetChild(int index)
+        {
+            return children[index] as IMTContainerNode<T>;
+        }
         protected MTContainerNode()
         {
         }

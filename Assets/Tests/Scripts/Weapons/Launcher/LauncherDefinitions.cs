@@ -35,6 +35,8 @@ namespace Tests.Weapons.Launcher
 
         public Vector2 LaunchDelayRange => throw new NotImplementedException();
 
+        public ITargetLockDefinitions TargetLock => throw new NotImplementedException();
+
 
 
         //public Dictionary<ushort, IABAssetSaver> AssetSavers => throw new System.NotImplementedException();

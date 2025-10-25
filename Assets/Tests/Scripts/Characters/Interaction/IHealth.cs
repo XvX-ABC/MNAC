@@ -4,6 +4,5 @@ namespace Tests.Characters.Interaction
 {
     public interface IHealth : INumerical
     {
-
     }
 }

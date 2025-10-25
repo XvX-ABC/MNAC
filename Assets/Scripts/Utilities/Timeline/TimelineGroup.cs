@@ -164,7 +164,7 @@ namespace Utilities.Timeline
             throw new NotImplementedException();
         }
 
-        public void EarlyEnd()
+        public void EndEarly()
         {
             throw new NotImplementedException();
         }

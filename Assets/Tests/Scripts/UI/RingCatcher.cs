@@ -3,9 +3,8 @@ using UnityEngine;
 
 namespace Tests.UI
 {
-
     [ExecuteAlways]
-    public class RingCatcher : MonoBehaviour
+    public class RingCatcher : MonoBehaviour, ICursor
     {
 
         RectTransform _rectTransform;
@@ -26,6 +25,7 @@ namespace Tests.UI
             {
                 if (!_allowInputPosition)
                     _mousePosition = value;
+
                 UpdateRingPosition();
             }
         }
@@ -39,15 +39,36 @@ namespace Tests.UI
                 _camera = value;
             }
         }
+        public float RingRadius
+        {
+            get => ring.Radius;
+            set => ring.Radius = value;
+        }
+        public bool HIde { get => !gameObject.activeSelf; set => gameObject.SetActive(!value); }
 
         private void Awake()
         {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Confined;
+
             _rectTransform = GetComponent<RectTransform>() ?? throw new NullReferenceException(nameof(_rectTransform));
             _ringObj = GameObject.Find("ring") ?? throw new NullReferenceException(nameof(_ringObj));
             ring = _ringObj.GetComponent<Ring>() ?? throw new NullReferenceException(nameof(ring));
             _ringTransform = _ringObj.GetComponent<RectTransform>() ?? throw new NullReferenceException(nameof(_ringTransform));
+        }
+        void OnEnable()
+        {
+            if (Application.isPlaying)
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+        }
+        void OnDisable()
+        {
+            if (Application.isPlaying)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
         }
         private void LateUpdate()
         {

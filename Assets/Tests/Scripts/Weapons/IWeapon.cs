@@ -1,4 +1,4 @@
-using Tests.Behaviours;
+using Tests.Utilities.MountPoints;
 
 namespace Tests.Weapons
 {

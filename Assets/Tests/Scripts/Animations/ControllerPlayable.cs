@@ -5,6 +5,8 @@ using UnityEngine.Playables;
 
 namespace Tests.Animations
 {
+
+
     internal class ControllerPlayable : AnimationPlayablePartBase
     {
         [Obsolete]
@@ -39,6 +41,12 @@ namespace Tests.Animations
             if (playablePart.IsNull())
                 throw new NullReferenceException(nameof(playablePart));
             controller.SetFloat(name, value);
+        }
+        public bool GetBool(string name)
+        {
+            if (playablePart.IsNull())
+                throw new NullReferenceException(nameof(playablePart));
+            return controller.GetBool(name);
         }
         public void SetBool(string name, bool value)
         {

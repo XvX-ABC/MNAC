@@ -4,6 +4,7 @@ using System;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.Input;
 using Tests.States;
+using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using Tests.Weapons;
 

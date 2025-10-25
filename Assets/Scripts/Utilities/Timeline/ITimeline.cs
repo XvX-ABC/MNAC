@@ -20,7 +20,7 @@ namespace Utilities.Timeline
         void OnUpdate(float deltaTime);
         void Restart();
         void Pause();
-        void EarlyEnd();
+        void EndEarly();
         bool AddEvent(ITimelineEvent evt);
         bool RemoveEvent(ITimelineEvent evt);
         bool UpdateLength(float newLength);

@@ -2,6 +2,7 @@
 using Tests.Input;
 using Tests.States;
 using Tests.TPhysics.Locomotion;
+using TMPro;
 using UnityEngine;
 using Utilities.Timeline;
 
@@ -37,23 +38,25 @@ namespace Tests.Characters.Locomotion
             _cdTimeline.OnUpdate(Time.deltaTime);
         }
     }
-    internal class QuickBoostingState : MovementState
+    //TODO: 删除定义中增量速度相关内容
+    internal class QuickBoostingState : LocomotionStateBase
     {
+        BoostingLocomotion locomotion;
         public QuickBoostingState(
             [NotNull] IMovementDefinitions movementDefinitions,
             [NotNull] IQuickBoostingDefinitions definitions,
-            bool enabled = true) : base(
-                "quick_boosting",
-                movementDefinitions.MaxSpeed * (definitions.MaxSpeedPower < 1 ? 1 : definitions.MaxSpeedPower),
-               movementDefinitions.MaxSpeed * (definitions.MaxSpeedPower < 1 ? 1 : definitions.MaxSpeedPower),
-                definitions.Duration,
-                enabled,
-                false)
+            bool enabled = true) : base("quick_boosting", definitions.Duration, enabled)
         {
+            var speed = movementDefinitions.MaxSpeed * Mathf.Max(1, definitions.MaxSpeedPower);
+            locomotion = new BoostingLocomotion(speed, 0);
         }
+
+        protected override ILocomotionModule module => locomotion;
+
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
+            context.Core.EnableModule(module);
             locomotion.HorizontalVector = context.Input.HorizontalVector;
         }
         public override void OnExit()

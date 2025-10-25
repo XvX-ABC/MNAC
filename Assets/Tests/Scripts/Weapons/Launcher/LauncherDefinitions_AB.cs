@@ -56,6 +56,8 @@ namespace Tests.Weapons.Launcher
         public AssetDefinitions OriginAssetDefinitions { get => originAssetAgent.Definitions; set => originAssetAgent.Definitions = value; }
         public AssetDefinitions NumericalAssetDefinitions { get => numericalAssetAgent.Definitions; set => numericalAssetAgent.Definitions = value; }
 
+        public ITargetLockDefinitions TargetLock => throw new NotImplementedException();
+
         protected virtual void LoadOrigin()
         {
             origin = originAssetAgent.Load();

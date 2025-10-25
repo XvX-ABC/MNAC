@@ -5,12 +5,12 @@ using Tests.Utilities.Composable;
 using Tests.Weapons;
 using UnityEngine;
 
-namespace Tests.Characters.Arms.Weapons.Launchers
+namespace Tests.Characters.Arms.Weapons
 {
     public abstract class ArmedWeaponArmBehaviourBase_MonoComponent : StateComponentNode_MonoComponent, IArmedWeaponArmBehaviour
     {
         protected abstract Behaviours.Arms.IArmedWeaponArmBehaviour behaviour { get; }
-        public bool Activated
+        public virtual bool Activated
         {
             get => enabled;
             set
@@ -21,10 +21,10 @@ namespace Tests.Characters.Arms.Weapons.Launchers
         }
 
         public abstract WeaponType Type { get; }
-        public abstract IWeapon Weapon { get; set; }
-        public abstract IArmedWeaponArmAnimationPlayablePart Animator { get; }
-        public abstract Func<bool> EntryFunc { get; }
-        public abstract Func<bool> ExitFunc { get; }
+        public virtual IWeapon Weapon { get => behaviour.Weapon; set => behaviour.Weapon = value; }
+        public virtual IArmedWeaponArmAnimationPlayablePart Animator { get => behaviour.Animator; }
+        public virtual Func<bool> EntryFunc { get => behaviour.EntryFunc; }
+        public virtual Func<bool> ExitFunc { get => behaviour.ExitFunc; }
 
         public override void OnEnter()
         {

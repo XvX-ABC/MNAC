@@ -11,14 +11,34 @@ namespace Tests.TPhysics.Locomotion
         TPhysics.Context _physicsContext;
         IGroundDetector _groundDetector;
         VerticalPosture _posture;
+        internal World world;
+        Plane _worldPlane;
+        Plane _groundPlane;
         public Context(TPhysics.Context physicsContext, [NotNull] IGroundDetector groundDetector)
         {
+            world = World.Default;
+            _worldPlane = default;
+            _groundPlane = default;
             _physicsContext = physicsContext;
             _groundDetector = groundDetector;
             _posture = VerticalPosture.Holding;
         }
+        public Context(World world, TPhysics.Context physicsContext, [NotNull] IGroundDetector groundDetector)
+        {
+            this.world = world ?? throw new ArgumentNullException(nameof(world));
+            _physicsContext = physicsContext;
+            _groundDetector = groundDetector;
+            _posture = VerticalPosture.Holding;
+            _groundPlane = default;
+            _worldPlane = default;
+
+        }
 
         internal Rigidbody rbody { get => _physicsContext.rbody; }
+        internal IGroundDetector groundDetector { get => _groundDetector; }
+
+        internal VerticalPosture verticalPosture { get => _posture; set => _posture = value; }
+        internal Vector3 groundNormal { get => _groundDetector.GroundsNormal == Vector3.zero ? world.Up : _groundDetector.GroundsNormal; }
         public TPhysics.Context PhysicsContext { get => _physicsContext; set => _physicsContext = value; }
 
         public OriginalInfo Original { get => _physicsContext.Original; }
@@ -29,14 +49,19 @@ namespace Tests.TPhysics.Locomotion
         public float CurrentSquareSpeed { get => _physicsContext.CurrentSquareSpeed; }
         public ushort UpdatedCount => _physicsContext.UpdatedCount;
 
-        public IGroundDetector GroundDetector { get => _groundDetector; }
+        public Plane GroundPlane { get => _groundPlane; }
+        public Plane WorldPlane { get => _worldPlane; }
 
-        internal VerticalPosture VerticalPosture { get => _posture; set => _posture = value; }
-
+        internal void UpdatePlanes()
+        {
+            _groundPlane = new Plane(groundNormal, CurrentPosition);
+            _worldPlane = new Plane(world.Up, CurrentPosition);
+        }
         public void Synchronise()
         {
             _physicsContext.ResetUpdatedCount();
             _physicsContext.SynchronizeFromRigidbody();
+            UpdatePlanes();
         }
         public void Apply()
         {

@@ -1,27 +1,34 @@
-﻿namespace Tests.States
+﻿using UnityEngine;
+using Utilities.Timeline;
+
+namespace Tests.States
 {
     internal class SubStatemachineState<T> : WithCallbackPlayableState<T>
     {
         WithCallbackPlayableStatemachine<T> _statemachine;
         IWithCallbackPlayableState<T> _state;
-        public SubStatemachineState(WithCallbackPlayableStatemachine<T> statemachine, IWithCallbackPlayableState<T> targetState, string name, float duration = 0, bool enabled = true) : base(name, duration, enabled)
+        public SubStatemachineState(WithCallbackPlayableStatemachine<T> statemachine, IWithCallbackPlayableState<T> targetState, string name, bool enabled = true) : base(name, 0, enabled)
         {
             _statemachine = statemachine;
             _state = targetState;
+            this.timeline = new Timeline_V1(_state.Timeline.Length);
         }
         public override void OnEnter()
         {
             base.OnEnter();
+            timeline.Restart();
             _statemachine.OnEnter();
         }
         public override void OnUpdate()
         {
             base.OnUpdate();
+            timeline.OnUpdate(Time.deltaTime);
             _statemachine.OnUpdate();
         }
         public override void OnExit()
         {
             base.OnExit();
+            timeline.End();
             _statemachine.OnExit();
         }
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<T> currentTransition)

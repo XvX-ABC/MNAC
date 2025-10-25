@@ -9,29 +9,39 @@ namespace Tests.Utilities.Blackboards
         K _key;
         protected bool _enabled;
         protected IReadOnlyDictionary<K, object> _values;
-        protected Dictionary<K, Action<FieldEventType, object, object>> _actions;
+        protected Dictionary<K, Action<FieldEventType, object, object>> _mappingAction;
+        protected Action<FieldEventType, object, object> _globalAction;
         public bool Enabled { get => _enabled; set => _enabled = value; }
 
         public FieldChangeHandler(K key)
         {
             _key = key;
-            _actions = new();
+            _mappingAction = new();
         }
         public bool Contains(K key)
         {
-            return _actions.ContainsKey(key);
+            return _mappingAction.ContainsKey(key);
+        }
+        public void RegisterGlobalAction(Action<FieldEventType, object, object> action)
+        {
+            _globalAction += action;
+        }
+
+        public void UnregisterGlobalAction(Action<FieldEventType, object, object> action)
+        {
+            _globalAction -= action;
         }
         public void RegisterAction(K key, Action<FieldEventType, object, object> action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
-            if (_actions.TryGetValue(key, out var a))
+            if (_mappingAction.TryGetValue(key, out var a))
             {
                 a += action;
             }
             else
             {
-                _actions[key] = action;
+                _mappingAction[key] = action;
             }
         }
         public void RegisterAction<T>(K key, Action<FieldEventType, T, T> action)
@@ -56,13 +66,13 @@ namespace Tests.Utilities.Blackboards
         }
         public void UnregisterAction<T>(K key, Action<FieldEventType, T, T> action)
         {
-            if (!_actions.ContainsKey(key))
+            if (!_mappingAction.ContainsKey(key))
                 return;
-            var a = _actions[key];
+            var a = _mappingAction[key];
             if (a == null)
-                _actions.Remove(key);
+                _mappingAction.Remove(key);
             else
-                _actions[key] -= action as Action<FieldEventType, object, object>;
+                _mappingAction[key] -= action as Action<FieldEventType, object, object>;
         }
         public void Initialize(Blackboard<K, A> blackboard)
         {
@@ -72,44 +82,57 @@ namespace Tests.Utilities.Blackboards
         (bool, object) IMiddleware<K, A>.ValueReadingHandle(ValueInfo<K, A> valueInfo)
         {
             var key = valueInfo.Key;
-            if (_values.TryGetValue(key, out var oldValue) && _actions.TryGetValue(key, out var action))
+            var oldValue = _values[key];
+            if (_mappingAction.TryGetValue(key, out var action))
             {
                 action?.Invoke(FieldEventType.Reading, oldValue, valueInfo.Value);
             }
+            _globalAction?.Invoke(FieldEventType.Reading, oldValue, valueInfo.Value);
             return (true, valueInfo.Value);
         }
 
         (bool, object) IMiddleware<K, A>.ValueRegisterHandle(ValueInfo<K, A> valueInfo)
         {
             var key = valueInfo.Key;
-            if (_actions.TryGetValue(key, out var action))
+            _values.TryGetValue(key, out var oldValue);
+            if (_mappingAction.TryGetValue(key, out var action))
             {
-                _values.TryGetValue(key, out var oldValue);
                 action?.Invoke(FieldEventType.Register, oldValue, valueInfo.Value);
             }
+            _globalAction?.Invoke(FieldEventType.Register, oldValue, valueInfo.Value);
             return (true, valueInfo.Value);
         }
 
         (bool, object) IMiddleware<K, A>.ValueUnregisterHandle(ValueInfo<K, A> valueInfo)
         {
             var key = valueInfo.Key;
-            if (_actions.TryGetValue(key, out var value) && _actions.TryGetValue(key, out var action))
+            var value = _values[key];
+            if (_mappingAction.TryGetValue(key, out var action))
             {
                 action?.Invoke(FieldEventType.Unregister, value, default);
             }
+            _globalAction?.Invoke(FieldEventType.Unregister, value, default);
             return (true, valueInfo.Value);
         }
 
         (bool, object) IMiddleware<K, A>.ValueWritingHandle(ValueInfo<K, A> valueInfo)
         {
             var key = valueInfo.Key;
-            if (_values.TryGetValue(key, out var oldValue) && _actions.TryGetValue(key, out var action))
+            var oldValue = _values[key];
+            if (_mappingAction.TryGetValue(key, out var action))
             {
                 action?.Invoke(FieldEventType.Writing, oldValue, valueInfo.Value);
             }
+            _globalAction?.Invoke(FieldEventType.Writing, oldValue, valueInfo.Value);
             return (true, valueInfo.Value);
         }
 
 
+    }
+    public class FieldChangeHandler : FieldChangeHandler<object, object>
+    {
+        public FieldChangeHandler(object key) : base(key)
+        {
+        }
     }
 }

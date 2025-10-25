@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using TMPro;
 using UnityEngine;
 
 namespace Tests.TPhysics.Environment
@@ -99,7 +96,9 @@ namespace Tests.TPhysics.Environment
             var index = _grounds.FindIndex(g => g.Obj == collision.gameObject);
             if (index == -1)
                 return;
-            _grounds[index].Update(collision);
+            var g = _grounds[index];
+            g.Update(collision);
+            _grounds[index] = g;
         }
         public void OnCollisionExit(Collision collision)
         {
@@ -133,7 +132,9 @@ namespace Tests.TPhysics.Environment
             foreach (var g in _grounds)
             {
                 if (CheckGroundSlope(g))
+                {
                     result += g.Normal;
+                }
             }
             return (result / _grounds.Count).normalized;
         }

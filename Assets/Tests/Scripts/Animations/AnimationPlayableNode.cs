@@ -22,14 +22,14 @@ namespace Tests.Animations
         {
             return node.Parent == null;
         }
-        public override IMTNode Parent
-        {
-            get => parent;
-            set
-            {
-                parent = value;
-            }
-        }
+        //public override IMTNode Parent
+        //{
+        //    get => parent;
+        //    set
+        //    {
+        //        parent = value;
+        //    }
+        //}
         public IAnimationPlayablePartNode PlayableParent
         {
             get => (IAnimationPlayablePartNode)parent;

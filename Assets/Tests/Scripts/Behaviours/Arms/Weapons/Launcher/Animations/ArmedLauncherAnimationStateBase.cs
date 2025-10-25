@@ -5,6 +5,7 @@ using Utilities.Timeline;
 
 namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
 {
+    //TOOD: 修改父类为ArmedWeaponAnimationStateBase
     internal class ArmedLauncherAnimationStateBase : WithCallbackPlayableState<object>
     {
         protected ControllerPlayable controller;

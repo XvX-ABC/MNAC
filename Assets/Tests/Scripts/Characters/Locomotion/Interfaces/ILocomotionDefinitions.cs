@@ -1,5 +1,4 @@
 ﻿using Locomotion;
-using Tests.Locomotion.Animation;
 
 namespace Tests.Characters.Locomotion
 {

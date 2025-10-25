@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Utilities.MountPoints;
 using Tests.Weapons;
 using UnityEngine;
 using Utilities.Timeline;
@@ -71,12 +72,8 @@ namespace Tests.Behaviours.Arms.Weapons
         {
             this.definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
             _mountPoint = mountPoint ?? throw new ArgumentNullException(nameof(mountPoint));
-            timeline = new Timeline(this.definitions.SwitchingDurationTime);
-            timeline.AddPointEvent(this.definitions.SwitchingMountedProportion, _ =>
-            {
-                _weaponObj = GetWeaponObj();
-                _mountPoint.Load = _weaponObj.GetComponent<ILoad>() ?? throw new ComponentCantFindException(_weaponObj, typeof(ILoad));
-            });
+            timeline = new Timeline_V1(this.definitions.SwitchingDurationTime);
+            timeline.AddPointEvent(this.definitions.SwitchingMountedProportion, ChangeWeapon);
 
 
             _weaponCore = weaponCore ?? throw new NullReferenceException(nameof(weaponCore));
@@ -97,7 +94,11 @@ namespace Tests.Behaviours.Arms.Weapons
             else
                 _selectionFunc = selectionFunc;
         }
-
+        protected void ChangeWeapon(TimelineContext _)
+        {
+            _weaponObj = GetWeaponObj();
+            _mountPoint.Load = _weaponObj.GetComponent<ILoad>() ?? throw new ComponentCantFindException(_weaponObj, typeof(ILoad));
+        }
         protected GameObject GetWeaponObj()
         {
             var name = _selectionFunc(definitions.Origins);
@@ -113,10 +114,14 @@ namespace Tests.Behaviours.Arms.Weapons
         {
             timeline.OnUpdate(Time.deltaTime);
         }
+        //public void End()
+        //{
+        //    timeline.End();
+        //    timeline.Reset();
+        //}
         public void End()
         {
-            timeline.End();
-            timeline.Reset();
+            timeline.EndEarly();
         }
     }
 }
