@@ -9,10 +9,11 @@ using UnityEngine;
 
 namespace Tests.Behaviours.Arms
 {
+    [Obsolete]
     internal class ArmAim : ArmedArmStateBase
     {
         AimIK _aimIK;
-        IInput _input;
+        IInput_Obsolete _input;
         ITarget _target;
         internal Action<float> weightChangedAction;
         internal Action<ITarget> targetChangedAction;
@@ -33,7 +34,7 @@ namespace Tests.Behaviours.Arms
 
         }
 
-        public IInput Input
+        public IInput_Obsolete Input
         {
             get => _input;
             set => _input = value;

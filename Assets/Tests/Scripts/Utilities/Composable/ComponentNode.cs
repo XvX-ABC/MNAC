@@ -4,7 +4,7 @@ using Tests.Utilities.MTrees;
 
 namespace Tests.Utilities.Composable
 {
-    internal class ComponentNode : MTContainerNode<IComponent>, ICharacterComponentNode
+    internal class ComponentNode : MTContainerNode<IComponent>, IComponentNode
     {
         public ComponentNode(IComponent component)
         {
@@ -24,7 +24,7 @@ namespace Tests.Utilities.Composable
                 }
                 else
                 {
-                    if (value is not ICharacterComponentNode pnode)
+                    if (value is not IComponentNode pnode)
                         throw new InvalidCastException(nameof(value));
                     parent = pnode;
 
@@ -38,13 +38,13 @@ namespace Tests.Utilities.Composable
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
-            if (node is not ICharacterComponentNode cnode)
+            if (node is not IComponentNode cnode)
                 throw new InvalidCastException(nameof(node));
             base.AddChild(cnode);
         }
         public override void RemoveChild(IMTNode node)
         {
-            if (node is not ICharacterComponentNode cnode)
+            if (node is not IComponentNode cnode)
                 throw new InvalidCastException(nameof(node));
             base.RemoveChild(node);
         }

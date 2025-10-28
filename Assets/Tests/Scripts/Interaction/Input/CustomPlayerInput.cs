@@ -13,7 +13,7 @@ namespace Tests.Input
         Supply,
     }
     [Serializable]
-    public class CustomPlayerInput : MonoBehaviour, IInput
+    public class CustomPlayerInput : MonoBehaviour, IInput_Obsolete
     {
         [SerializeField]
         KeyCode _forward;
@@ -71,10 +71,10 @@ namespace Tests.Input
                 return UInput.GetKeyDown(_quickBoost) && direction != Vector3.zero;
             }
         }
-        bool IInput.Fire => UInput.GetKey(_fire);
+        bool IInput_Obsolete.Fire => UInput.GetKey(_fire);
 
-        bool IInput.Reload => UInput.GetKeyDown(_reload);
+        bool IInput_Obsolete.Reload => UInput.GetKeyDown(_reload);
 
-        bool IInput.Supply => UInput.GetKeyDown(_supply);
+        bool IInput_Obsolete.Supply => UInput.GetKeyDown(_supply);
     }
 }

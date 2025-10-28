@@ -12,10 +12,10 @@ namespace Tests.Input
         public bool Boost { get => _isBoosting; set => _isBoosting = value; }
         public bool QuickBoost { get => _isQuickBoosting; set => _isQuickBoosting = value; }
 
-        bool IInput.Fire => throw new System.NotImplementedException();
+        bool IInput_Obsolete.Fire => throw new System.NotImplementedException();
 
-        bool IInput.Reload => throw new System.NotImplementedException();
+        bool IInput_Obsolete.Reload => throw new System.NotImplementedException();
 
-        bool IInput.Supply => throw new System.NotImplementedException();
+        bool IInput_Obsolete.Supply => throw new System.NotImplementedException();
     }
 }

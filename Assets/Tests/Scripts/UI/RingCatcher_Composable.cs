@@ -13,7 +13,7 @@ namespace Tests.UI
     {
         RingCatcher _catcher;
 
-        IInput _input;
+        IInput_Obsolete _input;
         protected override void Awake()
         {
             base.Awake();

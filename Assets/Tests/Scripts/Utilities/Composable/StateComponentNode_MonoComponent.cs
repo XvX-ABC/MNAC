@@ -20,7 +20,7 @@ namespace Tests.Utilities.Composable
 
         public Blackboard Blackboard { get => blackboard; set => blackboard = value; }
 
-        public ICharacterComponentNode Node => node;
+        public IComponentNode Node => node;
 
         public virtual void Dispose()
         {

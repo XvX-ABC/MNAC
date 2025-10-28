@@ -541,6 +541,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 3975954336373532205, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3975954336373532205, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 6367531403497653757, guid: 0b091718624e186429165c4ceff23e59,
+        type: 3}
     - target: {fileID: 4001307264304900062, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Controller
@@ -704,22 +715,22 @@ PrefabInstance:
     - target: {fileID: 6982147408347759563, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: _weapon._origins.Array.data[0].Name
-      value: Sword
-      objectReference: {fileID: 0}
-    - target: {fileID: 6982147408347759563, guid: cda3572f260d2fd4aa54e5b415780ea9,
-        type: 3}
-      propertyPath: _weapon._origins.Array.data[0].Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6982147408347759563, guid: cda3572f260d2fd4aa54e5b415780ea9,
-        type: 3}
-      propertyPath: _weapon._origins.Array.data[1].Name
       value: Gun_V0
       objectReference: {fileID: 0}
     - target: {fileID: 6982147408347759563, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
-      propertyPath: _weapon._origins.Array.data[1].Type
+      propertyPath: _weapon._origins.Array.data[0].Type
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6982147408347759563, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _weapon._origins.Array.data[1].Name
+      value: Sword
+      objectReference: {fileID: 0}
+    - target: {fileID: 6982147408347759563, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _weapon._origins.Array.data[1].Type
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6982147408347759563, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
@@ -889,6 +900,8 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 1813498210662276122, guid: cda3572f260d2fd4aa54e5b415780ea9, type: 3}
     - {fileID: 747830215347353628, guid: cda3572f260d2fd4aa54e5b415780ea9, type: 3}
+    - {fileID: 6641737614714588789, guid: cda3572f260d2fd4aa54e5b415780ea9, type: 3}
+    - {fileID: 6022822982332147807, guid: cda3572f260d2fd4aa54e5b415780ea9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 86101006752392555, guid: cda3572f260d2fd4aa54e5b415780ea9,
@@ -900,6 +913,14 @@ PrefabInstance:
         type: 3}
       insertIndex: 8
       addedObject: {fileID: 780907916}
+    - targetCorrespondingSourceObject: {fileID: 7650634701108471582, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 780907930}
+    - targetCorrespondingSourceObject: {fileID: 7650634701108471582, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 780907929}
     - targetCorrespondingSourceObject: {fileID: 2550968540632913536, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       insertIndex: -1
@@ -1297,7 +1318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4536da24a2b7e6a49969f68e78bb5cbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _a: 0
+  _a: 1
 --- !u!1 &732801316
 GameObject:
   m_ObjectHideFlags: 0
@@ -1410,6 +1431,65 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _deathDurationTime: 3
+--- !u!114 &780907929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613760445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ed5bc45828e27241afdfdd4febf6cb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _base:
+    _maxSpeed: 0
+    _accelerationSpeed: 0
+    _ascendingSpeed: 0
+    _drag: 0
+  _jump:
+    _height: 3
+    _preparationDuration: 0
+  _quickBoost:
+    _duration: 0
+    _interval: 0
+    _power: 0
+  _postureEvaluationFramesQuantity: 3
+  _walking:
+    _maxSpeed: 10
+    _acceleratedSpeed: 2
+  _boosting:
+    _speedPower: 2
+    _acceleratedSpeedPower: 0
+  _quickBoosting:
+    _speedPower: 10
+    _acceleratedSpeedPower: 0
+    _duration: 0.3
+    _coldDownTime: 1
+  _animation:
+    _velocity_x: Velocity_X
+    _velocity_y: Velocity_Y
+    _jump_clip_length: 2.458
+    _jump_trigger: Jump
+    _jump_multiplier: Jump_Multiplier
+    _inAir: 
+    _descending: Descending
+    _boosting_clip_length: 2.458
+    _boosting_trigger: Boosting
+    _boosting_multiplier: Boosting_Multiplieir
+--- !u!114 &780907930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613760445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2cdc4b1c9fa1534181de99d178f3b49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &835923203
 GameObject:
   m_ObjectHideFlags: 0
@@ -13168,7 +13248,7 @@ PrefabInstance:
     - target: {fileID: 5930171710908605950, guid: a8cd4343499c46a448a76c351475501d,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -565.49567
+      value: -442.99698
       objectReference: {fileID: 0}
     - target: {fileID: 5930171710908605950, guid: a8cd4343499c46a448a76c351475501d,
         type: 3}

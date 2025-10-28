@@ -10,7 +10,7 @@ namespace Tests.Interaction
     {
         ILeadingActorTargetsCatcherDefinitions _definitions;
         Camera _camera;
-        IInput _input;
+        IInput_Obsolete _input;
         LocomotionCore _locomotion;
         GameObject _actorObj;
 
@@ -24,7 +24,7 @@ namespace Tests.Interaction
             public Vector3 Position => pos;
         }
         protected Context context => _locomotion.Context;
-        public SimpleLeadingActorTargetsCatcher(ILeadingActorTargetsCatcherDefinitions definitions, GameObject actorObj, Camera camera, IInput input, LocomotionCore locomotion)
+        public SimpleLeadingActorTargetsCatcher(ILeadingActorTargetsCatcherDefinitions definitions, GameObject actorObj, Camera camera, IInput_Obsolete input, LocomotionCore locomotion)
         {
             this._actorObj = actorObj;
             _definitions = definitions;

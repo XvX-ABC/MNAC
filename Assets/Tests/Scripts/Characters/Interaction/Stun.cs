@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Interaction;
 using StunInfluence = Tests.Interaction.Influence.Stun;
 namespace Tests.Characters.Interaction
 {

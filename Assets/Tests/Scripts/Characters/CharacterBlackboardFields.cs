@@ -3,6 +3,7 @@ using Tests.Utilities.Composable;
 
 namespace Tests.Characters
 {
+    //TODO: 修改为人形专用黑板字段
     public static class CharacterBlackboardFields
     {
         static CharacterBlackboardFields()
@@ -25,7 +26,9 @@ namespace Tests.Characters
             FieldChangeHandler = MiddlewareFields.FieldChangeHandler;
             TargetsCatcher = Guid.NewGuid();
 
+            Character_Input_Main_Obsolete = Guid.NewGuid();
             Character_Input_Main = Guid.NewGuid();
+            Character_Input_Main_Base = Guid.NewGuid();
 
             Character_Weapon_Core = Guid.NewGuid();
             Character_Weapon_LeftArm_Armed = Guid.NewGuid();
@@ -44,7 +47,9 @@ namespace Tests.Characters
         public static readonly Guid Character_Influence_Core;
         public static readonly Guid FieldChangeHandler;
         public static readonly Guid TargetsCatcher;
+        public static readonly Guid Character_Input_Main_Obsolete;
         public static readonly Guid Character_Input_Main;
+        public static readonly Guid Character_Input_Main_Base;
         public static readonly Guid Character_Weapon_Core;
         public static readonly Guid Character_Weapon_LeftArm_Armed;
         public static readonly Guid Character_Weapon_RightArm_Armed;

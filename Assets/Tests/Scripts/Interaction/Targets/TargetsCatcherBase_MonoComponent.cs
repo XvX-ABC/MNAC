@@ -14,7 +14,11 @@ namespace Tests.Interaction
         protected Catcher catcher;
         protected TargetsCatcherBase_MonoComponent()
         {
-            catcher = new Catcher();
+            catcher = CreateCatcher();
+        }
+        protected virtual Catcher CreateCatcher()
+        {
+            return new Catcher();
         }
         public virtual bool Enabled
         {

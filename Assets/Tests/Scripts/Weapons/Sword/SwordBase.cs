@@ -1,18 +1,19 @@
-﻿using Tests.Behaviours.Arms.Weapons.Sword;
-using Tests.Interaction.Targets;
+﻿using System;
+using System.Collections.Generic;
+using Tests.Behaviours.Arms.Weapons.Sword;
+using Tests.Interaction;
 using UnityEngine;
 
 namespace Tests.Weapons.Sword
 {
-    public class SwordTrigger : TriggerTargetsCatcher
-    {
-    }
     [RequireComponent(typeof(WeaponLoad))]
     public class SwordBase : MonoBehaviour, ISword
     {
         [SerializeField]
         float _slashRadius;
-
+        [SerializeField]
+        float _damagePoint;
+        SwordTargetsTrigger _trigger;
         public string Name => this.name;
 
         public WeaponType Type => WeaponType.Sword;
@@ -23,6 +24,16 @@ namespace Tests.Weapons.Sword
 
         void Awake()
         {
+            _trigger = GetComponentInChildren<SwordTargetsTrigger>() ?? throw new ComponentCantFindException(this.gameObject, typeof(SwordTargetsTrigger));
+            _trigger.WhenTargetEntryAction += WhenHitEnemy;
+        }
+        void WhenHitEnemy(GameObjTarget target)
+        {
+            var obj = target.Obj;
+            if (obj == null)
+                throw new NullReferenceException(nameof(target.obj));
+            var item = obj.GetComponent<IDamageable>();
+            item.HP.ReceivePoint(-_damagePoint);
         }
         public void WhenMounted(GameObject mountPoint)
         {

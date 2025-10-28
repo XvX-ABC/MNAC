@@ -3,7 +3,7 @@
 namespace Tests.Interaction.Targets
 {
     [RequireComponent(typeof(SphereCollider))]
-    internal class SphereTriggerTargetsCatcher : TriggerTargetsCatcher, ISphereTriggerTargetsCatcher
+    internal class SphereTriggerTargetsCatcher : TargetsTrigger_MonoComponent, ISphereTriggerTargetsCatcher
     {
         SphereCollider _collider;
         public float Radius

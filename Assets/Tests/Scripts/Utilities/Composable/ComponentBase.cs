@@ -19,7 +19,7 @@ namespace Tests.Utilities.Composable
                 blackboard = value;
             }
         }
-        public ICharacterComponentNode Node { get => node; }
+        public IComponentNode Node { get => node; }
         public abstract string Name { get; }
         public virtual bool Enabled { get => enabled; set => enabled = value; }
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 namespace Tests.Input
 {
-    public interface IVirtualInput : IInput
+    public interface IVirtualInput : IInput_Obsolete
     {
         public new Vector3 HorizontalVector { get; set; }
         public new bool Jump { get; set; }

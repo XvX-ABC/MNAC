@@ -1,0 +1,181 @@
+﻿using System;
+using Tests.Characters.Humanoid.Locomotion.Animations;
+using Tests.Characters.Interaction.Input;
+using Tests.Extensions;
+using Tests.Input;
+using Tests.States;
+using Tests.TPhysics;
+using Tests.TPhysics.Environment;
+using Tests.TPhysics.Locomotion;
+using Tests.Utilities.Blackboards;
+using Tests.Utilities.Composable;
+using UnityEngine;
+using LContext = Tests.TPhysics.Locomotion.Context;
+using LCore = Tests.TPhysics.Locomotion.LocomotionCore;
+namespace Tests.Characters.Humanoid.Locomotion
+{
+
+    public class LocomotionCore : ComponentBase_MonoComponent
+    {
+        internal ILocomotionDefinitions definitions;
+
+        [Obsolete("input will be removed in future versions, use input_main instead", true)]
+        IInput_Obsolete _input_Obsolete;
+        IHumanInput _input;
+        LCore _core;
+        internal LocomotionStatemachine movementStatemachine;
+        internal LocomotionStatemachine statemachine;
+        internal LocomotionStateContext context;
+
+        internal QuickBoostingHelper quickBoostingHelper;
+
+        internal BoostingState boosting;
+        internal QuickBoostingState quickBoosting;
+        internal WalkingState walking;
+        internal JumpLocomotionState jump;
+        internal RotationLocomotion rotation;
+
+
+        internal LocomotionAnimator animator;
+
+        internal LCore core => _core;
+        internal LContext locomotionContext => _core.Context;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            definitions = GetComponent<ILocomotionDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(ILocomotionDefinitions));
+            walking = new(definitions.Walking);
+            jump = new(definitions.Jump);
+            quickBoostingHelper = new(definitions.Walking, definitions.QuickBoosting);
+            quickBoosting = quickBoostingHelper.State;
+            boosting = new(definitions.Walking, definitions.Boosting);
+            animator = new(definitions.Animation, this);
+        }
+        private void OnEnable()
+        {
+            if (statemachine != null)
+            {
+                statemachine.Enabled = true;
+                statemachine.OnEnter();
+            }
+        }
+        private void OnDisable()
+        {
+            statemachine.OnExit();
+            statemachine.Enabled = false;
+        }
+        void InitializeRigidbody(Rigidbody rbody)
+        {
+            rbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        }
+        public override void Initialize(Blackboard blackboard)
+        {
+            base.Initialize(blackboard);
+            //if (!blackboard.TryReadValue(CharacterBlackboardFields.Character_Input_Main_Obsolete, out _input_Obsolete))
+            //    throw new Exception();
+            if (!blackboard.TryReadValue<Camera>(CharacterBlackboardFields.Character_Camera_Main, out var camera))
+                throw new Exception();
+            if (!blackboard.TryReadValue<Rigidbody>(CharacterBlackboardFields.Rigidbody, out var rbody))
+                throw new Exception();
+            else
+                InitializeRigidbody(rbody);
+
+            if (!blackboard.TryReadValue<World>(CharacterBlackboardFields.World, out var world))
+                throw new Exception();
+            if (!blackboard.TryReadValue<IGroundDetector>(CharacterBlackboardFields.GroundDetector, out var groundDetector))
+                throw new Exception();
+
+            blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Input_Main, out _input);
+
+            //quickBoostingHelper.Input_Obsolete = _input_Obsolete;
+            quickBoostingHelper.Input = _input;
+            InitializeLocomotionCore(rbody, groundDetector, world);
+            InitializeRotation(camera, rbody);
+            InitializeMovementStatemachine();
+            InitializeMainStatemachine(camera, rbody, world, groundDetector);
+
+            _core.EvaluationModules = ArrayExtensions.Append_D(_core.EvaluationModules, statemachine);
+
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Locomotion_Core, this);
+
+            node.AddChild(animator.node);
+        }
+
+        void InitializeLocomotionCore(Rigidbody rbody, IGroundDetector groundDetector, World world)
+        {
+            _core = new LCore(world, rbody, groundDetector, new VerticalPostureEvaluator(definitions.PostureEvaluationFramesQuantity));
+            _core.World = world;
+        }
+        void InitializeRotation(Camera camera, Rigidbody rigidbody)
+        {
+            rotation = new(camera, rigidbody, _core);
+            node.AddChild(rotation.Node);
+        }
+        void InitializeMovementStatemachine()
+        {
+            //context = new LocomotionStateContext(_core, _input_Obsolete);
+            context = new LocomotionStateContext(_core, _input);
+
+            movementStatemachine = new("movement", context);
+            movementStatemachine.AddState(walking);
+            movementStatemachine.AddState(boosting);
+
+            //movementStatemachine.AddTransitionFor(boosting, walking, () => _input_Obsolete.HorizontalVector == Vector3.zero);
+            movementStatemachine.AddTransitionFor(boosting, walking, () => _input.HorizontalVector == Vector3.zero);
+
+        }
+        void InitializeMainStatemachine(Camera camera, Rigidbody rigidbody, World world, IGroundDetector groundDetector)
+        {
+
+            statemachine = new("main", context);
+            statemachine.AddState(movementStatemachine);
+            statemachine.AddState(jump);
+            statemachine.AddState(quickBoosting);
+
+            statemachine.AddTransitionFor(movementStatemachine, quickBoosting, () => quickBoostingHelper.TriggerEvent);
+            //statemachine.AddTransitionFor(movementStatemachine, jump, () => groundDetector.Grounds.Count > 0 && _input_Obsolete.Jump);
+            statemachine.AddTransitionFor(movementStatemachine, jump, () => groundDetector.Grounds.Count > 0 && _input.Jump);
+
+            var j_m = new BlendingTransition<object>(jump, movementStatemachine, () => _core.Context.verticalPosture == VerticalPosture.Descending, null, 0, 0, 1);
+            var j_qb = new BlendingTransition<object>(jump, quickBoosting, () => quickBoostingHelper.TriggerEvent, null, 0, 0);
+            statemachine.AddTransitionFor(j_qb);
+            statemachine.AddTransitionFor(j_m);
+
+
+            var qb_b = new SubStatemachineTransition<object>(quickBoosting, movementStatemachine, boosting, null, null, 0, 0, 1, InterruptionSource.None);
+            statemachine.AddTransitionFor(qb_b);
+
+
+
+            //_core.EvaluationModules = ArrayExtensions.Append_D(_core.EvaluationModules, statemachine);
+
+
+        }
+        private void LateUpdate()
+        {
+            rotation.OnUpdate();
+        }
+        public void FixedUpdate()
+        {
+            context.Update();
+            quickBoostingHelper.Update();
+            _core.Update();
+            var pos = _core.Context.CurrentPosition;
+            Debug.DrawLine(pos, pos + _core.Context.CurrentVelocity, Color.magenta);
+            //animator.Update();
+            //Debug.Log(statemachine);
+
+        }
+
+        private void OnDrawGizmos()
+        {
+            var pos = transform.position;
+            var fpos = pos + transform.forward * 500;
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(pos, fpos);
+        }
+
+    }
+}

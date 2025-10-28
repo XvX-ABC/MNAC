@@ -11,7 +11,7 @@ namespace Tests.Weapons.MachineGuns
     [RequireComponent(typeof(CustomPlayerInput))]
     public class MachineGun_Test : MonoBehaviour
     {
-        IInput _input;
+        IInput_Obsolete _input;
         [SerializeField]
         MachineGun _machineGun;
         [SerializeField]

@@ -21,7 +21,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         AmmoLoad_Obsolete _ammoLoad;
         ITargetsCatcher _targetsCatcher;
         IArmedLauncherArmBehaviourDefinitions _definitions;
-        IInput _input;
+        IInput_Obsolete _input;
 
         internal ArmedLauncherArmAnimator_Obsolete animator;
 
@@ -46,7 +46,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
 
         public override Func<bool> EntryFunc { get => Enter; }
         public override Func<bool> ExitFunc { get => Exit; }
-        public IInput Input
+        public IInput_Obsolete Input
         {
             get => _input;
             set

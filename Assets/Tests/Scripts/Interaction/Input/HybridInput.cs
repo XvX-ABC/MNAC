@@ -9,7 +9,7 @@ namespace Tests.Input
         IHybridInput.Mode _mode;
 
 
-        IInput _currentInput;
+        IInput_Obsolete _currentInput;
         public HybridInput()
         {
             _virtualInput = new();

@@ -8,7 +8,7 @@ namespace Tests.Utilities.Composable
     {
         public bool Enabled { get; set; }
         public Blackboard Blackboard { get; set; }
-        public ICharacterComponentNode Node { get; }
+        public IComponentNode Node { get; }
         public void Initialize(Blackboard blackboard);
 
     }

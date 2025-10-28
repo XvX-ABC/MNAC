@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons.Sword.Animations;
+using Tests.Behaviours.Input;
+using Tests.Characters.Interaction.Input;
 using Tests.Input;
 using Tests.Interaction;
 using Tests.Interaction.Targets;
@@ -27,7 +29,8 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         internal WithCallbackPlayableStatemachine<object> statemachine;
 
         BoostingLocomotion _boostingLocomotion;
-        IInput _input;
+        [Obsolete]
+        IInput_Obsolete _input;
 
         internal ArmedSwordArmAnimator animator;
         ArmedSwordArmBehaviourState _state;
@@ -76,7 +79,8 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         }
 
         //TODO: 删除定义中增量速度相关内容
-        public ArmedSwordArmBehaviour(IArmedSwordArmBehaviourDefinitions definitions, LocomotionCore locomotionCore, Camera camera, IInput input)
+        [Obsolete]
+        public ArmedSwordArmBehaviour(IArmedSwordArmBehaviourDefinitions definitions, LocomotionCore locomotionCore, Camera camera, IInput_Obsolete input)
         {
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
             var boostingDefinitions = _definitions.Boosting;
@@ -100,7 +104,8 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
             InitializeStatemachine();
 
         }
-        void InitializeStates(LocomotionCore locomotionCore, BoostingLocomotion locomotion, IInput input, Camera camera, IArmedSwordArmBehaviourDefinitions definitions)
+        [Obsolete]
+        void InitializeStates(LocomotionCore locomotionCore, BoostingLocomotion locomotion, IInput_Obsolete input, Camera camera, IArmedSwordArmBehaviourDefinitions definitions)
         {
             idle = new();
             boostingHelper = new(locomotionCore, camera, input, definitions.Boosting);

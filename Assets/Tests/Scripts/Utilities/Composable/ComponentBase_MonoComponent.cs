@@ -16,7 +16,7 @@ namespace Tests.Utilities.Composable
             node = new(this);
         }
         public Guid ID { get => _id; }
-        public ICharacterComponentNode Node { get => node; }
+        public IComponentNode Node { get => node; }
         public virtual Blackboard Blackboard
         {
             get => blackboard;

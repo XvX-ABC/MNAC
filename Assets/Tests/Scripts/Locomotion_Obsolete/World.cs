@@ -29,11 +29,11 @@ namespace Tests.Locomotion
 
             public bool QuickBoost => throw new NotImplementedException();
 
-            bool IInput.Fire => throw new NotImplementedException();
+            bool IInput_Obsolete.Fire => throw new NotImplementedException();
 
-            bool IInput.Reload => throw new NotImplementedException();
+            bool IInput_Obsolete.Reload => throw new NotImplementedException();
 
-            bool IInput.Supply => throw new NotImplementedException();
+            bool IInput_Obsolete.Supply => throw new NotImplementedException();
 
             public void OnUpdate(IGround? ground)
             {

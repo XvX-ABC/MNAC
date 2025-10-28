@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons.Launchers.Animations;
+using Tests.Characters.Interaction.Input;
 using Tests.Input;
 using Tests.Interaction;
 using Tests.States;
@@ -13,7 +14,9 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
     {
         IArmedLauncherArmBehaviourDefinitions _definitions;
         ITargetsCatcher _targetsCatcher;
-        IInput _input;
+        [Obsolete]
+        IInput_Obsolete _input;
+        IWeaponControlInput _winput;
         ILauncher _launcher;
         internal ITarget target;
 
@@ -57,14 +60,23 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         public override Func<bool> EntryFunc => () => this.enabled;
 
         public override Func<bool> ExitFunc => () => !this.enabled;
-
-        public IInput Input
+        [Obsolete]
+        public IInput_Obsolete Input_Obsolete
         {
             get => _input;
             set
             {
-                aiming.Input = value;
+                aiming.Input_Obsolete = value;
                 _input = value;
+            }
+        }
+        public IWeaponControlInput Input
+        {
+            get => _winput;
+            set
+            {
+                aiming.Input = value;
+                _winput = value;
             }
         }
         public ITargetsCatcher TargetsCatcher
@@ -122,7 +134,8 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
             }
             bool ReloadTriggered()
             {
-                return _input == null ? false : _input.Reload && WeaponCanToReload();
+                //return _input == null ? false : _input.Reload && WeaponCanToReload();
+                return _winput == null ? false : _winput.Reload && WeaponCanToReload();
             }
         }
         public void FixedUpdate()
