@@ -1,6 +1,6 @@
 ﻿using Locomotion;
 
-namespace Tests.Locomotion
+namespace Tests.Locomotion_Obsolete
 {
     public interface ILocomotionDefinitions
     {

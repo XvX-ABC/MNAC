@@ -3,8 +3,8 @@ using Assets.Scripts.Utilities;
 using NUnit.Framework.Constraints;
 using Tests.Environment;
 using UnityEngine;
-using JState = Tests.Locomotion.JumpLocomotion.State;
-namespace Tests.Locomotion.Animation
+using JState = Tests.Locomotion_Obsolete.JumpLocomotion.State;
+namespace Tests.Locomotion_Obsolete.Animation
 {
     [Obsolete]
     public class JumpLocomotionAnimator : MonoBehaviour, IModule

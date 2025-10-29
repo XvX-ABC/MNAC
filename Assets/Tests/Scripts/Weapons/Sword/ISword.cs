@@ -10,5 +10,6 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
     public interface ISword : IWeapon
     {
         public float SlashRadius { get; }
+        public bool EnableDamage { get; set; }
     }
 }

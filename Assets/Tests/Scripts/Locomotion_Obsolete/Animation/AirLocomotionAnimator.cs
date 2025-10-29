@@ -3,8 +3,8 @@ using System;
 using Tests.Environment;
 using Unity.VisualScripting;
 using UnityEngine;
-using JState = Tests.Locomotion.JumpLocomotion.State;
-namespace Tests.Locomotion.Animation
+using JState = Tests.Locomotion_Obsolete.JumpLocomotion.State;
+namespace Tests.Locomotion_Obsolete.Animation
 {
     [Obsolete]
     public class AirLocomotionAnimator : MonoBehaviour, IModule

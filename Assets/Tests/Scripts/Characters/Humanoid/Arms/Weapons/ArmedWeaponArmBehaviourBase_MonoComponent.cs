@@ -10,7 +10,7 @@ namespace Tests.Characters.Arms.Weapons
 {
     public abstract class ArmedWeaponArmBehaviourBase_MonoComponent : StateComponentNode_MonoComponent, IArmedWeaponArmBehaviour
     {
-        protected HumanPart part;
+        HumanPart _part;
         protected abstract Behaviours.Arms.IArmedWeaponArmBehaviour behaviour { get; }
         public virtual bool Activated
         {
@@ -27,12 +27,20 @@ namespace Tests.Characters.Arms.Weapons
         public virtual IArmedWeaponArmAnimationPlayablePart Animator { get => behaviour.Animator; }
         public virtual Func<bool> EntryFunc { get => behaviour.EntryFunc; }
         public virtual Func<bool> ExitFunc { get => behaviour.ExitFunc; }
-        public HumanPart Part { get => part; set => part = value; }
+        public HumanPart Part
+        {
+            get
+            {
+                if (_part != HumanPart.LeftArm && _part != HumanPart.RightArm)
+                    throw new ArgumentException("ArmedWeaponArmBehaviourBase_MonoComponent can only be attached to LeftArm or RightArm");
+                return _part;
+            }
+            set => _part = value;
+        }
         protected override void Awake()
         {
             base.Awake();
-            if (part != HumanPart.LeftArm || part != HumanPart.RightArm)
-                throw new ArgumentException("ArmedWeaponArmBehaviourBase_MonoComponent can only be attached to LeftArm or RightArm");
+
         }
         public override void OnEnter()
         {

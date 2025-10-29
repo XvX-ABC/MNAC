@@ -1,4 +1,4 @@
-﻿using Tests.Locomotion;
+﻿using Tests.Locomotion_Obsolete;
 
 namespace Tests.Environment
 {

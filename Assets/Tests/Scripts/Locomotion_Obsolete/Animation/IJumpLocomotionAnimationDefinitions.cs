@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Tests.Locomotion.Animation
+namespace Tests.Locomotion_Obsolete.Animation
 {
     public interface IJumpLocomotionAnimationDefinitions
     {

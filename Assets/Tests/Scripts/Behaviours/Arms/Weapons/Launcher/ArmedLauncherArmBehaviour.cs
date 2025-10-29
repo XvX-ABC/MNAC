@@ -14,8 +14,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
     {
         IArmedLauncherArmBehaviourDefinitions _definitions;
         ITargetsCatcher _targetsCatcher;
-        [Obsolete]
-        IInput_Obsolete _input;
         IWeaponControlInput _winput;
         ILauncher _launcher;
         internal ITarget target;
@@ -60,16 +58,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         public override Func<bool> EntryFunc => () => this.enabled;
 
         public override Func<bool> ExitFunc => () => !this.enabled;
-        [Obsolete]
-        public IInput_Obsolete Input_Obsolete
-        {
-            get => _input;
-            set
-            {
-                aiming.Input_Obsolete = value;
-                _input = value;
-            }
-        }
         public IWeaponControlInput Input
         {
             get => _winput;

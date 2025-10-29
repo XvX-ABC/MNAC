@@ -2,9 +2,9 @@
 using Tests.Behaviours.Arms.Weapons;
 using Tests.Environment;
 using Tests.Input;
-using Tests.Locomotion.Animation.States;
+using Tests.Locomotion_Obsolete.Animation.States;
 using UnityEngine;
-namespace Tests.Locomotion
+namespace Tests.Locomotion_Obsolete
 {
     public enum State
     {

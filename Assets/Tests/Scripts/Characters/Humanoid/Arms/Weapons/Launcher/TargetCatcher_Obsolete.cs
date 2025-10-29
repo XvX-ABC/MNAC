@@ -12,13 +12,13 @@ namespace Tests.Characters.Arms.Weapons.Launchers
     [Obsolete]
     public class TargetCatcher_Obsolete : ComponentBase, ITargetsCatcher
     {
-        SimpleLeadingActorTargetsCatcher _catcher;
+        SimpleLeadingActorTargetsCatcher_Obsolete _catcher;
         ITargetsCatcherDefinitions _definitions;
         public TargetCatcher_Obsolete(ITargetsCatcherDefinitions definitions)
         {
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
         }
-        internal SimpleLeadingActorTargetsCatcher catcher
+        internal SimpleLeadingActorTargetsCatcher_Obsolete catcher
         {
             get
             {

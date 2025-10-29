@@ -1,6 +1,6 @@
 ﻿using Tests.States;
 
-namespace Tests.Locomotion.Animation.States
+namespace Tests.Locomotion_Obsolete.Animation.States
 {
     public class AnimationStateMachine : AnimationStateMachine<Context>
     {

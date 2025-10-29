@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Windows;
 using Utilities.Timeline;
 using Utilities.Timeline.Events.Point;
-namespace Tests.Locomotion
+namespace Tests.Locomotion_Obsolete
 {
     internal class JumpLocomotion : IModule
     {

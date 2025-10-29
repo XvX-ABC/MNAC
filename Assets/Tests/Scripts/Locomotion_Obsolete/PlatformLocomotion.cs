@@ -2,7 +2,7 @@
 using Tests.Environment;
 using UnityEngine;
 using UnityEngine.Animations;
-namespace Tests.Locomotion
+namespace Tests.Locomotion_Obsolete
 {
     public class PlatformLocomotion : MonoBehaviour
     {

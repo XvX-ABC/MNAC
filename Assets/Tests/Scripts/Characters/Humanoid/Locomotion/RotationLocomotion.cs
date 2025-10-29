@@ -19,19 +19,9 @@ namespace Tests.Characters.Humanoid.Locomotion
         RotationByMouseOrTargetLocomotion _locomotion;
 
         ITarget _target;
-        [Obsolete]
-        IInput_Obsolete _input_obsolete;
         IBaseInput _input;
         ITargetsCatcher _targetCather;
 
-        public RotationLocomotion([NotNull] Camera camera, [NotNull] Rigidbody rigidbody, [NotNull] LCore core)
-        {
-            _core = core;
-            _rb = rigidbody;
-            _locomotion = new(camera);
-            _core.AddModule(_locomotion, true);
-            enabled = false;
-        }
         public RotationLocomotion([NotNull] Camera camera, [NotNull] Rigidbody rigidbody, [NotNull] LCore core, IBaseInput input)
         {
             _core = core;
@@ -61,8 +51,9 @@ namespace Tests.Characters.Humanoid.Locomotion
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            if (!blackboard.TryReadValue(CharacterBlackboardFields.Character_Input_Main_Obsolete, out _input_obsolete))
-                throw new Exception();
+            //if (!blackboard.TryReadValue(CharacterBlackboardFields.Character_Input_Main_Obsolete, out _input_obsolete))
+            //    throw new Exception();
+            //blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Input_Main, out _input);
             if (blackboard.TryReadValue<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler) && !TryReadTargetsCatcher(blackboard))
             {
                 handler.RegisterAction<ITargetsCatcher>(CharacterBlackboardFields.TargetsCatcher, TargetCatherUpdate);

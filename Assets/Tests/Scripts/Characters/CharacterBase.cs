@@ -26,10 +26,8 @@ namespace Tests.Characters.Interaction
         {
             var attrs = this.GetType().GetCustomAttributes(true);
             var a = attrs.FirstOrDefault(a => a is InteractableAttribute);
-            Debug.Log("t start");
             if (a != null)
             {
-                Debug.Log("t success");
                 _item = new InteractableItem(this.ID, this.gameObject);
                 InteractionManager.items.Add(_item);
             }

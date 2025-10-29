@@ -5,7 +5,7 @@ using UnityEngine;
 using Utilities.Timeline;
 using Utilities.Timeline.Events.Point;
 using Utilities.Timeline.Events.Range;
-namespace Tests.Locomotion
+namespace Tests.Locomotion_Obsolete
 {
     class BoostingLocomotion : IModule
     {

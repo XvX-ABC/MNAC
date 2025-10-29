@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Tests.Behaviours.Arms
 {
     [Obsolete]
-    internal class ArmAim : ArmedArmStateBase
+    internal class ArmAim_Obsolete : ArmedArmStateBase
     {
         AimIK _aimIK;
         IInput_Obsolete _input;
@@ -68,7 +68,7 @@ namespace Tests.Behaviours.Arms
                 _aimIK.enabled = value;
             }
         }
-        public ArmAim(AimIK aimIK) : base("aim", 0)
+        public ArmAim_Obsolete(AimIK aimIK) : base("aim", 0)
         {
             _aimIK = aimIK ?? throw new ArgumentNullException(nameof(aimIK));
         }

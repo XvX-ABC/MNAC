@@ -1,5 +1,6 @@
 ﻿using BehaviorDesigner.Runtime.Tasks;
 using System;
+using Tests.Behaviours.Input;
 using Tests.Input;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
@@ -12,8 +13,7 @@ namespace Tests.UI
     public class RingCatcher_Composable : UIComponent
     {
         RingCatcher _catcher;
-
-        IInput_Obsolete _input;
+        IBaseInput _input;
         protected override void Awake()
         {
             base.Awake();
@@ -23,7 +23,7 @@ namespace Tests.UI
         {
             base.Initialize(blackboard);
             blackboard.TryReadValueOrThrowException<Camera>(UIBlackboardFields.Camera_Main, out var camera);
-            blackboard.TryReadValueOrThrowException(UIBlackboardFields.Input, out _input);
+            blackboard.TryReadValueOrThrowException<IBaseInput>(UIBlackboardFields.Input, out _input);
 
             if (_input == null)
                 throw new NullReferenceException(nameof(_input));

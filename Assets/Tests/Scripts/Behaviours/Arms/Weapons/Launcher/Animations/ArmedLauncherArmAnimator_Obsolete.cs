@@ -3,7 +3,7 @@ using Tests.Animations;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
-using ArmAim = Tests.Behaviours.Arms.ArmAim;
+using ArmAim = Tests.Behaviours.Arms.ArmAim_Obsolete;
 
 namespace Tests.Behaviours.Arms.Weapons.Launchers
 {
@@ -12,7 +12,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
     {
         internal AimingAnimator_Obsolete aiming;
         internal ReloadAnimator_Obsolete reload;
-        internal ArmAim aim;
+        internal ArmAim_Obsolete aim;
         AnimationMixerPlayable _playable;
         float _aimingWeight;
         float _idleWeight;
@@ -62,7 +62,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
                 _playable.SetInputWeight(1, 1 - _aimingWeight);
             }
         }
-        internal ArmedLauncherArmAnimator_Obsolete(IArmedLauncherArmBehaviourDefinitions definitions, ArmAim aim)
+        internal ArmedLauncherArmAnimator_Obsolete(IArmedLauncherArmBehaviourDefinitions definitions, ArmAim_Obsolete aim)
         {
             aiming = new(definitions?.AimingClip, definitions);
             reload = new(definitions?.ReloadClip);

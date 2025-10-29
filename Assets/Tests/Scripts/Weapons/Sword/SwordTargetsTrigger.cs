@@ -37,10 +37,5 @@ namespace Tests.Weapons.Sword
 
         public Action<GameObjTarget> WhenTargetEntryAction { get => catcher.WhenTargetAdditionAction; set => catcher.WhenTargetAdditionAction = value; }
         public Action<GameObjTarget> WhenTargetExitAction { get => catcher.WhenTargetRemovalAction; set => catcher.WhenTargetRemovalAction = value; }
-        protected override void OnTriggerEnter(Collider other)
-        {
-            Debug.Log("obj: " + other.gameObject.name + " enter");
-            base.OnTriggerEnter(other);
-        }
     }
 }

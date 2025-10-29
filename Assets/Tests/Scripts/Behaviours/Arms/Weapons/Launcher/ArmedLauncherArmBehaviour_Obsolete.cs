@@ -8,7 +8,7 @@ using Tests.States;
 using Tests.Weapons;
 using Tests.Weapons.Launcher;
 using UnityEngine;
-using ArmAim = Tests.Behaviours.Arms.ArmAim;
+using ArmAim = Tests.Behaviours.Arms.ArmAim_Obsolete;
 
 namespace Tests.Behaviours.Arms.Weapons.Launchers
 {
@@ -17,7 +17,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
     {
         ILauncher _launcher;
         PlayableStateMachine _stateMachine;
-        ArmAim _aim;
+        ArmAim_Obsolete _aim;
         AmmoLoad_Obsolete _ammoLoad;
         ITargetsCatcher _targetsCatcher;
         IArmedLauncherArmBehaviourDefinitions _definitions;
@@ -115,13 +115,13 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
 
             _stateMachine.AddTransitionFor(_aim, _ammoLoad, _definitions.AimAndReloadTransitionLength, () => _input == null ? false : _input.Reload, (s, d, t) =>
             {
-                (s as ArmAim).Weight = 1 - t;
+                (s as ArmAim_Obsolete).Weight = 1 - t;
             });
 
 
             _stateMachine.AddTransitionFor(_ammoLoad, _aim, _definitions.AimAndReloadTransitionLength, (s, d, t) =>
             {
-                (d as ArmAim).Weight = t;
+                (d as ArmAim_Obsolete).Weight = t;
             });
         }
         protected virtual bool Enter()

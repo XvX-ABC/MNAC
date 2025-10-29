@@ -20,9 +20,7 @@ namespace Tests.Characters.Arms.Weapons.Launchers
         RingCatcher _ringCatcher;
         TargetsDisplay _targetDisplay;
         Camera _camera;
-        [Obsolete]
-        IInput_Obsolete _input;
-        IBaseInput _binput;
+        IBaseInput _input;
 
         ITargetsCatcherDefinitions_V0 _definitions;
 
@@ -36,9 +34,12 @@ namespace Tests.Characters.Arms.Weapons.Launchers
         {
             _filter = new(definitions.CatchingObjsTag, camera, definitions.FilterAmountOneFrame);
             _catcher = new(_filter.ObjsInScreen, actorObj, camera, definitions.TargetsMask, definitions.FilterAmountOneFrame);
+            _ringCatcher = ringCatcher ?? throw new ArgumentNullException(nameof(ringCatcher));
+            _actorObj = actorObj ?? throw new ArgumentNullException(nameof(actorObj));
+            _targetDisplay = targetsDisplay ?? throw new ArgumentNullException(nameof(targetsDisplay));
             _ringCatcher.Camera = camera;
 
-            _binput = input ?? throw new ArgumentNullException(nameof(input));
+            _input = input ?? throw new ArgumentNullException(nameof(input));
 
             _camera = camera;
 
@@ -83,8 +84,6 @@ namespace Tests.Characters.Arms.Weapons.Launchers
             base.Initialize(blackboard);
             if (!blackboard.TryReadValue<Camera>(CharacterBlackboardFields.Character_Camera_Main, out _camera))
                 throw new Exception();
-            if (!blackboard.TryReadValue<IInput_Obsolete>(CharacterBlackboardFields.Character_Input_Main_Obsolete, out _input))
-                throw new Exception();
             blackboard.TryReadUIValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
             if (!blackboard.TryReadValue<GameObject>(CharacterBlackboardFields.Character_Obj_Main, out _actorObj))
                 throw new Exception();
@@ -111,13 +110,13 @@ namespace Tests.Characters.Arms.Weapons.Launchers
         public void Update()
         {
             _catcher.ActorPosition = _actorObj.transform.position;
-            _catcher.MousePosition = _binput.MousePosition;
+            _catcher.MousePosition = _input.MousePosition;
             UpdateRingCatcher();
             ShowAllWaitingForSelectObjs();
         }
         void UpdateRingCatcher()
         {
-            _ringCatcher.MousePosition = _binput.MousePosition;
+            _ringCatcher.MousePosition = _input.MousePosition;
             var pixelSize = _camera.pixelRect.size;
             _ringCatcher.RingRadius = Mathf.Min(pixelSize.x, pixelSize.y) * _catcher.Radius;
         }

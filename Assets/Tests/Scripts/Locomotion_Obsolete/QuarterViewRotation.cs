@@ -1,6 +1,6 @@
 ﻿using Tests.Environment;
 using UnityEngine;
-namespace Tests.Locomotion
+namespace Tests.Locomotion_Obsolete
 {
     public class QuarterViewRotation : IModule
     {

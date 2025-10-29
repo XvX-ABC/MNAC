@@ -2,8 +2,8 @@
 using Locomotion;
 using System;
 using Tests.Environment;
-using JState = Tests.Locomotion.JumpLocomotion.State;
-namespace Tests.Locomotion
+using JState = Tests.Locomotion_Obsolete.JumpLocomotion.State;
+namespace Tests.Locomotion_Obsolete
 {
     class AirLocomotion : IModule
     {

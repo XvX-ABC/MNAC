@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Locomotion.Animation
+namespace Tests.Locomotion_Obsolete.Animation
 {
 public   class LocomotionAnimationDefinitions : MonoBehaviour, ILocomotionAnimationDefinitions
     {

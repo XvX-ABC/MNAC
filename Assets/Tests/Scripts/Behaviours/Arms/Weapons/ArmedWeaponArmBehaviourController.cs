@@ -33,7 +33,7 @@ namespace Tests.Behaviours.Arms.Weapons
 
         IReadOnlyDictionary<string, T> IArmedWeaponArmBehavioursController<T>.Behaviours => weaponBehavioursMapping;
 
-        public ArmedWeaponArmBehaviourController(WeaponCore weaponCore, IArmWeaponDefinitions definitions, params T[] behaviours)
+        public ArmedWeaponArmBehaviourController(WeaponCore weaponCore, IArmedWeaponArmDefinitions definitions, params T[] behaviours)
         {
             if (weaponCore == null)
                 throw new ArgumentNullException(nameof(weaponCore));

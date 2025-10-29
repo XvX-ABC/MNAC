@@ -64,7 +64,6 @@ namespace Tests.Characters.Arms.Weapons.Launchers
                 blackboard.TryRegisterField(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
 
 
-            blackboard.TryReadValue<IInput_Obsolete>(CharacterBlackboardFields.Character_Input_Main_Obsolete, out var input);
 
             _targetsCatcher = new(_definitions.TargetsCatcher);
             this.node.AddChild(_targetsCatcher.Node);

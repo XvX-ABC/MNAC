@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tests.Editors.Assets;
-using Tests.Locomotion.Animation;
+using Tests.Locomotion_Obsolete.Animation;
 using UnityEditor;
 
 namespace Tests.Editors.Locomotion.Animation

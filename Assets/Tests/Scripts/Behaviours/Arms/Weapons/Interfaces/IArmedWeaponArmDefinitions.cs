@@ -3,7 +3,7 @@
 namespace Tests.Behaviours.Arms.Weapons
 {
 
-    public interface IArmWeaponDefinitions
+    public interface IArmedWeaponArmDefinitions
     {
         public WeaponDescription[] Origins { get; }
         public string MountPointName { get; }

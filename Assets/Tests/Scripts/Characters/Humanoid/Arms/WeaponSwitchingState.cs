@@ -25,7 +25,7 @@ namespace Tests.Characters.Arms
             _switching = switching;
         }
 
-        public WeaponSwitchingState(IArmWeaponDefinitions definitions, MountPoint mountPoint, WeaponCore weaponCore, Func<WeaponDescription[], string> selectionFunc = null) : this(new(definitions, mountPoint, weaponCore, selectionFunc))
+        public WeaponSwitchingState(IArmedWeaponArmDefinitions definitions, MountPoint mountPoint, WeaponCore weaponCore, Func<WeaponDescription[], string> selectionFunc = null) : this(new(definitions, mountPoint, weaponCore, selectionFunc))
         {
         }
 

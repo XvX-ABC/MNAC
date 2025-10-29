@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Tests.Behaviours.Arms.Weapons
 {
     [Serializable]
-    public class ArmWeaponDefinitions : IArmWeaponDefinitions
+    public class ArmWeaponDefinitions : IArmedWeaponArmDefinitions
     {
         [SerializeField]
         WeaponDescription[] _origins;

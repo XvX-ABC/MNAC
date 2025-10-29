@@ -26,15 +26,12 @@ namespace Tests.Characters.Interaction.Input
 
         public bool Jump => UInput.GetKey(_jump);
 
-        public bool QuickBoost => UInput.GetKey(_quickBoost);;
+        public bool QuickBoost => UInput.GetKey(_quickBoost);
 
 
         public IArmInput LArm => _arm_l;
 
         public IArmInput RArm => _arm_r;
 
-        public IArmInput LBArm => _arm_lb;
-
-        public IArmInput RBArm => _arm_rb;
     }
 }

@@ -6,7 +6,6 @@ using Tests.Behaviours.Arms.Weapons.Launchers.Animations;
 using Tests.Characters.Humanoid.Locomotion;
 using Tests.Characters.Interaction.Input;
 using Tests.Characters.UI;
-using Tests.Input;
 using Tests.TPhysics;
 using Tests.TPhysics.Environment;
 using Tests.UI;
@@ -15,7 +14,6 @@ using Tests.Weapons;
 using Tests.Weapons.Launcher;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.Rendering;
 
 namespace Tests.Characters.Arms.Weapons.Launchers
 {
@@ -104,16 +102,16 @@ namespace Tests.Characters.Arms.Weapons.Launchers
 
 
             var armInput = default(IArmInput);
-            if (part == Humanoid.HumanPart.LeftArm)
+            if (Part == Humanoid.HumanPart.LeftArm)
                 armInput = input.LArm;
-            else if (part == Humanoid.HumanPart.RightArm)
+            else if (Part == Humanoid.HumanPart.RightArm)
                 armInput = input.RArm;
 
             _targetsCatcher = new(camera, input.BaseInput, actorObj, ringCatcher, targetsDisplay, _definitions.TargetsCatcher_V0, this.Activated);
 
             //this.node.AddChild(_targetsCatcher.node);
 
-            var weaponControlInput = armInput.Control;
+            var weaponControlInput = armInput.WeaponControl;
 
             //_animator = new(graph, _aimIK, rbody, world, groundDetector, locomotionCore, _definitions, _animationDefinitions, _targetsCatcher, input);
             _animator = new(graph, _aimIK, rbody, world, groundDetector, locomotionCore, _definitions, _animationDefinitions, _targetsCatcher, weaponControlInput);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using Tests.Behaviours.Input;
 using Tests.Characters.Interaction.Input;
 using Tests.Input;
 using Tests.States;
@@ -14,11 +15,10 @@ namespace Tests.Characters.Humanoid.Locomotion
     {
         QuickBoostingState _state;
         ITimeline _cdTimeline;
-        [Obsolete]
-        IInput_Obsolete _input;
         IHumanInput _hinput;
         public QuickBoostingHelper([NotNull] IMovementDefinitions movementDefinitions, [NotNull] IQuickBoostingDefinitions definitions, bool enabled = true)
         {
+            //_state = new QuickBoostingState(movementDefinitions, definitions, enabled);
             _state = new QuickBoostingState(movementDefinitions, definitions, enabled);
             _cdTimeline = new Timeline_V1(definitions.ColdDownTime);
 
@@ -31,9 +31,15 @@ namespace Tests.Characters.Humanoid.Locomotion
         {
             get => _cdTimeline.NormalizedTime >= 1;
         }
-        [Obsolete]
-        public IInput_Obsolete Input_Obsolete { get => _input; set => _input = value; }
-        public IHumanInput Input { get => _hinput; set => _hinput = value; }
+        public IHumanInput Input
+        {
+            get => _hinput;
+            set
+            {
+                _hinput = value;
+                _state.Input = _hinput?.BaseInput;
+            }
+        }
         public bool TriggerEvent
         {
             get => _hinput == null ? false : _hinput.HorizontalVector != Vector3.zero && _hinput.QuickBoost && IsColdDowned;
@@ -48,6 +54,7 @@ namespace Tests.Characters.Humanoid.Locomotion
     internal class QuickBoostingState : LocomotionStateBase
     {
         BoostingLocomotion locomotion;
+        IBaseInput _input;
         public QuickBoostingState(
             [NotNull] IMovementDefinitions movementDefinitions,
             [NotNull] IQuickBoostingDefinitions definitions,
@@ -57,13 +64,20 @@ namespace Tests.Characters.Humanoid.Locomotion
             locomotion = new BoostingLocomotion(speed, 0);
         }
 
+        public IBaseInput Input
+        {
+            get => _input;
+            set => _input = value;
+        }
+
         protected override ILocomotionModule module => locomotion;
 
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
             context.Core.EnableModule(module);
-            locomotion.HorizontalVector = context.Input_Obsolete.HorizontalVector;
+            locomotion.HorizontalVector = _input == null ? Vector3.zero : _input.HorizontalVector;
+            //locomotion.HorizontalVector = context.Input_Obsolete.HorizontalVector;
         }
         public override void OnExit()
         {

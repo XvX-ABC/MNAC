@@ -23,7 +23,6 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         void UpdateSpeedMultiplier()
         {
             var m = _clipLength / (timeline.Length <= 0 ? 1 : timeline.Length);
-            Debug.Log($"armed_sword ,m: {m} cl: {_clipLength}, tl: {timeline.Length}");
             controller.SetFloat(_multiplierName, m);
         }
 

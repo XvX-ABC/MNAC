@@ -3,7 +3,7 @@ using Tests.Behaviours.Arms;
 using Tests.Environment;
 using Tests.Input;
 using UnityEngine;
-namespace Tests.Locomotion
+namespace Tests.Locomotion_Obsolete
 {
     public class Context
     {

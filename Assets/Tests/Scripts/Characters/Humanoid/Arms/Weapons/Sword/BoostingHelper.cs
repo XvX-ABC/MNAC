@@ -9,19 +9,6 @@ namespace Tests.Characters.Arms.Weapons.Sword
     internal class BoostingHelper : Behaviours.Arms.Weapons.Sword.BoostingHelper
     {
         internal bool inBoosting;
-        [Obsolete]
-        public BoostingHelper(
-            TPhysics.Locomotion.LocomotionCore locomotionCore,
-            Camera camera,
-            IInput_Obsolete input,
-            ISwordBoostingDefinitions definitions) : base(
-                locomotionCore,
-                camera,
-                input,
-                definitions
-                )
-        {
-        }
         public BoostingHelper(
                 TPhysics.Locomotion.LocomotionCore locomotionCore,
                 Camera camera,

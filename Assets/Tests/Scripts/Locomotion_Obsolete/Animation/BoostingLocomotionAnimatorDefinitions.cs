@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Locomotion.Animation
+namespace Tests.Locomotion_Obsolete.Animation
 {
     [Serializable]
     public class BoostingLocomotionAnimatorDefinitions : IBoostingLocomotionAnimatorDefinitions

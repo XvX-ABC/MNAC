@@ -23,9 +23,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
         IArmedLauncherArmAnimationDefinitions _animationDefinitions;
         AimIK _aimIK;
 
-        [Obsolete]
-        IInput_Obsolete _input;
-        IWeaponControlInput _winput;
+        IWeaponControlInput _input;
         ITargetsCatcher _targetsCatcher;
         ILauncher _launcher;
 
@@ -39,38 +37,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
         internal WithCallbackPlayableStatemachine<object> statemachine;
         internal ArmedLauncherAnimationState state;
         //TODO: 不该从LocomotionCore.definitions获取速度，将LocomotionCore修改为速度字段
-        public ArmedLauncherArmAnimator(
-            PlayableGraph graph,
-            AimIK aimIK,
-            Rigidbody rbody,
-            World world,
-            IGroundDetector groundDetector,
-            LocomotionCore locomotionCore,
-            IArmedLauncherArmBehaviourDefinitions definitions,
-            IArmedLauncherArmAnimationDefinitions animationDefinitions,
-            ITargetsCatcher targetsCatcher,
-            IInput_Obsolete input)
-        {
-            _animatorController = animationDefinitions.Animator ?? throw new ArgumentNullException("animator");
-            _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
-            _animationDefinitions = animationDefinitions ?? throw new ArgumentNullException(nameof(animationDefinitions));
-            _targetsCatcher = targetsCatcher ?? throw new ArgumentNullException(nameof(targetsCatcher));
-            _input = input ?? throw new ArgumentNullException(nameof(input));
-
-            _aimingHelper = new AimingHelper(aimIK);
-
-            _aimIK = aimIK ?? throw new ArgumentNullException(nameof(_aimIK));
-
-            _controller = new(graph, _animatorController);
-
-            idle = new Idle(rbody, world, groundDetector, _controller, locomotionCore.definitions.Walking.MaxSpeed, locomotionCore.definitions.Walking.AcceleratedSpeed, _animationDefinitions.Velocity_X, _animationDefinitions.Velocity_Y);
-
-
-            aiming = new ArmAiming(_controller, _aimingHelper, _animationDefinitions.Aiming);
-
-            reload = new AmmoLoad(_controller, _animationDefinitions.ReloadTrigger, _animationDefinitions.ReloadMultiplier, _animationDefinitions.ReloadClipLength);
-            InitializeStatemacine(_aimIK);
-        }
 
         public ArmedLauncherArmAnimator(
             PlayableGraph graph,
@@ -88,7 +54,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
             _animationDefinitions = animationDefinitions ?? throw new ArgumentNullException(nameof(animationDefinitions));
             _targetsCatcher = targetsCatcher ?? throw new ArgumentNullException(nameof(targetsCatcher));
-            _winput = input ?? throw new ArgumentNullException(nameof(_winput));
+            _input = input ?? throw new ArgumentNullException(nameof(_input));
 
             _aimingHelper = new AimingHelper(aimIK);
 
@@ -163,7 +129,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
             state = new(this);
 
             //bool TriggeredReload() => _input == null ? false : _input.Reload;
-            bool TriggeredReload() => _winput == null ? false : _winput.Reload;
+            bool TriggeredReload() => _input == null ? false : _input.Reload;
         }
         public void Update()
         {

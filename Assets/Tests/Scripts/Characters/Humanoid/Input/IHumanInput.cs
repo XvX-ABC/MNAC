@@ -12,7 +12,5 @@ namespace Tests.Characters.Interaction.Input
         public bool QuickBoost { get; }
         public IArmInput LArm { get; }
         public IArmInput RArm { get; }
-        public IArmInput LBArm { get; }
-        public IArmInput RBArm { get; }
     }
 }

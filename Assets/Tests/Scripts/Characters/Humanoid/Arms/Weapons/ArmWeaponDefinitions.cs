@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Tests.Characters.Arms.Weapons
 {
     [Serializable]
-    public class ArmWeaponDefinitions : Behaviours.Arms.Weapons.ArmWeaponDefinitions, IArmWeaponDefinitions
+    public class ArmWeaponDefinitions : Behaviours.Arms.Weapons.ArmWeaponDefinitions, IArmedWeaponArmDefinitions
     {
         [SerializeField]
         ArmedWeaponArmBehaviourBase_MonoComponent_Obsolete[] _armedBehaviours;

@@ -10,7 +10,7 @@ namespace Tests.Behaviours.Arms.Weapons
 
     public class WeaponSwitching
     {
-        internal IArmWeaponDefinitions definitions;
+        internal IArmedWeaponArmDefinitions definitions;
         MountPoint _mountPoint;
         WeaponCore _weaponCore;
         Func<WeaponDescription[], string> _selectionFunc;
@@ -68,7 +68,7 @@ namespace Tests.Behaviours.Arms.Weapons
         }
 
 
-        protected internal WeaponSwitching(IArmWeaponDefinitions definitions, MountPoint mountPoint, WeaponCore weaponCore, Func<WeaponDescription[], string> selectionFunc = null)
+        protected internal WeaponSwitching(IArmedWeaponArmDefinitions definitions, MountPoint mountPoint, WeaponCore weaponCore, Func<WeaponDescription[], string> selectionFunc = null)
         {
             this.definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
             _mountPoint = mountPoint ?? throw new ArgumentNullException(nameof(mountPoint));

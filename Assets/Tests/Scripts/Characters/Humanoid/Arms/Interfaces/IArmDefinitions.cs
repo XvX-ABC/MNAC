@@ -1,11 +1,12 @@
 ﻿using Tests.Characters.Arms.Weapons;
+using Tests.Characters.Humanoid;
 using UnityEngine;
 
 namespace Tests.Characters.Arms
 {
     public interface IArmDefinitions
     {
-        public HumanPartDof Part { get; }
-        public IArmWeaponDefinitions Weapon { get; }
+        public HumanPart Part { get; }
+        public IArmedWeaponArmDefinitions Weapon { get; }
     }
 }

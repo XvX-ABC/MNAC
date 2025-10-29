@@ -14,6 +14,7 @@ namespace Tests.Weapons.Sword
         [SerializeField]
         float _damagePoint;
         SwordTargetsTrigger _trigger;
+        bool _enabledDamage;
         public string Name => this.name;
 
         public WeaponType Type => WeaponType.Sword;
@@ -22,10 +23,17 @@ namespace Tests.Weapons.Sword
 
         public float SlashRadius => _slashRadius;
 
+        public bool EnableDamage
+        {
+            get => _trigger.enabled;
+            set => _trigger.enabled = value;
+        }
+
         void Awake()
         {
             _trigger = GetComponentInChildren<SwordTargetsTrigger>() ?? throw new ComponentCantFindException(this.gameObject, typeof(SwordTargetsTrigger));
             _trigger.WhenTargetEntryAction += WhenHitEnemy;
+            _trigger.enabled = false;
         }
         void WhenHitEnemy(GameObjTarget target)
         {

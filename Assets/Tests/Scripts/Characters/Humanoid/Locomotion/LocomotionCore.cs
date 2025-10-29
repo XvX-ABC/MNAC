@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Behaviours.Input;
 using Tests.Characters.Humanoid.Locomotion.Animations;
 using Tests.Characters.Interaction.Input;
 using Tests.Extensions;
@@ -19,8 +20,6 @@ namespace Tests.Characters.Humanoid.Locomotion
     {
         internal ILocomotionDefinitions definitions;
 
-        [Obsolete("input will be removed in future versions, use input_main instead", true)]
-        IInput_Obsolete _input_Obsolete;
         IHumanInput _input;
         LCore _core;
         internal LocomotionStatemachine movementStatemachine;
@@ -91,7 +90,7 @@ namespace Tests.Characters.Humanoid.Locomotion
             //quickBoostingHelper.Input_Obsolete = _input_Obsolete;
             quickBoostingHelper.Input = _input;
             InitializeLocomotionCore(rbody, groundDetector, world);
-            InitializeRotation(camera, rbody);
+            InitializeRotation(camera, rbody, _input.BaseInput);
             InitializeMovementStatemachine();
             InitializeMainStatemachine(camera, rbody, world, groundDetector);
 
@@ -107,9 +106,9 @@ namespace Tests.Characters.Humanoid.Locomotion
             _core = new LCore(world, rbody, groundDetector, new VerticalPostureEvaluator(definitions.PostureEvaluationFramesQuantity));
             _core.World = world;
         }
-        void InitializeRotation(Camera camera, Rigidbody rigidbody)
+        void InitializeRotation(Camera camera, Rigidbody rigidbody, IBaseInput input)
         {
-            rotation = new(camera, rigidbody, _core);
+            rotation = new(camera, rigidbody, _core, input);
             node.AddChild(rotation.Node);
         }
         void InitializeMovementStatemachine()

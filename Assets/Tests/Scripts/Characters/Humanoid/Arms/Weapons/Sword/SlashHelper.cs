@@ -1,4 +1,5 @@
 ﻿using Tests.Behaviours.Arms.Weapons.Sword;
+using UnityEngine;
 
 namespace Tests.Characters.Arms.Weapons.Sword
 {
@@ -8,7 +9,8 @@ namespace Tests.Characters.Arms.Weapons.Sword
         public SlashHelper(TPhysics.Locomotion.LocomotionCore locomotionCore, IRotationLocker rotationLocker, float slashDuration) : base(locomotionCore, rotationLocker, slashDuration)
         {
         }
-        public override bool EntryEvent => slashing && base.EntryEvent;
+        //public override bool EntryEvent => slashing && base.EntryEvent;
+        public override bool EntryEvent => slashing;
         public override bool ExitEvent => !slashing;
         internal bool originalEntryEvent => base.EntryEvent;
     }

@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Tests.Extensions;
-using Tests.Locomotion;
+using Tests.Locomotion_Obsolete;
 using Tests.TPhysics.Environment;
 using UnityEngine;
 

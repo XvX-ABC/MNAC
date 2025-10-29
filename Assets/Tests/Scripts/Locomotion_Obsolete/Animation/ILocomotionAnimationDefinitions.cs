@@ -1,4 +1,4 @@
-﻿namespace Tests.Locomotion.Animation
+﻿namespace Tests.Locomotion_Obsolete.Animation
 {
     public interface ILocomotionAnimationDefinitions
     {

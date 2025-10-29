@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons.Sword.Animations;
-using Tests.Behaviours.Input;
-using Tests.Characters.Interaction.Input;
 using Tests.Input;
 using Tests.Interaction;
 using Tests.Interaction.Targets;
@@ -29,8 +27,6 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         internal WithCallbackPlayableStatemachine<object> statemachine;
 
         BoostingLocomotion _boostingLocomotion;
-        [Obsolete]
-        IInput_Obsolete _input;
 
         internal ArmedSwordArmAnimator animator;
         ArmedSwordArmBehaviourState _state;
@@ -46,6 +42,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
                     _sword = sword;
                     if (_targetsCatcher != null)
                         _targetsCatcher.Radius = _sword.SlashRadius * 0.5f;
+                    slash.Sword = _sword;
                 }
                 else
                     throw new Exception("Weapon");
@@ -79,20 +76,6 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         }
 
         //TODO: 删除定义中增量速度相关内容
-        [Obsolete]
-        public ArmedSwordArmBehaviour(IArmedSwordArmBehaviourDefinitions definitions, LocomotionCore locomotionCore, Camera camera, IInput_Obsolete input)
-        {
-            _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
-            var boostingDefinitions = _definitions.Boosting;
-            _boostingLocomotion = new BoostingLocomotion(boostingDefinitions.MaxSpeed, 0);
-            _input = input ?? throw new ArgumentNullException(nameof(input));
-
-
-            InitializeStates(locomotionCore, _boostingLocomotion, _input, camera ?? throw new ArgumentNullException(nameof(camera)), definitions);
-
-            InitializeStatemachine();
-
-        }
         public ArmedSwordArmBehaviour(IArmedSwordArmBehaviourDefinitions definitions, BoostingHelper boostingHelper, SlashHelper slashHelper, ArmedSwordArmAnimator animator)
         {
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
@@ -103,13 +86,6 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
 
             InitializeStatemachine();
 
-        }
-        [Obsolete]
-        void InitializeStates(LocomotionCore locomotionCore, BoostingLocomotion locomotion, IInput_Obsolete input, Camera camera, IArmedSwordArmBehaviourDefinitions definitions)
-        {
-            idle = new();
-            boostingHelper = new(locomotionCore, camera, input, definitions.Boosting);
-            boosting = boostingHelper.state;
         }
         void InitializeStates(BoostingHelper boostingHelper, SlashHelper slashHelper)
         {
@@ -145,15 +121,15 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         void WhenTargetsChanged(IList<ITarget> targets)
         {
             slashHelper.Target = targets.Count > 0 ? targets[^1] : null;
-            Debug.Log(_targetsCatcher);
         }
         public void Update()
         {
             boostingHelper.Update();
+            animator.Update();
         }
         public void FixedUpdate()
         {
-            animator.Update();
+
         }
     }
 }

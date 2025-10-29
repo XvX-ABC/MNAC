@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons;
+using Tests.Characters.Humanoid;
 using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
@@ -13,21 +14,36 @@ namespace Tests.Characters.Arms.Weapons
     {
         protected ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> controller;
         internal Behaviours.Arms.Animations.ArmAnimationCore animationCore;
+        HumanPart _part;
+        [Obsolete]
         protected internal ArmedWeaponArmBehaviourControllerState(ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> controller) : base("weapon_armed_behaviour", 0)
         {
             this.controller = controller ?? throw new ArgumentNullException(nameof(controller));
         }
-        public ArmedWeaponArmBehaviourControllerState(WeaponCore weaponCore, IArmWeaponDefinitions definitions, params IArmedWeaponArmBehaviour[] behaviours) : this(new(weaponCore, definitions, behaviours))
+        protected internal ArmedWeaponArmBehaviourControllerState(ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> controller, HumanPart part) : base("weapon_armed_behaviour", 0)
+        {
+            this.controller = controller ?? throw new ArgumentNullException(nameof(controller));
+            _part = part;
+        }
+        [Obsolete]
+        public ArmedWeaponArmBehaviourControllerState(WeaponCore weaponCore, IArmedWeaponArmDefinitions definitions, params IArmedWeaponArmBehaviour[] behaviours) : this(new(weaponCore, definitions, behaviours))
         {
         }
-
+        public ArmedWeaponArmBehaviourControllerState(WeaponCore weaponCore, IArmedWeaponArmDefinitions definitions, HumanPart part, params IArmedWeaponArmBehaviour[] behaviours) : this(new(weaponCore, definitions, behaviours), part)
+        {
+            InitializeBehaviours(behaviours);
+        }
         public Action<IWeapon, IArmedWeaponArmBehaviour> ActivatedAction { get => controller.ActivatedAction; set => controller.ActivatedAction = value; }
         public Action<IWeapon, IArmedWeaponArmBehaviour> UnactivatedAction { get => controller.UnactivatedAction; set => controller.UnactivatedAction = value; }
         public Func<bool> EntryFunc { get => controller.EntryFunc; }
         public Func<bool> ExitFunc { get => controller.ExitFunc; }
 
         IReadOnlyDictionary<string, IArmedWeaponArmBehaviour> IArmedWeaponArmBehavioursController<IArmedWeaponArmBehaviour>.Behaviours => controller.weaponBehavioursMapping;
-
+        void InitializeBehaviours(IArmedWeaponArmBehaviour[] behaviours)
+        {
+            foreach (var b in behaviours)
+                b.Part = this._part;
+        }
         public void ActivateBehaviourBy(IWeapon weapon)
         {
             controller.ActivateBehaviourBy(weapon);
@@ -42,7 +58,10 @@ namespace Tests.Characters.Arms.Weapons
         {
             base.Initialize(blackboard);
             foreach (var b in controller.behavioursCache)
+            {
                 node.AddChild(b.Node);
+            }
+
         }
 
         public override void OnEnter()

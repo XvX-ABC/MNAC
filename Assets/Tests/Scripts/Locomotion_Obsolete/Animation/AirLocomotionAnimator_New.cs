@@ -1,8 +1,8 @@
 ﻿using System;
 using Tests.Environment;
 using UnityEngine;
-using static Tests.Locomotion.AirLocomotion;
-namespace Tests.Locomotion.Animation
+using static Tests.Locomotion_Obsolete.AirLocomotion;
+namespace Tests.Locomotion_Obsolete.Animation
 {
     [Obsolete]
     public class AirLocomotionAnimator_New : MonoBehaviour, IModule

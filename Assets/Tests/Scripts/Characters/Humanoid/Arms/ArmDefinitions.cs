@@ -1,4 +1,5 @@
 ﻿using Tests.Characters.Arms.Weapons;
+using Tests.Characters.Humanoid;
 using UnityEngine;
 
 namespace Tests.Characters.Arms
@@ -8,9 +9,9 @@ namespace Tests.Characters.Arms
         [SerializeField]
         ArmWeaponDefinitions _weapon;
         [SerializeField]
-        HumanPartDof _part;
-        public HumanPartDof Part { get => _part; }
-        public IArmWeaponDefinitions Weapon => _weapon;
+        HumanPart _part;
+        public HumanPart Part { get => _part; }
+        public IArmedWeaponArmDefinitions Weapon => _weapon;
 
     }
 }

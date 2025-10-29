@@ -1,9 +1,9 @@
 ﻿using System;
 using Tests.Assets;
 using UnityEngine;
-using static Tests.Locomotion.Animation.IAirLocomotionAnimationDefinitions;
+using static Tests.Locomotion_Obsolete.Animation.IAirLocomotionAnimationDefinitions;
 
-namespace Tests.Locomotion.Animation
+namespace Tests.Locomotion_Obsolete.Animation
 {
     [Serializable]
     class AirLocomotionAnimationDefinitions : IAirLocomotionAnimationDefinitions

@@ -13,29 +13,12 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         internal Boosting state;
         internal BoostingLocomotion locomotion;
         ITimeline _cdTimeline;
-        [Obsolete]
-        IInput_Obsolete _input;
-        IWeaponControlInput _winput;
-        [Obsolete]
-        public BoostingHelper(LocomotionCore locomotionCore, Camera camera, IInput_Obsolete input, IBoostingDefinitions definitions)
-        {
-            locomotion = new BoostingLocomotion(definitions.MaxSpeed, 0);
-            state = new(locomotion, locomotionCore, camera, input, definitions.MaxDuration);
-            _input = input;
-            var cd = definitions.ColdDownDuration;
-            if (cd > 0)
-            {
-                _cdTimeline = new Timeline_V1(definitions.ColdDownDuration);
-                state.ExitAction += () => _cdTimeline.Restart();
-                _cdTimeline.SetNormalizedTime(1);
-            }
-        }
-
+        IWeaponControlInput _input;
         public BoostingHelper(LocomotionCore locomotionCore, Camera camera, IBaseInput baseInput, IWeaponControlInput weaponControlInput, IBoostingDefinitions definitions)
         {
             locomotion = new BoostingLocomotion(definitions.MaxSpeed, 0);
             state = new(locomotion, locomotionCore, camera, baseInput, definitions.MaxDuration);
-            _winput = weaponControlInput;
+            _input = weaponControlInput;
             var cd = definitions.ColdDownDuration;
             if (cd > 0)
             {
@@ -51,12 +34,10 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         public virtual bool EntryEvent
         {
             //get => _input == null ? false : _input.Fire && IsColdDowned;
-            get => _winput == null ? false : _winput.Fire && IsColdDowned;
+            get => _input == null ? false : _input.Fire && IsColdDowned;
         }
         public virtual bool ExitEvent { get => state.Timeline.NormalizedTime >= 1; }
-        [Obsolete]
-        public IInput_Obsolete Input_Obsolete { get => _input; set => _input = value; }
-        public IWeaponControlInput Input { get => _winput; set => _winput = value; }
+        public IWeaponControlInput Input { get => _input; set => _input = value; }
         public virtual void Update()
         {
             _cdTimeline?.OnUpdate(Time.deltaTime);

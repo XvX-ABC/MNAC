@@ -2,7 +2,7 @@
 using Tests.Environment;
 using UnityEngine;
 
-namespace Tests.Locomotion.Animation
+namespace Tests.Locomotion_Obsolete.Animation
 {
     [Obsolete]
     public class LocomotionAnimatorCore : MonoBehaviour, IModule

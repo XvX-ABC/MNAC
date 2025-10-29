@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using Tests.Locomotion;
+using Tests.Locomotion_Obsolete;
 using UnityEngine;
 
 namespace Tests.Environment

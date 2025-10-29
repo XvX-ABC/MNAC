@@ -2,7 +2,7 @@
 using System.Security;
 using UnityEngine;
 
-namespace Tests.Locomotion.Animation
+namespace Tests.Locomotion_Obsolete.Animation
 {
     [Serializable]
     public class GroundLocomotionAnimatorDefinitions

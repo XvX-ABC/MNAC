@@ -4,6 +4,7 @@ using Tests.Behaviours.Arms;
 using Tests.Behaviours.Arms.Animations;
 using Tests.Behaviours.Arms.Weapons.Animations;
 using Tests.Characters.Arms.Weapons;
+using Tests.Characters.Humanoid;
 using Tests.Characters.Interaction.Input;
 using Tests.Characters.MountPoints;
 using Tests.Input;
@@ -13,7 +14,7 @@ using Tests.Utilities.Composable;
 using Tests.Weapons;
 using UnityEngine;
 using UnityEngine.Playables;
-using IArmWeaponDefinitions = Tests.Characters.Arms.Weapons.IArmWeaponDefinitions;
+using IArmedWeaponArmDefinitions = Tests.Characters.Arms.Weapons.IArmedWeaponArmDefinitions;
 using MountPoint = Tests.Characters.MountPoints.MountPoint;
 
 namespace Tests.Characters.Arms
@@ -52,9 +53,7 @@ namespace Tests.Characters.Arms
         }
 
         WeaponCore _weaponCore;
-        [Obsolete]
-        IInput_Obsolete _input;
-        IWeaponUserInput _winput;
+        IArmInput _armInput;
         [SerializeField]
         MountPoint[] _mountPoints;
 
@@ -82,8 +81,8 @@ namespace Tests.Characters.Arms
             {
                 if (value != null)
                 {
-                    value.TryReadValue(CharacterBlackboardFields.Character_Input_Main_Obsolete, out _input);
-                    value.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Input_Main, out _winput);
+                    value.TryReadValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
+                    _armInput = _definitions.Part == HumanPart.LeftArm ? input.LArm : input.RArm;
                     value.TryReadValue(CharacterBlackboardFields.Character_Weapon_Core, out _weaponCore);
                 }
                 _blackboard = value;
@@ -104,7 +103,7 @@ namespace Tests.Characters.Arms
 
             _node = new(this);
 
-            if (_definitions.Part != HumanPartDof.LeftArm && _definitions.Part != HumanPartDof.RightArm)
+            if (_definitions.Part != HumanPart.LeftArm && _definitions.Part != HumanPart.RightArm)
                 throw new Exception("The part of definitions must is left arm or right arm.");
         }
 
@@ -139,8 +138,8 @@ namespace Tests.Characters.Arms
             var weaponMountPoint = FindMountPoint(weaponDefinitions.MountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.MountPointName);
             weaponMountPoint.field = _definitions.Part switch
             {
-                HumanPartDof.LeftArm => MountPointFields.Enum.Left_Arm_Hand_Weapon,
-                HumanPartDof.RightArm => MountPointFields.Enum.Right_Arm_Hand_Weapon,
+                HumanPart.LeftArm => MountPointFields.Enum.Left_Arm_Hand_Weapon,
+                HumanPart.RightArm => MountPointFields.Enum.Right_Arm_Hand_Weapon,
                 _ => throw new Exception("The part of definitions must is left arm or right arm.")
             };
 
@@ -165,14 +164,15 @@ namespace Tests.Characters.Arms
             SetDefaultWeapon(weaponMountPoint, weaponDefinitions.Origins[0].Name, _weaponCore);
 
         }
-        void InitializeSwitchingBehaviour(IArmWeaponDefinitions definitions, MountPoint mountPoint)
+        void InitializeSwitchingBehaviour(IArmedWeaponArmDefinitions definitions, MountPoint mountPoint)
         {
             weaponSwitching = new(definitions, mountPoint, _weaponCore);
         }
-        void InitializeArmedWeaponBehaviours(IArmWeaponDefinitions definitions)
+        void InitializeArmedWeaponBehaviours(IArmedWeaponArmDefinitions definitions)
         {
             var behaviours = this.GetComponents<IArmedWeaponArmBehaviour>();
-            armedWeaponController = new(_weaponCore, definitions, behaviours);
+            //armedWeaponController = new(_weaponCore, definitions, behaviours);
+            armedWeaponController = new(_weaponCore, definitions, _definitions.Part, behaviours);
 
 
             weaponSwitching.SwitchingEvent += (ow, nw) =>
@@ -186,10 +186,10 @@ namespace Tests.Characters.Arms
                     var field = Guid.Empty;
                     switch (_definitions.Part)
                     {
-                        case HumanPartDof.LeftArm:
+                        case HumanPart.LeftArm:
                             field = CharacterBlackboardFields.Character_Weapon_LeftArm_Armed;
                             break;
-                        case HumanPartDof.RightArm:
+                        case HumanPart.RightArm:
                             field = CharacterBlackboardFields.Character_Weapon_RightArm_Armed;
                             break;
                     }
@@ -217,7 +217,7 @@ namespace Tests.Characters.Arms
 
 
             #region from idle to other states
-            transition_its = new(0, idle, weaponSwitching, () => _winput.Switch, null, 0.07f, 0, AnimationTransition.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.Next);
+            transition_its = new(0, idle, weaponSwitching, () => _armInput.WeaponSwitch, null, 0.07f, 0, AnimationTransition.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.Next);
             //transition_its = new(0, idle, weaponSwitching, () => _input.Supply, null, 0.07f, 0, AnimationTransition.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.Next);
             stateMachine.AddTransitionFor(transition_its);
             stateMachine.AddTransitionFor(idle, armedWeaponController, 0.3f, () => armedWeaponController.EntryFunc(), null);
@@ -225,7 +225,7 @@ namespace Tests.Characters.Arms
 
             #region from armed weapon to other states
 
-            transition_ats = new AnimationTransition(2, armedWeaponController, weaponSwitching, () => _winput.Switch, null, 1, 0, AnimationTransition.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.None);
+            transition_ats = new AnimationTransition(2, armedWeaponController, weaponSwitching, () => _armInput.WeaponSwitch, null, 1, 0, AnimationTransition.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.None);
             //transition_ats = new AnimationTransition(2, armedWeaponController, weaponSwitching, () => _input.Supply, null, 1, 0, AnimationTransition.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.None);
             stateMachine.AddTransitionFor(armedWeaponController, idle, 0.3f, () => armedWeaponController.ExitFunc(), null);
             stateMachine.AddTransitionFor(transition_ats);

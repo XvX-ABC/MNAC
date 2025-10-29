@@ -4,7 +4,7 @@ using Locomotion.Animation;
 using Tests.Environment;
 using Tests.Weapons.MultiMissileLauncher.Animation;
 using UnityEngine;
-namespace Tests.Locomotion.Animation
+namespace Tests.Locomotion_Obsolete.Animation
 {
     [Obsolete]
     public class GroundLocomotionAnimator : MonoBehaviour, IModule

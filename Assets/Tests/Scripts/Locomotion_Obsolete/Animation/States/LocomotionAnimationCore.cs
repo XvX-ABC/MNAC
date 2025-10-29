@@ -1,9 +1,9 @@
 ﻿using Locomotion.Animation;
 using Tests.Environment;
 using UnityEngine;
-using PostureState = Tests.Locomotion.AirLocomotion.PostureState;
+using PostureState = Tests.Locomotion_Obsolete.AirLocomotion.PostureState;
 
-namespace Tests.Locomotion.Animation.States
+namespace Tests.Locomotion_Obsolete.Animation.States
 {
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(LocomotionCore))]

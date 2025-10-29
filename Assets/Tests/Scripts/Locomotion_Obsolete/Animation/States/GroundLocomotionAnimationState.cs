@@ -3,7 +3,7 @@ using Locomotion.Animation;
 using System;
 using Tests.Weapons.MultiMissileLauncher.Animation;
 using UnityEngine;
-namespace Tests.Locomotion.Animation.States
+namespace Tests.Locomotion_Obsolete.Animation.States
 {
     public class GroundLocomotionAnimationState : AnimationStateBase
     {

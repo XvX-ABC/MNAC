@@ -1,7 +1,7 @@
 ﻿using Locomotion;
 using Tests.Environment;
 using UnityEngine;
-namespace Tests.Locomotion
+namespace Tests.Locomotion_Obsolete
 {
     class HorizontalLocomotion : IModule
     {

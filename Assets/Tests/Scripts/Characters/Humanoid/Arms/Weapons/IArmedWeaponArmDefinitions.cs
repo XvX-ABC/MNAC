@@ -7,7 +7,7 @@ using Tests.Characters.Arms.Weapons.Launchers;
 
 namespace Tests.Characters.Arms.Weapons
 {
-    public interface IArmWeaponDefinitions : Behaviours.Arms.Weapons.IArmWeaponDefinitions
+    public interface IArmedWeaponArmDefinitions : Behaviours.Arms.Weapons.IArmedWeaponArmDefinitions
     {
     }
 }

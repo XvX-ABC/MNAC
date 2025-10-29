@@ -55,5 +55,9 @@ namespace Tests.States
             base.ToNextStateTransitionRunning(currentTransition);
             statemachine.ToNextStateTransitionRunning(currentTransition);
         }
+        public override string ToString()
+        {
+            return statemachine.ToString();
+        }
     }
 }

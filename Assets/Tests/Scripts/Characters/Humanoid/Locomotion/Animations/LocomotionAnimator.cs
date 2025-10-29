@@ -18,8 +18,6 @@ namespace Tests.Characters.Humanoid.Locomotion.Animations
     {
         ILocomotionAnimatorDefinitions _definitions;
         IGroundDetector groundDetector;
-        [Obsolete]
-        IInput_Obsolete _input_obsolete;
         IHumanInput _input;
         LocomotionCore _core;
 
@@ -42,7 +40,7 @@ namespace Tests.Characters.Humanoid.Locomotion.Animations
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Input_Main_Obsolete, out _input_obsolete);
+            //blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Input_Main_Obsolete, out _input_obsolete);
             blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Input_Main, out _input);
             blackboard.TryReadValueOrThrowException<ControllerPlayable>(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, out var controller);
             blackboard.TryReadValueOrThrowException<Rigidbody>(CharacterBlackboardFields.Rigidbody, out var rbody);

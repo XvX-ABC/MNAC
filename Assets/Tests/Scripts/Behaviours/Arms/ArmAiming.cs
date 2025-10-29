@@ -9,17 +9,13 @@ namespace Tests.Behaviours.Arms
 {
     internal class ArmAiming : ArmedArmStateBase
     {
-        [Obsolete]
-        IInput_Obsolete _input;
-        IWeaponControlInput _winput;
+        IWeaponControlInput _input;
         ILauncher _controlledWeapon;
         public ArmAiming() : base("aiming", 0)
         {
         }
 
-        [Obsolete]
-        public IInput_Obsolete Input_Obsolete { get => _input; set => _input = value; }
-        public IWeaponControlInput Input { get => _winput; set => _winput = value; }
+        public IWeaponControlInput Input { get => _input; set => _input = value; }
         public ILauncher ControlledWeapon
         {
             get => _controlledWeapon;
@@ -36,7 +32,7 @@ namespace Tests.Behaviours.Arms
         {
             base.OnUpdate();
             //if (_input != null && _input.Fire)
-            if (_winput != null && _winput.Fire)
+            if (_input != null && _input.Fire)
             {
                 Debug.Log("fire");
                 _controlledWeapon.StartLaunch();

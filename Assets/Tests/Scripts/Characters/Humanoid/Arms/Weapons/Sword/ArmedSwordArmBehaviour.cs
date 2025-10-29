@@ -132,10 +132,10 @@ namespace Tests.Characters.Arms.Weapons.Sword
 
             //var boostingHelper = new BoostingHelper(locomotionCore.core, camera, input, _definitions.Boosting);
             var winput = default(IWeaponControlInput);
-            if (part == HumanPart.LeftArm)
-                winput = input.LArm?.Control;
-            else if (part == HumanPart.RightArm)
-                winput = input.RArm?.Control;
+            if (Part == HumanPart.LeftArm)
+                winput = input.LArm?.WeaponControl;
+            else if (Part == HumanPart.RightArm)
+                winput = input.RArm?.WeaponControl;
             var boostingHelper = new BoostingHelper(locomotionCore.core, camera, input.BaseInput, winput, _definitions.Boosting);
             var slashHelper = new SlashHelper(locomotionCore.core, rotationLocker, _definitions.Slash.Duration);
 

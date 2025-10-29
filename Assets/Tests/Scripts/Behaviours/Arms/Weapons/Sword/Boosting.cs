@@ -26,8 +26,6 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         BoostingLocomotion _locomotion;
         RotationByScreen _rotationHelper;
         ITargetsCatcher _targetsCatcher;
-        [Obsolete]
-        IInput_Obsolete _input;
         IBaseInput _baseInput;
 
         LifeCycle _life;
@@ -48,19 +46,6 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
                 _targetsCatcher.Enabled = _life > LifeCycle.Ready && _life < LifeCycle.Exited;
         }
 
-        public Boosting(BoostingLocomotion locomotion, LocomotionCore locomotionCore, Camera camera, IInput_Obsolete input, float duration) : base("boosting", 0)
-        {
-            _locomotion = locomotion ?? throw new ArgumentNullException(nameof(locomotion));
-            _locomotionCore = locomotionCore ?? throw new ArgumentNullException(nameof(locomotionCore));
-            timeline = new Timeline_V1(duration);
-            _rotationHelper = new();
-            _rotationHelper.Camera = camera;
-            _input = input ?? throw new ArgumentNullException(nameof(input));
-
-            locomotionCore.AddModule(locomotion);
-
-            _life = LifeCycle.Ready;
-        }
         public Boosting(BoostingLocomotion locomotion, LocomotionCore locomotionCore, Camera camera, IBaseInput input, float duration) : base("boosting", 0)
         {
             _locomotion = locomotion ?? throw new ArgumentNullException(nameof(locomotion));

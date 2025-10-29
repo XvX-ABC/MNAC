@@ -27,6 +27,8 @@ namespace Tests.Characters.Arms.Weapons.Launchers
 
         public HumanPart Part => throw new NotImplementedException();
 
+        HumanPart IArmedWeaponArmBehaviour.Part { get => Part; set => throw new NotImplementedException(); }
+
         public override void OnEnter()
         {
             base.OnEnter();

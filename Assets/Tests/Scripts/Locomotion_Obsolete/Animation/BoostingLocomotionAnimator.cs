@@ -4,8 +4,8 @@ using System;
 using Tests.Environment;
 using Tests.Weapons.MultiMissileLauncher.Animation;
 using UnityEngine;
-using JState = Tests.Locomotion.JumpLocomotion.State;
-namespace Tests.Locomotion.Animation
+using JState = Tests.Locomotion_Obsolete.JumpLocomotion.State;
+namespace Tests.Locomotion_Obsolete.Animation
 {
     [Obsolete]
     public class BoostingLocomotionAnimator : MonoBehaviour, IModule

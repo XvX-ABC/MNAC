@@ -10,7 +10,7 @@ namespace Tests.Behaviours.Arms.Animations
 {
     internal class ArmAnimationCore : AnimationPlayablePartBase
     {
-        IArmWeaponDefinitions _definitions;
+        IArmedWeaponArmDefinitions _definitions;
         IArmWeaponAnimationDefinitions _animationDefinitions;
 
         MixerPlayablePart _mixer;
@@ -145,7 +145,7 @@ namespace Tests.Behaviours.Arms.Animations
                 _statusNum = value;
             }
         }
-        public ArmAnimationCore(PlayableGraph graph, IArmWeaponDefinitions weaponDefinitions, IArmWeaponAnimationDefinitions animationDefinitions, IArmedWeaponArmAnimator armedAnimator) : base(graph)
+        public ArmAnimationCore(PlayableGraph graph, IArmedWeaponArmDefinitions weaponDefinitions, IArmWeaponAnimationDefinitions animationDefinitions, IArmedWeaponArmAnimator armedAnimator) : base(graph)
         {
             _definitions = weaponDefinitions ?? throw new ArgumentNullException(nameof(weaponDefinitions));
             _animationDefinitions = animationDefinitions ?? throw new ArgumentNullException(nameof(animationDefinitions));
@@ -179,7 +179,7 @@ namespace Tests.Behaviours.Arms.Animations
         }
         internal class SwitchingPlayablePart : AnimationPlayablePartBase
         {
-            IArmWeaponDefinitions _definitions;
+            IArmedWeaponArmDefinitions _definitions;
             IArmWeaponAnimationDefinitions _animationDefinitions;
             float _weight;
             internal PlayState State => playablePart.GetPlayState();
@@ -204,7 +204,7 @@ namespace Tests.Behaviours.Arms.Animations
                         outputSetting.Weight = _weight;
                 }
             }
-            public SwitchingPlayablePart(PlayableGraph graph, IArmWeaponDefinitions definitions, IArmWeaponAnimationDefinitions animationDefinitions) : base(graph)
+            public SwitchingPlayablePart(PlayableGraph graph, IArmedWeaponArmDefinitions definitions, IArmWeaponAnimationDefinitions animationDefinitions) : base(graph)
             {
                 _definitions = definitions;
                 _animationDefinitions = animationDefinitions;

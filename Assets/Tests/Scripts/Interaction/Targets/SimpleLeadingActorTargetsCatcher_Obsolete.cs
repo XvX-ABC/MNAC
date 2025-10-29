@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Tests.Input;
 using Tests.TPhysics.Locomotion;
 using UnityEngine;
@@ -6,7 +7,8 @@ using Context = Tests.TPhysics.Locomotion.Context;
 
 namespace Tests.Interaction
 {
-    internal class SimpleLeadingActorTargetsCatcher : TargetsCatcherBase
+    [Obsolete]
+    internal class SimpleLeadingActorTargetsCatcher_Obsolete : TargetsCatcherBase
     {
         ILeadingActorTargetsCatcherDefinitions _definitions;
         Camera _camera;
@@ -24,7 +26,7 @@ namespace Tests.Interaction
             public Vector3 Position => pos;
         }
         protected Context context => _locomotion.Context;
-        public SimpleLeadingActorTargetsCatcher(ILeadingActorTargetsCatcherDefinitions definitions, GameObject actorObj, Camera camera, IInput_Obsolete input, LocomotionCore locomotion)
+        public SimpleLeadingActorTargetsCatcher_Obsolete(ILeadingActorTargetsCatcherDefinitions definitions, GameObject actorObj, Camera camera, IInput_Obsolete input, LocomotionCore locomotion)
         {
             this._actorObj = actorObj;
             _definitions = definitions;

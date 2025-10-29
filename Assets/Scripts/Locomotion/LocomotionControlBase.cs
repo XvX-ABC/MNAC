@@ -1,6 +1,6 @@
 ﻿using System;
 using Tests.Environment;
-using Tests.Locomotion;
+using Tests.Locomotion_Obsolete;
 using UnityEngine;
 using Utilities.Timeline;
 using Utilities.Timeline.Events.Point;

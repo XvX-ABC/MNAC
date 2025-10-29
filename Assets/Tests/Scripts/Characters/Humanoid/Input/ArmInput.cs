@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BehaviorDesigner.Runtime.Tasks.Unity.UnityInput;
+using System;
 using UnityEngine;
 using UInput = UnityEngine.Input;
 
@@ -16,14 +17,14 @@ namespace Tests.Characters.Interaction.Input
             KeyCode _reload;
             public bool Fire => UInput.GetKey(_fire);
 
-            public bool Reload => UInput.GetKey(_reload);
+            public bool Reload => UInput.GetKey(_reload) && UInput.GetKey(_reload);
         }
         [SerializeField]
         KeyCode _switch;
         [SerializeField]
         ControlInput _control;
-        public bool Switch => UInput.GetKey(_switch);
+        public bool WeaponSwitch => UInput.GetKey(_switch) && _control.Fire;
 
-        public IWeaponControlInput Control => _control;
+        public IWeaponControlInput WeaponControl => _control;
     }
 }

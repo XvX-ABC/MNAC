@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-namespace Tests.Locomotion.Animation.States
+namespace Tests.Locomotion_Obsolete.Animation.States
 {
     public class AirDescendingAnimationState : AnimationStateBase
     {

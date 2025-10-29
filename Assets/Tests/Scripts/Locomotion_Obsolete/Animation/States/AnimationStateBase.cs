@@ -1,7 +1,7 @@
 ﻿using Tests.States;
 using UnityEngine;
 
-namespace Tests.Locomotion.Animation.States
+namespace Tests.Locomotion_Obsolete.Animation.States
 {
     public class AnimationStateBase : AnimationStateBase<Context>
     {
