@@ -19,6 +19,7 @@ namespace Tests.Characters.Arms.Weapons.Launchers
         IArmedLauncherArmBehaviourDefinitions _definitions;
         AimIK _aimIk;
         TargetCatcher_Obsolete _targetsCatcher;
+        IInput_Obsolete _input;
         public override WeaponType Type => WeaponType.Launcher;
 
 
