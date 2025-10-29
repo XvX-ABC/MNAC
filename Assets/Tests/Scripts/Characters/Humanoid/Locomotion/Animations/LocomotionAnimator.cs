@@ -1,7 +1,7 @@
 ﻿using System;
 using Tests.Animations;
-using Tests.Characters.Interaction.Input;
-using Tests.Characters.Legs;
+using Tests.Characters.Humanoid.Interaction.Input;
+using Tests.Characters.Humanoid.Legs;
 using Tests.Input;
 using Tests.States;
 using Tests.TPhysics;

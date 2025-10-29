@@ -1,9 +1,10 @@
 ﻿using BehaviorDesigner.Runtime.Tasks.Unity.UnityInput;
 using System;
+using Tests.Characters.Interaction.Input;
 using UnityEngine;
 using UInput = UnityEngine.Input;
 
-namespace Tests.Characters.Interaction.Input
+namespace Tests.Characters.Humanoid.Interaction.Input
 {
     [Serializable]
     public class ArmInput : IArmInput

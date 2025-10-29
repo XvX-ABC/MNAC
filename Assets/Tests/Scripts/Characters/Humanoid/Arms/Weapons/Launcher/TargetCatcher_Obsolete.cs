@@ -7,7 +7,7 @@ using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
 
-namespace Tests.Characters.Arms.Weapons.Launchers
+namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
     [Obsolete]
     public class TargetCatcher_Obsolete : ComponentBase, ITargetsCatcher

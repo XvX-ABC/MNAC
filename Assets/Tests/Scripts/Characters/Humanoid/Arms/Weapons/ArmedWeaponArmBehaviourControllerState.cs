@@ -8,7 +8,7 @@ using Tests.Utilities.Composable;
 using Tests.Weapons;
 using UnityEngine;
 
-namespace Tests.Characters.Arms.Weapons
+namespace Tests.Characters.Humanoid.Arms.Weapons
 {
     internal class ArmedWeaponArmBehaviourControllerState : StateComponentNode, IArmedWeaponArmBehavioursController<IArmedWeaponArmBehaviour>
     {
@@ -42,7 +42,7 @@ namespace Tests.Characters.Arms.Weapons
         void InitializeBehaviours(IArmedWeaponArmBehaviour[] behaviours)
         {
             foreach (var b in behaviours)
-                b.Part = this._part;
+                b.Part = _part;
         }
         public void ActivateBehaviourBy(IWeapon weapon)
         {

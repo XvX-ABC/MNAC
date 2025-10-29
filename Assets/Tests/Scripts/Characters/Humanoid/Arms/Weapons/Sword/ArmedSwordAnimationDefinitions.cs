@@ -2,7 +2,7 @@
 using Tests.Behaviours.Arms.Weapons.Sword;
 using UnityEngine;
 
-namespace Tests.Characters.Arms.Weapons.Sword.Animations
+namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     public class ArmedSwordAnimationDefinitions : MonoBehaviour, IArmedSwordArmAnimationDefinitions
     {

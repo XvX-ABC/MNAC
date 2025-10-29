@@ -1,6 +1,6 @@
 ﻿using System;
 using Tests.Behaviours.Arms.Weapons;
-using Tests.Characters.Arms;
+using Tests.Characters.Humanoid.Arms;
 using Tests.States;
 using Tests.Weapons;
 

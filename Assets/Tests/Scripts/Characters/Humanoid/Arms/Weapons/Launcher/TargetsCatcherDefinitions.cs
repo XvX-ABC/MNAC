@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Characters.Arms.Weapons.Launchers
+namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
     [Serializable]
     public class TargetsCatcherDefinitions : ITargetsCatcherDefinitions

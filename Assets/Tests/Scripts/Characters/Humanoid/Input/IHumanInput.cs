@@ -1,7 +1,7 @@
 ﻿using Tests.Behaviours.Input;
 using UnityEngine;
 
-namespace Tests.Characters.Interaction.Input
+namespace Tests.Characters.Humanoid.Interaction.Input
 {
     public interface IHumanInput
     {

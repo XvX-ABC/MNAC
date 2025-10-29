@@ -1,7 +1,7 @@
 ﻿using Tests.Behaviours.Arms.Weapons.Sword;
 using UnityEngine;
 
-namespace Tests.Characters.Arms.Weapons.Sword
+namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     internal class SlashHelper : Behaviours.Arms.Weapons.Sword.SlashHelper
     {

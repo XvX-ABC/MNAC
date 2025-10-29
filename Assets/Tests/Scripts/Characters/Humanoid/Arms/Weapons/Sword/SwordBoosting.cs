@@ -3,7 +3,7 @@ using Tests.Behaviours.Arm.Weapons;
 using Tests.States;
 using UnityEngine;
 using Utilities.Timeline;
-namespace Tests.Characters.Arms.Weapons.Sword
+namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     internal class SwordBoosting : ArmedArmStateBase
     {
@@ -12,7 +12,7 @@ namespace Tests.Characters.Arms.Weapons.Sword
         {
             _helper = boostingHelper ?? throw new ArgumentNullException(nameof(boostingHelper));
             var sbTimeline = _helper.state.Timeline;
-            this.timeline = new Timeline_V1(sbTimeline.Length);
+            timeline = new Timeline_V1(sbTimeline.Length);
         }
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {

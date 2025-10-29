@@ -1,4 +1,4 @@
-﻿using Tests.Characters.Arms;
+﻿using Tests.Characters.Humanoid.Arms;
 using Tests.Characters.Humanoid.Locomotion;
 using Tests.States;
 using Utilities.Timeline;

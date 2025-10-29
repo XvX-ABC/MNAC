@@ -3,9 +3,9 @@ using Tests.Animations;
 using Tests.Behaviours.Arms;
 using Tests.Behaviours.Arms.Animations;
 using Tests.Behaviours.Arms.Weapons.Animations;
-using Tests.Characters.Arms.Weapons;
 using Tests.Characters.Humanoid;
-using Tests.Characters.Interaction.Input;
+using Tests.Characters.Humanoid.Arms.Weapons;
+using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.MountPoints;
 using Tests.Input;
 using Tests.States;
@@ -14,10 +14,11 @@ using Tests.Utilities.Composable;
 using Tests.Weapons;
 using UnityEngine;
 using UnityEngine.Playables;
-using IArmedWeaponArmDefinitions = Tests.Characters.Arms.Weapons.IArmedWeaponArmDefinitions;
+using IArmedWeaponArmBehaviour = Tests.Characters.Humanoid.Arms.Weapons.IArmedWeaponArmBehaviour;
+using IArmedWeaponArmDefinitions = Tests.Characters.Humanoid.Arms.Weapons.IArmedWeaponArmDefinitions;
 using MountPoint = Tests.Characters.MountPoints.MountPoint;
 
-namespace Tests.Characters.Arms
+namespace Tests.Characters.Humanoid.Arms
 {
     [RequireComponent(typeof(ArmDefinitions))]
     [RequireComponent(typeof(ArmAnimationDefinitions))]
@@ -25,8 +26,8 @@ namespace Tests.Characters.Arms
     {
         internal class IdleState : WithCallbackPlayableState
         {
-            Behaviours.Arms.Animations.ArmAnimationCore _core;
-            internal Behaviours.Arms.Animations.ArmAnimationCore animationCore { set => _core = value; }
+            ArmAnimationCore _core;
+            internal ArmAnimationCore animationCore { set => _core = value; }
             public IdleState() : base("idle")
             {
             }
@@ -98,8 +99,8 @@ namespace Tests.Characters.Arms
         protected override void Awake()
         {
             base.Awake();
-            _definitions = GetComponent<ArmDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ArmDefinitions));
-            animationDefinitions = GetComponent<ArmAnimationDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IArmAnimationDefinitions));
+            _definitions = GetComponent<ArmDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(ArmDefinitions));
+            animationDefinitions = GetComponent<ArmAnimationDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmAnimationDefinitions));
 
             _node = new(this);
 
@@ -129,7 +130,7 @@ namespace Tests.Characters.Arms
         }
         public void Initialize(Blackboard blackboard)
         {
-            this.Blackboard = blackboard;
+            Blackboard = blackboard;
 
             if (!blackboard.TryReadValue<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph))
                 throw new Exception();
@@ -152,7 +153,7 @@ namespace Tests.Characters.Arms
 
 
             InitializeChildNodes();
-            this.animatorCore = new(graph, _definitions.Weapon, animationDefinitions.Weapon, new ArmedWeaponArmAnimator<IArmedWeaponArmBehaviour>(graph, this.armedWeaponController));
+            animatorCore = new(graph, _definitions.Weapon, animationDefinitions.Weapon, new ArmedWeaponArmAnimator<IArmedWeaponArmBehaviour>(graph, armedWeaponController));
             InitializeStateMachine();
 
             weaponSwitching.animationCore = animatorCore;
@@ -170,7 +171,7 @@ namespace Tests.Characters.Arms
         }
         void InitializeArmedWeaponBehaviours(IArmedWeaponArmDefinitions definitions)
         {
-            var behaviours = this.GetComponents<IArmedWeaponArmBehaviour>();
+            var behaviours = GetComponents<IArmedWeaponArmBehaviour>();
             //armedWeaponController = new(_weaponCore, definitions, behaviours);
             armedWeaponController = new(_weaponCore, definitions, _definitions.Part, behaviours);
 
@@ -206,7 +207,7 @@ namespace Tests.Characters.Arms
         void InitializeStateMachine()
         {
             idle = new IdleState();
-            stateMachine = new(this.name);
+            stateMachine = new(name);
             stateMachine.AddState(idle);
             stateMachine.AddState(armedWeaponController);
             stateMachine.AddState(weaponSwitching);
@@ -265,7 +266,7 @@ namespace Tests.Characters.Arms
         }
         void Update()
         {
-            this.OnUpdate();
+            OnUpdate();
             animatorCore.OnUpdate();
         }
 

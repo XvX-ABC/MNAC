@@ -4,7 +4,7 @@ using UnityEngine;
 using LBoostingDefinitions = Tests.Characters.Humanoid.Locomotion.BoostingDefinitions;
 using SwordBoostingDefinitioins = Tests.Behaviours.Arms.Weapons.Sword.BoostingDefinitions;
 using SwordSlashDefinitions = Tests.Behaviours.Arms.Weapons.Sword.SlashDefinitions;
-namespace Tests.Characters.Arms.Weapons.Sword
+namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     public class ArmedSwordArmBehaviourDefinitions : MonoBehaviour, IArmedSwordArmBehaviourDefinitions
     {

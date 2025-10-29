@@ -2,11 +2,10 @@
 using Tests.Animations;
 using Tests.Behaviours.Arms.Weapons.Sword;
 using Tests.Behaviours.Arms.Weapons.Sword.Animations;
-using Tests.Characters.Humanoid;
+using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Humanoid.Locomotion;
 using Tests.Characters.Interaction.Input;
 using Tests.Characters.MountPoints;
-using Tests.Input;
 using Tests.Interaction.Targets;
 using Tests.States;
 using Tests.Utilities.Blackboards;
@@ -15,7 +14,7 @@ using Tests.Weapons;
 using UnityEngine;
 using UnityEngine.Playables;
 using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
-namespace Tests.Characters.Arms.Weapons.Sword
+namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     internal class RotationLocomotionLocker : IRotationLocker
     {
@@ -72,8 +71,8 @@ namespace Tests.Characters.Arms.Weapons.Sword
         protected override void Awake()
         {
             base.Awake();
-            _definitions = GetComponent<IArmedSwordArmBehaviourDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IArmedSwordArmBehaviourDefinitions));
-            _animationDefinitions = GetComponent<IArmedSwordArmAnimationDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IArmedSwordArmAnimationDefinitions));
+            _definitions = GetComponent<IArmedSwordArmBehaviourDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmedSwordArmBehaviourDefinitions));
+            _animationDefinitions = GetComponent<IArmedSwordArmAnimationDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmedSwordArmAnimationDefinitions));
             CreateSphereTriggerTargetsCatcher();
             _load = new(_targetsCatcher.gameObject);
         }
@@ -87,7 +86,7 @@ namespace Tests.Characters.Arms.Weapons.Sword
         }
         void UpdateTargetsCatcherFor(Blackboard blackboard)
         {
-            if (this.Activated)
+            if (Activated)
                 WriteTargetsCatcherTo(blackboard);
             else
                 blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher);

@@ -1,6 +1,6 @@
 ﻿using Tests.Utilities.Composable;
 
-namespace Tests.Characters.Arms
+namespace Tests.Characters.Humanoid.Arms
 {
     public interface IArmBehaviour : IComponent
     {

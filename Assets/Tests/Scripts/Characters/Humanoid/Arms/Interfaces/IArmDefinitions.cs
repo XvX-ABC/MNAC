@@ -1,8 +1,8 @@
-﻿using Tests.Characters.Arms.Weapons;
-using Tests.Characters.Humanoid;
+﻿using Tests.Characters.Humanoid;
+using Tests.Characters.Humanoid.Arms.Weapons;
 using UnityEngine;
 
-namespace Tests.Characters.Arms
+namespace Tests.Characters.Humanoid.Arms
 {
     public interface IArmDefinitions
     {

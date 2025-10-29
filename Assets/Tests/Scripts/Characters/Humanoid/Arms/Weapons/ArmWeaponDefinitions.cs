@@ -1,8 +1,7 @@
 ﻿using System;
-using Tests.Characters.Arms.Weapons.Launchers;
 using UnityEngine;
 
-namespace Tests.Characters.Arms.Weapons
+namespace Tests.Characters.Humanoid.Arms.Weapons
 {
     [Serializable]
     public class ArmWeaponDefinitions : Behaviours.Arms.Weapons.ArmWeaponDefinitions, IArmedWeaponArmDefinitions

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Tests.Characters.Interaction.Input;
+using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Input;
 using Tests.TPhysics.Locomotion;
 using Core = Tests.TPhysics.Locomotion.LocomotionCore;

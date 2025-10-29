@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Characters.Interaction.Input
+namespace Tests.Characters.Humanoid.Interaction.Input
 {
     public class HumanInput_MonoComponent : MonoBehaviour
     {

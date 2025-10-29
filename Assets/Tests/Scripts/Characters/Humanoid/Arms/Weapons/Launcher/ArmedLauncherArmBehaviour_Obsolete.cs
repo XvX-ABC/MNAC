@@ -3,12 +3,10 @@ using RootMotion.FinalIK;
 using System;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.Input;
-using Tests.States;
 using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
 using Tests.Weapons;
 
-namespace Tests.Characters.Arms.Weapons.Launchers
+namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
     [Obsolete]
     [RequiredComponent(typeof(AimIK))]
@@ -31,7 +29,7 @@ namespace Tests.Characters.Arms.Weapons.Launchers
         public override Func<bool> ExitFunc => behaviour.ExitFunc;
 
         public override IWeapon Weapon { get => behaviour.Weapon; set => behaviour.Weapon = value; }
-        protected override Behaviours.Arms.Weapons.ArmedWeaponArmBehaviourBase_Obsolete behaviour
+        protected override ArmedWeaponArmBehaviourBase_Obsolete behaviour
         {
             get
             {
@@ -44,8 +42,8 @@ namespace Tests.Characters.Arms.Weapons.Launchers
         {
             base.Awake();
 
-            _definitions = GetComponent<IArmedLauncherArmBehaviourDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IArmedLauncherArmBehaviourDefinitions));
-            _aimIk = GetComponent<AimIK>() ?? throw new ComponentCantFindException(this.gameObject, typeof(AimIK));
+            _definitions = GetComponent<IArmedLauncherArmBehaviourDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmedLauncherArmBehaviourDefinitions));
+            _aimIk = GetComponent<AimIK>() ?? throw new ComponentCantFindException(gameObject, typeof(AimIK));
 
 
         }
@@ -67,11 +65,11 @@ namespace Tests.Characters.Arms.Weapons.Launchers
 
 
             _targetsCatcher = new(_definitions.TargetsCatcher);
-            this.node.AddChild(_targetsCatcher.Node);
+            node.AddChild(_targetsCatcher.Node);
 
 
             _behaviour = new(_definitions, _aimIk, _targetsCatcher);
-            _behaviour.Input = input;
+            _behaviour.Input = _input;
 
 
         }

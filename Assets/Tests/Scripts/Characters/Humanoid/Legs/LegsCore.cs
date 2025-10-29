@@ -3,7 +3,7 @@ using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
 
-namespace Tests.Characters.Legs
+namespace Tests.Characters.Humanoid.Legs
 {
     public class LegsCore : ComponentBase_MonoComponent
     {
@@ -23,8 +23,8 @@ namespace Tests.Characters.Legs
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            this.node.AddChild(_leftLeg.node);
-            this.node.AddChild(_rightLeg.node);
+            node.AddChild(_leftLeg.node);
+            node.AddChild(_rightLeg.node);
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Legs_Core, this);
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Characters.Arms.Weapons.Launchers
+namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
     internal class ArmedLauncherArmBehavioursDefinitions : Behaviours.Arms.Weapons.Launchers.ArmedLauncherArmBehavioursDefinitions, IArmedLauncherArmBehaviourDefinitions
     {

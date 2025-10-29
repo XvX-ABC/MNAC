@@ -1,7 +1,7 @@
 ﻿using Tests.Characters.Humanoid.Locomotion;
 using UnityEngine;
 
-namespace Tests.Characters.Arms.Weapons.Sword
+namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     public interface IArmedSwordArmBehaviourDefinitions : Behaviours.Arms.Weapons.Sword.IArmedSwordArmBehaviourDefinitions
     {

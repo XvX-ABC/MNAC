@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Tests.Behaviours.Input;
-using Tests.Characters.Interaction.Input;
+using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.UI;
 using Tests.Input;
 using Tests.Interaction;
@@ -11,7 +11,7 @@ using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
 
-namespace Tests.Characters.Arms.Weapons.Launchers
+namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
     public class CircleOnScreenTargetsCatcher : ComponentBase, ITargetsCatcher
     {
@@ -43,7 +43,7 @@ namespace Tests.Characters.Arms.Weapons.Launchers
 
             _camera = camera;
 
-            this.Enabled = enabled;
+            Enabled = enabled;
         }
         public override string Name => "launcher_targets_catcher_v0";
 
@@ -82,10 +82,10 @@ namespace Tests.Characters.Arms.Weapons.Launchers
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            if (!blackboard.TryReadValue<Camera>(CharacterBlackboardFields.Character_Camera_Main, out _camera))
+            if (!blackboard.TryReadValue(CharacterBlackboardFields.Character_Camera_Main, out _camera))
                 throw new Exception();
             blackboard.TryReadUIValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
-            if (!blackboard.TryReadValue<GameObject>(CharacterBlackboardFields.Character_Obj_Main, out _actorObj))
+            if (!blackboard.TryReadValue(CharacterBlackboardFields.Character_Obj_Main, out _actorObj))
                 throw new Exception();
             blackboard.TryReadUIValueOrThrowException(CharacterUIBlackboardFields.Catcher_Ring, out _ringCatcher);
             blackboard.TryReadUIValueOrThrowException(CharacterUIBlackboardFields.Targets_Display, out _targetDisplay);
@@ -94,7 +94,7 @@ namespace Tests.Characters.Arms.Weapons.Launchers
 
             _ringCatcher.Camera = _camera;
 
-            this.Enabled = base.Enabled;
+            Enabled = base.Enabled;
         }
         void ShowAllWaitingForSelectObjs()
         {

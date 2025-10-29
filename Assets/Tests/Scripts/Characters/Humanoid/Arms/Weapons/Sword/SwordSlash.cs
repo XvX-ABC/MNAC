@@ -3,7 +3,7 @@ using Tests.Behaviours.Arm.Weapons;
 using Tests.States;
 using UnityEngine;
 using Utilities.Timeline;
-namespace Tests.Characters.Arms.Weapons.Sword
+namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     internal class SwordSlash : ArmedArmStateBase
     {

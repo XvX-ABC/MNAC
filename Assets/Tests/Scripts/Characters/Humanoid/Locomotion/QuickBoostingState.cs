@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Tests.Behaviours.Input;
-using Tests.Characters.Interaction.Input;
+using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Input;
 using Tests.States;
 using Tests.TPhysics.Locomotion;

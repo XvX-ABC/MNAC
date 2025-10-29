@@ -3,7 +3,7 @@ using Tests.Behaviours.Input;
 using UnityEngine;
 using UInput = UnityEngine.Input;
 
-namespace Tests.Characters.Interaction.Input
+namespace Tests.Characters.Humanoid.Interaction.Input
 {
     [Serializable]
     public class BaseInput : IBaseInput

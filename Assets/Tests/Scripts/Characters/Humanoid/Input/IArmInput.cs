@@ -1,4 +1,6 @@
-﻿namespace Tests.Characters.Interaction.Input
+﻿using Tests.Characters.Interaction.Input;
+
+namespace Tests.Characters.Humanoid.Interaction.Input
 {
     public interface IArmInput
     {

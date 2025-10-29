@@ -7,7 +7,7 @@ using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
 
-namespace Tests.Characters.Legs
+namespace Tests.Characters.Humanoid.Legs
 {
     [RequiredComponent(typeof(LegIK))]
     public class LegCore : ComponentBase_MonoComponent
@@ -47,12 +47,12 @@ namespace Tests.Characters.Legs
         {
             base.Awake();
             _legIk = GetComponent<LegIK>();
-            _definitions = GetComponent<ILegDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ILegDefinitions));
+            _definitions = GetComponent<ILegDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(ILegDefinitions));
         }
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            if (!blackboard.TryReadValue<World>(CharacterBlackboardFields.World, out _world))
+            if (!blackboard.TryReadValue(CharacterBlackboardFields.World, out _world))
                 throw new Exception();
             _footIk = new(_footObj, _legIk, _definitions.FootIKLayer, _definitions.FootIKPositionOffset, World.DefaultUp);
         }

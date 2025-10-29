@@ -1,5 +1,5 @@
 ﻿using System;
-using Tests.Characters.Legs;
+using Tests.Characters.Humanoid.Legs;
 using Tests.States;
 
 namespace Tests.Characters.Humanoid.Locomotion.Animations

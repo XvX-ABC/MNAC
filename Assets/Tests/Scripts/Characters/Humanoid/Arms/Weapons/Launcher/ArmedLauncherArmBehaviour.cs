@@ -3,8 +3,9 @@ using RootMotion.FinalIK;
 using System;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.Behaviours.Arms.Weapons.Launchers.Animations;
+using Tests.Characters.Humanoid.Arms.Weapons;
+using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Humanoid.Locomotion;
-using Tests.Characters.Interaction.Input;
 using Tests.Characters.UI;
 using Tests.TPhysics;
 using Tests.TPhysics.Environment;
@@ -15,7 +16,7 @@ using Tests.Weapons.Launcher;
 using UnityEngine;
 using UnityEngine.Playables;
 
-namespace Tests.Characters.Arms.Weapons.Launchers
+namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
     [RequiredComponent(typeof(AimIK))]
     public class ArmedLauncherArmBehaviour : ArmedWeaponArmBehaviourBase_MonoComponent
@@ -74,8 +75,8 @@ namespace Tests.Characters.Arms.Weapons.Launchers
         {
             base.Awake();
 
-            _definitions = GetComponent<IArmedLauncherArmBehaviourDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IArmedLauncherArmBehaviourDefinitions));
-            _animationDefinitions = GetComponent<IArmedLauncherArmAnimationDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IArmedLauncherArmAnimationDefinitions));
+            _definitions = GetComponent<IArmedLauncherArmBehaviourDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmedLauncherArmBehaviourDefinitions));
+            _animationDefinitions = GetComponent<IArmedLauncherArmAnimationDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmedLauncherArmAnimationDefinitions));
             _aimIK = GetComponent<AimIK>();
             //_targetsCatcher = new(_definitions.TargetsCatcher);
             _targetsCatcher = new(_definitions.TargetsCatcher_V0);
@@ -102,12 +103,12 @@ namespace Tests.Characters.Arms.Weapons.Launchers
 
 
             var armInput = default(IArmInput);
-            if (Part == Humanoid.HumanPart.LeftArm)
+            if (Part == HumanPart.LeftArm)
                 armInput = input.LArm;
-            else if (Part == Humanoid.HumanPart.RightArm)
+            else if (Part == HumanPart.RightArm)
                 armInput = input.RArm;
 
-            _targetsCatcher = new(camera, input.BaseInput, actorObj, ringCatcher, targetsDisplay, _definitions.TargetsCatcher_V0, this.Activated);
+            _targetsCatcher = new(camera, input.BaseInput, actorObj, ringCatcher, targetsDisplay, _definitions.TargetsCatcher_V0, Activated);
 
             //this.node.AddChild(_targetsCatcher.node);
 
@@ -131,7 +132,7 @@ namespace Tests.Characters.Arms.Weapons.Launchers
         }
         void UpdateTargetsCatcherFor(Blackboard blackboard)
         {
-            if (this.Activated)
+            if (Activated)
                 WriteTargetsCatcherTo(blackboard);
             else
                 blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher);

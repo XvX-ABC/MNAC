@@ -7,7 +7,7 @@ using Tests.Utilities.MountPoints;
 using Tests.Weapons;
 using UnityEngine;
 
-namespace Tests.Characters.Arms
+namespace Tests.Characters.Humanoid.Arms
 {
     internal class WeaponSwitchingState : StateComponentNode, IAnimationPlayableState, IArmBehaviour
     {

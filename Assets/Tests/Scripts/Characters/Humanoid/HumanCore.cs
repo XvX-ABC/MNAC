@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Characters.Arms;
 using Tests.Characters.Humanoid.Animations;
+using Tests.Characters.Humanoid.Arms;
+using Tests.Characters.Humanoid.Interaction.Input;
+using Tests.Characters.Humanoid.Legs;
 using Tests.Characters.Humanoid.Locomotion;
-using Tests.Characters.Interaction.Input;
-using Tests.Characters.Legs;
 using Tests.Characters.MountPoints;
 using Tests.Characters.UI;
 using Tests.Input;

@@ -1,7 +1,7 @@
 ﻿using System;
 using Tests.Behaviours.Input;
+using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Humanoid.Locomotion.Animations;
-using Tests.Characters.Interaction.Input;
 using Tests.Extensions;
 using Tests.Input;
 using Tests.States;

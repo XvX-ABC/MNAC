@@ -6,7 +6,7 @@ using Tests.Utilities.Composable;
 using Tests.Weapons;
 using UnityEngine;
 
-namespace Tests.Characters.Arms.Weapons
+namespace Tests.Characters.Humanoid.Arms.Weapons
 {
     public abstract class ArmedWeaponArmBehaviourBase_MonoComponent : StateComponentNode_MonoComponent, IArmedWeaponArmBehaviour
     {

@@ -4,13 +4,13 @@ using Tests.Characters.Humanoid;
 using Tests.States;
 using Tests.Utilities.Composable;
 using Tests.Weapons;
-namespace Tests.Characters.Arms.Weapons.Launchers
+namespace Tests.Characters.Humanoid.Arms.Weapons
 {
     [Obsolete]
     public abstract class ArmedWeaponArmBehaviourBase_MonoComponent_Obsolete : StateComponentNode_MonoComponent, IArmedWeaponArmBehaviour
     {
 
-        public bool Activated { get => this.enabled; set => this.enabled = value; }
+        public bool Activated { get => enabled; set => enabled = value; }
 
         public abstract WeaponType Type { get; }
 
@@ -23,7 +23,7 @@ namespace Tests.Characters.Arms.Weapons.Launchers
 
 
         public abstract IWeapon Weapon { get; set; }
-        protected abstract Behaviours.Arms.Weapons.ArmedWeaponArmBehaviourBase_Obsolete behaviour { get; }
+        protected abstract ArmedWeaponArmBehaviourBase_Obsolete behaviour { get; }
 
         public HumanPart Part => throw new NotImplementedException();
 

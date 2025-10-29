@@ -4,7 +4,7 @@ using Tests.Characters.Interaction.Input;
 using Tests.Input;
 using UnityEngine;
 using ISwordBoostingDefinitions = Tests.Behaviours.Arms.Weapons.Sword.IBoostingDefinitions;
-namespace Tests.Characters.Arms.Weapons.Sword
+namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     internal class BoostingHelper : Behaviours.Arms.Weapons.Sword.BoostingHelper
     {

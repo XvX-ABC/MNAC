@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Characters.Legs
+namespace Tests.Characters.Humanoid.Legs
 {
     public interface ILegDefinitions
     {
