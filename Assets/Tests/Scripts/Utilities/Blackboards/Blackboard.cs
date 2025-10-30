@@ -189,6 +189,11 @@ namespace Tests.Utilities.Blackboards
             if (!TryReadValue<T>(key, out value))
                 throw new Exception($"Key '{key}' not found in blackboard.");
         }
+        public void TryRegisterFieldOrWriteValue<T>(object key, T value)
+        {
+            if (!TryRegisterField(key, value))
+                TryWriteValue(key, value);
+        }
 
     }
 }

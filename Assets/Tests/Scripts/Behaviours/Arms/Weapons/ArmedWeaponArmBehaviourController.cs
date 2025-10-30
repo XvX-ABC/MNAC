@@ -42,15 +42,19 @@ namespace Tests.Behaviours.Arms.Weapons
 
             foreach (var od in definitions.Origins)
             {
-                if (!weaponCore.TryGetWeaponDescription(od.Name, out var description))
+                var name = od.Name;
+                if (!weaponCore.TryGetWeaponDescription(name, out var description))
                 {
-                    Debug.LogWarning(new WeaponNotContainsException(weaponCore, od.Name));
+                    Debug.LogWarning(new WeaponNotContainsException(weaponCore, name));
                     continue;
                 }
                 var type = description.Type;
                 var b = behaviours.First(b => b.Type == type);
                 //b.Activated = false;
-                weaponBehavioursMapping.Add(od.Name, b);
+                if (weaponBehavioursMapping.ContainsKey(name))
+                    weaponBehavioursMapping[name] = b;
+                else
+                    weaponBehavioursMapping.Add(name, b);
             }
         }
         public void ActivateBehaviourBy(IWeapon weapon)
