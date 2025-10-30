@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Tests.Characters.Humanoid.Arms.Weapons.Launchers;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Launchers
 {
-    [Serializable]
-    public class ArmedLauncherArmBehavioursDefinitions : IArmedLauncherArmBehaviourDefinitions
+    public class ArmedLauncherArmBehavioursDefinitions_MonoComponent : MonoBehaviour, IArmedLauncherArmBehaviourDefinitions
     {
         [SerializeField]
         protected AnimationClip aimingClip;

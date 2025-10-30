@@ -2,10 +2,7 @@
 
 namespace Tests.States
 {
-    public abstract class PlayableState_MonoComponent : PlayableState_MonoComponent<object>
-    {
-    }
-    public abstract class PlayableState_MonoComponent<T> : State_MonoComponent<T>, IPlayableState<T>
+    public abstract class PlayableState_SO<T> : State_SO<T>, IPlayableState<T>
     {
 
         class PlayableState : PlayableStateBase<T>

@@ -1,10 +1,9 @@
-﻿using System;
+﻿using UnityEditor.Animations;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
 {
-    [Serializable]
-    internal class ArmedLauncherArmAnimationDefinitions : IArmedLauncherArmAnimationDefinitions
+    internal class ArmedLauncherArmAnimationDefinitions_MonoComponent : MonoBehaviour, IArmedLauncherArmAnimationDefinitions
     {
         [SerializeField]
         RuntimeAnimatorController _animator;

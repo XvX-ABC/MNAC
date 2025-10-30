@@ -1,17 +1,13 @@
-﻿namespace Tests.States
+﻿using System;
+using UnityEngine;
+
+namespace Tests.States
 {
-    using System;
-    using UnityEngine;
-
-    namespace Tests.States
-    {
-    }
-
-    public abstract class State_MonoComponent : State_MonoComponent<object>
+    public abstract class State_SO : State_SO<object>
     {
 
     }
-    public abstract class State_MonoComponent<T> : MonoBehaviour, IState<T>
+    public abstract class State_SO<T> : ScriptableObject, IState<T>
     {
         class State : StateBase<T>
         {
@@ -34,11 +30,16 @@
                 throw new NotImplementedException();
             }
         }
+
         IState<T> _state;
 
-        public string Name => this.name;
+        public string Name { get; private set; }
 
-        public T Context { get => _state.Context; set => _state.Context = value; }
+        public T Context
+        {
+            get => _state.Context;
+            set => _state.Context = value;
+        }
         public bool Enabled
         {
             get => _state.Enabled;
@@ -48,23 +49,17 @@
         public Guid ID => _state.ID;
 
         public virtual ITransition<T>[] Transitions => _state.Transitions;
+
         protected virtual void Awake()
         {
-            //state = new State(this.name, this.enabled);
             _state = CreateInternalState();
         }
+
         protected virtual IState<T> CreateInternalState()
         {
-            return new State(this.name, this.enabled);
+            return new State(this.name, this.Enabled);
         }
-        //protected virtual void OnEnable()
-        //{
-        //    OnEnter();
-        //}
-        //protected virtual void OnDisable()
-        //{
-        //    OnExit();
-        //}
+
         public void AddTransition(ITransition<T> transition)
         {
             _state.AddTransition(transition);
@@ -84,6 +79,6 @@
         public abstract void OnExit();
         public abstract void OnUpdate();
     }
-
-
 }
+
+
