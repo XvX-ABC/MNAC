@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
+    [Serializable]
     internal class ArmedLauncherArmBehavioursDefinitions : Behaviours.Arms.Weapons.Launchers.ArmedLauncherArmBehavioursDefinitions, IArmedLauncherArmBehaviourDefinitions
     {
         [Obsolete]
@@ -13,6 +14,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         [Obsolete]
         public ITargetsCatcherDefinitions TargetsCatcher => targetsCatcher;
 
-        public ITargetsCatcherDefinitions_V0 TargetsCatcher_V0 => targetsCatcherV0;
+        public ITargetsCatcherDefinitions_V0 CircleOnScreenTargetsCatcher => targetsCatcherV0;
     }
 }

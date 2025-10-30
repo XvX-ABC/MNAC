@@ -79,7 +79,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             _animationDefinitions = GetComponent<IArmedLauncherArmAnimationDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmedLauncherArmAnimationDefinitions));
             _aimIK = GetComponent<AimIK>();
             //_targetsCatcher = new(_definitions.TargetsCatcher);
-            _targetsCatcher = new(_definitions.TargetsCatcher_V0);
+            _targetsCatcher = new(_definitions.CircleOnScreenTargetsCatcher);
         }
 
         public override void Initialize(Blackboard blackboard)
@@ -108,7 +108,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             else if (Part == HumanPart.RightArm)
                 armInput = input.RArm;
 
-            _targetsCatcher = new(camera, input.BaseInput, actorObj, ringCatcher, targetsDisplay, _definitions.TargetsCatcher_V0, Activated);
+            _targetsCatcher = new(camera, input.BaseInput, actorObj, ringCatcher, targetsDisplay, _definitions.CircleOnScreenTargetsCatcher, Activated);
 
             //this.node.AddChild(_targetsCatcher.node);
 
