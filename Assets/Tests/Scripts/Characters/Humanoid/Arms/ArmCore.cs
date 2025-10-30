@@ -3,14 +3,13 @@ using Tests.Animations;
 using Tests.Behaviours.Arms;
 using Tests.Behaviours.Arms.Animations;
 using Tests.Behaviours.Arms.Weapons.Animations;
-using Tests.Characters.Humanoid;
 using Tests.Characters.Humanoid.Arms.Weapons;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.MountPoints;
-using Tests.Input;
 using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
+using Tests.Utilities.Helpers;
 using Tests.Weapons;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -57,6 +56,8 @@ namespace Tests.Characters.Humanoid.Arms
         IArmInput _armInput;
         [SerializeField]
         MountPoint[] _mountPoints;
+        [SerializeField]
+        ArmedWeaponArmBehaviourBase_SO[] _behaviours;
 
         IArmDefinitions _definitions;
         IArmAnimationDefinitions animationDefinitions;
@@ -134,6 +135,10 @@ namespace Tests.Characters.Humanoid.Arms
 
             if (!blackboard.TryReadValue<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph))
                 throw new Exception();
+            //blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Arm_Local, this.gameObject);
+            //blackboard.TryRegisterField(CharacterBlackboardFields.Character_Arm_Core_Local, this);
+            blackboard.TryRegisterFieldOrWriteValue(CharacterBlackboardFields.Character_Obj_Arm_Local, this.gameObject);
+            blackboard.TryRegisterFieldOrWriteValue(CharacterBlackboardFields.Character_Arm_Core_Local, this);
 
             var weaponDefinitions = _definitions.Weapon;
             var weaponMountPoint = FindMountPoint(weaponDefinitions.MountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.MountPointName);
@@ -171,7 +176,8 @@ namespace Tests.Characters.Humanoid.Arms
         }
         void InitializeArmedWeaponBehaviours(IArmedWeaponArmDefinitions definitions)
         {
-            var behaviours = GetComponents<IArmedWeaponArmBehaviour>();
+            //var behaviours = GetComponents<IArmedWeaponArmBehaviour>();
+            var behaviours = _behaviours;
             //armedWeaponController = new(_weaponCore, definitions, behaviours);
             armedWeaponController = new(_weaponCore, definitions, _definitions.Part, behaviours);
 

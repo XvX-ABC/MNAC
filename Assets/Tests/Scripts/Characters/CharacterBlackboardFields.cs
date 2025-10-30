@@ -9,6 +9,7 @@ namespace Tests.Characters
         static CharacterBlackboardFields()
         {
             Character_Obj_Main = Guid.NewGuid();
+            Character_Obj_Arm_Local = Guid.NewGuid();
             Character_Interaction_Main_Info = Guid.NewGuid();
             World = Guid.NewGuid();
 
@@ -39,10 +40,13 @@ namespace Tests.Characters
             GroundDetector = Guid.NewGuid();
         }
         public static readonly Guid Character_Obj_Main;
+        public static readonly Guid Character_Obj_Arm_Local;
         public static readonly Guid Character_Interaction_Main_Info;
         public static readonly Guid Character_Animation_Whole_Body_Animator;
         public static readonly Guid Character_Animation_Graph;
         public static readonly Guid Character_Camera_Main;
+
+        public static readonly Guid Character_Arm_Core_Local;
         public static readonly Guid Character_Legs_Core;
         public static readonly Guid Character_Influence_Core;
         public static readonly Guid FieldChangeHandler;
