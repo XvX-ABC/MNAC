@@ -19,8 +19,8 @@ using MountPoint = Tests.Characters.MountPoints.MountPoint;
 
 namespace Tests.Characters.Humanoid.Arms
 {
-    [RequireComponent(typeof(ArmDefinitions))]
-    [RequireComponent(typeof(ArmAnimationDefinitions))]
+    [RequireComponent(typeof(ArmDefinitions_MonoComponent))]
+    [RequireComponent(typeof(ArmAnimationDefinitions_MonoComponent))]
     public class ArmCore : State_MonoComponent, IArmBehaviour
     {
         internal class IdleState : WithCallbackPlayableState
@@ -101,8 +101,9 @@ namespace Tests.Characters.Humanoid.Arms
         protected override void Awake()
         {
             base.Awake();
-            _definitions = GetComponent<ArmDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(ArmDefinitions));
-            animationDefinitions = GetComponent<ArmAnimationDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmAnimationDefinitions));
+            _definitions = GetComponent<ArmDefinitions_MonoComponent>() ?? throw new ComponentCantFindException(gameObject, typeof(ArmDefinitions_MonoComponent));
+            //animationDefinitions = GetComponent<ArmAnimationDefinitions_MonoComponent>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmAnimationDefinitions));
+            animationDefinitions = _definitions.Animation;
 
             _node = new(this);
 

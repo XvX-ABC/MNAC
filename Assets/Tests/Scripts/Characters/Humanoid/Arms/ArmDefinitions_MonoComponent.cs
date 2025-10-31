@@ -1,12 +1,11 @@
-﻿using System;
-using Tests.Behaviours.Arms.Animations;
+﻿using Tests.Behaviours.Arms.Animations;
+using Tests.Characters.Humanoid;
 using Tests.Characters.Humanoid.Arms.Weapons;
 using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Arms
 {
-    [Serializable]
-    internal class ArmDefinitions : IArmDefinitions
+    internal class ArmDefinitions_MonoComponent : MonoBehaviour, IArmDefinitions
     {
         [SerializeField]
         ArmWeaponDefinitions _weapon;
