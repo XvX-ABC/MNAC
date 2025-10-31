@@ -37,6 +37,7 @@ namespace Tests.Behaviours.Arms.Weapons
         {
             if (weaponCore == null)
                 throw new ArgumentNullException(nameof(weaponCore));
+            behaviours = behaviours.Where(b => b != null).ToArray();
             this.behavioursCache = behaviours;
             weaponBehavioursMapping = new();
 
@@ -49,8 +50,9 @@ namespace Tests.Behaviours.Arms.Weapons
                     continue;
                 }
                 var type = description.Type;
-                var b = behaviours.First(b => b.Type == type);
-                //b.Activated = false;
+                var b = behaviours.FirstOrDefault(b => b.Type == type);
+                if (b == null)
+                    continue;
                 if (weaponBehavioursMapping.ContainsKey(name))
                     weaponBehavioursMapping[name] = b;
                 else

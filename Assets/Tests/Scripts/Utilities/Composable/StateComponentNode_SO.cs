@@ -1,5 +1,6 @@
 ﻿using Tests.States;
 using Tests.Utilities.Blackboards;
+using UnityEngine;
 
 namespace Tests.Utilities.Composable
 {
@@ -7,9 +8,9 @@ namespace Tests.Utilities.Composable
     {
         internal Blackboard blackboard;
         internal ComponentNode node;
-        protected override void Awake()
+        protected override void OnEnable()
         {
-            base.Awake();
+            base.OnEnable();
             node = new(this);
         }
         protected override IState<object> CreateInternalState()

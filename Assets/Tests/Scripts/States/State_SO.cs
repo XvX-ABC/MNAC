@@ -49,8 +49,7 @@ namespace Tests.States
         public Guid ID => _state.ID;
 
         public virtual ITransition<T>[] Transitions => _state.Transitions;
-
-        protected virtual void Awake()
+        protected virtual void OnEnable()
         {
             _state = CreateInternalState();
         }

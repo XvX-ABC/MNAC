@@ -75,16 +75,11 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                 _targetsCatcher.Enabled = value;
             }
         }
-        protected override void Awake()
+        protected override void OnEnable()
         {
-            base.Awake();
-
-            //_definitions = GetComponent<IArmedLauncherArmBehaviourDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmedLauncherArmBehaviourDefinitions));
-            //_animationDefinitions = GetComponent<IArmedLauncherArmAnimationDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmedLauncherArmAnimationDefinitions));
-            //_targetsCatcher = new(_definitions.TargetsCatcher);
-            _targetsCatcher = new(_definitions.CircleOnScreenTargetsCatcher);
+            base.OnEnable();
+            //_targetsCatcher = new(_definitions.CircleOnScreenTargetsCatcher);
         }
-
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
@@ -107,7 +102,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             blackboard.TryReadUIValueOrThrowException<TargetsDisplay>(CharacterUIBlackboardFields.Targets_Display, out var targetsDisplay);
 
 
-            _aimIK = armObj.AddComponent<AimIK>();
+            _aimIK = armObj.GetComponent<AimIK>();
 
             var armInput = default(IArmInput);
             if (Part == HumanPart.LeftArm)

@@ -2,6 +2,7 @@
 using Tests.Animations;
 using Tests.Behaviours.Arms;
 using Tests.Behaviours.Arms.Animations;
+using Tests.Behaviours.Arms.Weapons;
 using Tests.Behaviours.Arms.Weapons.Animations;
 using Tests.Characters.Humanoid.Arms.Weapons;
 using Tests.Characters.Humanoid.Interaction.Input;
