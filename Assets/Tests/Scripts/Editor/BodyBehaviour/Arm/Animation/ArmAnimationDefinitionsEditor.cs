@@ -9,7 +9,7 @@ using UnityEditor;
 
 namespace Assets.Tests.Scripts.Editor.BodyBehaviour.Arm.Animation
 {
-    [CustomEditor(typeof(ArmAnimationDefinitions))]
+    //[CustomEditor(typeof(ArmAnimationDefinitions_MonoComponent))]
     internal class ArmAnimationDefinitionsEditor : AssetEditor
     {
     }
