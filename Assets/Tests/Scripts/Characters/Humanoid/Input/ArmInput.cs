@@ -18,7 +18,7 @@ namespace Tests.Characters.Humanoid.Interaction.Input
             KeyCode _reload;
             public bool Fire => UInput.GetKey(_fire);
 
-            public bool Reload => UInput.GetKey(_reload) && UInput.GetKey(_reload);
+            public bool Reload => UInput.GetKey(_reload) && UInput.GetKey(_fire);
         }
         [SerializeField]
         KeyCode _switch;
