@@ -1,6 +1,5 @@
 ﻿using Tests.States;
 using Tests.Utilities.Blackboards;
-using UnityEngine;
 
 namespace Tests.Utilities.Composable
 {

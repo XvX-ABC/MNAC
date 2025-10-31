@@ -1,5 +1,4 @@
-﻿using Tests.Characters;
-using Tests.States;
+﻿using Tests.States;
 using Tests.Utilities.Blackboards;
 
 namespace Tests.Utilities.Composable
