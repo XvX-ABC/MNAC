@@ -14,6 +14,16 @@ namespace Tests.Behaviours.Arms.Weapons
         public abstract Func<bool> EntryFunc { get; }
         public abstract Func<bool> ExitFunc { get; }
         public abstract IWithCallbackPlayableState<object> State { get; }
+
+        public void FixedUpdate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update()
+        {
+            throw new NotImplementedException();
+        }
     }
     public abstract class ArmedWeaponArmBehaviourBase_Obsolete : PlayableStateBase, IArmedWeaponArmBehaviour
     {
@@ -33,7 +43,15 @@ namespace Tests.Behaviours.Arms.Weapons
         public abstract Func<bool> EntryFunc { get; }
         public abstract Func<bool> ExitFunc { get; }
 
+        public void FixedUpdate()
+        {
+            throw new NotImplementedException();
+        }
 
+        public void Update()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

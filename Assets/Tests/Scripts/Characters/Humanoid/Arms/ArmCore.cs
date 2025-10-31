@@ -63,7 +63,8 @@ namespace Tests.Characters.Humanoid.Arms
 
 
         internal WeaponSwitchingState weaponSwitching;
-        internal ArmedWeaponArmBehaviourControllerState armedWeaponController;
+        ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> _armedWeaponController;
+        internal ArmedWeaponArmBehaviourControllerState armedWeaponControllerState;
         internal IdleState idle;
         AnimationTransition transition_its;
         AnimationTransition transition_ats;
@@ -126,7 +127,7 @@ namespace Tests.Characters.Humanoid.Arms
         void InitializeChildNodes()
         {
             _node.AddChild(weaponSwitching.Node);
-            _node.AddChild(armedWeaponController.Node);
+            _node.AddChild(armedWeaponControllerState.Node);
         }
         public void Initialize(Blackboard blackboard)
         {
@@ -157,11 +158,11 @@ namespace Tests.Characters.Humanoid.Arms
 
 
             InitializeChildNodes();
-            animatorCore = new(graph, _definitions.Weapon, animationDefinitions.Weapon, new ArmedWeaponArmAnimator<IArmedWeaponArmBehaviour>(graph, armedWeaponController));
+            animatorCore = new(graph, _definitions.Weapon, animationDefinitions.Weapon, new ArmedWeaponArmAnimator<IArmedWeaponArmBehaviour>(graph, armedWeaponControllerState));
             InitializeStateMachine();
 
             weaponSwitching.animationCore = animatorCore;
-            armedWeaponController.animationCore = animatorCore;
+            armedWeaponControllerState.animationCore = animatorCore;
             idle.animationCore = animatorCore;
             transition_ats.animationCore = animatorCore;
             transition_sta.animationCore = animatorCore;
@@ -178,14 +179,16 @@ namespace Tests.Characters.Humanoid.Arms
             //var behaviours = GetComponents<IArmedWeaponArmBehaviour>();
             var behaviours = _behaviours;
             //armedWeaponController = new(_weaponCore, definitions, behaviours);
-            armedWeaponController = new(_weaponCore, definitions, _definitions.Part, behaviours);
+            //armedWeaponControllerState = new(_weaponCore, definitions, _definitions.Part, behaviours);
+            _armedWeaponController = new(_weaponCore, _definitions.Weapon, behaviours);
+            armedWeaponControllerState = new(_armedWeaponController, _definitions.Part);
 
 
             weaponSwitching.SwitchingEvent += (ow, nw) =>
             {
                 if (ow != null)
                 {
-                    armedWeaponController.UnactivateBehaviourBy(ow);
+                    armedWeaponControllerState.UnactivateBehaviourBy(ow);
                 }
                 if (nw != null)
                 {
@@ -203,7 +206,7 @@ namespace Tests.Characters.Humanoid.Arms
                         _blackboard.TryWriteValue(field, nw);
                     else
                         _blackboard.TryRegisterField(field, nw);
-                    armedWeaponController.ActivateBehaviourBy(nw);
+                    armedWeaponControllerState.ActivateBehaviourBy(nw);
                 }
 
                 return nw;
@@ -214,7 +217,7 @@ namespace Tests.Characters.Humanoid.Arms
             idle = new IdleState();
             stateMachine = new(name);
             stateMachine.AddState(idle);
-            stateMachine.AddState(armedWeaponController);
+            stateMachine.AddState(armedWeaponControllerState);
             stateMachine.AddState(weaponSwitching);
 
             var length = 10;
@@ -226,22 +229,22 @@ namespace Tests.Characters.Humanoid.Arms
             transition_its = new(0, idle, weaponSwitching, () => _armInput.WeaponSwitch, null, 0.07f, 0, AnimationTransition.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.Next);
             //transition_its = new(0, idle, weaponSwitching, () => _input.Supply, null, 0.07f, 0, AnimationTransition.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.Next);
             stateMachine.AddTransitionFor(transition_its);
-            stateMachine.AddTransitionFor(idle, armedWeaponController, 0.3f, () => armedWeaponController.EntryFunc(), null);
+            stateMachine.AddTransitionFor(idle, armedWeaponControllerState, 0.3f, () => armedWeaponControllerState.EntryFunc(), null);
             #endregion
 
             #region from armed weapon to other states
 
-            transition_ats = new AnimationTransition(2, armedWeaponController, weaponSwitching, () => _armInput.WeaponSwitch, null, 1, 0, AnimationTransition.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.None);
+            transition_ats = new AnimationTransition(2, armedWeaponControllerState, weaponSwitching, () => _armInput.WeaponSwitch, null, 1, 0, AnimationTransition.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.None);
             //transition_ats = new AnimationTransition(2, armedWeaponController, weaponSwitching, () => _input.Supply, null, 1, 0, AnimationTransition.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.None);
-            stateMachine.AddTransitionFor(armedWeaponController, idle, 0.3f, () => armedWeaponController.ExitFunc(), null);
+            stateMachine.AddTransitionFor(armedWeaponControllerState, idle, 0.3f, () => armedWeaponControllerState.ExitFunc(), null);
             stateMachine.AddTransitionFor(transition_ats);
             #endregion
 
             #region from switching to other states
-            transition_sta = new(2, weaponSwitching, armedWeaponController, () => armedWeaponController.EntryFunc(), (s, d, t) =>
+            transition_sta = new(2, weaponSwitching, armedWeaponControllerState, () => armedWeaponControllerState.EntryFunc(), (s, d, t) =>
             {
             }, 1, 0, 0.5f, InterruptionSource.Next);
-            transition_sti = new(weaponSwitching, idle, () => !armedWeaponController.EntryFunc(), (_, _, t) => animatorCore.StatusNum = 0, 0.07f, 0, 1, InterruptionSource.None);
+            transition_sti = new(weaponSwitching, idle, () => !armedWeaponControllerState.EntryFunc(), (_, _, t) => animatorCore.StatusNum = 0, 0.07f, 0, 1, InterruptionSource.None);
             stateMachine.AddTransitionFor(transition_sti);
             stateMachine.AddTransitionFor(transition_sta);
             #endregion
@@ -272,9 +275,14 @@ namespace Tests.Characters.Humanoid.Arms
         void Update()
         {
             OnUpdate();
+            _armedWeaponController.Update();
             animatorCore.OnUpdate();
         }
 
+        void FixedUpdate()
+        {
+            _armedWeaponController.FixedUpdate();
+        }
         public void Dispose()
         {
         }

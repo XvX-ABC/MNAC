@@ -124,6 +124,17 @@ namespace Tests.Behaviours.Arms.Weapons
         {
             return activatedBehaviours == null ? false : activatedBehaviours[0].ExitFunc();
         }
-
+        public void Update()
+        {
+            if (activatedBehaviours != null)
+                foreach (var b in activatedBehaviours)
+                    b.Update();
+        }
+        public void FixedUpdate()
+        {
+            if (activatedBehaviours != null)
+                foreach (var b in activatedBehaviours)
+                    b.FixedUpdate();
+        }
     }
 }

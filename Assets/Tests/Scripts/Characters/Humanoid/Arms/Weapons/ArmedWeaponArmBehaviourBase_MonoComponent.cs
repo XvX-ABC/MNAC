@@ -89,5 +89,13 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
             base.ToNextStateTransitionEnd(currentTransition);
             behaviour?.State?.ToNextStateTransitionEnd(currentTransition);
         }
+
+        public virtual void Update()
+        {
+        }
+
+        public virtual void FixedUpdate()
+        {
+        }
     }
 }

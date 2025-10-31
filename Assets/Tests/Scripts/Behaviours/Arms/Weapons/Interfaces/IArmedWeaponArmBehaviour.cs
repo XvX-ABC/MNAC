@@ -16,5 +16,7 @@ namespace Tests.Behaviours.Arms
         public Func<bool> ExitFunc { get; }
 
         public IWithCallbackPlayableState<object> State { get => null; }
+        public void Update();
+        public void FixedUpdate();
     }
 }

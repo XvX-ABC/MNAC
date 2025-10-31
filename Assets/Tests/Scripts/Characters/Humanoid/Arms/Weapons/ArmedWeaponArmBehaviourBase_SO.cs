@@ -36,11 +36,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
             }
             set => _part = value;
         }
-        protected override void Awake()
-        {
-            base.Awake();
-
-        }
         public override void OnEnter()
         {
             base.OnEnter();
@@ -87,6 +82,14 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         {
             base.ToNextStateTransitionEnd(currentTransition);
             behaviour?.State?.ToNextStateTransitionEnd(currentTransition);
+        }
+
+        public virtual void Update()
+        {
+        }
+
+        public virtual void FixedUpdate()
+        {
         }
     }
 }

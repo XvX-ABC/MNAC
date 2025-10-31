@@ -76,5 +76,15 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
             base.ToNextStateTransitionEnd(currentTransition);
             behaviour.ToNextStateTransitionEnd(currentTransition);
         }
+
+        public void Update()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FixedUpdate()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

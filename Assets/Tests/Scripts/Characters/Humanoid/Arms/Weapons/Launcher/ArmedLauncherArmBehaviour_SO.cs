@@ -152,13 +152,13 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             if (!blackboard.TryWriteValue(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher))
                 blackboard.TryRegisterField(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
         }
-        private void Update()
+        public override void Update()
         {
             //if (UnityEngine.Input.GetKeyDown(KeyCode.V))
             //    _targetsCatcher.Enabled = !_targetsCatcher.Enabled;
             _targetsCatcher.Update();
         }
-        private void FixedUpdate()
+        public override void FixedUpdate()
         {
             //_targetsCatcher.Update();
             _behaviour.FixedUpdate();
