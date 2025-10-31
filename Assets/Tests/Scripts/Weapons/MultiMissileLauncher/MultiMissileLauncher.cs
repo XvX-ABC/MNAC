@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Tests.Utilities;
+using Tests.Behaviours.Arms.Weapons.Launchers;
 using Tests.Weapons.Launcher;
 using Tests.Weapons.MissileLauncher;
 using UnityEngine;

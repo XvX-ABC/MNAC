@@ -1,7 +1,7 @@
 ﻿using Utilities;
 using static Tests.Weapons.Launcher.ILauncher;
 
-namespace Tests.Utilities
+namespace Tests.Behaviours.Arms.Weapons.Launchers
 {
     public interface ILauncherActionsLock : IActionsLock<ActionsEnum>
     {

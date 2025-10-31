@@ -1,5 +1,5 @@
 ﻿using System;
-using Tests.Utilities;
+using Tests.Behaviours.Arms.Weapons.Launchers;
 using Tests.Weapons.Launcher;
 using Unity.VisualScripting;
 using UnityEngine;
