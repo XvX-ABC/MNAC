@@ -1,6 +1,5 @@
 ﻿using System;
 using Tests.Animations;
-using Tests.Behaviours.Arms.Weapons.Sword;
 using Tests.Behaviours.Arms.Weapons.Sword.Animations;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Interaction.Input;
@@ -15,11 +14,14 @@ using UnityEngine.Playables;
 using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
-    public class ArmedSwordArmBehaviour : ArmedWeaponArmBehaviourBase_MonoComponent
+    [CreateAssetMenu(fileName = "ArmedSwordArmBehaviour", menuName = "Tests/Behaviours/Characters/Humanoid/Arms/Weapons/Sword/ArmedSwordArmBehaviour")]
+    public class ArmedSwordArmBehaviour_SO : ArmedWeaponArmBehaviourBase_SO
     {
         //TODO: 删除定义中增量速度相关内容
-        IArmedSwordArmBehaviourDefinitions _definitions;
-        IArmedSwordArmAnimationDefinitions _animationDefinitions;
+        //IArmedSwordArmBehaviourDefinitions _definitions;
+        //IArmedSwordArmAnimationDefinitions _animationDefinitions;
+        ArmedSwordArmBehaviourDefinitions_SO _definitions;
+        ArmedSwordArmAnimationDefinitions_SO _animationDefinitions;
 
         Behaviours.Arms.Weapons.Sword.ArmedSwordArmBehaviour _behaviour;
         ArmedSwordArmAnimator _animator;
@@ -46,19 +48,16 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 _targetsCatcher.enabled = value;
             }
         }
-        protected override void Awake()
+        protected override void OnEnable()
         {
-            base.Awake();
-            _definitions = GetComponent<IArmedSwordArmBehaviourDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmedSwordArmBehaviourDefinitions));
-            _animationDefinitions = GetComponent<IArmedSwordArmAnimationDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmedSwordArmAnimationDefinitions));
-            CreateSphereTriggerTargetsCatcher();
+            base.OnEnable();
             _load = new(_targetsCatcher.gameObject);
         }
-        private void Update()
+        public override void Update()
         {
             _behaviour?.Update();
         }
-        private void FixedUpdate()
+        public override void FixedUpdate()
         {
             _behaviour.FixedUpdate();
         }
@@ -74,10 +73,10 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             if (!blackboard.TryWriteValue(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher))
                 blackboard.TryRegisterField(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
         }
-        void CreateSphereTriggerTargetsCatcher()
+        void CreateSphereTriggerTargetsCatcher(GameObject armObj)
         {
             var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            obj.transform.SetParent(transform, false);
+            obj.transform.SetParent(armObj.transform, false);
             obj.transform.localPosition = Vector3.zero;
             obj.transform.localRotation = Quaternion.identity;
             _targetsCatcher = obj.AddComponent<SphereTriggerTargetsCatcher>();
@@ -98,7 +97,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Character_Camera_Main, out var camera);
             blackboard.TryReadValueOrThrowException<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph);
             blackboard.TryReadValueOrThrowException<ControllerPlayable>(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, out var controller);
+            blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Arm_Core_Local, out var armObj);
 
+            CreateSphereTriggerTargetsCatcher(armObj);
 
 
             InitializeTargetsCatcher(blackboard);

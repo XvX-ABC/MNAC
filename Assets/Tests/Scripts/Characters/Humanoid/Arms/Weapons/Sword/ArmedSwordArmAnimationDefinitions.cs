@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
-    public class ArmedSwordAnimationDefinitions : MonoBehaviour, IArmedSwordArmAnimationDefinitions
+    public class ArmedSwordArmAnimationDefinitions : MonoBehaviour, IArmedSwordArmAnimationDefinitions
     {
         [SerializeField]
         Behaviours.Arms.Weapons.Sword.Animations.ArmedSwordArmAnimationDefinitions _definitions;

@@ -6,7 +6,8 @@ using SwordBoostingDefinitioins = Tests.Behaviours.Arms.Weapons.Sword.BoostingDe
 using SwordSlashDefinitions = Tests.Behaviours.Arms.Weapons.Sword.SlashDefinitions;
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
-    public class ArmedSwordArmBehaviourDefinitions : MonoBehaviour, IArmedSwordArmBehaviourDefinitions
+    [Serializable]
+    public class ArmedSwordArmBehaviourDefinitions : IArmedSwordArmBehaviourDefinitions
     {
         [SerializeField]
         LBoostingDefinitions _boosting;
