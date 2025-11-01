@@ -104,12 +104,12 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
             _aimIK = armObj.GetComponent<AimIK>();
 
-            var armInput = default(IArmInput);
-            if (Part == HumanPart.LeftArm)
-                armInput = input.LArm;
-            else if (Part == HumanPart.RightArm)
-                armInput = input.RArm;
-
+            var armInput = Part switch
+            {
+                HumanPart.LeftArm => input.LArm,
+                HumanPart.RightArm => input.RArm,
+                _ => null
+            };
             _targetsCatcher = new(camera, input.BaseInput, actorObj, ringCatcher, targetsDisplay, _definitions.CircleOnScreenTargetsCatcher, Activated);
 
             //this.node.AddChild(_targetsCatcher.node);

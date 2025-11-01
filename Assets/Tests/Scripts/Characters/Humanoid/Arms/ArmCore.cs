@@ -194,16 +194,21 @@ namespace Tests.Characters.Humanoid.Arms
                 }
                 if (nw != null)
                 {
-                    var field = Guid.Empty;
-                    switch (_definitions.Part)
+                    //var field = Guid.Empty;
+                    //switch (_definitions.Part)
+                    //{
+                    //    case HumanPart.LeftArm:
+                    //        field = CharacterBlackboardFields.Character_Weapon_LeftArm_Armed;
+                    //        break;
+                    //    case HumanPart.RightArm:
+                    //        field = CharacterBlackboardFields.Character_Weapon_RightArm_Armed;
+                    //        break;
+                    //}
+                    var field = _definitions.Part switch
                     {
-                        case HumanPart.LeftArm:
-                            field = CharacterBlackboardFields.Character_Weapon_LeftArm_Armed;
-                            break;
-                        case HumanPart.RightArm:
-                            field = CharacterBlackboardFields.Character_Weapon_RightArm_Armed;
-                            break;
-                    }
+                        HumanPart.LeftArm => CharacterBlackboardFields.Character_Weapon_LeftArm_Armed,
+                        HumanPart.RightArm => CharacterBlackboardFields.Character_Weapon_RightArm_Armed,
+                    };
                     if (_blackboard.Contains(field))
                         _blackboard.TryWriteValue(field, nw);
                     else

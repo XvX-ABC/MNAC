@@ -23,7 +23,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         protected internal ArmedWeaponArmBehaviourControllerState(ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> controller, HumanPart part) : base("weapon_armed_behaviour", 0)
         {
             this.controller = controller ?? throw new ArgumentNullException(nameof(controller));
-            _part = part;
+            InitializeBehaviours(this.controller.behavioursCache, part);
         }
         [Obsolete]
         public ArmedWeaponArmBehaviourControllerState(WeaponCore weaponCore, IArmedWeaponArmDefinitions definitions, params IArmedWeaponArmBehaviour[] behaviours) : this(new(weaponCore, definitions, behaviours))
@@ -31,7 +31,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         }
         public ArmedWeaponArmBehaviourControllerState(WeaponCore weaponCore, IArmedWeaponArmDefinitions definitions, HumanPart part, params IArmedWeaponArmBehaviour[] behaviours) : this(new(weaponCore, definitions, behaviours), part)
         {
-            InitializeBehaviours(this.controller.behavioursCache);
+            InitializeBehaviours(this.controller.behavioursCache, part);
         }
         public Action<IWeapon, IArmedWeaponArmBehaviour> ActivatedAction { get => controller.ActivatedAction; set => controller.ActivatedAction = value; }
         public Action<IWeapon, IArmedWeaponArmBehaviour> UnactivatedAction { get => controller.UnactivatedAction; set => controller.UnactivatedAction = value; }
@@ -39,10 +39,10 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         public Func<bool> ExitFunc { get => controller.ExitFunc; }
 
         IReadOnlyDictionary<string, IArmedWeaponArmBehaviour> IArmedWeaponArmBehavioursController<IArmedWeaponArmBehaviour>.Behaviours => controller.weaponBehavioursMapping;
-        void InitializeBehaviours(IArmedWeaponArmBehaviour[] behaviours)
+        void InitializeBehaviours(IArmedWeaponArmBehaviour[] behaviours, HumanPart part)
         {
             foreach (var b in behaviours)
-                b.Part = _part;
+                b.Part = part;
         }
         public void ActivateBehaviourBy(IWeapon weapon)
         {
