@@ -13,7 +13,7 @@ using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using Tests.Weapons;
 using UnityEngine;
-using EnvironmentCore_Composable = Tests.TPhysics.Environment.EnvironmentCore_Composable;
+using EnvironmentCore_MonoComponent = Tests.TPhysics.Environment.EnvironmentCore_MonoComponent;
 using Stun = Tests.Interaction.Influence.Stun;
 
 namespace Tests.Characters.Humanoid
@@ -26,6 +26,8 @@ namespace Tests.Characters.Humanoid
         CharacterMountPointManager _mountPointManager;
         [SerializeField]
         internal ArmCore leftArm;
+        [SerializeField]
+        internal ArmCore rightArm;
 
         [SerializeField]
         internal LegsCore _legsCore;
@@ -45,7 +47,7 @@ namespace Tests.Characters.Humanoid
         HumanAnimator _animator;
 
         LocomotionCore _locomotionCore;
-        EnvironmentCore_Composable _environmentCore;
+        EnvironmentCore_MonoComponent _environmentCore;
 
         internal InfluenceCore influenceCore;
 
@@ -58,8 +60,8 @@ namespace Tests.Characters.Humanoid
         {
             base.Awake();
             _definitions = GetComponent<ICharacterDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(ICharacterDefinitions));
-            _environmentCore = GetComponent<EnvironmentCore_Composable>() ?? throw new ComponentCantFindException(gameObject, typeof(EnvironmentCore_Composable));
-            _locomotionCore = GetComponent<LocomotionCore>() ?? throw new ComponentCantFindException(gameObject, typeof(EnvironmentCore_Composable));
+            _environmentCore = GetComponent<EnvironmentCore_MonoComponent>() ?? throw new ComponentCantFindException(gameObject, typeof(EnvironmentCore_MonoComponent));
+            _locomotionCore = GetComponent<LocomotionCore>() ?? throw new ComponentCantFindException(gameObject, typeof(EnvironmentCore_MonoComponent));
             InitializeInfluenceCore();
 
             Initialize(new Blackboard());

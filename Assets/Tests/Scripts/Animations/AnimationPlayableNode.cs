@@ -8,8 +8,10 @@ namespace Tests.Animations
     public class AnimationPlayableNode : MTContainerNode<IAnimationPlayablePart>, IAnimationPlayablePartNode
     {
 
+        [Obsolete]
         protected PlayableGraph graph;
         protected ushort connectedCount;
+        [Obsolete]
         internal AnimationPlayableNode(PlayableGraph graph)
         {
             this.graph = graph;
@@ -67,35 +69,40 @@ namespace Tests.Animations
         {
             if (node is not IAnimationPlayablePartNode pnode)
                 throw new InvalidCastException(nameof(node));
-            NodeValidityCheck(pnode);
-            base.AddChild(pnode);
-            //if (pnode.Value.Initialize(graph))
+        }
+        public virtual void AddChild(IAnimationPlayablePartNode node)
+        {
+            NodeValidityCheck(node);
+            base.AddChild(node);
+            //if (node.Value.Initialize(graph))
             //{
             if (!IsRoot(this) && value != null)
             {
-                SetOutputSettingForNode(pnode);
-                if (NodePlayablePartCheck(pnode))
-                    ConnectChild(pnode);
+                SetOutputSettingForNode(node);
+                if (NodePlayablePartCheck(node))
+                    ConnectChild(node);
             }
             //}
-            pnode.Graph = graph;
-
+            node.Graph = graph;
         }
         public override void RemoveChild(IMTNode node)
         {
             if (node is not IAnimationPlayablePartNode pnode)
                 throw new InvalidCastException(nameof(node));
+            RemoveChild(pnode);
+        }
+        public virtual void RemoveChild(IAnimationPlayablePartNode node)
+        {
+            NodeValidityCheck(node);
             if (!children.Contains(node))
                 return;
-            NodeValidityCheck(pnode);
-            if (NodePlayablePartCheck(pnode))
+            if (NodePlayablePartCheck(node))
             {
-                DisconnectChild(pnode);
-                //pnode.Value.Dispose();
+                DisconnectChild(node);
+                //node.Value.Dispose();
             }
-            base.RemoveChild(pnode);
-            pnode.Graph = default;
-
+            base.RemoveChild(node);
+            node.Graph = default;
         }
         //void SetOutputSettingForNode(IAnimationPlayablePartNode node)
         //{
@@ -129,8 +136,8 @@ namespace Tests.Animations
         {
             var p = value.PlayablePart;
 
-            var setting = (OutputSetting)childNode.Value.OutputSetting;
-            var idx = setting.portNum;
+            var setting = childNode.Value.OutputSetting;
+            var idx = setting.PortNum;
             //childNode.Value.OutputSetting = null;
 
             p.DisconnectInput(idx);

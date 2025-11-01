@@ -7,6 +7,7 @@ using Tests.Interaction.Influence;
 using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
+using Tests.Utilities.MTrees;
 using Tests.Utilities.Timeline;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -80,24 +81,65 @@ namespace Tests.Characters.Humanoid.Animations
         AnimationPlayablePartTree _appt;
         ControllerPlayable _controller;
         LayersMixerPlayable _layersMixer;
+        LayerPlayable _baseLayer;
+        LayerPlayable _leftArmLayer;
+        LayerPlayable _rightArmLayer;
 
 
         HumanAnimationStatemachine _statemachine;
 
 
-
         class LayersMixerPlayable : AnimationPlayablePartBase
         {
             IHumanAnimationDefinitions _definitions;
-
             public LayersMixerPlayable(PlayableGraph graph, IHumanAnimationDefinitions definitions) : base(graph)
             {
                 _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
                 var mixer = AnimationLayerMixerPlayable.Create(graph, 3);
-                mixer.SetLayerMaskFromAvatarMask(1, _definitions.LeftArmDefinitions.Mask);
+                //mixer.SetLayerMaskFromAvatarMask(1, _definitions.LeftArmDefinitions.Mask);
 
                 mixer.SetInputWeight(0, 1);
                 playablePart = mixer;
+            }
+            protected override AnimationPlayableNode CreateNode()
+            {
+                return null;
+            }
+
+        }
+        class LayerNode : AnimationPlayableNode
+        {
+            int _num;
+            public LayerNode(IAnimationPlayablePart part, int num) : base(part)
+            {
+            }
+            protected override void ConnectChild(IAnimationPlayablePartNode childNode)
+            {
+                var p = value.PlayablePart;
+                var idx = _num;
+                var outputSetting = childNode.Value.OutputSetting;
+
+                p.ConnectInput(idx, childNode.Value.PlayablePart, 0, outputSetting.Weight);
+            }
+        }
+        class LayerPlayable : AnimationPlayablePartBase
+        {
+            int _num;
+
+            internal LayerPlayable(PlayableGraph graph, AnimationLayerMixerPlayable mixer, int num) : base(graph)
+            {
+                _num = Mathf.Max(0, num);
+                node = new LayerNode(this, _num);
+                this.playablePart = mixer;
+            }
+            protected override AnimationPlayableNode CreateNode()
+            {
+                return null;
+            }
+            public void SetLayerMaskFromAvatarMask(AvatarMask mask)
+            {
+                var p = (AnimationLayerMixerPlayable)playablePart;
+                p.SetLayerMaskFromAvatarMask((uint)_num, mask);
             }
         }
         public new bool Enabled
@@ -137,11 +179,14 @@ namespace Tests.Characters.Humanoid.Animations
             var root = _appt.Root;
             _controller = new ControllerPlayable(graph, _animator);
             _layersMixer = new LayersMixerPlayable(graph, _definitions);
-
+            _baseLayer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)_layersMixer.PlayablePart, 0);
+            _leftArmLayer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)_layersMixer.PlayablePart, 1);
+            _rightArmLayer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)_layersMixer.PlayablePart, 2);
 
 
             root.AddChild(_layersMixer.Node);
-            _layersMixer.Node.AddChild(_controller.Node);
+            //_layersMixer.Node.AddChild(_controller.Node);
+            _baseLayer.Node.AddChild(_controller.Node);
 
             _controller.OutputSetting.Weight = 1;
 
@@ -162,9 +207,21 @@ namespace Tests.Characters.Humanoid.Animations
             if (leftArm != null)
             {
 
-                _layersMixer.Node.AddChild(leftArm.animatorCore.Node);
-                var a = (AnimationLayerMixerPlayable)_layersMixer.PlayablePart;
-                a.SetLayerMaskFromAvatarMask(1, _definitions.LeftArmDefinitions.Mask);
+                _leftArmLayer.Node.AddChild(leftArm.animatorCore.Node);
+                _leftArmLayer.SetLayerMaskFromAvatarMask(_definitions.LeftArmDefinitions.Mask);
+
+                //var a = (AnimationLayerMixerPlayable)_leftArmLayer.PlayablePart;
+                //a.SetLayerMaskFromAvatarMask(1, _definitions.LeftArmDefinitions.Mask);
+            }
+
+            var rightArm = _core.rightArm;
+            if (rightArm != null)
+            {
+                _rightArmLayer.Node.AddChild(rightArm.animatorCore.Node);
+                _rightArmLayer.SetLayerMaskFromAvatarMask(_definitions.RightArmDefinitions.Mask);
+
+                //var a = (AnimationLayerMixerPlayable)_rightArmLayer.PlayablePart;
+                //a.SetLayerMaskFromAvatarMask(1, _definitions.RightArmDefinitions.Mask);
             }
 
         }
