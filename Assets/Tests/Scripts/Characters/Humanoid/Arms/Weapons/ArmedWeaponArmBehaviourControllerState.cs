@@ -14,7 +14,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
     {
         protected ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> controller;
         internal Behaviours.Arms.Animations.ArmAnimationCore animationCore;
-        HumanPart _part;
         [Obsolete]
         protected internal ArmedWeaponArmBehaviourControllerState(ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> controller) : base("weapon_armed_behaviour", 0)
         {

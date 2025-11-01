@@ -8,6 +8,7 @@ namespace Tests.Characters.Humanoid
 {
     public enum HumanPart
     {
+        None,
         LeftArm,
         RightArm,
         LeftLeg,

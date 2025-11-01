@@ -20,7 +20,6 @@ using MountPoint = Tests.Characters.MountPoints.MountPoint;
 namespace Tests.Characters.Humanoid.Arms
 {
     [RequireComponent(typeof(ArmDefinitions_MonoComponent))]
-    [RequireComponent(typeof(ArmAnimationDefinitions_MonoComponent))]
     public class ArmCore : State_MonoComponent, IArmBehaviour
     {
         internal class IdleState : WithCallbackPlayableState
