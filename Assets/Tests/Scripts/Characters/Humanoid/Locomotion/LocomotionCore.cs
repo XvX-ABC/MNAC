@@ -98,7 +98,7 @@ namespace Tests.Characters.Humanoid.Locomotion
 
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Locomotion_Core, this);
 
-            node.AddChild(animator.node);
+            Node.AddChild(animator.Node);
         }
 
         void InitializeLocomotionCore(Rigidbody rbody, IGroundDetector groundDetector, World world)
@@ -109,7 +109,7 @@ namespace Tests.Characters.Humanoid.Locomotion
         void InitializeRotation(Camera camera, Rigidbody rigidbody, IBaseInput input)
         {
             rotation = new(camera, rigidbody, _core, input);
-            node.AddChild(rotation.Node);
+            Node.AddChild(rotation.Node);
         }
         void InitializeMovementStatemachine()
         {

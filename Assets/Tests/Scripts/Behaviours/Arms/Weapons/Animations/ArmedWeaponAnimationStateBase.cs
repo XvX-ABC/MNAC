@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tests.Animations;
 using Tests.States;
-using Utilities.Timeline;
+using Tests.Utilities.Timeline;
 
 namespace Tests.Behaviours.Arms.Weapon.Animations
 {

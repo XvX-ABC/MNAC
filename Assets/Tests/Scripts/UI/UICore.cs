@@ -38,7 +38,7 @@ namespace Tests.UI
                 var child = transform.GetChild(i);
                 var obj = child.gameObject;
                 if (obj.TryGetComponent<UIComponent>(out var component))
-                    node.AddChild(component.node);
+                    Node.AddChild(component.Node);
             }
         }
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tests.Utilities.MountPoints
 {
-    internal class LoadBase : ILoad
+    public class LoadBase : ILoad
     {
         GameObject _obj;
         Vector3 _localPosition;

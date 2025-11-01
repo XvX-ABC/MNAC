@@ -1,7 +1,7 @@
 ﻿using System;
+using Tests.Utilities.Timeline;
 using UnityEngine;
-using Utilities.Timeline;
-using Utilities.Timeline.Events.Point;
+using Tests.Utilities.Timeline.Events.Point;
 
 namespace Tests.Weapons.Projectiles
 {
@@ -57,7 +57,7 @@ namespace Tests.Weapons.Projectiles
         }
         public void OnCollisionStay(Collision collision)
         {
-            if (timeline.isRunning)
+            if (timeline.IsRunning)
                 return;
             _projectileEffect.Stop();
             _projectileEffect.Clear();

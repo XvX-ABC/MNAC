@@ -7,10 +7,10 @@ using Tests.Interaction.Influence;
 using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
+using Tests.Utilities.Timeline;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
-using Utilities.Timeline;
 //TODO: 修改字符串中的character单词
 namespace Tests.Characters.Humanoid.Animations
 {

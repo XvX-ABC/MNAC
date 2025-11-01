@@ -65,7 +65,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
 
             _targetsCatcher = new(_definitions.TargetsCatcher);
-            node.AddChild(_targetsCatcher.Node);
+            Node.AddChild(_targetsCatcher.Node);
 
 
             _behaviour = new(_definitions, _aimIk, _targetsCatcher);

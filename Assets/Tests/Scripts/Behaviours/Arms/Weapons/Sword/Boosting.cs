@@ -1,13 +1,12 @@
 ﻿using System;
 using Tests.Behaviours.Arm.Weapons;
 using Tests.Behaviours.Input;
-using Tests.Input;
 using Tests.Interaction;
 using Tests.States;
 using Tests.TPhysics.Locomotion;
+using Tests.Utilities.Timeline;
 using Tests.Utilities.TransformHelper;
 using UnityEngine;
-using Utilities.Timeline;
 
 namespace Tests.Behaviours.Arms.Weapons.Sword
 {

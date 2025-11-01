@@ -1,7 +1,7 @@
 ﻿using System;
+using Tests.Utilities.Timeline;
 using Tests.Weapons.Launcher;
 using UnityEngine;
-using Utilities.Timeline;
 
 namespace Tests.Weapons.MachineGuns
 {

@@ -1,8 +1,8 @@
 ﻿using Locomotion;
 using System;
 using Tests.Locomotion_Obsolete;
+using Tests.Utilities.Timeline;
 using UnityEngine;
-using Utilities.Timeline;
 
 namespace Tests.TPhysics.Locomotion
 {

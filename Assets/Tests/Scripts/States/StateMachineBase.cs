@@ -49,10 +49,10 @@ namespace Tests.States
             {
             }
         }
-        protected internal class Transition : ITransition<T>
+        public class Transition : ITransition<T>
         {
-            internal S sourceState;
-            internal S destinationState;
+            internal protected S sourceState;
+            internal protected S destinationState;
             protected Action<T> triggeredEvent;
 
             internal List<Func<bool>> triggerEvents;

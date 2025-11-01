@@ -1,9 +1,9 @@
 ﻿using System;
 using Tests.Animations;
 using Tests.States;
+using Tests.Utilities.Timeline;
 using UnityEngine;
 using UnityEngine.Animations;
-using Utilities.Timeline;
 
 namespace Tests.Characters.Humanoid.Locomotion.Animations
 {

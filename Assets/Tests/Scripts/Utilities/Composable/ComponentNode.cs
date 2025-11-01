@@ -4,7 +4,7 @@ using Tests.Utilities.MTrees;
 
 namespace Tests.Utilities.Composable
 {
-    internal class ComponentNode : MTContainerNode<IComponent>, IComponentNode
+    public class ComponentNode : MTContainerNode<IComponent>, IComponentNode
     {
         public ComponentNode(IComponent component)
         {

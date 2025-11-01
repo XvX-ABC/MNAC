@@ -1,8 +1,8 @@
 ﻿using System;
 using Tests.Behaviours.Arm.Weapons;
 using Tests.States;
+using Tests.Utilities.Timeline;
 using UnityEngine;
-using Utilities.Timeline;
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     internal class SwordSlash : ArmedArmStateBase

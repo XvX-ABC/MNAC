@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Tests.Utilities.Timeline;
 using UnityEngine;
-using Utilities.Timeline;
 
 namespace Tests.States
 {

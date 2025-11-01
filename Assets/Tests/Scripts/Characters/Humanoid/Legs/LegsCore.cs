@@ -23,8 +23,8 @@ namespace Tests.Characters.Humanoid.Legs
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            node.AddChild(_leftLeg.node);
-            node.AddChild(_rightLeg.node);
+            Node.AddChild(_leftLeg.Node);
+            Node.AddChild(_rightLeg.Node);
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Legs_Core, this);
         }
     }

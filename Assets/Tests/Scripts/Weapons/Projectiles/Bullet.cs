@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using UnityEngine;
-using Utilities.Timeline.Events.Point;
+using Tests.Utilities.Timeline.Events.Point;
 
 namespace Tests.Weapons.Projectiles
 {

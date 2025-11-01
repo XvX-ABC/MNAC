@@ -1,9 +1,9 @@
 ﻿using System;
 using Tests.Animations;
 using Tests.States;
+using Tests.Utilities.Timeline;
 using UnityEngine.Playables;
-using Utilities.Timeline;
-using Utilities.Timeline.Events.Range;
+using Tests.Utilities.Timeline.Events.Range;
 
 namespace Tests.Behaviours.Arms.Animations
 {

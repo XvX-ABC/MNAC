@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 using Tests.Environment;
+using Tests.Utilities.Timeline;
 using UnityEngine;
 using UnityEngine.Windows;
-using Utilities.Timeline;
-using Utilities.Timeline.Events.Point;
+using Tests.Utilities.Timeline.Events.Point;
 namespace Tests.Locomotion_Obsolete
 {
     internal class JumpLocomotion : IModule

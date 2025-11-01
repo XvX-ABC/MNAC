@@ -59,7 +59,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
             base.Initialize(blackboard);
             foreach (var b in controller.behavioursCache)
             {
-                node.AddChild(b.Node);
+                Node.AddChild(b.Node);
             }
 
         }
@@ -68,7 +68,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
             base.Dispose();
             foreach (var b in controller.behavioursCache)
             {
-                node.RemoveChild(b.Node);
+                Node.RemoveChild(b.Node);
             }
         }
         public override void OnEnter()

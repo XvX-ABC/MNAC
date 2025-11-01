@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons.Launchers;
+using Tests.Utilities.Timeline;
 using Tests.Weapons.MachineGuns;
 using UnityEngine;
 using UnityEngine.Pool;
-using Utilities.Timeline;
-using Utilities.Timeline.Events.Point;
-using Utilities.Timeline.Events.Range;
+using Tests.Utilities.Timeline.Events.Point;
+using Tests.Utilities.Timeline.Events.Range;
 using ActionsEnum = Tests.Weapons.Launcher.ILauncher.ActionsEnum;
 namespace Tests.Weapons.Launcher
 {

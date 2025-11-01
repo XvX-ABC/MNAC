@@ -2,7 +2,7 @@
     "name": "Tests.Utilities",
     "rootNamespace": "Tests.Utilities",
     "references": [
-        "GUID:24b41075e961be54bb0ee4da2412e627"
+        "GUID:d8b63aba1907145bea998dd612889d6b"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

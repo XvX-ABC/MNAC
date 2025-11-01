@@ -1,7 +1,7 @@
 ﻿using Tests.Characters.Humanoid.Arms;
 using Tests.Characters.Humanoid.Locomotion;
 using Tests.States;
-using Utilities.Timeline;
+using Tests.Utilities.Timeline;
 
 namespace Tests.Characters.Humanoid
 {

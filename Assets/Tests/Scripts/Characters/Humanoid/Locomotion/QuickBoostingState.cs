@@ -5,9 +5,9 @@ using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Input;
 using Tests.States;
 using Tests.TPhysics.Locomotion;
+using Tests.Utilities.Timeline;
 using TMPro;
 using UnityEngine;
-using Utilities.Timeline;
 
 namespace Tests.Characters.Humanoid.Locomotion
 {

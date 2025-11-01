@@ -1,6 +1,6 @@
 ﻿using System;
+using Tests.Utilities.Timeline;
 using UnityEngine;
-using Utilities.Timeline;
 
 namespace Tests.Characters
 {

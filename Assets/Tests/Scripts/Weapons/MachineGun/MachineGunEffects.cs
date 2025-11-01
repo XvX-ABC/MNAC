@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Unity.Mathematics;
 using Random = Unity.Mathematics.Random;
-using Utilities.Timeline.Events;
-using Utilities.Timeline.Events.Point;
+using Tests.Utilities.Timeline.Events.Point;
 using Tests.Weapons.Launcher;
+using Tests.Utilities.Timeline.Events;
 
 namespace Tests.Weapons.MachineGuns
 {

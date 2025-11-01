@@ -115,23 +115,23 @@ namespace Tests.Characters.Humanoid
 
             _animator = new(this);
             _animator.Enabled = enabled;
-            node.AddChild(_animator.node);
+            Node.AddChild(_animator.Node);
         }
 
         void InitializeArmCore()
         {
-            node.AddChild(leftArm.Node);
+            Node.AddChild(leftArm.Node);
         }
         void InitializeEnvironmentCore()
         {
-            node.AddChild(_environmentCore.Node);
+            Node.AddChild(_environmentCore.Node);
         }
         void InitializeLocomotionCore()
         {
-            node.AddChild(_legsCore.node);
+            Node.AddChild(_legsCore.Node);
             _legsCore.Weight = 1;
 
-            node.AddChild(_locomotionCore.Node);
+            Node.AddChild(_locomotionCore.Node);
 
 
         }
@@ -143,7 +143,7 @@ namespace Tests.Characters.Humanoid
         }
         void InitializeUI()
         {
-            node.AddChild(_uiCore.node);
+            Node.AddChild(_uiCore.Node);
         }
 
         void InitializeStatemachine(InfluenceCore influenceCore)

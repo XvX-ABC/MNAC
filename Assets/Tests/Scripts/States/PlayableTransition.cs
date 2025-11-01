@@ -1,12 +1,11 @@
 ﻿using System;
 using UnityEngine;
-using Utilities.Timeline;
-using Utilities.Timeline.Events.Point;
-using Utilities.Timeline.Events.Range;
-
+using Tests.Utilities.Timeline;
+using Tests.Utilities.Timeline.Events.Point;
+using Tests.Utilities.Timeline.Events.Range;
 namespace Tests.States
 {
-    internal class PlayableTransition<T> : StateMachineBase<IPlayableState<T>, T>.Transition, IPlayableTransition<T>
+    public class PlayableTransition<T> : StateMachineBase<IPlayableState<T>, T>.Transition, IPlayableTransition<T>
     {
         public const InterruptionSource INTERRUPTION_SOURCE_DEFAULT = States.InterruptionSource.Next;
         protected ITimeline timeline;

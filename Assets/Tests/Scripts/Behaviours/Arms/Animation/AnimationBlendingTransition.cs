@@ -1,6 +1,6 @@
 ﻿using System;
 using Tests.States;
-using Utilities.Timeline;
+using Tests.Utilities.Timeline;
 
 namespace Tests.Behaviours.Arms.Animations
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Tests.Animations;
 using Tests.States;
-using Utilities.Timeline;
+using Tests.Utilities.Timeline;
 
 namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
 {

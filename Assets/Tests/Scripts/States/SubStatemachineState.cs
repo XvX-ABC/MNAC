@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using Utilities.Timeline;
+﻿using Tests.Utilities.Timeline;
+using UnityEngine;
 
 namespace Tests.States
 {
-    internal class SubStatemachineState<T> : WithCallbackPlayableState<T>
+    public class SubStatemachineState<T> : WithCallbackPlayableState<T>
     {
         WithCallbackPlayableStatemachine<T> _statemachine;
         IWithCallbackPlayableState<T> _state;

@@ -29,7 +29,7 @@ namespace Tests.Utilities.Composable
         public bool Enabled { get => enabled; set => enabled = value; }
         protected virtual void Awake()
         {
-        
+
         }
 
         public virtual void Initialize(Blackboard blackboard)

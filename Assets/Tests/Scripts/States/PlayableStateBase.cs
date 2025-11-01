@@ -1,5 +1,5 @@
 ﻿using System;
-using Utilities.Timeline;
+using Tests.Utilities.Timeline;
 
 namespace Tests.States
 {

@@ -1,6 +1,4 @@
-﻿using Cinemachine.Editor;
-using System;
-using UnityEngine.Playables;
+﻿using System;
 
 namespace Tests.States
 {

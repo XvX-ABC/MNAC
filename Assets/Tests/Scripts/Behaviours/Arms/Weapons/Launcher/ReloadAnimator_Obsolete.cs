@@ -1,9 +1,9 @@
 ﻿using System;
 using Tests.Animations;
+using Tests.Utilities.Timeline;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
-using Utilities.Timeline;
 
 namespace Tests.Behaviours.Arms.Weapons.Launchers
 {

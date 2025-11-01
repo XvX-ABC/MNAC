@@ -1,10 +1,10 @@
 ﻿using System;
 using Locomotion;
 using Tests.Environment;
+using Tests.Utilities.Timeline;
 using UnityEngine;
-using Utilities.Timeline;
-using Utilities.Timeline.Events.Point;
-using Utilities.Timeline.Events.Range;
+using Tests.Utilities.Timeline.Events.Point;
+using Tests.Utilities.Timeline.Events.Range;
 namespace Tests.Locomotion_Obsolete
 {
     class BoostingLocomotion : IModule
@@ -33,7 +33,7 @@ namespace Tests.Locomotion_Obsolete
         }
         public void StartBoost(Context context)
         {
-        
+
             if (_timeline.IsRunning)
                 return;
             var currentTime = Time.unscaledTime;
@@ -51,7 +51,7 @@ namespace Tests.Locomotion_Obsolete
         }
         public void EndBoost(Context context)
         {
-            if (!_timeline.isRunning)
+            if (!_timeline.IsRunning)
                 return;
             _timeline.Pause();
             _lastTime = Time.unscaledTime;

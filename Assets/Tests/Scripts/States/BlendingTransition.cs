@@ -1,11 +1,11 @@
 ﻿using System;
+using Tests.Utilities.Timeline;
 using UnityEngine;
-using Utilities.Timeline;
 namespace Tests.States
 {
-    internal class BlendingTransition<T> : PlayableTransition<T>
+    public class BlendingTransition<T> : PlayableTransition<T>
     {
-        protected internal const float FIXED_EXIT_TIME_INVALID_VALUE = -1;
+        public const float FIXED_EXIT_TIME_INVALID_VALUE = -1;
         float _oldLength;
         protected float offset;
         protected float fixedExitTime;

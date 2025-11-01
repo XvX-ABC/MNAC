@@ -1,8 +1,8 @@
 ﻿using System;
 using Tests.States;
 using Tests.TPhysics.Locomotion;
+using Tests.Utilities.Timeline;
 using UnityEngine;
-using Utilities.Timeline;
 using Core = Tests.TPhysics.Locomotion.LocomotionCore;
 namespace Tests.Characters.Humanoid.Locomotion
 {

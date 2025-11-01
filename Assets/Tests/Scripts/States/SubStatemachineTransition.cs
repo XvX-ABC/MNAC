@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using UnityEngine;
-using Utilities.Timeline.Events.Point;
+using Tests.Utilities.Timeline.Events.Point;
 namespace Tests.States
 {
-    internal class SubStatemachineTransition<T> : BlendingTransition<T>
+    public class SubStatemachineTransition<T> : BlendingTransition<T>
     {
         public SubStatemachineTransition(
         IWithCallbackPlayableState<T> sourceState,

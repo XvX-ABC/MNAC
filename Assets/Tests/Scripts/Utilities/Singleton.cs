@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tests.Utility
+namespace Tests.Utilities
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {

@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace Tests.Extensions
 {
-    internal static class ArrayExtensions
+    public static class ArrayExtensions
     {
         public static void Append<T>(ref T[] array, T elem)
         {

@@ -1,6 +1,6 @@
 using System;
 using Tests.Behaviours.Arms.Weapons.Launchers;
-using Utilities.Timeline;
+using Tests.Utilities.Timeline;
 
 namespace Tests.Weapons.Launcher
 {

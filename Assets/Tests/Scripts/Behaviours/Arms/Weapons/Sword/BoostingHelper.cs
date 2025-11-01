@@ -3,8 +3,8 @@ using Tests.Behaviours.Input;
 using Tests.Characters.Interaction.Input;
 using Tests.Input;
 using Tests.TPhysics.Locomotion;
+using Tests.Utilities.Timeline;
 using UnityEngine;
-using Utilities.Timeline;
 
 namespace Tests.Behaviours.Arms.Weapons.Sword
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using Utilities.Timeline;
+using Tests.Utilities.Timeline;
 
 namespace Tests.States
 {
