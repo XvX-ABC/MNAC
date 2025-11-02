@@ -7,6 +7,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
     {
         [Obsolete]
         public ITargetsCatcherDefinitions TargetsCatcher { get; }
-        public ITargetsCatcherDefinitions_V0 CircleOnScreenTargetsCatcher { get; }
+        public ICircleOnScreenTargetsCatcherDefinitions CircleOnScreenTargetsCatcher { get; }
     }
 }

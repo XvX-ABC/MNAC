@@ -22,15 +22,15 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         Camera _camera;
         IBaseInput _input;
 
-        ITargetsCatcherDefinitions_V0 _definitions;
+        ICircleOnScreenTargetsCatcherDefinitions _definitions;
 
         GameObject _actorObj;
         [Obsolete]
-        public CircleOnScreenTargetsCatcher(ITargetsCatcherDefinitions_V0 definitions)
+        public CircleOnScreenTargetsCatcher(ICircleOnScreenTargetsCatcherDefinitions definitions)
         {
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
         }
-        public CircleOnScreenTargetsCatcher(Camera camera, IBaseInput input, GameObject actorObj, RingCatcher ringCatcher, TargetsDisplay targetsDisplay, ITargetsCatcherDefinitions_V0 definitions, bool enabled = true)
+        public CircleOnScreenTargetsCatcher(Camera camera, IBaseInput input, GameObject actorObj, RingCatcher ringCatcher, TargetsDisplay targetsDisplay, ICircleOnScreenTargetsCatcherDefinitions definitions, bool enabled = true)
         {
             _filter = new(definitions.CatchingObjsTag, camera, definitions.FilterAmountOneFrame);
             _catcher = new(_filter.ObjsInScreen, actorObj, camera, definitions.TargetsMask, definitions.FilterAmountOneFrame);

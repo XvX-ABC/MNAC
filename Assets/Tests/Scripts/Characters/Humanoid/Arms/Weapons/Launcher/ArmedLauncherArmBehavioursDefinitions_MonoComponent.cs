@@ -9,10 +9,10 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         [SerializeField]
         TargetsCatcherDefinitions targetsCatcher;
         [SerializeField]
-        TargetsCatcherDefinitions_V0 targetsCatcherV0;
+        CircleOnScreenTargetsCatcherDefinitions targetsCatcherV0;
         [Obsolete]
         public ITargetsCatcherDefinitions TargetsCatcher => targetsCatcher;
 
-        public ITargetsCatcherDefinitions_V0 CircleOnScreenTargetsCatcher => targetsCatcherV0;
+        public ICircleOnScreenTargetsCatcherDefinitions CircleOnScreenTargetsCatcher => targetsCatcherV0;
     }
 }

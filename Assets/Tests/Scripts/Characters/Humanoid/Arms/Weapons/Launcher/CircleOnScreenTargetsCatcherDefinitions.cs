@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
     [Serializable]
-    public class TargetsCatcherDefinitions_V0 : ITargetsCatcherDefinitions_V0
+    public class CircleOnScreenTargetsCatcherDefinitions : ICircleOnScreenTargetsCatcherDefinitions
     {
         [SerializeField]
         string _tag;

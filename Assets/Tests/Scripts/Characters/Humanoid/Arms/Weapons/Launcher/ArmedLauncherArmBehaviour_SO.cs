@@ -100,7 +100,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
             blackboard.TryReadUIValueOrThrowException<RingCatcher>(CharacterUIBlackboardFields.Catcher_Ring, out var ringCatcher);
             blackboard.TryReadUIValueOrThrowException<TargetsDisplay>(CharacterUIBlackboardFields.Targets_Display, out var targetsDisplay);
-
+            Debug.Log($"part: {Part}, armobj: {armObj.name}");
 
             _aimIK = armObj.GetComponent<AimIK>();
 
@@ -153,6 +153,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             //    _targetsCatcher.Enabled = !_targetsCatcher.Enabled;
             _targetsCatcher.Update();
             _behaviour.Update();
+            Debug.Log($"part: {Part} " + _behaviour.statemachine);
         }
         public override void FixedUpdate()
         {

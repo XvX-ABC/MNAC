@@ -9,7 +9,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         ArmedLauncherArmBehavioursDefinitions _definitions;
         public ITargetsCatcherDefinitions TargetsCatcher => _definitions.TargetsCatcher;
 
-        public ITargetsCatcherDefinitions_V0 CircleOnScreenTargetsCatcher => _definitions.CircleOnScreenTargetsCatcher;
+        public ICircleOnScreenTargetsCatcherDefinitions CircleOnScreenTargetsCatcher => _definitions.CircleOnScreenTargetsCatcher;
 
         public AnimationClip AimingClip => _definitions.AimingClip;
 
