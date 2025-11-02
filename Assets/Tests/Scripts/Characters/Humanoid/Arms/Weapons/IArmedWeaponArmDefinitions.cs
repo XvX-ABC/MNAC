@@ -2,5 +2,6 @@
 {
     public interface IArmedWeaponArmDefinitions : Behaviours.Arms.Weapons.IArmedWeaponArmDefinitions
     {
+        IArmedWeaponArmBehaviour[] ArmedWeaponBehaviours { get; }
     }
 }

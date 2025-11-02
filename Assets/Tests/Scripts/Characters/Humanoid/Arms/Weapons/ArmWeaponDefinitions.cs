@@ -7,7 +7,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
     public class ArmWeaponDefinitions : Behaviours.Arms.Weapons.ArmWeaponDefinitions, IArmedWeaponArmDefinitions
     {
         [SerializeField]
-        ArmedWeaponArmBehaviourBase_MonoComponent_Obsolete[] _armedBehaviours;
-        public ArmedWeaponArmBehaviourBase_MonoComponent_Obsolete[] ArmedBehaviours => _armedBehaviours;
+        ArmedWeaponArmBehaviourBase_SO[] _armedBehaviours;
+        public IArmedWeaponArmBehaviour[] ArmedWeaponBehaviours => _armedBehaviours;
     }
 }
