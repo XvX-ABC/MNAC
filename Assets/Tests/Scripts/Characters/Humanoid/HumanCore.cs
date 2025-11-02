@@ -65,8 +65,10 @@ namespace Tests.Characters.Humanoid
             InitializeInfluenceCore();
 
             Initialize(new Blackboard());
-
-
+            if (leftArm != null)
+                leftArm.enabled = false;
+            if (rightArm != null)
+                rightArm.enabled = false;
         }
         void OnEnable()
         {
@@ -122,7 +124,10 @@ namespace Tests.Characters.Humanoid
 
         void InitializeArmCore()
         {
+            if (leftArm != null)
             Node.AddChild(leftArm.Node);
+            if (rightArm != null)
+                Node.AddChild(rightArm.Node);
         }
         void InitializeEnvironmentCore()
         {

@@ -66,7 +66,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             {
                 base.Enabled = value;
                 _catcher.Enabled = value;
-                _ringCatcher.HIde = !value;
+                if (_ringCatcher != null)
+                    _ringCatcher.HIde = !value;
                 _filter.enabled = value;
             }
         }

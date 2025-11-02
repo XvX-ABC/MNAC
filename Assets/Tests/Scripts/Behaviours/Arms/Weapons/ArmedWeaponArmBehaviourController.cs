@@ -53,6 +53,7 @@ namespace Tests.Behaviours.Arms.Weapons
                 var b = behaviours.FirstOrDefault(b => b.Type == type);
                 if (b == null)
                     continue;
+                b.Activated = false;
                 if (weaponBehavioursMapping.ContainsKey(name))
                     weaponBehavioursMapping[name] = b;
                 else

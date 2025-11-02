@@ -6,6 +6,7 @@ using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using Tests.Weapons;
+using UnityEditor.Networking.PlayerConnection;
 using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons
@@ -75,11 +76,21 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
             base.OnEnter();
             if (animationCore != null)
                 animationCore.StatusNum = 1;
-            controller.currentActivatedBehaviour?.OnEnter();
+            var b = controller.currentActivatedBehaviour;
+            if (b != null)
+            {
+                b.Activated = true;
+                b?.OnEnter();
+            }
         }
         public override void OnExit()
         {
-            controller.currentActivatedBehaviour?.OnExit();
+            var b = controller.currentActivatedBehaviour;
+            if (b != null)
+            {
+                b?.OnExit();
+                b.Activated = false;
+            }
             base.OnExit();
         }
         public override void OnUpdate()

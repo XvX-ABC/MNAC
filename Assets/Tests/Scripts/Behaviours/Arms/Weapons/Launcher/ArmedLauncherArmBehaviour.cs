@@ -7,6 +7,8 @@ using Tests.Interaction;
 using Tests.States;
 using Tests.Weapons;
 using Tests.Weapons.Launcher;
+using TMPro;
+using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Launchers
 {
@@ -83,7 +85,17 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         }
 
         public override IWithCallbackPlayableState<object> State => _state;
-
+        public override bool Activated
+        {
+            get => base.Activated;
+            set
+            {
+                base.Activated = value;
+                _targetsCatcher.Enabled = value;
+                statemachine.Enabled = value;
+                animator.Enabled = value;
+            }
+        }
         void WhenTargetsChanged(IList<ITarget> targets)
         {
             target = targets.Count > 0 ? targets[^1] : null;
@@ -126,8 +138,9 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
                 return _winput == null ? false : _winput.Reload && WeaponCanToReload();
             }
         }
-        public void FixedUpdate()
+        public void Update()
         {
+            Debug.Log("target is null: " + (target == null) + "," + (_targetsCatcher.Enabled) + ", " + statemachine);
             animator.Update();
         }
     }

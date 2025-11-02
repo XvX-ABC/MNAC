@@ -7,7 +7,7 @@ namespace Tests.Behaviours.Arms.Weapons
     public abstract class ArmedWeaponArmBehaviourBase : IArmedWeaponArmBehaviour
     {
         protected bool enabled;
-        public bool Activated { get => enabled; set => enabled = value; }
+        public virtual bool Activated { get => enabled; set => enabled = value; }
         public abstract WeaponType Type { get; }
         public abstract IWeapon Weapon { get; set; }
         public abstract IArmedWeaponArmAnimationPlayablePart Animator { get; }

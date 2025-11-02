@@ -19,7 +19,6 @@ using MountPoint = Tests.Characters.MountPoints.MountPoint;
 
 namespace Tests.Characters.Humanoid.Arms
 {
-    [RequireComponent(typeof(ArmDefinitions_MonoComponent))]
     public class ArmCore : State_MonoComponent, IArmBehaviour
     {
         internal class IdleState : WithCallbackPlayableState
@@ -136,8 +135,6 @@ namespace Tests.Characters.Humanoid.Arms
 
             if (!blackboard.TryReadValue<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph))
                 throw new Exception();
-            //blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Arm_Local, this.gameObject);
-            //blackboard.TryRegisterField(CharacterBlackboardFields.Character_Arm_Core_Local, this);
             blackboard.TryRegisterFieldOrWriteValue(CharacterBlackboardFields.Character_Obj_Arm_Local, this.gameObject);
             blackboard.TryRegisterFieldOrWriteValue(CharacterBlackboardFields.Character_Arm_Core_Local, this);
 
@@ -251,25 +248,38 @@ namespace Tests.Characters.Humanoid.Arms
             weaponMountPoint.LoadObj = obj;
 
         }
-        public override void OnUpdate()
-        {
-            stateMachine.OnUpdate();
-        }
+        //public override void OnUpdate()
+        //{
+        //    stateMachine.OnUpdate();
+        //}
 
-        public override void OnEnter()
-        {
-            enabled = true;
-        }
+        //public override void OnEnter()
+        //{
+        //    enabled = true;
+        //}
 
-        public override void OnExit()
+        //public override void OnExit()
+        //{
+        //    enabled = false;
+        //}
+        void OnEnable()
         {
-            enabled = false;
+            if (stateMachine != null)
+            {
+                animatorCore.StatusNum = 3;
+                stateMachine.Enabled = true;
+                stateMachine.OnEnter();
+            }
+        }
+        void OnDisable()
+        {
+            stateMachine.OnExit();
+            stateMachine.Enabled = false;
+            animatorCore.StatusNum = 3;
         }
         void Update()
         {
             OnUpdate();
-            _armedWeaponController.Update();
-            animatorCore.OnUpdate();
         }
 
         void FixedUpdate()
@@ -278,6 +288,21 @@ namespace Tests.Characters.Humanoid.Arms
         }
         public void Dispose()
         {
+        }
+
+        public override void OnEnter()
+        {
+        }
+
+        public override void OnExit()
+        {
+        }
+
+        public override void OnUpdate()
+        {
+            stateMachine.OnUpdate();
+            _armedWeaponController.Update();
+            animatorCore.OnUpdate();
         }
     }
 }

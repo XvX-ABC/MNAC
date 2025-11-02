@@ -44,7 +44,11 @@ namespace Tests.UI
             get => ring.Radius;
             set => ring.Radius = value;
         }
-        public bool HIde { get => !gameObject.activeSelf; set => gameObject.SetActive(!value); }
+        public bool HIde
+        {
+            get => !gameObject.activeSelf;
+            set => gameObject.SetActive(!value);
+        }
 
         private void Awake()
         {

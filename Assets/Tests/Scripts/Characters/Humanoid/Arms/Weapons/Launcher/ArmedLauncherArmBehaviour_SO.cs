@@ -69,16 +69,17 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             get => base.Activated;
             set
             {
-                base.Activated = value;
-                //_targetsCatcher.Enabled = value;
-                UpdateTargetsCatcherFor(blackboard);
-                _targetsCatcher.Enabled = value;
+                if (_behaviour != null)
+                {
+                    UpdateTargetsCatcherFor(blackboard);
+                    _behaviour.Activated = value;
+                }
+                enabled = value;
             }
         }
         protected override void OnEnable()
         {
             base.OnEnable();
-            //_targetsCatcher = new(_definitions.CircleOnScreenTargetsCatcher);
         }
         public override void Initialize(Blackboard blackboard)
         {
@@ -94,7 +95,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Arm_Local, out var armObj);
             blackboard.TryReadValueOrThrowException<ArmCore>(CharacterBlackboardFields.Character_Arm_Core_Local, out _armCore);
 
-            //blackboard.TryReadValue<IInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
             blackboard.TryReadValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
 
 
@@ -112,51 +112,52 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             };
             _targetsCatcher = new(camera, input.BaseInput, actorObj, ringCatcher, targetsDisplay, _definitions.CircleOnScreenTargetsCatcher, Activated);
 
-            //this.node.AddChild(_targetsCatcher.node);
 
             var weaponControlInput = armInput.WeaponControl;
 
-            //_animator = new(graph, _aimIK, rbody, world, groundDetector, locomotionCore, _definitions, _animationDefinitions, _targetsCatcher, input);
             _animator = new(graph, _aimIK, rbody, world, groundDetector, locomotionCore, _definitions, _animationDefinitions, _targetsCatcher, weaponControlInput);
             _behaviour = new(_definitions, _animator);
             _behaviour.TargetsCatcher = _targetsCatcher;
-            //_behaviour.Input_Obsolete = input;
 
             _behaviour.Input = weaponControlInput;
 
-
+            _behaviour.Activated = enabled;
+        }
+        public override void OnEnter()
+        {
+            base.OnEnter();
             _armCore.StartCoroutine(_targetsCatcher.FilterUpdateWithCoroutine());
             _armCore.StartCoroutine(_targetsCatcher.CatcherUpdateWithCoroutine());
+        }
+        public override void OnExit()
+        {
+            _armCore.StopCoroutine(_targetsCatcher.FilterUpdateWithCoroutine());
+            _armCore.StopCoroutine(_targetsCatcher.CatcherUpdateWithCoroutine());
+            base.OnExit();
         }
         public override void Dispose()
         {
             base.Dispose();
-            _armCore.StopCoroutine(_targetsCatcher.FilterUpdateWithCoroutine());
-            _armCore.StopCoroutine(_targetsCatcher.CatcherUpdateWithCoroutine());
             blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
         }
         void UpdateTargetsCatcherFor(Blackboard blackboard)
         {
             if (Activated)
-                WriteTargetsCatcherTo(blackboard);
+                blackboard.TryRegisterFieldOrWriteValue(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
             else
                 blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher);
-        }
-        void WriteTargetsCatcherTo(Blackboard blackboard)
-        {
-            if (!blackboard.TryWriteValue(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher))
-                blackboard.TryRegisterField(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
         }
         public override void Update()
         {
             //if (UnityEngine.Input.GetKeyDown(KeyCode.V))
             //    _targetsCatcher.Enabled = !_targetsCatcher.Enabled;
             _targetsCatcher.Update();
+            _behaviour.Update();
         }
         public override void FixedUpdate()
         {
             //_targetsCatcher.Update();
-            _behaviour.FixedUpdate();
+
         }
     }
 }
