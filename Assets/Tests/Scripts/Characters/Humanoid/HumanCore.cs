@@ -125,7 +125,7 @@ namespace Tests.Characters.Humanoid
         void InitializeArmCore()
         {
             if (leftArm != null)
-            Node.AddChild(leftArm.Node);
+                Node.AddChild(leftArm.Node);
             if (rightArm != null)
                 Node.AddChild(rightArm.Node);
         }
@@ -159,7 +159,7 @@ namespace Tests.Characters.Humanoid
             var health = influenceCore.FindInfluence<Health>();
 
             var stunningState = new StunningState(stun.timeline);
-            var normalState = new NormalState(_locomotionCore, leftArm);
+            var normalState = new NormalState(_locomotionCore, leftArm, rightArm);
             diedState = new DiedState(gameObject, obj => { Destroy(obj); Debug.Log("Destory"); }, _definitions.DeathDurationTime);
             _context = new();
             _statemachine = new(_context, gameObject.name);

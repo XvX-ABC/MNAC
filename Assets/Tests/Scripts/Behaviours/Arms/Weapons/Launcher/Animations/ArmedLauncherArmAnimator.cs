@@ -1,6 +1,7 @@
 ﻿using RootMotion.FinalIK;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Tests.Animations;
 using Tests.Characters.Humanoid.Locomotion;
 using Tests.Characters.Interaction.Input;
@@ -71,7 +72,15 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
             InitializeStatemacine(_aimIK);
         }
         public IOutputSetting OutputSetting { get => _controller.OutputSetting; set => _controller.OutputSetting = value; }
-        public bool Enabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool Enabled
+        {
+            get => _aimIK.enabled;
+            set
+            {
+                _aimIK.enabled = value;
+                _controller.outputSetting.Weight = value ? 1 : 0;
+            }
+        }
         public ITarget AimingTarget { get => _aimingHelper.Target; set => _aimingHelper.Target = value; }
         public ILauncher Launcher
         {
@@ -134,6 +143,10 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
         public void Update()
         {
             statemachine.OnUpdate();
+            var sb = new StringBuilder();
+            //sb.AppendLine("aiming: " + _controller.GetBool(_animationDefinitions.ReloadTrigger));
+            sb.AppendLine(statemachine.ToString());
+            //Debug.Log(sb.ToString());
         }
     }
 }

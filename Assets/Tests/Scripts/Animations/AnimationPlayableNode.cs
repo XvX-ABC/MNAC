@@ -69,6 +69,7 @@ namespace Tests.Animations
         {
             if (node is not IAnimationPlayablePartNode pnode)
                 throw new InvalidCastException(nameof(node));
+            AddChild(pnode);
         }
         public virtual void AddChild(IAnimationPlayablePartNode node)
         {
@@ -112,7 +113,7 @@ namespace Tests.Animations
         //    var outputSetting = new OutputSetting(value, idx);
         //    node.Value.OutputSetting = outputSetting;
         //}
-        void SetOutputSettingForNode(IAnimationPlayablePartNode node)
+        protected virtual void SetOutputSettingForNode(IAnimationPlayablePartNode node)
         {
             var p = value.PlayablePart;
             var idx = children == null ? 0 : connectedCount;
@@ -126,8 +127,9 @@ namespace Tests.Animations
         protected virtual void ConnectChild(IAnimationPlayablePartNode childNode)
         {
             var p = value.PlayablePart;
-            var idx = children == null ? 0 : connectedCount;
+            //var idx = children == null ? 0 : connectedCount;
             var outputSetting = childNode.Value.OutputSetting;
+            var idx = outputSetting.PortNum;
 
             p.ConnectInput(idx, childNode.Value.PlayablePart, 0, outputSetting.Weight);
             connectedCount++;

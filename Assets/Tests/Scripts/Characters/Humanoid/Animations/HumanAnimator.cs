@@ -101,25 +101,28 @@ namespace Tests.Characters.Humanoid.Animations
                 mixer.SetInputWeight(0, 1);
                 playablePart = mixer;
             }
-            protected override AnimationPlayableNode CreateNode()
+            public LayerPlayable CreateLayer()
             {
-                return null;
+                var layer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)playablePart, node.Children.Count);
+                node.Children.Add(layer.Node);
+                layer.Node.Parent = node;
+                return layer;
             }
-
         }
         class LayerNode : AnimationPlayableNode
         {
             int _num;
             public LayerNode(IAnimationPlayablePart part, int num) : base(part)
             {
+                _num = num;
             }
-            protected override void ConnectChild(IAnimationPlayablePartNode childNode)
+            protected override void SetOutputSettingForNode(IAnimationPlayablePartNode node)
             {
                 var p = value.PlayablePart;
                 var idx = _num;
-                var outputSetting = childNode.Value.OutputSetting;
-
-                p.ConnectInput(idx, childNode.Value.PlayablePart, 0, outputSetting.Weight);
+                var outputSetting = node.Value.OutputSetting ?? throw new NullReferenceException(nameof(node.Value.OutputSetting));
+                outputSetting.PortNum = idx;
+                outputSetting.Parent = value;
             }
         }
         class LayerPlayable : AnimationPlayablePartBase
@@ -179,9 +182,12 @@ namespace Tests.Characters.Humanoid.Animations
             var root = _appt.Root;
             _controller = new ControllerPlayable(graph, _animator);
             _layersMixer = new LayersMixerPlayable(graph, _definitions);
-            _baseLayer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)_layersMixer.PlayablePart, 0);
-            _leftArmLayer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)_layersMixer.PlayablePart, 1);
-            _rightArmLayer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)_layersMixer.PlayablePart, 2);
+            //_baseLayer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)_layersMixer.PlayablePart, 0);
+            //_leftArmLayer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)_layersMixer.PlayablePart, 1);
+            //_rightArmLayer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)_layersMixer.PlayablePart, 2);
+            _baseLayer = _layersMixer.CreateLayer();
+            _leftArmLayer = _layersMixer.CreateLayer();
+            _rightArmLayer = _layersMixer.CreateLayer();
 
 
             root.AddChild(_layersMixer.Node);
@@ -206,11 +212,11 @@ namespace Tests.Characters.Humanoid.Animations
             var leftArm = _core.leftArm;
             if (leftArm != null)
             {
-
                 _leftArmLayer.Node.AddChild(leftArm.animatorCore.Node);
                 _leftArmLayer.SetLayerMaskFromAvatarMask(_definitions.LeftArmDefinitions.Mask);
 
-                //var a = (AnimationLayerMixerPlayable)_leftArmLayer.PlayablePart;
+                //_layersMixer.Node.AddChild(leftArm.animatorCore.Node);
+                //var a = (AnimationLayerMixerPlayable)_layersMixer.PlayablePart;
                 //a.SetLayerMaskFromAvatarMask(1, _definitions.LeftArmDefinitions.Mask);
             }
 
@@ -220,8 +226,9 @@ namespace Tests.Characters.Humanoid.Animations
                 _rightArmLayer.Node.AddChild(rightArm.animatorCore.Node);
                 _rightArmLayer.SetLayerMaskFromAvatarMask(_definitions.RightArmDefinitions.Mask);
 
-                //var a = (AnimationLayerMixerPlayable)_rightArmLayer.PlayablePart;
-                //a.SetLayerMaskFromAvatarMask(1, _definitions.RightArmDefinitions.Mask);
+                //_layersMixer.Node.AddChild(rightArm.animatorCore.Node);
+                //var a = (AnimationLayerMixerPlayable)_layersMixer.PlayablePart;
+                //a.SetLayerMaskFromAvatarMask(1, _definitions.LeftArmDefinitions.Mask);
             }
 
         }

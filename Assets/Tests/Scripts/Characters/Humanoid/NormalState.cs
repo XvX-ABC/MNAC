@@ -7,17 +7,21 @@ namespace Tests.Characters.Humanoid
 {
     internal class NormalState : WithCallbackPlayableStatemachine<object>
     {
-        ArmCore _armCore;
+        ArmCore _leftArmCore;
+        PlayableStateMachine _leftArmStatemachine;
+        ArmCore _rightArmCore;
+        PlayableStateMachine _rightArmStatemachine;
         LocomotionCore _core;
-        PlayableStateMachine _astatemachine;
         LocomotionStatemachine _lstatemachine;
 
-        public NormalState(LocomotionCore core, ArmCore armCore, bool enabled = true) : base("locomotion", enabled)
+        public NormalState(LocomotionCore core, ArmCore leftArmCore, ArmCore rightArmCore, bool enabled = true) : base("locomotion", enabled)
         {
 
-            _armCore = armCore;
+            _leftArmCore = leftArmCore;
+            _rightArmCore = rightArmCore;
+            _leftArmStatemachine = _leftArmCore?.stateMachine;
+            _rightArmStatemachine = _rightArmCore?.stateMachine;
             _core = core;
-            _astatemachine = _armCore?.stateMachine;
             _lstatemachine = _core.statemachine;
         }
         public override ITimeline Timeline => _lstatemachine.Timeline;
@@ -29,8 +33,11 @@ namespace Tests.Characters.Humanoid
         {
             base.OnEnter();
             _core.enabled = true;
-            if (_armCore != null)
-                _armCore.enabled = true;
+            if (_leftArmCore != null)
+                _leftArmCore.enabled = true;
+            if (_rightArmCore != null)
+                _rightArmCore.enabled = true;
+
         }
         public override void OnUpdate()
         {
@@ -38,45 +45,54 @@ namespace Tests.Characters.Humanoid
         public override void OnExit()
         {
             _core.enabled = false;
-            if (_armCore != null)
-                _armCore.enabled = false;
+            if (_leftArmCore != null)
+                _leftArmCore.enabled = false;
+            if (_rightArmCore != null)
+                _rightArmCore.enabled = false;
+
             base.OnExit();
         }
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
             _lstatemachine.FromPreviousStateTransitionBegin(currentTransition);
-            _astatemachine?.FromPreviousStateTransitionBegin(currentTransition);
+            _leftArmStatemachine?.FromPreviousStateTransitionBegin(currentTransition);
+            _rightArmStatemachine?.FromPreviousStateTransitionBegin(currentTransition);
         }
         public override void FromPreviousStateTransitionEnd(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionEnd(currentTransition);
             _lstatemachine.FromPreviousStateTransitionEnd(currentTransition);
-            _astatemachine?.FromPreviousStateTransitionEnd(currentTransition);
+            _leftArmStatemachine?.FromPreviousStateTransitionEnd(currentTransition);
+            _rightArmStatemachine?.FromPreviousStateTransitionEnd(currentTransition);
         }
         public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionRunning(currentTransition);
             _lstatemachine.FromPreviousStateTransitionRunning(currentTransition);
-            _astatemachine?.FromPreviousStateTransitionRunning(currentTransition);
+            _leftArmStatemachine?.FromPreviousStateTransitionRunning(currentTransition);
+            _rightArmStatemachine?.FromPreviousStateTransitionRunning(currentTransition);
         }
         public override void ToNextStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.ToNextStateTransitionBegin(currentTransition);
             _lstatemachine.ToNextStateTransitionBegin(currentTransition);
-            _astatemachine?.ToNextStateTransitionBegin(currentTransition);
+            _leftArmStatemachine?.ToNextStateTransitionBegin(currentTransition);
+            _rightArmStatemachine?.ToNextStateTransitionBegin(currentTransition);
         }
         public override void ToNextStateTransitionEnd(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.ToNextStateTransitionEnd(currentTransition);
             _lstatemachine.ToNextStateTransitionEnd(currentTransition);
-            _astatemachine?.ToNextStateTransitionEnd(currentTransition);
+            _leftArmStatemachine?.ToNextStateTransitionEnd(currentTransition);
+            _rightArmStatemachine?.ToNextStateTransitionEnd(currentTransition);
         }
         public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.ToNextStateTransitionRunning(currentTransition);
             _lstatemachine.ToNextStateTransitionRunning(currentTransition);
-            _astatemachine?.ToNextStateTransitionRunning(currentTransition);
+            _leftArmStatemachine?.ToNextStateTransitionRunning(currentTransition);
+            _rightArmStatemachine?.ToNextStateTransitionRunning(currentTransition);
         }
 
     }
