@@ -12,7 +12,7 @@ namespace Tests.Behaviours.Arms.Weapons
         internal T[] behavioursCache;
 
         internal Dictionary<string, T> weaponBehavioursMapping;
-        internal T[] activatedBehaviours;
+        internal T activatedBehaviour;
 
         Action<IWeapon, T> _activatedAction;
         Action<IWeapon, T> _unactivatedAction;
@@ -25,9 +25,9 @@ namespace Tests.Behaviours.Arms.Weapons
         {
             get
             {
-                if (activatedBehaviours == null)
+                if (activatedBehaviour == null)
                     return default;
-                return activatedBehaviours[0];
+                return activatedBehaviour;
             }
         }
 
@@ -39,28 +39,29 @@ namespace Tests.Behaviours.Arms.Weapons
                 throw new ArgumentNullException(nameof(weaponCore));
             behaviours = behaviours.Where(b => b != null).ToArray();
             this.behavioursCache = behaviours;
-            weaponBehavioursMapping = new();
+            //weaponBehavioursMapping = new();
 
-            foreach (var od in definitions.Origins)
-            {
-                var name = od.Name;
-                if (!weaponCore.TryGetWeaponDescription(name, out var description))
-                {
-                    Debug.LogWarning(new WeaponNotContainsException(weaponCore, name));
-                    continue;
-                }
-                var type = description.Type;
-                var b = behaviours.FirstOrDefault(b => b.Type == type);
-                if (b == null)
-                    continue;
-                b.Activated = false;
-                if (weaponBehavioursMapping.ContainsKey(name))
-                    weaponBehavioursMapping[name] = b;
-                else
-                    weaponBehavioursMapping.Add(name, b);
-            }
+            //foreach (var od in definitions.Origins)
+            //{
+            //    var name = od.Name;
+            //    if (!weaponCore.TryGetWeaponDescription(name, out var description))
+            //    {
+            //        Debug.LogWarning(new WeaponNotContainsException(weaponCore, name));
+            //        continue;
+            //    }
+            //    var type = description.Type;
+            //    var b = behaviours.FirstOrDefault(b => b.Type == type);
+            //    if (b == null)
+            //        continue;
+            //    b.Activated = false;
+            //    if (weaponBehavioursMapping.ContainsKey(name))
+            //        weaponBehavioursMapping[name] = b;
+            //    else
+            //        weaponBehavioursMapping.Add(name, b);
+            //}
         }
-        public void ActivateBehaviourBy(IWeapon weapon)
+        [Obsolete]
+        public void ActivateBehaviourBy_Obsolete(IWeapon weapon)
         {
             if (weapon == null)
                 throw new ArgumentNullException(nameof(weapon));
@@ -69,20 +70,37 @@ namespace Tests.Behaviours.Arms.Weapons
                 throw new Exception("The weapon name can'IArmedWeaponArmBehaviour_New be empty.");
             if (!weaponBehavioursMapping.TryGetValue(name, out var b))
                 throw new CantFindBehaviourByNameException(name);
-            if (activatedBehaviours == null)
-            {
-                activatedBehaviours = new T[] { b };
-            }
-            else
-            {
-                Array.Resize(ref activatedBehaviours, activatedBehaviours.Length + 1);
-                activatedBehaviours[^1] = b;
-            }
+            //if (activatedBehaviour == null)
+            //{
+            //    activatedBehaviour = new T[] { b };
+            //}
+            //else
+            //{
+            //    Array.Resize(ref activatedBehaviour, activatedBehaviour.Length + 1);
+            //    activatedBehaviour[^1] = b;
+            //}
             b.Weapon = weapon;
             b.Activated = true;
             _activatedAction?.Invoke(weapon, b);
         }
-        public void UnactivateBehaviourBy(IWeapon weapon)
+        public void ActivateBehaviourBy(IWeapon weapon)
+        {
+            Debug.Log("activated weapon name: " + weapon.Name);
+            if (weapon == null)
+                throw new ArgumentNullException(nameof(weapon));
+            var type = weapon.Type;
+            var b = behavioursCache.FirstOrDefault(b => b.Type == type);
+            if (b == null)
+                return;
+            //if (!weaponBehavioursMapping.TryGetValue(name, out var b))
+            //    throw new CantFindBehaviourByNameException(name);
+            activatedBehaviour = b;
+            b.Weapon = weapon;
+            b.Activated = true;
+            _activatedAction?.Invoke(weapon, b);
+        }
+        [Obsolete]
+        public void UnactivateBehaviourBy_Obsolete(IWeapon weapon)
         {
             if (weapon == null)
                 throw new ArgumentNullException(nameof(weapon));
@@ -91,53 +109,69 @@ namespace Tests.Behaviours.Arms.Weapons
                 throw new Exception("The name can'IArmedWeaponArmBehaviour_New be empty");
             if (!weaponBehavioursMapping.TryGetValue(name, out var b))
                 throw new CantFindBehaviourByNameException(name);
-            if (activatedBehaviours == null)
+            if (activatedBehaviour == null)
                 return;
 
 
 
-            for (int i = 0; i < activatedBehaviours.Length; i++)
-            {
-                var ab = activatedBehaviours[i];
-                if (ab.Equals(b))
-                {
-                    var length = activatedBehaviours.Length;
-                    if (length == 1)
-                    {
-                        activatedBehaviours = null;
-                    }
-                    else
-                    {
-                        if (i != length - 1)
-                            Array.Copy(activatedBehaviours, i + 1, activatedBehaviours, i, length - i - 1);
-                        Array.Resize(ref activatedBehaviours, length - 1);
-                    }
-                    break;
-                }
+            //for (int i = 0; i < activatedBehaviour.Length; i++)
+            //{
+            //    var ab = activatedBehaviour[i];
+            //    if (ab.Equals(b))
+            //    {
+            //        var length = activatedBehaviour.Length;
+            //        if (length == 1)
+            //        {
+            //            activatedBehaviour = null;
+            //        }
+            //        else
+            //        {
+            //            if (i != length - 1)
+            //                Array.Copy(activatedBehaviour, i + 1, activatedBehaviour, i, length - i - 1);
+            //            Array.Resize(ref activatedBehaviour, length - 1);
+            //        }
+            //        break;
+            //    }
 
-            }
+            //}
+            b.Activated = false;
+            _unactivatedAction?.Invoke(weapon, b);
+        }
+        public void UnactivateBehaviourBy(IWeapon weapon)
+        {
+            if (weapon == null)
+                throw new ArgumentNullException(nameof(weapon));
+            //var name = weapon.Name;
+            //if (name == null || name.Length == 0)
+            //    throw new Exception("The name can'IArmedWeaponArmBehaviour_New be empty");
+            //if (!weaponBehavioursMapping.TryGetValue(name, out var b))
+            //    throw new CantFindBehaviourByNameException(name);
+            var type = weapon.Type;
+            if (activatedBehaviour == null || activatedBehaviour.Type != type)
+                return;
+            var b = activatedBehaviour;
+
+
             b.Activated = false;
             _unactivatedAction?.Invoke(weapon, b);
         }
         bool EnterBehaviour()
         {
-            return activatedBehaviours == null ? false : activatedBehaviours[0].EntryFunc();
+            return activatedBehaviour == null ? false : activatedBehaviour.EntryFunc();
         }
         bool ExitBehaviour()
         {
-            return activatedBehaviours == null ? false : activatedBehaviours[0].ExitFunc();
+            return activatedBehaviour == null ? false : activatedBehaviour.ExitFunc();
         }
         public void Update()
         {
-            if (activatedBehaviours != null)
-                foreach (var b in activatedBehaviours)
-                    b.Update();
+            if (activatedBehaviour != null)
+                activatedBehaviour.Update();
         }
         public void FixedUpdate()
         {
-            if (activatedBehaviours != null)
-                foreach (var b in activatedBehaviours)
-                    b.FixedUpdate();
+            if (activatedBehaviour != null)
+                activatedBehaviour.FixedUpdate();
         }
     }
 }

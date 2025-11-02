@@ -1,7 +1,7 @@
 ﻿using RootMotion.FinalIK;
 using System;
 using System.Collections.Generic;
-using Tests.BodyBehaviour.Arm.Weapons.Launcher;
+using Tests.Behaviours.Arm.Weapons.Launcher;
 using Tests.Input;
 using Tests.Interaction;
 using Tests.States;

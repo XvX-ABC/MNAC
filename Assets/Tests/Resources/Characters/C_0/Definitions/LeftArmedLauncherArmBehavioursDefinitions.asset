@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 298c2198c6bd7264cb02481dd7a1ae98, type: 3}
+  m_Name: LeftArmedLauncherArmBehavioursDefinitions
+  m_EditorClassIdentifier: 
+  _definitions:
+    aimingClip: {fileID: 7400000, guid: a73c1b60d5549de45949867a79b9748f, type: 2}
+    reloadClip: {fileID: 7400000, guid: 6a26022e94c42484db2f6e3019b314d8, type: 2}
+    idleAndAimTransitionLength: 0
+    aimAndReloadTransitionsLength: 0
+    targetsCatcher:
+      terrainMask:
+        serializedVersion: 2
+        m_Bits: 0
+      targetsMask:
+        serializedVersion: 2
+        m_Bits: 0
+      catchingRange: {x: 0, y: 0, z: 0, w: 0}
+      allowCatchTerrain: 0
+    targetsCatcherV0:
+      _tag: 
+      _filterCountOneFrame: 3
+      _targetsMask:
+        serializedVersion: 2
+        m_Bits: 1
+      _selectionViewPortRadius: 0.5

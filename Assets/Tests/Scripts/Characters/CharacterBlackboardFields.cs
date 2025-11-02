@@ -17,7 +17,7 @@ namespace Tests.Characters
             Character_Animation_Graph = Guid.NewGuid();
 
             Character_Camera_Main = Guid.NewGuid();
-
+            Character_Arm_Core_Local = Guid.NewGuid();
             Character_Legs_Core = Guid.NewGuid();
 
             Character_Locomotion_Core = Guid.NewGuid();

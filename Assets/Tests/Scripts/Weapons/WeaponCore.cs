@@ -94,26 +94,27 @@ namespace Tests.Weapons
             }
             return false;
         }
-        public bool TryGetWeaponObj(string name, out GameObject obj)
+        public bool TryCreateWeaponObj(string name, out GameObject obj)
         {
             obj = default;
             if (name == null || name.Length == 0)
                 return false;
-            if (_cache.TryGetValue(name, out var cache))
-            {
-                obj = cache;
-                return true;
-            }
+            //if (_cache.TryGetValue(name, out var cache))
+            //{
+            //    obj = cache;
+            //    return true;
+            //}
 
 
             obj = GetObjFromAssets(name);
-            if (obj != null)
-            {
-                _cache.Add(name, obj);
-                return true;
-            }
+            //if (obj != null)
+            //{
+            //    _cache.Add(name, obj);
+            //    return true;
+            //}
 
-            return false;
+            return true;
+            //return false;
         }
         public bool StartSupplyForLauncher(ILauncher launcher)
         {

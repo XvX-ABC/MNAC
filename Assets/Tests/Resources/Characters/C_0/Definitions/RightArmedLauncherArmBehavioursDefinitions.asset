@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 298c2198c6bd7264cb02481dd7a1ae98, type: 3}
-  m_Name: ArmedLauncherArmBehavioursDefinitions
+  m_Name: RightArmedLauncherArmBehavioursDefinitions
   m_EditorClassIdentifier: 
   _definitions:
     aimingClip: {fileID: 7400000, guid: a73c1b60d5549de45949867a79b9748f, type: 2}

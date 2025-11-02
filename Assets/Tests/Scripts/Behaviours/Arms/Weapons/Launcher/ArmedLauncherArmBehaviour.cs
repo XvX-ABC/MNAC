@@ -23,7 +23,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
 
         internal Idle idle;
         internal ArmAiming aiming;
-        internal BodyBehaviour.Arm.Weapons.Launcher.AmmoLoad ammoLoad;
+        internal Behaviours.Arm.Weapons.Launcher.AmmoLoad ammoLoad;
         internal WithCallbackPlayableStatemachine<object> statemachine;
         ArmedLauncherArmBehaviourState _state;
 
@@ -106,7 +106,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
             statemachine = new("armed_launcher_statemachine");
             idle = new Idle();
             aiming = new ArmAiming();
-            ammoLoad = new BodyBehaviour.Arm.Weapons.Launcher.AmmoLoad();
+            ammoLoad = new Behaviours.Arm.Weapons.Launcher.AmmoLoad();
 
             statemachine.AddState(idle);
             statemachine.AddState(aiming);
@@ -121,6 +121,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
             statemachine.AddTransitionFor(aiming, idle, length, () => target == null, null);
             statemachine.AddTransitionFor(aiming, ammoLoad, length, ReloadTriggered, null, InterruptionSource.None);
 
+            //FIXME: 装弹状态没有正常退出
             var l_i = new BlendingTransition<object>(ammoLoad, idle, () => target == null, null, 0, 0, 1);
             var l_a = new BlendingTransition<object>(ammoLoad, aiming, () => target != null, null, length, 0, 0.75f);
             statemachine.AddTransitionFor(l_i);
@@ -140,7 +141,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         }
         public void Update()
         {
-            Debug.Log("target is null: " + (target == null) + "," + (_targetsCatcher.Enabled) + ", " + statemachine);
             animator.Update();
         }
     }

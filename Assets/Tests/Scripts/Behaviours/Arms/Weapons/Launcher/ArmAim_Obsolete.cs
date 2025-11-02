@@ -5,7 +5,7 @@ using Tests.Behaviours.Arms.Weapons;
 using Tests.States;
 using UnityEngine;
 
-namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
+namespace Tests.Behaviours.Arm.Weapons.Launcher
 {
     [Obsolete]
     internal class ArmAim_Obsolete : ArmedArmStateBase, IAimer_Obsolete

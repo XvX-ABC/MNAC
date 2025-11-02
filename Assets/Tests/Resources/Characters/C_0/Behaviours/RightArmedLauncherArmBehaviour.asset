@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0254c2886e8702045a6b46b59b4f322f, type: 3}
+  m_Name: RightArmedLauncherArmBehaviour
+  m_EditorClassIdentifier: 
+  _definitions: {fileID: 11400000, guid: 33c0942d923d5eb4eb798a1b0d67ebc7, type: 2}
+  _animationDefinitions: {fileID: 11400000, guid: b60cf4860d9a23543b3831d1a3e01a4a,
+    type: 2}

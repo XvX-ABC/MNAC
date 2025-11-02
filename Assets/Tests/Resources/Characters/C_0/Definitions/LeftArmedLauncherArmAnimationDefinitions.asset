@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 841ca86b06916044e9d5274346d95a7b, type: 3}
-  m_Name: ArmedLauncherArmAnimationDefinitions
+  m_Name: LeftArmedLauncherArmAnimationDefinitions
   m_EditorClassIdentifier: 
   _definitions:
     _animator: {fileID: 9100000, guid: 5a58b2eb6b454d548b67b4b0e582d6ea, type: 2}

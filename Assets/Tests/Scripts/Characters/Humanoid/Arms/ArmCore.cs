@@ -135,8 +135,8 @@ namespace Tests.Characters.Humanoid.Arms
 
             if (!blackboard.TryReadValue<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph))
                 throw new Exception();
-            blackboard.TryRegisterFieldOrWriteValue(CharacterBlackboardFields.Character_Obj_Arm_Local, this.gameObject);
-            blackboard.TryRegisterFieldOrWriteValue(CharacterBlackboardFields.Character_Arm_Core_Local, this);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Arm_Local, this.gameObject);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Arm_Core_Local, this);
 
             var weaponDefinitions = _definitions.Weapon;
             var weaponMountPoint = FindMountPoint(weaponDefinitions.MountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.MountPointName);
@@ -243,7 +243,7 @@ namespace Tests.Characters.Humanoid.Arms
 
         void SetDefaultWeapon(MountPoint weaponMountPoint, string weaponName, WeaponCore weaponCore)
         {
-            if (!weaponCore.TryGetWeaponObj(weaponName, out var obj))
+            if (!weaponCore.TryCreateWeaponObj(weaponName, out var obj))
                 throw new Exception();
             weaponMountPoint.LoadObj = obj;
 

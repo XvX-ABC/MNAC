@@ -112,7 +112,7 @@ namespace Tests.Utilities.Blackboards
             if (values.TryGetValue(key, out var od))
             {
                 Debug.LogWarning($"The value registering of this time will to replaces the value '{od}' to '{d}'.");
-                values[key] = od;
+                values[key] = d;
             }
             else
                 values.Add(key, d);

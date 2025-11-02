@@ -13,7 +13,7 @@ namespace Tests.Utilities.MountPoints
 
         Func<ILoad, ILoad, ILoad> _loadChangedFunc;
         ILoad _load;
-        public GameObject LoadObj
+        public virtual GameObject LoadObj
         {
             get => _load.Obj;
             set
@@ -22,7 +22,7 @@ namespace Tests.Utilities.MountPoints
                 Load = load;
             }
         }
-        public ILoad Load
+        public virtual ILoad Load
         {
             get => _load;
             set

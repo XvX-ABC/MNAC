@@ -78,11 +78,11 @@ namespace Tests.Behaviours.Arms.Weapons
             _weaponCore = weaponCore ?? throw new NullReferenceException(nameof(weaponCore));
 
 
-            foreach (var origin in definitions.Origins)
-            {
-                if (!_weaponCore.ContainsOrigin(origin.Name))
-                    throw new WeaponNotContainsException(_weaponCore, origin.Name);
-            }
+            //foreach (var origin in definitions.Origins)
+            //{
+            //    if (!_weaponCore.ContainsOrigin(origin.Name))
+            //        throw new WeaponNotContainsException(_weaponCore, origin.Name);
+            //}
 
 
             if (selectionFunc == null)
@@ -101,7 +101,7 @@ namespace Tests.Behaviours.Arms.Weapons
         protected GameObject GetWeaponObj()
         {
             var name = _selectionFunc(definitions.Origins);
-            if (!_weaponCore.TryGetWeaponObj(name, out var obj))
+            if (!_weaponCore.TryCreateWeaponObj(name, out var obj))
                 throw new WeaponObjGetFailedByName(name);
             return obj;
         }

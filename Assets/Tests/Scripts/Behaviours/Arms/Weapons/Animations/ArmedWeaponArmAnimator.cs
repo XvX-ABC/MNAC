@@ -13,6 +13,7 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
     {
         Dictionary<string, IArmedWeaponArmAnimationPlayablePart> _animators;
         IArmedWeaponArmAnimationPlayablePart[] _activatedAnimators;
+        IArmedWeaponArmAnimationPlayablePart _activatedAnimator;
         IArmedWeaponArmBehavioursController<T> _controller;
         ArmedWeaponPlayablePart _playablePart;
         Action<bool, IAnimationPlayablePart> _stateAction;
@@ -24,23 +25,24 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
         {
             _animators = new();
             _controller = controller ?? throw new ArgumentNullException(nameof(controller));
-            foreach (var kv in _controller.Behaviours)
-            {
-                var name = kv.Key;
-                var animator = kv.Value.Animator;
-                if (animator == null)
-                {
-                    Debug.LogWarning(new NullReferenceException(nameof(animator)));
-                    continue;
-                }
-                _animators.Add(name, animator);
-                animator.GetPlayablePart(graph);
-            }
+            //foreach (var kv in _controller.Behaviours)
+            //{
+            //    var name = kv.Key;
+            //    var animator = kv.Value.Animator;
+            //    if (animator == null)
+            //    {
+            //        Debug.LogWarning(new NullReferenceException(nameof(animator)));
+            //        continue;
+            //    }
+            //    _animators.Add(name, animator);
+            //    animator.GetPlayablePart(graph);
+            //}
             _controller.ActivatedAction += ActivatedAnimator;
             _controller.UnactivatedAction += UnactivatedAnimator;
             _playablePart = new(graph);
         }
-        void ActivatedAnimator(IWeapon weapon, T behaviour)
+        [Obsolete]
+        void ActivatedAnimator_Obsolete(IWeapon weapon, T behaviour)
         {
             var name = weapon.Name;
             if (_animators.TryGetValue(name, out var animator))
@@ -56,19 +58,41 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
                 Debug.LogWarning($"No animator found for weapon '{name}'");
             }
         }
+        void ActivatedAnimator(IWeapon weapon, T behaviour)
+        {
+            _activatedAnimator = behaviour.Animator;
+            _playablePart.animator = _activatedAnimator;
+            //var name = weapon.Name;
+            //if (_animators.TryGetValue(name, out var animator))
+            //{
+            //    if (_activatedAnimators == null)
+            //        _activatedAnimators = new IArmedWeaponArmAnimationPlayablePart[] { animator };
+            //    else
+            //        ArrayExtensions.Append(ref _activatedAnimators, animator);
+            //    _playablePart.animator = animator;
+            //}
+            //else
+            //{
+            //    Debug.LogWarning($"No animator found for weapon '{name}'");
+            //}
+        }
         void UnactivatedAnimator(IWeapon weapon, T behaviour)
         {
-            if (_activatedAnimators == null)
+            if (behaviour.Animator != _activatedAnimator)
                 return;
-            var name = weapon.Name;
-            if (_animators.TryGetValue(name, out var animator))
-            {
-                if (_activatedAnimators.Length == 1)
-                    _activatedAnimators = null;
-                else
-                    _activatedAnimators.Remove(animator);
-                _playablePart.animator = null;
-            }
+            _activatedAnimator = null;
+            _playablePart.animator = null;
+            //if (_activatedAnimators == null)
+            //    return;
+            //var name = weapon.Name;
+            //if (_animators.TryGetValue(name, out var animator))
+            //{
+            //    if (_activatedAnimators.Length == 1)
+            //        _activatedAnimators = null;
+            //    else
+            //        _activatedAnimators.Remove(animator);
+            //    _playablePart.animator = null;
+            //}
         }
         public void OnUpdate()
         {

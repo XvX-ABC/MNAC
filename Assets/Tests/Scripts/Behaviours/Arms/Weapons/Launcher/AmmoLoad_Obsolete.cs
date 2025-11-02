@@ -4,7 +4,7 @@ using Tests.Behaviours.Arms.Weapons.Launchers;
 using Tests.States;
 using Tests.Weapons.Launcher;
 
-namespace Tests.BodyBehaviour.Arm.Weapons.Launcher
+namespace Tests.Behaviours.Arm.Weapons.Launcher
 {
     [Obsolete]
     internal class AmmoLoad_Obsolete : ArmedArmStateBase

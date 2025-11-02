@@ -17,12 +17,12 @@ AnimatorState:
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
-  m_Mirror: 0
+  m_Mirror: 1
   m_SpeedParameterActive: 0
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: a73c1b60d5549de45949867a79b9748f, type: 2}
+  m_Motion: {fileID: 7400000, guid: a2d1018d151bc6e47b19ce5f61aa8da6, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -139,7 +139,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ArmedLauncherAnimator
+  m_Name: LeftArmedLauncherAnimator
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Velocity_X
@@ -289,12 +289,12 @@ AnimatorState:
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
-  m_Mirror: 0
+  m_Mirror: 1
   m_SpeedParameterActive: 1
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 6a26022e94c42484db2f6e3019b314d8, type: 2}
+  m_Motion: {fileID: 7400000, guid: 15db4202cbce645478b2c28ebfef4b65, type: 2}
   m_Tag: 
   m_SpeedParameter: Reload_Multiplier
   m_MirrorParameter: 

@@ -24,7 +24,9 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
             {
                 _controlledWeapon = value;
                 if (_controlledWeapon?.Obj != null)
+                {
                     _aimIK.solver.transform = _controlledWeapon.Obj.transform;
+                }
             }
         }
         public bool Enabled { get => _aimIK.enabled; set => _aimIK.enabled = value; }

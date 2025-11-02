@@ -138,7 +138,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
             state = new(this);
 
             //bool TriggeredReload() => _input == null ? false : _input.Reload;
-            bool TriggeredReload() => _input == null ? false : _input.Reload;
+            bool TriggeredReload() => _input == null ? false : _input.Reload && _launcher.Definitions.AmmoInMagazineQuantity > _launcher.MagazineAmmoCount && _launcher.ReservesAmmoCount > 0;
         }
         public void Update()
         {
