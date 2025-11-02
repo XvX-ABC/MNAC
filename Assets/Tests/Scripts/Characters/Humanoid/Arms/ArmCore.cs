@@ -56,7 +56,7 @@ namespace Tests.Characters.Humanoid.Arms
         [SerializeField]
         MountPoint[] _mountPoints;
         [SerializeField]
-        ArmedWeaponArmBehaviourBase_SO[] _behaviours;
+        HumanPart _part;
 
         IArmDefinitions _definitions;
         IArmAnimationDefinitions animationDefinitions;
@@ -84,7 +84,7 @@ namespace Tests.Characters.Humanoid.Arms
                 if (value != null)
                 {
                     value.TryReadValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
-                    _armInput = _definitions.Part == HumanPart.LeftArm ? input.LArm : input.RArm;
+                    _armInput = _part == HumanPart.LeftArm ? input.LArm : input.RArm;
                     value.TryReadValue(CharacterBlackboardFields.Character_Weapon_Core, out _weaponCore);
                 }
                 _blackboard = value;
@@ -100,13 +100,13 @@ namespace Tests.Characters.Humanoid.Arms
         protected override void Awake()
         {
             base.Awake();
-            _definitions = GetComponent<ArmDefinitions_MonoComponent>() ?? throw new ComponentCantFindException(gameObject, typeof(ArmDefinitions_MonoComponent));
+            _definitions = GetComponent<IArmDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmDefinitions));
             //animationDefinitions = GetComponent<ArmAnimationDefinitions_MonoComponent>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmAnimationDefinitions));
             animationDefinitions = _definitions.Animation;
 
             _node = new(this);
 
-            if (_definitions.Part != HumanPart.LeftArm && _definitions.Part != HumanPart.RightArm)
+            if (_part != HumanPart.LeftArm && _part != HumanPart.RightArm)
                 throw new Exception("The part of definitions must is left arm or right arm.");
         }
 
@@ -143,7 +143,7 @@ namespace Tests.Characters.Humanoid.Arms
 
             var weaponDefinitions = _definitions.Weapon;
             var weaponMountPoint = FindMountPoint(weaponDefinitions.MountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.MountPointName);
-            weaponMountPoint.field = _definitions.Part switch
+            weaponMountPoint.field = _part switch
             {
                 HumanPart.LeftArm => MountPointFields.Enum.Left_Arm_Hand_Weapon,
                 HumanPart.RightArm => MountPointFields.Enum.Right_Arm_Hand_Weapon,
@@ -177,12 +177,9 @@ namespace Tests.Characters.Humanoid.Arms
         }
         void InitializeArmedWeaponBehaviours(IArmedWeaponArmDefinitions definitions)
         {
-            //var behaviours = GetComponents<IArmedWeaponArmBehaviour>();
-            var behaviours = _behaviours;
-            //armedWeaponController = new(_weaponCore, definitions, behaviours);
-            //armedWeaponControllerState = new(_weaponCore, definitions, _definitions.Part, behaviours);
+            var behaviours = _definitions.Weapon.ArmedWeaponBehaviours;
             _armedWeaponController = new(_weaponCore, _definitions.Weapon, behaviours);
-            armedWeaponControllerState = new(_armedWeaponController, _definitions.Part);
+            armedWeaponControllerState = new(_armedWeaponController, _part);
 
 
             weaponSwitching.SwitchingEvent += (ow, nw) =>
@@ -193,17 +190,7 @@ namespace Tests.Characters.Humanoid.Arms
                 }
                 if (nw != null)
                 {
-                    //var field = Guid.Empty;
-                    //switch (_definitions.Part)
-                    //{
-                    //    case HumanPart.LeftArm:
-                    //        field = CharacterBlackboardFields.Character_Weapon_LeftArm_Armed;
-                    //        break;
-                    //    case HumanPart.RightArm:
-                    //        field = CharacterBlackboardFields.Character_Weapon_RightArm_Armed;
-                    //        break;
-                    //}
-                    var field = _definitions.Part switch
+                    var field = _part switch
                     {
                         HumanPart.LeftArm => CharacterBlackboardFields.Character_Weapon_LeftArm_Armed,
                         HumanPart.RightArm => CharacterBlackboardFields.Character_Weapon_RightArm_Armed,

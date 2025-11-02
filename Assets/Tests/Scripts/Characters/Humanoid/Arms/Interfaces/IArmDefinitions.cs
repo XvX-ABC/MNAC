@@ -7,7 +7,6 @@ namespace Tests.Characters.Humanoid.Arms
 {
     public interface IArmDefinitions
     {
-        HumanPart Part { get; }
         IArmedWeaponArmDefinitions Weapon { get; }
         IArmAnimationDefinitions Animation { get; }
     }
