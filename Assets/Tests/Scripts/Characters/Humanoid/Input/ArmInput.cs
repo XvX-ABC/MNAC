@@ -5,27 +5,46 @@ using UInput = UnityEngine.Input;
 
 namespace Tests.Characters.Humanoid.Interaction.Input
 {
-    // BUG: 其他按键与开火键绑定后，还会触发开火
+
     [Serializable]
     public class ArmInput : IArmInput
     {
-        [Serializable]
         class ControlInput : IWeaponControlInput
         {
-            [SerializeField]
+            internal KeyCode _switch;
             internal KeyCode _fire;
-            [SerializeField]
             internal KeyCode _reload;
-            public bool Fire => UInput.GetKey(_fire);
 
-            public bool Reload => UInput.GetKey(_reload);
+            public ControlInput(KeyCode @switch, KeyCode fire, KeyCode reload)
+            {
+                _switch = @switch;
+                _fire = fire;
+                _reload = reload;
+            }
+
+            public bool Fire => !UInput.GetKey(_switch) && !UInput.GetKey(_reload) && UInput.GetKey(_fire);
+
+            public bool Reload => UInput.GetKey(_reload) && UInput.GetKey(_fire);
         }
         [SerializeField]
         KeyCode _switch;
         [SerializeField]
+        KeyCode _fire;
+        [SerializeField]
+        KeyCode _reload;
         ControlInput _control;
-        public bool WeaponSwitch => UInput.GetKey(_switch);
+        public bool WeaponSwitch => UInput.GetKey(_switch) && UInput.GetKey(_fire);
 
-        public IWeaponControlInput WeaponControl => _control;
+        public IWeaponControlInput WeaponControl
+        {
+            get
+            {
+                if (_control == null)
+                {
+                    _control = new(_switch, _fire, _reload);
+                }
+                return _control;
+            }
+        }
     }
 }
