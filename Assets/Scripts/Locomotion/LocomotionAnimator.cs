@@ -2,6 +2,7 @@
 using NUnit.Framework.Constraints;
 using System;
 using Tests.Environment;
+using Tests.TPhysics.Locomotion;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;

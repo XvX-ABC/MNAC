@@ -39,7 +39,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
             var a = (v0).magnitude - (velocity).magnitude;
 
             var v = Mathf.Clamp01(Mathf.Max(a <= 0 || _accelerationSpeed <= 0 ? 0 : a / (_accelerationSpeed * Time.fixedDeltaTime), speed / _maxSpeed));
-            var rotation = _world.rotation;
+            var rotation = _world.Rotation;
             if (_groundDetector.Grounds.Count > 0)
             {
                 rotation *= Quaternion.FromToRotation(_world.Up, _groundDetector.GroundsNormal);

@@ -31,7 +31,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
             UpdateSpeedMultiplier();
-            _armController.outputSetting.Weight = 0;
+            _armController.OutputSetting.Weight = 0;
             controller.SetBool(_switchName, true);
         }
         public override void OnEnter()
@@ -48,7 +48,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         {
             controller.SetBool(_switchName, false);
             timeline.End();
-            _armController.outputSetting.Weight = 1;
+            _armController.OutputSetting.Weight = 1;
             base.OnExit();
         }
     }

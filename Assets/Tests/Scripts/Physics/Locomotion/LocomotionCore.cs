@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
 using Tests.Extensions;
-using Tests.Locomotion_Obsolete;
 using Tests.TPhysics.Environment;
 using UnityEngine;
 
@@ -72,7 +69,7 @@ namespace Tests.TPhysics.Locomotion
         }
         public LocomotionCore(Context context, params IEvaluationModule[] evaluationModules)
         {
-            if (context.rbody == null || context.groundDetector == null)
+            if (context.Rbody == null || context.GroundDetector == null)
                 throw new ArgumentException("This context is invalidate");
             _context = context;
             EvaluationModules = evaluationModules;

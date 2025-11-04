@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Tests.Behaviours.Input;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.UI;
-using Tests.Input;
 using Tests.Interaction;
 using Tests.UI;
 using Tests.Utilities.Blackboards;
@@ -68,7 +67,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                 _catcher.Enabled = value;
                 if (_ringCatcher != null)
                     _ringCatcher.HIde = !value;
-                _filter.enabled = value;
+                _filter.Enabled = value;
             }
         }
         internal Tests.Interaction.CircleOnScreenTargetsCatcher catcher

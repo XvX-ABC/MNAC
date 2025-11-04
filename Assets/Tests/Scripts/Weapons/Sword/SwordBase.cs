@@ -39,7 +39,7 @@ namespace Tests.Weapons.Sword
         {
             var obj = target.Obj;
             if (obj == null)
-                throw new NullReferenceException(nameof(target.obj));
+                throw new NullReferenceException(nameof(target.Obj));
             var item = obj.GetComponent<IDamageable>();
             item.HP.ReceivePoint(-_damagePoint);
         }

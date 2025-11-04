@@ -35,6 +35,9 @@ namespace Tests.Interaction.Influence
             }
         }
         public override string Name => "stun";
+
+        public ITimeline Timeline { get => timeline; }
+
         public override void Update()
         {
             timeline.OnUpdate(Time.deltaTime);

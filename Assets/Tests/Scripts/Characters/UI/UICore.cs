@@ -1,6 +1,4 @@
-using BehaviorDesigner.Runtime.Tasks;
 using Tests.Behaviours.Input;
-using Tests.Input;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
@@ -10,6 +8,17 @@ namespace Tests.Characters.UI
     [RequireComponent(typeof(Core))]
     public class UICore : ComponentBase_MonoComponent
     {
+        class Input : Tests.UI.IInput
+        {
+            IBaseInput _input;
+
+            public Input(IBaseInput input)
+            {
+                _input = input;
+            }
+
+            public Vector3 MousePosition => _input.MousePosition;
+        }
         Core _core;
         protected override void Awake()
         {
@@ -24,7 +33,7 @@ namespace Tests.Characters.UI
             blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Character_Camera_Main, out var camera);
 
             //_core.Initialize(camera, input);
-            _core.Initialize(camera, binput);
+            _core.Initialize(camera, new Input(binput));
 
             //blackboard.TryRegisterField(CharacterUIBlackboardFields.Blackboard_Main, _core.Blackboard);
             blackboard.TryRegisterUIBlackboard(_core.Blackboard);

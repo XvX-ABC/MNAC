@@ -1,5 +1,4 @@
-﻿using Tests.Characters;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Tests.TPhysics.Environment
 {

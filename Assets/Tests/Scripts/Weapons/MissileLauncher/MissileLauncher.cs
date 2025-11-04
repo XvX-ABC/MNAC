@@ -1,11 +1,10 @@
-﻿using Assets.Tests.Scripts.Weapons.MVC;
-using FoundationStone.UI.Tests.MVC;
-using System;
+﻿using System;
+using Tests.Interaction;
 using Tests.Utilities.Timeline;
+using Tests.Utilities.Timeline.Events.Point;
 using Tests.Weapons.Launcher;
 using Tests.Weapons.Projectiles;
 using UnityEngine;
-using Tests.Utilities.Timeline.Events.Point;
 
 namespace Tests.Weapons.MissileLauncher
 {
@@ -15,9 +14,9 @@ namespace Tests.Weapons.MissileLauncher
         protected IMissile missile;
         //protected ITimeline delayLaunchTimeline;
         //protected ITimeline launchDurationTimeline;
-        public ITarget_Obsolete Target;
-        private Action<IMissileLauncher, ITarget_Obsolete> targetChangedAction;
-        ITarget_Obsolete IMissileLauncher.Target
+        public IGameObjTarget Target;
+        private Action<IMissileLauncher, IGameObjTarget> targetChangedAction;
+        IGameObjTarget IMissileLauncher.Target
         {
             get => Target;
             set
@@ -30,7 +29,7 @@ namespace Tests.Weapons.MissileLauncher
         {
             get => (IMissileLauncherDefinitions)definitions;
         }
-        public Action<IMissileLauncher, ITarget_Obsolete> TargetChangeAction { get => targetChangedAction; set => targetChangedAction = value; }
+        public Action<IMissileLauncher, IGameObjTarget> TargetChangeAction { get => targetChangedAction; set => targetChangedAction = value; }
 
         protected override void Awake()
         {
@@ -59,7 +58,7 @@ namespace Tests.Weapons.MissileLauncher
             var timeline = new RandomLengthTimeline(definitions.LaunchDelayRange);
             timeline.AddPointEvent(0, _ =>
             {
-                missile.Target = Target;
+                missile.Target = Target as IGameObjTarget;
                 actionsLock.LockStartLaunch();
             });
             timeline.AddPointEvent(1, _ =>

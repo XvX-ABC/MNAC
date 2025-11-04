@@ -1,10 +1,10 @@
-﻿using Tests.Characters;
-using Tests.TPhysics;
+﻿using Tests.TPhysics;
+using Tests.TPhysics.Environment;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
 using Core = Tests.TPhysics.Environment.EnvironmentCore;
-namespace Tests.TPhysics.Environment
+namespace Tests.Characters
 {
     [RequireComponent(typeof(Rigidbody))]
     public class EnvironmentCore_MonoComponent : ComponentBase_MonoComponent

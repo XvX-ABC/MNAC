@@ -10,7 +10,7 @@ namespace Tests.TPhysics.Locomotion
     {
         TPhysics.Context _physicsContext;
         IGroundDetector _groundDetector;
-        VerticalPosture _posture;
+        internal VerticalPosture verticalPosture;
         internal World world;
         Plane _worldPlane;
         Plane _groundPlane;
@@ -21,23 +21,23 @@ namespace Tests.TPhysics.Locomotion
             _groundPlane = default;
             _physicsContext = physicsContext;
             _groundDetector = groundDetector;
-            _posture = VerticalPosture.Holding;
+            verticalPosture = VerticalPosture.Holding;
         }
         public Context(World world, TPhysics.Context physicsContext, [NotNull] IGroundDetector groundDetector)
         {
             this.world = world ?? throw new ArgumentNullException(nameof(world));
             _physicsContext = physicsContext;
             _groundDetector = groundDetector;
-            _posture = VerticalPosture.Holding;
+            verticalPosture = VerticalPosture.Holding;
             _groundPlane = default;
             _worldPlane = default;
 
         }
 
-        internal Rigidbody rbody { get => _physicsContext.rbody; }
-        internal IGroundDetector groundDetector { get => _groundDetector; }
+        public Rigidbody Rbody { get => _physicsContext.rbody; }
+        public IGroundDetector GroundDetector { get => _groundDetector; }
 
-        internal VerticalPosture verticalPosture { get => _posture; set => _posture = value; }
+        public VerticalPosture VerticalPosture { get => verticalPosture; set => verticalPosture = value; }
         internal Vector3 groundNormal { get => _groundDetector.GroundsNormal == Vector3.zero ? world.Up : _groundDetector.GroundsNormal; }
         public TPhysics.Context PhysicsContext { get => _physicsContext; set => _physicsContext = value; }
 
@@ -51,6 +51,7 @@ namespace Tests.TPhysics.Locomotion
 
         public Plane GroundPlane { get => _groundPlane; }
         public Plane WorldPlane { get => _worldPlane; }
+        public World World { get => world; }
 
         internal void UpdatePlanes()
         {

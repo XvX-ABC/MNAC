@@ -1,5 +1,4 @@
-﻿using Locomotion;
-using Tests.TPhysics.Locomotion;
+﻿using Tests.TPhysics.Locomotion;
 using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Locomotion
@@ -10,7 +9,7 @@ namespace Tests.Characters.Humanoid.Locomotion
         public JumpLocomotionState(IJumpDefinitions definitions, bool enabled = true) : base("jump", 0, enabled)
         {
             locomotion = new(definitions);
-            timeline = locomotion.timeline;
+            timeline = locomotion.Timeline;
         }
 
         protected override ILocomotionModule module => locomotion;

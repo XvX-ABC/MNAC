@@ -15,7 +15,7 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
                 _animator = value;
                 if (value != null)
                 {
-                    this.outputSetting = animator.OutputSetting as OutputSetting;
+                    this.outputSetting = animator.OutputSetting;
                     playablePart = _animator.GetPlayablePart(graph);
                 }
                 else

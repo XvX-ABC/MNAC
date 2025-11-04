@@ -1,11 +1,12 @@
 using System;
+using Tests.Interaction;
 using UnityEngine;
 
 namespace Tests.Weapons.Projectiles
 {
     public interface IMissile : IProjectile
     {
-        public ITarget_Obsolete Target { get; set; }
+        public IGameObjTarget Target { get; set; }
     }
     public interface IMissileDefinitions : IProjectileDefinitions
     {
@@ -19,14 +20,14 @@ namespace Tests.Weapons.Projectiles
         //public GameObject Object => this.gameObject;
         Rigidbody _rb;
         IMissileDefinitions _definition;
-        ITarget_Obsolete _target;
+        IGameObjTarget _target;
         [SerializeField]
         float _acceleratedAngle;
         [SerializeField]
         AnimationCurve _curve;
 
         Action<IProjectile, GameObject> _hitAction;
-        public ITarget_Obsolete Target
+        public IGameObjTarget Target
         {
             get => _target;
             set
@@ -41,7 +42,7 @@ namespace Tests.Weapons.Projectiles
             _definition = GetComponent<IMissileDefinitions>() ?? throw new ComponentCantFindException(this.gameObject, typeof(IMissileDefinitions));
             _rb = GetComponent<Rigidbody>();
             _rb.useGravity = false;
-            _target = GetComponent<ITarget_Obsolete>();
+            _target = GetComponent<IGameObjTarget>();
             //_rb.isKinematic = true;
         }
         private void OnEnable()

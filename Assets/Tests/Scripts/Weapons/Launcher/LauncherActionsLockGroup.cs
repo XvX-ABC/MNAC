@@ -1,6 +1,6 @@
 ﻿using System;
+using Tests.Utilities;
 using Unity.Collections.LowLevel.Unsafe;
-using Utilities;
 using ActionsEnum = Tests.Weapons.Launcher.ILauncher.ActionsEnum;
 namespace Tests.Behaviours.Arms.Weapons.Launchers
 {

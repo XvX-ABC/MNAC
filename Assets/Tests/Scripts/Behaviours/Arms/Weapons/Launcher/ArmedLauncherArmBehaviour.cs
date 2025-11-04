@@ -139,7 +139,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
                 return _winput == null ? false : _winput.Reload && WeaponCanToReload();
             }
         }
-        public void Update()
+        public override void Update()
         {
             animator.Update();
         }

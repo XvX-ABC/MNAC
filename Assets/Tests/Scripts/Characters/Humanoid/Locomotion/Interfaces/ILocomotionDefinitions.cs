@@ -1,4 +1,4 @@
-﻿using Locomotion;
+﻿using Tests.TPhysics.Locomotion;
 
 namespace Tests.Characters.Humanoid.Locomotion
 {

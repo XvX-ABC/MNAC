@@ -1,6 +1,4 @@
 ﻿using System;
-using Tests.Behaviours.Input;
-using Tests.Input;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
@@ -13,12 +11,12 @@ namespace Tests.UI
         //GameObject _inputObj;
         [SerializeField]
         Camera _camera;
-        IBaseInput _input;
+        IInput _input;
 
         internal new Camera camera { get => _camera; set => _camera = value ?? throw new NullReferenceException(nameof(camera)); }
-        internal IBaseInput Input { get => _input; set => _input = value ?? throw new NullReferenceException(nameof(_input)); }
+        internal IInput Input { get => _input; set => _input = value ?? throw new NullReferenceException(nameof(_input)); }
 
-        public void Initialize(Camera camera, IBaseInput input)
+        public void Initialize(Camera camera, IInput input)
         {
             this.Input = input;
             this.camera = camera;
@@ -27,7 +25,7 @@ namespace Tests.UI
         public override void Initialize(Blackboard blackboard)
         {
             //if (_inputObj != null)
-                //input_Obsolete = _inputObj.GetComponent<IInput>();
+            //input_Obsolete = _inputObj.GetComponent<IInput>();
             base.Initialize(blackboard);
             //blackboard.TryRegisterField(UIBlackboardFields.Input, input_Obsolete);
             blackboard.TryRegisterField(UIBlackboardFields.Input, _input);

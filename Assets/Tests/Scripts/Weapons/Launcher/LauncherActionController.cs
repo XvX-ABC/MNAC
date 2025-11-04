@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Tests.Interaction;
 using Tests.Weapons.MissileLauncher;
 using UnityEngine;
 using UInput = UnityEngine.Input;
@@ -29,7 +30,7 @@ namespace Tests.Weapons.Launcher
         }
         private void Start()
         {
-            _launcher.Target = _target.GetComponent<ITarget_Obsolete>();
+            _launcher.Target = _target.GetComponent<IGameObjTarget>();
         }
         private void Update()
         {

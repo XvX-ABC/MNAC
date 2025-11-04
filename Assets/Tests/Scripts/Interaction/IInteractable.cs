@@ -1,10 +1,11 @@
-﻿using Unity.Collections.LowLevel.Unsafe;
+﻿using System;
 using UnityEngine;
 
 namespace Tests.Interaction
 {
-    internal interface IInteractable : IGuidable
+    internal interface IInteractable
     {
+        public Guid ID { get; }
         public GameObject Obj { get; }
     }
 }

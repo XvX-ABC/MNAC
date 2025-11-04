@@ -136,7 +136,7 @@ namespace Tests.Characters.Humanoid.Locomotion
             //statemachine.AddTransitionFor(movementStatemachine, jump, () => groundDetector.Grounds.Count > 0 && _input_Obsolete.Jump);
             statemachine.AddTransitionFor(movementStatemachine, jump, () => groundDetector.Grounds.Count > 0 && _input.Jump);
 
-            var j_m = new BlendingTransition<object>(jump, movementStatemachine, () => _core.Context.verticalPosture == VerticalPosture.Descending, null, 0, 0, 1);
+            var j_m = new BlendingTransition<object>(jump, movementStatemachine, () => _core.Context.VerticalPosture == VerticalPosture.Descending, null, 0, 0, 1);
             var j_qb = new BlendingTransition<object>(jump, quickBoosting, () => quickBoostingHelper.TriggerEvent, null, 0, 0);
             statemachine.AddTransitionFor(j_qb);
             statemachine.AddTransitionFor(j_m);

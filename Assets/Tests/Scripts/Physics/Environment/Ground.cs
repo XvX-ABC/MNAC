@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-using System;
-using TMPro;
+﻿using System;
 using UnityEngine;
 
 namespace Tests.TPhysics.Environment

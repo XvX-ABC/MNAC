@@ -44,6 +44,7 @@ namespace Tests.TPhysics
             get => _gravity;
             set => _gravity = value;
         }
+        public Quaternion Rotation { get => rotation; }
         void UpdateTransitions(Vector3 upwards)
         {
             rotation = Quaternion.FromToRotation(DefaultUp, upwards);

@@ -242,7 +242,7 @@ namespace Tests.Characters.Humanoid.Animations
             var stun = influenceCore.FindInfluence<Stun>() ?? throw new ArgumentNullException("stun");
             var health = influenceCore.FindInfluence<Health>() ?? throw new ArgumentNullException("died");
 
-            var stunningState = new StunningState(stun.timeline, _controller, _definitions.Stunning);
+            var stunningState = new StunningState(stun.Timeline, _controller, _definitions.Stunning);
             var diedState = new DiedState(_core.diedState.Timeline, _controller, _definitions.Death);
 
             lanimator = locomotionCore.animator;

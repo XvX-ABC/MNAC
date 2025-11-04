@@ -40,7 +40,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             blackboard.TryReadValueOrThrowException<LocomotionCore>(CharacterBlackboardFields.Character_Locomotion_Core, out var locomotion);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Main, out var obj);
 
-            _catcher = new(_definitions, obj, camera, input, locomotion.core);
+            //_catcher = new(_definitions, obj, camera, input, locomotion.core);
         }
         public void Update()
         {

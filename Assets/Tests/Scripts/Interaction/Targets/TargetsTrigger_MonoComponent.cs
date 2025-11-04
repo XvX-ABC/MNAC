@@ -1,5 +1,4 @@
-﻿using Unity.VisualScripting.Dependencies.NCalc;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Tests.Interaction.Targets
 {

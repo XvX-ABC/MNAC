@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tests.TPhysics.Locomotion
 {
-    internal class RotationByMouseOrTargetLocomotion : LocomotionModuleBase
+    public class RotationByMouseOrTargetLocomotion : LocomotionModuleBase
     {
         WorldRotationLocomotion _b;
         Camera _camera;

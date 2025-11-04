@@ -91,17 +91,17 @@ namespace Tests.Characters.Humanoid.Locomotion.Animations
 
             //var gm_j = new BindLocomotionTransition(groundedMovement, jump, () => groundDetector.Grounds.Count > 0 && _input_obsolete.Jump, null, 0);
             var gm_j = new BindLocomotionTransition(groundedMovement, jump, () => groundDetector.Grounds.Count > 0 && _input.Jump, null, 0);
-            var gm_d = new Transition(groundedMovement, descending, () => groundDetector.Grounds.Count == 0 && _core.locomotionContext.verticalPosture == VerticalPosture.Descending, null, 0);
+            var gm_d = new Transition(groundedMovement, descending, () => groundDetector.Grounds.Count == 0 && _core.locomotionContext.VerticalPosture == VerticalPosture.Descending, null, 0);
             var gm_qb = new BindLocomotionTransition(groundedMovement, quickBoosting, () => _quickBoostingHelper.TriggerEvent, null, 0);
 
-            var j_d = new Transition(jump, descending, () => _core.locomotionContext.verticalPosture == VerticalPosture.Descending, null, 0, 0, 1);
+            var j_d = new Transition(jump, descending, () => _core.locomotionContext.VerticalPosture == VerticalPosture.Descending, null, 0, 0, 1);
             var j_qb = new BindLocomotionTransition(jump, quickBoosting, () => _quickBoostingHelper.TriggerEvent, null, 0);
 
             var d_gm = new Transition(descending, groundedMovement, () => groundDetector.Grounds.Count > 0, null, 0);
             var d_qb = new BindLocomotionTransition(descending, quickBoosting, () => _quickBoostingHelper.TriggerEvent, null, 0);
 
             var qb_gm = new Transition(quickBoosting, groundedMovement, () => groundDetector.Grounds.Count > 0, null, 0, 0, 1, InterruptionSource.None);
-            var qb_d = new Transition(quickBoosting, descending, () => _core.locomotionContext.verticalPosture == VerticalPosture.Descending, null, 0, 0, 1, InterruptionSource.None);
+            var qb_d = new Transition(quickBoosting, descending, () => _core.locomotionContext.VerticalPosture == VerticalPosture.Descending, null, 0, 0, 1, InterruptionSource.None);
 
             statemachine.AddTransitionFor(gm_j);
             statemachine.AddTransitionFor(gm_d);

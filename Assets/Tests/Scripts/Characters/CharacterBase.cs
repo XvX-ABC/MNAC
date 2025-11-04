@@ -29,12 +29,12 @@ namespace Tests.Characters.Interaction
             if (a != null)
             {
                 _item = new InteractableItem(this.ID, this.gameObject);
-                InteractionManager.items.Add(_item);
+                InteractionManager.AddItem(_item);
             }
         }
         void UnregisterFromInteractionManager()
         {
-            InteractionManager.items.Remove(_item);
+            InteractionManager.RemoveItem(_item);
         }
         public Guid ID => _id;
 

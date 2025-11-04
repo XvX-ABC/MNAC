@@ -13,7 +13,7 @@ using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using Tests.Weapons;
 using UnityEngine;
-using EnvironmentCore_MonoComponent = Tests.TPhysics.Environment.EnvironmentCore_MonoComponent;
+using EnvironmentCore_MonoComponent = Tests.Characters.EnvironmentCore_MonoComponent;
 using Stun = Tests.Interaction.Influence.Stun;
 
 namespace Tests.Characters.Humanoid
@@ -158,7 +158,7 @@ namespace Tests.Characters.Humanoid
             var stun = influenceCore.FindInfluence<Stun>();
             var health = influenceCore.FindInfluence<Health>();
 
-            var stunningState = new StunningState(stun.timeline);
+            var stunningState = new StunningState(stun.Timeline);
             var normalState = new NormalState(_locomotionCore, leftArm, rightArm);
             diedState = new DiedState(gameObject, obj => { Destroy(obj); Debug.Log("Destory"); }, _definitions.DeathDurationTime);
             _context = new();

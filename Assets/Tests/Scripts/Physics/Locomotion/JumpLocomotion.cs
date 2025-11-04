@@ -1,6 +1,4 @@
-﻿using Locomotion;
-using System;
-using Tests.Locomotion_Obsolete;
+﻿using System;
 using Tests.Utilities.Timeline;
 using UnityEngine;
 
@@ -10,7 +8,7 @@ namespace Tests.TPhysics.Locomotion
     {
         IJumpDefinitions _definitions;
         ITimeline _timeline;
-        internal ITimeline timeline { get => _timeline; }
+        public ITimeline Timeline { get => _timeline; }
         public JumpLocomotion(IJumpDefinitions definitions)
         {
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));

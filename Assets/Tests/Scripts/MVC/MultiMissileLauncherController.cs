@@ -18,13 +18,13 @@ namespace Assets.Tests.Scripts.Weapons.MVC
             base.Awake();
             launcher = ConvertLauncherOfBase<MultiMissileLauncher>();
         }
-        [RequestMapping("/{c_url}/SingleLauncher/Reload/DurationEvent/Register")]
-        public void RegisterDurationEventOfReloadForSingleLauncher(IRequest<(byte, Action<float>)> request, IResponse response)
-        {
-            var num = request.Data.Item1;
-            var l = launcher.subLaunchers[num];
-            l.ReloadTimeline.UpdateAction += request.Data.Item2;
-            response.Code = (ushort)ResponseCode.Succeeded;
-        }
+        //[RequestMapping("/{c_url}/SingleLauncher/Reload/DurationEvent/Register")]
+        //public void RegisterDurationEventOfReloadForSingleLauncher(IRequest<(byte, Action<float>)> request, IResponse response)
+        //{
+        //    var num = request.Data.Item1;
+        //    var l = launcher.subLaunchers[num];
+        //    l.ReloadTimeline.UpdateAction += request.Data.Item2;
+        //    response.Code = (ushort)ResponseCode.Succeeded;
+        //}
     }
 }

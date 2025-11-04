@@ -1,12 +1,13 @@
 ﻿using System;
+using Tests.Interaction;
 using Tests.Weapons.Launcher;
 
 namespace Tests.Weapons.MissileLauncher
 {
     public interface IMissileLauncher : ILauncher
     {
-        public ITarget_Obsolete Target { get; set; }
-        public Action<IMissileLauncher, ITarget_Obsolete> TargetChangeAction { get; set; }
+        public IGameObjTarget Target { get; set; }
+        public Action<IMissileLauncher, IGameObjTarget> TargetChangeAction { get; set; }
         public new IMissileLauncherDefinitions Definitions { get; }
     }
 }

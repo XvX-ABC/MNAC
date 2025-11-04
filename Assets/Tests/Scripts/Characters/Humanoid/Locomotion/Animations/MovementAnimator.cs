@@ -59,7 +59,7 @@ namespace Tests.Characters.Humanoid.Locomotion.Animations
             var a = v0.magnitude - velocity.magnitude;
 
             var v = Mathf.Clamp01(Mathf.Max(a <= 0 || _accelerationSpeed <= 0 ? 0 : a / (_accelerationSpeed * Time.fixedDeltaTime), speed / maxSpeed));
-            var rotation = world.rotation;
+            var rotation = world.Rotation;
             if (groundDetector.Grounds.Count > 0)
             {
                 rotation *= Quaternion.FromToRotation(world.Up, groundDetector.GroundsNormal);

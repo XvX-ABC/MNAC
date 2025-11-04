@@ -47,18 +47,18 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         }
         internal void SetVelocity(Context context)
         {
-            var rbody = context.rbody;
-            var world = context.world;
+            var rbody = context.Rbody;
+            var world = context.World;
             var velocity = context.CurrentVelocity;
             var speed = velocity.magnitude;
             var dtime = Time.fixedDeltaTime;
-            var gg = context.groundDetector;
+            var gg = context.GroundDetector;
 
             var v0 = velocity / (1 - dtime * 0.5f * rbody.drag);
             var a = v0.magnitude - speed;
 
             var v = Mathf.Clamp01(Mathf.Max(a <= 0 || _accelerationSpeed <= 0 ? 0 : a / (_accelerationSpeed * dtime), speed / _maxSpeed));
-            var rotation = world.rotation;
+            var rotation = world.Rotation;
             if (gg.Grounds.Count > 0)
             {
                 rotation *= Quaternion.FromToRotation(world.Up, gg.GroundsNormal);

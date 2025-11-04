@@ -45,7 +45,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
         public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionRunning(currentTransition);
-            //_aim.Weight = Mathf.Lerp(_w, 1, currentTransition.Timeline.NormalizedTime);
+            _aim.Weight = Mathf.Lerp(_w, 1, currentTransition.Timeline.NormalizedTime);
             _aim.TargetUpdate();
         }
         public override void ToNextStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
@@ -56,7 +56,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
         public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.ToNextStateTransitionRunning(currentTransition);
-            //_aim.Weight = Mathf.Lerp(_w, 0, currentTransition.Timeline.NormalizedTime);
+            _aim.Weight = Mathf.Lerp(_w, 0, currentTransition.Timeline.NormalizedTime);
             _aim.TargetUpdate();
         }
     }

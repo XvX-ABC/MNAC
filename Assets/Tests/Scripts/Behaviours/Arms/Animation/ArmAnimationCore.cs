@@ -60,8 +60,8 @@ namespace Tests.Behaviours.Arms.Animations
             public override void OnEnter()
             {
                 parentNode.AddChild(_playablePart.Node);
-                _playablePart.OutputSetting = core.outputSetting;
-                //core.outputSetting.Weight = 1;
+                _playablePart.OutputSetting = core.OutputSetting;
+                //core.OutputSetting.Weight = 1;
             }
             public override void OnExit()
             {
@@ -78,7 +78,7 @@ namespace Tests.Behaviours.Arms.Animations
             public override void OnEnter()
             {
                 parentNode.AddChild(_playablePart.Node);
-                _playablePart.OutputSetting = core.outputSetting;
+                _playablePart.OutputSetting = core.OutputSetting;
             }
             public override void OnExit()
             {
@@ -104,10 +104,10 @@ namespace Tests.Behaviours.Arms.Animations
                 _mixer.Node.AddChild(_armedWeapon.Node);
                 //Debug.Log("switching output settting weight: " + _switching.Node.Value.OutputSetting.Weight);
                 //Debug.Log("armedWeapon output settting weight: " + _armedWeapon.Node.Value.OutputSetting.Weight);
-                _mixer.OutputSetting = core.outputSetting;
+                _mixer.OutputSetting = core.OutputSetting;
                 _mixer.OutputSetting.Weight = 1;
                 //_switching.Reset();
-                //core.outputSetting.Weight = 1;
+                //core.OutputSetting.Weight = 1;
 
             }
             public override void OnExit()
@@ -124,7 +124,7 @@ namespace Tests.Behaviours.Arms.Animations
             }
             public override void OnEnter()
             {
-                core.outputSetting.Weight = 0;
+                core.OutputSetting.Weight = 0;
             }
         }
         public float SwitchingWeight
@@ -200,8 +200,8 @@ namespace Tests.Behaviours.Arms.Animations
                 set
                 {
                     _weight = Mathf.Clamp01(value);
-                    if (outputSetting != null)
-                        outputSetting.Weight = _weight;
+                    if (OutputSetting != null)
+                        OutputSetting.Weight = _weight;
                 }
             }
             public SwitchingPlayablePart(PlayableGraph graph, IArmedWeaponArmDefinitions definitions, IArmWeaponAnimationDefinitions animationDefinitions) : base(graph)

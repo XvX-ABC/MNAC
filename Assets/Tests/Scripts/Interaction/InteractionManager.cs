@@ -1,7 +1,8 @@
-﻿using Minimalist.Utility;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using Tests.Utilities;
 using UnityEngine;
 
 namespace Tests.Interaction
@@ -23,6 +24,18 @@ namespace Tests.Interaction
         public override string ToString()
         {
             return "Interaction Manager";
+        }
+        public static void AddItem(InteractableItem item)
+        {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+            items.Add(item);
+        }
+        public static void RemoveItem(InteractableItem item)
+        {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+            items.Remove(item);
         }
     }
 }

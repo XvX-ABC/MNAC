@@ -37,9 +37,9 @@ namespace Tests.TPhysics.Locomotion
         Vector3 CalculateDirection(Context context)
         {
             var direction = _horizontalVector;
-            var grounds = context.groundDetector.Grounds;
+            var grounds = context.GroundDetector.Grounds;
 
-            var groundNormal = context.groundDetector.GroundsNormal;
+            var groundNormal = context.GroundDetector.GroundsNormal;
             if (groundNormal == Vector3.zero)
                 return direction;
 
@@ -59,9 +59,9 @@ namespace Tests.TPhysics.Locomotion
         public Context OnUpdate_0(Context context)
         {
             var up = world.Up;
-            if (context.groundDetector.Grounds.Count > 0)
+            if (context.GroundDetector.Grounds.Count > 0)
             {
-                up = context.groundDetector.GroundsNormal;
+                up = context.GroundDetector.GroundsNormal;
             }
             var direction = CalculateDirection(context);
 
@@ -83,9 +83,9 @@ namespace Tests.TPhysics.Locomotion
         public Context OnUpdate_1(Context context)
         {
             var up = world.Up;
-            if (context.groundDetector.Grounds.Count > 0)
+            if (context.GroundDetector.Grounds.Count > 0)
             {
-                up = context.groundDetector.GroundsNormal;
+                up = context.GroundDetector.GroundsNormal;
             }
             var direction = CalculateDirection(context);
             context.CurrentVelocity = Accelerate(direction, context.CurrentVelocity, _acceleratedSpeed, _maxSpeed);

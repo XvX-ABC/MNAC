@@ -1,4 +1,5 @@
 ﻿using Locomotion;
+using Tests.TPhysics.Locomotion;
 
 namespace Tests.Locomotion_Obsolete
 {

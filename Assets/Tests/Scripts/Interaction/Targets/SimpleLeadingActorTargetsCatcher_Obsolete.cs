@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Tests.Input;
-using Tests.TPhysics.Locomotion;
 using UnityEngine;
-using Context = Tests.TPhysics.Locomotion.Context;
 
 namespace Tests.Interaction
 {
     [Obsolete]
-    internal class SimpleLeadingActorTargetsCatcher_Obsolete : TargetsCatcherBase
+    public class SimpleLeadingActorTargetsCatcher_Obsolete : TargetsCatcherBase
     {
         ILeadingActorTargetsCatcherDefinitions _definitions;
         Camera _camera;
         IInput_Obsolete _input;
-        LocomotionCore _locomotion;
+        //LocomotionCore _locomotion;
         GameObject _actorObj;
 
         TerrainTarget _terrainTarget;
@@ -25,14 +23,14 @@ namespace Tests.Interaction
 
             public Vector3 Position => pos;
         }
-        protected Context context => _locomotion.Context;
-        public SimpleLeadingActorTargetsCatcher_Obsolete(ILeadingActorTargetsCatcherDefinitions definitions, GameObject actorObj, Camera camera, IInput_Obsolete input, LocomotionCore locomotion)
+        //protected Context context => _locomotion.Context;
+        public SimpleLeadingActorTargetsCatcher_Obsolete(ILeadingActorTargetsCatcherDefinitions definitions, GameObject actorObj, Camera camera, IInput_Obsolete input/*LocomotionCore locomotion*/)
         {
             this._actorObj = actorObj;
             _definitions = definitions;
             this._camera = camera;
             this._input = input;
-            this._locomotion = locomotion;
+            //this._locomotion = locomotion;
             if (_definitions.AllowCatchTerrain)
                 _terrainTarget = new();
         }
@@ -42,9 +40,10 @@ namespace Tests.Interaction
         }
         bool CatchRangeCheck(Vector3 pos)
         {
-            var cpos = context.CurrentPosition;
-            var crotation = context.CurrentRotation;
-            var tpos = Quaternion.Inverse(crotation) * (pos - cpos);
+            //var cpos = context.CurrentPosition;
+            //var crotation = context.CurrentRotation;
+            //var tpos = Quaternion.Inverse(crotation) * (pos - cpos);
+            var tpos = Vector3.positiveInfinity;
             var angles = Quaternion.FromToRotation(Vector3.forward, tpos).eulerAngles;
             // top bottom
             var verticalLimit = new Vector2(_definitions.CatchingRange.x, _definitions.CatchingRange.z);
@@ -54,7 +53,7 @@ namespace Tests.Interaction
         }
         public override void Update()
         {
-            var pos = context.CurrentPosition;
+            //var pos = context.CurrentPosition;
             var ray = _camera.ScreenPointToRay(_input.MousePosition);
             if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, _definitions.TerrainMask | _definitions.TargetsMask))
             {

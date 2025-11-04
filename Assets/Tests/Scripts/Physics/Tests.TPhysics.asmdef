@@ -1,0 +1,17 @@
+{
+    "name": "Tests.TPhysics",
+    "rootNamespace": "Tests.TPhysics",
+    "references": [
+        "GUID:e77376900b62a3d41a6e000c035ec369",
+        "GUID:e4edb5abb6d3d2f4fbd7f53d5012ce27"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Locomotion
+namespace Tests.TPhysics.Locomotion
 {
     public interface IJumpDefinitions
     {

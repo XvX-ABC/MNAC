@@ -7,7 +7,7 @@ namespace Tests.Animations
 {
 
 
-    internal class ControllerPlayable : AnimationPlayablePartBase
+    public class ControllerPlayable : AnimationPlayablePartBase
     {
         [Obsolete]
         Animator _animator;

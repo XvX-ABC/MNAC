@@ -8,13 +8,18 @@ namespace Tests.Animations
         protected bool enabled;
         protected PlayableGraph graph;
         protected Playable playablePart;
-        internal OutputSetting outputSetting;
+        OutputSetting _outputSetting;
         protected AnimationPlayableNode node;
-
+        //HACK: 临时处理，后续需要修改
+        protected internal IOutputSetting outputSetting
+        {
+            get => _outputSetting;
+            set => _outputSetting = value as OutputSetting;
+        }
         public Playable PlayablePart => playablePart;
         public virtual IOutputSetting OutputSetting
         {
-            get => outputSetting;
+            get => _outputSetting;
             set
             {
                 UpdateOutputSetting(value);
@@ -25,7 +30,7 @@ namespace Tests.Animations
         protected AnimationPlayablePartBase(PlayableGraph graph)
         {
             node = CreateNode();
-            outputSetting = new OutputSetting();
+            _outputSetting = new OutputSetting();
             this.graph = graph;
         }
         protected virtual AnimationPlayableNode CreateNode()
@@ -34,9 +39,9 @@ namespace Tests.Animations
         }
         protected void UpdateOutputSetting(IOutputSetting setting)
         {
-            this.outputSetting.PortNum = setting.PortNum;
-            this.outputSetting.Parent = setting.Parent;
-            this.outputSetting.Weight = setting.Weight;
+            this._outputSetting.PortNum = setting.PortNum;
+            this._outputSetting.Parent = setting.Parent;
+            this._outputSetting.Weight = setting.Weight;
 
         }
 

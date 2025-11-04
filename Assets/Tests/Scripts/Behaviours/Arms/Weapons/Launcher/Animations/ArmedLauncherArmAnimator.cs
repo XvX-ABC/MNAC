@@ -78,7 +78,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
             set
             {
                 _aimIK.enabled = value;
-                _controller.outputSetting.Weight = value ? 1 : 0;
+                _controller.OutputSetting.Weight = value ? 1 : 0;
             }
         }
         public ITarget AimingTarget { get => _aimingHelper.Target; set => _aimingHelper.Target = value; }

@@ -7,6 +7,7 @@ using Tests.Weapons.MissileLauncher;
 using UnityEngine;
 using Tests.Utilities.Timeline.Events.Point;
 using UInput = UnityEngine.Input;
+using Tests.Interaction;
 namespace Tests.Weapons.MultiMissileLauncher
 {
 
@@ -24,8 +25,8 @@ namespace Tests.Weapons.MultiMissileLauncher
         ushort _ammoSpareQuantity;
         ushort _ammoInMagazineQuantity;
         Action<ILauncher> _initializationAction;
-        Action<IMissileLauncher, ITarget_Obsolete> _targetChangeAction;
-        ITarget_Obsolete _target;
+        Action<IMissileLauncher, IGameObjTarget> _targetChangeAction;
+        IGameObjTarget _target;
         ILauncherActionsLock _actionsLock;
         ITimeline _reloadTimeline;
         ITimeline _delayLaunchTimeline;
@@ -37,7 +38,7 @@ namespace Tests.Weapons.MultiMissileLauncher
         public ILauncherDefinitions Definitions { get => definitions; }
         IMissileLauncherDefinitions IMissileLauncher.Definitions => definitions;
         public Action<ILauncher> InitializationAction { get => _initializationAction; set => _initializationAction = value; }
-        public ITarget_Obsolete Target
+        public IGameObjTarget Target
         {
             get => _target;
             set
@@ -52,7 +53,7 @@ namespace Tests.Weapons.MultiMissileLauncher
         public ITimeline LaunchDurationTimeline { get => _launchDurationTimeline; }
         public ITimeline ReloadTimeline { get => _reloadTimeline; }
         public ITimeline DelayLaunchTimeline { get => _delayLaunchTimeline; }
-        public Action<IMissileLauncher, ITarget_Obsolete> TargetChangeAction
+        public Action<IMissileLauncher, IGameObjTarget> TargetChangeAction
         {
             get
             {
@@ -197,7 +198,7 @@ namespace Tests.Weapons.MultiMissileLauncher
             if (UInput.GetKeyDown(KeyCode.S))
             {
                 if (Target == null)
-                    Target = GetComponent<ITarget_Obsolete>() ?? throw new ComponentCantFindException(gameObject, typeof(ITarget_Obsolete));
+                    Target = GetComponent<IGameObjTarget>() ?? throw new ComponentCantFindException(gameObject, typeof(IGameObjTarget));
                 else
                     Target = null;
             }

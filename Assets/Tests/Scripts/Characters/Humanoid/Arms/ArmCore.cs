@@ -137,7 +137,6 @@ namespace Tests.Characters.Humanoid.Arms
                 throw new Exception();
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Arm_Local, this.gameObject);
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Arm_Core_Local, this);
-
             var weaponDefinitions = _definitions.Weapon;
             var weaponMountPoint = FindMountPoint(weaponDefinitions.MountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.MountPointName);
             weaponMountPoint.field = _part switch

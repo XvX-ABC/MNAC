@@ -1,5 +1,6 @@
 ﻿using System;
 using Tests.Locomotion_Obsolete;
+using Tests.TPhysics.Locomotion;
 using UnityEngine;
 
 namespace Locomotion

@@ -1,6 +1,7 @@
 ﻿using System;
 using Tests.Environment;
 using Tests.Locomotion_Obsolete;
+using Tests.TPhysics.Locomotion;
 using Tests.Utilities.Timeline;
 using Tests.Utilities.Timeline.Events.Point;
 using Tests.Utilities.Timeline.Events.Range;

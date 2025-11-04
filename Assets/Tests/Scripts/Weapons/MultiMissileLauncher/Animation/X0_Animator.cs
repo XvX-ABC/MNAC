@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Data;
 using System.Linq;
+using Tests.Interaction;
 using Tests.Utilities.Timeline;
+using Tests.Utilities.Timeline.Events.Point;
 using Tests.Weapons.Launcher;
 using Tests.Weapons.MissileLauncher;
-using Tests.Weapons.MultiMissileLauncher;
-using TMPro;
 using UnityEngine;
-using Tests.Utilities.Timeline.Events.Point;
 
 namespace Tests.Weapons.MultiMissileLauncher.Animation
 {
@@ -84,7 +82,7 @@ namespace Tests.Weapons.MultiMissileLauncher.Animation
             //    _prepareLaunchTimeline.Stop();
 
         }
-        void TargetChange(IMissileLauncher launcher, ITarget_Obsolete newTarget)
+        void TargetChange(IMissileLauncher launcher, ITarget newTarget)
         {
             var actionsLock = launcher.actionsLock;
             var currentTarget = launcher.Target;

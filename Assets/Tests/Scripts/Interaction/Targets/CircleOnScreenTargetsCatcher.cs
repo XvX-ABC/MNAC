@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace Tests.Interaction
 {
-    internal class GameObjsInScreenFilter
+    public class GameObjsInScreenFilter
     {
         string _tag;
         ushort _filterAmountInCoroutine;
         Camera _camera;
         List<GameObject> _objsInScreen;
-        internal bool enabled;
+        bool _enabled;
         public GameObjsInScreenFilter(string tag, Camera camera, ushort filterCountOneFrame)
         {
             _tag = tag ?? throw new ArgumentNullException(nameof(tag));
@@ -20,6 +20,7 @@ namespace Tests.Interaction
             _objsInScreen = new List<GameObject>();
         }
 
+        public bool Enabled { get => _enabled; set => _enabled = value; }
         public IReadOnlyList<GameObject> ObjsInScreen { get => _objsInScreen; }
         internal ushort FilterAmountInCoroutine { get => _filterAmountInCoroutine; set => _filterAmountInCoroutine = (ushort)Mathf.Max(0, value); }
         protected GameObject[] GetAllObjs()
@@ -34,7 +35,7 @@ namespace Tests.Interaction
         {
             while (true)
             {
-                if (!enabled)
+                if (!Enabled)
                     yield return null;
                 _objsInScreen.Clear();
                 var length = InteractionManager.Count;
@@ -58,7 +59,7 @@ namespace Tests.Interaction
             }
         }
     }
-    internal class CircleOnScreenTargetsCatcher : TargetsCatcherBase
+    public class CircleOnScreenTargetsCatcher : TargetsCatcherBase
     {
         Camera _camera;
         Vector3 _actorPosition;
