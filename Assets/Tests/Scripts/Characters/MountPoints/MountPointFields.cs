@@ -12,12 +12,14 @@ namespace Tests.Characters.MountPoints
             Blackboard_Main,
             Left_Arm_Hand_Weapon,
             Right_Arm_Hand_Weapon,
-            Right_Chest_Trigger
+            Right_Chest_Trigger,
+            Left_Chest_Trigger
         }
         static MountPointFields()
         {
             Blackboard_Main = Guid.NewGuid();
             Left_Arm_Hand_Weapon = Guid.NewGuid();
+            Left_Chest_Trigger = Guid.NewGuid();
             Right_Arm_Hand_Weapon = Guid.NewGuid();
             Right_Chest_Trigger = Guid.NewGuid();
         }
@@ -25,6 +27,7 @@ namespace Tests.Characters.MountPoints
         public static readonly Guid Right_Arm_Hand_Weapon;
         public static readonly Guid Right_Chest_Trigger;
         public static readonly Guid Left_Arm_Hand_Weapon;
+        public static readonly Guid Left_Chest_Trigger;
         public static Enum GetEnumType(Guid guid)
         {
             if (guid == Guid.Empty)
@@ -37,6 +40,8 @@ namespace Tests.Characters.MountPoints
                 return Enum.Right_Arm_Hand_Weapon;
             else if (guid == Right_Chest_Trigger)
                 return Enum.Right_Chest_Trigger;
+            else if (guid == Left_Chest_Trigger)
+                return Enum.Left_Chest_Trigger;
             else
                 return Enum.None;
         }
@@ -48,6 +53,7 @@ namespace Tests.Characters.MountPoints
                 Enum.Left_Arm_Hand_Weapon => Left_Arm_Hand_Weapon,
                 Enum.Right_Arm_Hand_Weapon => Right_Arm_Hand_Weapon,
                 Enum.Right_Chest_Trigger => Right_Chest_Trigger,
+                Enum.Left_Chest_Trigger => Left_Chest_Trigger,
                 _ => Guid.Empty,
             };
         }

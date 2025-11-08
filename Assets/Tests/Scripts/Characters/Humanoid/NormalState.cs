@@ -33,11 +33,13 @@ namespace Tests.Characters.Humanoid
         {
             base.OnEnter();
             _core.enabled = true;
-            if (_leftArmCore != null)
+            if (_leftArmCore != null && !_leftArmCore.enabled)
                 _leftArmCore.enabled = true;
-            if (_rightArmCore != null)
+            if (_rightArmCore != null && !_rightArmCore.enabled)
                 _rightArmCore.enabled = true;
-
+            _lstatemachine.OnEnter();
+            _leftArmStatemachine.OnEnter();
+            _rightArmStatemachine.OnEnter();
         }
         public override void OnUpdate()
         {
@@ -49,12 +51,19 @@ namespace Tests.Characters.Humanoid
                 _leftArmCore.enabled = false;
             if (_rightArmCore != null)
                 _rightArmCore.enabled = false;
-
+            _leftArmStatemachine.OnExit();
+            _leftArmStatemachine.OnExit();
+            _rightArmStatemachine.OnExit();
             base.OnExit();
         }
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
+            _core.enabled = true;
+            if (_leftArmCore != null)
+                _leftArmCore.enabled = true;
+            if (_rightArmCore != null)
+                _rightArmCore.enabled = true;
             _lstatemachine.FromPreviousStateTransitionBegin(currentTransition);
             _leftArmStatemachine?.FromPreviousStateTransitionBegin(currentTransition);
             _rightArmStatemachine?.FromPreviousStateTransitionBegin(currentTransition);

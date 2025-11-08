@@ -164,6 +164,23 @@ namespace Tests.Characters.Humanoid.Arms
             transition_ats.animationCore = animatorCore;
             transition_sta.animationCore = animatorCore;
 
+
+
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Arm_Local, this.gameObject);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Arm_Core_Local, this);
+            var field = _part switch
+            {
+                HumanPart.None => Guid.Empty,
+                HumanPart.LeftArm => CharacterBlackboardFields.Character_Arm_Left_Core,
+                HumanPart.RightArm => CharacterBlackboardFields.Character_Arm_Right_Core,
+                _ => throw new NotImplementedException()
+            };
+            blackboard.TryRegisterField(field, this);
+
+
+
+            InitializeChildNodes();
+
             SetDefaultWeapon(weaponMountPoint, weaponDefinitions.Origins[0].Name, _weaponCore);
 
         }

@@ -19,6 +19,8 @@ namespace Tests.Characters
             Character_Camera_Main = Guid.NewGuid();
             Character_Arm_Core_Local = Guid.NewGuid();
             Character_Legs_Core = Guid.NewGuid();
+            Character_Arm_Left_Core=Guid.NewGuid(); 
+            Character_Arm_Right_Core=Guid.NewGuid(); 
 
             Character_Locomotion_Core = Guid.NewGuid();
 
@@ -48,6 +50,8 @@ namespace Tests.Characters
 
         public static readonly Guid Character_Arm_Core_Local;
         public static readonly Guid Character_Legs_Core;
+        public static readonly Guid Character_Arm_Left_Core;
+        public static readonly Guid Character_Arm_Right_Core;
         public static readonly Guid Character_Influence_Core;
         public static readonly Guid FieldChangeHandler;
         public static readonly Guid TargetsCatcher;

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons;
-using Tests.Characters.Humanoid;
 using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using Tests.Weapons;
-using UnityEditor.Networking.PlayerConnection;
-using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons
 {
@@ -74,23 +71,20 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         public override void OnEnter()
         {
             base.OnEnter();
+            var b = controller?.currentActivatedBehaviour;
             if (animationCore != null)
                 animationCore.StatusNum = 1;
-            var b = controller.currentActivatedBehaviour;
             if (b != null)
             {
-                b.Activated = true;
-                b?.OnEnter();
+                b.OnEnter();
+                if (!b.Activated)
+                    b.Activated = true;
             }
         }
         public override void OnExit()
         {
             var b = controller.currentActivatedBehaviour;
-            if (b != null)
-            {
-                b?.OnExit();
-                b.Activated = false;
-            }
+            b?.OnExit();
             base.OnExit();
         }
         public override void OnUpdate()
@@ -101,7 +95,12 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
-            controller.currentActivatedBehaviour?.FromPreviousStateTransitionBegin(currentTransition);
+            var b = controller.currentActivatedBehaviour;
+            if (b != null)
+            {
+                b.Activated = true;
+                b.FromPreviousStateTransitionBegin(currentTransition);
+            }
         }
         public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
@@ -121,7 +120,12 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         public override void ToNextStateTransitionEnd(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.ToNextStateTransitionEnd(currentTransition);
-            controller.currentActivatedBehaviour?.ToNextStateTransitionEnd(currentTransition);
+            var b = controller?.currentActivatedBehaviour;
+            if (b != null)
+            {
+                b.Activated = true;
+                b.ToNextStateTransitionEnd(currentTransition);
+            }
         }
         public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
