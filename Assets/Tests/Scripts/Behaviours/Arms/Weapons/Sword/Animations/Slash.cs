@@ -13,7 +13,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         string _multiplierName;
         float _clipLength;
         ControllerPlayable _armController;
-        public Slash(ControllerPlayable controller, ControllerPlayable armController, MixerPlayable mixer, string switchName, string multiplierName, float clipLength, float duration = 0, bool enabled = true) : base(mixer, controller, "slash", duration, enabled)
+        public Slash(ControllerPlayable baseWholeBodyController, ControllerPlayable wholeBodyController, ControllerPlayable armController, string switchName, string multiplierName, float clipLength, float duration = 0, bool enabled = true) : base(baseWholeBodyController, wholeBodyController, "slash", duration, enabled)
         {
             _switchName = switchName ?? throw new ArgumentNullException(nameof(switchName));
             _multiplierName = multiplierName ?? throw new ArgumentNullException(nameof(multiplierName));

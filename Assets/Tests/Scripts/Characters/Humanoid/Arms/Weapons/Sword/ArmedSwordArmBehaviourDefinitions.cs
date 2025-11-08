@@ -12,25 +12,25 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         [SerializeField]
         LBoostingDefinitions _boosting;
         [SerializeField]
-        float _duration;
+        float _boostingDuration;
         [SerializeField]
         float _slashDuration;
         [SerializeField]
-        LayerMask _targetsMask;
+        LayerMask _excludeLayers;
         SwordBoostingDefinitioins _sboosting;
         SwordSlashDefinitions _sslash;
         public Behaviours.Arms.Weapons.Sword.IBoostingDefinitions Boosting => _sboosting;
 
         public Behaviours.Arms.Weapons.Sword.ISlashDefinitions Slash => _sslash;
 
-        public LayerMask ExcludeLayers => _targetsMask;
+        public LayerMask ExcludeLayers => _excludeLayers;
 
         public void InitializeBy(ILocomotionDefinitions locomotionDefinitions)
         {
             if (locomotionDefinitions == null || locomotionDefinitions.Walking == null)
                 throw new ArgumentNullException(nameof(locomotionDefinitions));
             var b = locomotionDefinitions.Walking;
-            _sboosting = new SwordBoostingDefinitioins(_boosting.MaxSpeedPower * b.MaxSpeed, _boosting.AcceleratedSpeedPower * b.AcceleratedSpeed, _duration);
+            _sboosting = new SwordBoostingDefinitioins(_boosting.MaxSpeedPower * b.MaxSpeed, _boosting.AcceleratedSpeedPower * b.AcceleratedSpeed, _boostingDuration);
             _sslash = new SwordSlashDefinitions(_slashDuration);
         }
     }

@@ -13,7 +13,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         string _multiplierName;
         float _clipLength;
         ControllerPlayable _armController;
-        public Boosting(ControllerPlayable controller, ControllerPlayable armController, MixerPlayable mixer, string switchName, string multiplierName, float clipLength, float duration = 0, bool enabled = true) : base(mixer, controller, "boosting", duration, enabled)
+        public Boosting(ControllerPlayable baseWholeBodyController, ControllerPlayable wholeBodyController, ControllerPlayable armController, string switchName, string multiplierName, float clipLength, float duration = 0, bool enabled = true) : base(baseWholeBodyController, wholeBodyController, "boosting", duration, enabled)
         {
             _switchName = switchName ?? throw new ArgumentNullException(nameof(switchName));
             _multiplierName = multiplierName ?? throw new ArgumentNullException(nameof(multiplierName));

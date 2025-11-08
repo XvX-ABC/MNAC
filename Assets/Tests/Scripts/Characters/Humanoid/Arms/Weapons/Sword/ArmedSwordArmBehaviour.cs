@@ -115,10 +115,11 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 winput = input.RArm?.WeaponControl;
             var boostingHelper = new BoostingHelper(locomotionCore.core, camera, input.BaseInput, winput, _definitions.Boosting);
             var slashHelper = new SlashHelper(locomotionCore.core, rotationLocker, _definitions.Slash.Duration);
-
+            var mixer = new WholeBodyMixerPlayable(graph, 3);
             _animator = new(
                 graph,
                 controller,
+                mixer,
                 locomotionCore.core,
                 locomotionCore.definitions.Walking.MaxSpeed,
                 locomotionCore.definitions.Walking.AcceleratedSpeed,

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Tests.Animations;
 using Tests.States;
 using UnityEngine;
@@ -10,21 +11,24 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         float _w0;
         float _w1;
         MixerPlayable _mixer;
+        ControllerPlayable _baseController;
+        float baseWeight { get => _baseController.OutputSetting.Weight; set => _baseController.OutputSetting.Weight = value; }
+        float wholeBodyWeight { get => controller.OutputSetting.Weight; set => controller.OutputSetting.Weight = value; }
 
-        public ArmedSwordWholeBodyAnimationStateBase(MixerPlayable mixer, ControllerPlayable controller, string name, float duration = 0, bool enabled = true) : base(controller, name, duration, enabled)
+        public ArmedSwordWholeBodyAnimationStateBase(ControllerPlayable baseWholeBodyController, ControllerPlayable wholeBodyController, string name, float duration = 0, bool enabled = true) : base(wholeBodyController, name, duration, enabled)
         {
-            _mixer = mixer ?? throw new ArgumentNullException(nameof(mixer));
+            _baseController = baseWholeBodyController ?? throw new ArgumentNullException(nameof(baseWholeBodyController));
         }
 
         void RecordWeights()
         {
-            _w0 = _mixer.GetChildWeight(0);
-            _w1 = _mixer.GetChildWeight(1);
+            _w0 = baseWeight;
+            _w1 = wholeBodyWeight;
         }
         void UpdateWeights(ushort exceptedValue, float t)
         {
-            _mixer.SetChildWeight(0, Mathf.Lerp(_w0, 1 - exceptedValue, t));
-            _mixer.SetChildWeight(1, Mathf.Lerp(_w1, exceptedValue, t));
+            baseWeight = Mathf.Lerp(_w0, 1 - exceptedValue, t);
+            wholeBodyWeight = Mathf.Lerp(_w1, exceptedValue, t);
         }
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {

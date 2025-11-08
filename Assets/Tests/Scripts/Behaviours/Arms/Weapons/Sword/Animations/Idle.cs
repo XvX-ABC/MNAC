@@ -16,7 +16,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         string _velocityName_y;
         LocomotionCore _locomotionCore;
         IdleArmAnimationLocomotion _locomotion;
-        public Idle(ControllerPlayable controller, LocomotionCore locomotionCore, float maxSpeed, float accelerationSpeed, string velocityName_x, string velocityName_y, bool enabled = true) : base(controller, "idle", 0, enabled)
+        public Idle(ControllerPlayable wholeBodyController, LocomotionCore locomotionCore, float maxSpeed, float accelerationSpeed, string velocityName_x, string velocityName_y, bool enabled = true) : base(wholeBodyController, "idle", 0, enabled)
         {
             _maxSpeed = Mathf.Max(0, maxSpeed);
             _accelerationSpeed = Mathf.Max(0, accelerationSpeed);
@@ -31,7 +31,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
             //_locomotionCore.AddModule(_locomotion);
             _locomotionCore.EvaluationModules = _locomotionCore.EvaluationModules.Append(_locomotion).ToArray();
         }
-        internal Idle(ControllerPlayable controller, LocomotionCore locomotionCore, IdleArmAnimationLocomotion locomotion, float maxSpeed, float accelerationSpeed, string velocityName_x, string velocityName_y, bool enabled = true) : base(controller, "idle", 0, enabled)
+        internal Idle(ControllerPlayable wholeBodyController, LocomotionCore locomotionCore, IdleArmAnimationLocomotion locomotion, float maxSpeed, float accelerationSpeed, string velocityName_x, string velocityName_y, bool enabled = true) : base(wholeBodyController, "idle", 0, enabled)
         {
             _maxSpeed = Mathf.Max(0, _maxSpeed);
             _accelerationSpeed = Mathf.Max(0, _accelerationSpeed);
