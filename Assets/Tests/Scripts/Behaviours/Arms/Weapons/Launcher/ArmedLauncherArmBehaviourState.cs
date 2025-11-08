@@ -24,10 +24,10 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
             base.FromPreviousStateTransitionBegin(currentTransition);
             statemachine.ChangeStateTo(_behaviour.target == null ? _behaviour.idle : _behaviour.aiming);
             _animationState.FromPreviousStateTransitionBegin(currentTransition);
-            if (_animator.OutputSetting != null)
-            {
-                _w = _animator.OutputSetting.Weight;
-            }
+            //if (_animator.OutputSetting != null)
+            //{
+            //    _w = _animator.OutputSetting.Weight;
+            //}
         }
 
         public override void FromPreviousStateTransitionEnd(IReadonlyPlayableTransition<object> currentTransition)
@@ -41,11 +41,11 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         {
             base.FromPreviousStateTransitionRunning(currentTransition);
             _animationState.FromPreviousStateTransitionRunning(currentTransition);
-            if (_animator.OutputSetting != null)
-            {
-                var t = currentTransition.Timeline.NormalizedTime;
-                _animator.OutputSetting.Weight = Mathf.Lerp(_w, 1, t);
-            }
+            //if (_animator.OutputSetting != null)
+            //{
+            //    var t = currentTransition.Timeline.NormalizedTime;
+            //    _animator.OutputSetting.Weight = Mathf.Lerp(_w, 1, t);
+            //}
 
         }
 
@@ -74,10 +74,10 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         {
             base.ToNextStateTransitionBegin(currentTransition);
             _animationState.ToNextStateTransitionBegin(currentTransition);
-            if (_animator.OutputSetting != null)
-            {
-                _w = _animator.OutputSetting.Weight;
-            }
+            //if (_animator.OutputSetting != null)
+            //{
+            //    _w = _animator.OutputSetting.Weight;
+            //}
 
         }
 
@@ -91,11 +91,11 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
         {
             base.ToNextStateTransitionRunning(currentTransition);
             _animationState.ToNextStateTransitionRunning(currentTransition);
-            if (_animator.OutputSetting != null)
-            {
-                var t = currentTransition.Timeline.NormalizedTime;
-                _animator.OutputSetting.Weight = Mathf.Lerp(_w, 0, t);
-            }
+            //if (_animator.OutputSetting != null)
+            //{
+            //    var t = currentTransition.Timeline.NormalizedTime;
+            //    _animator.OutputSetting.Weight = Mathf.Lerp(_w, 0, t);
+            //}
         }
     }
 }
