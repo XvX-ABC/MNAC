@@ -56,12 +56,10 @@ namespace Tests.Characters.Humanoid.Locomotion
             if (statemachine != null)
             {
                 statemachine.Enabled = true;
-                statemachine.OnEnter();
             }
         }
         private void OnDisable()
         {
-            statemachine.OnExit();
             statemachine.Enabled = false;
         }
         void InitializeRigidbody(Rigidbody rbody)

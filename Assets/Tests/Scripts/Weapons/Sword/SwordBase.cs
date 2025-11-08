@@ -25,8 +25,12 @@ namespace Tests.Weapons.Sword
 
         public bool EnableDamage
         {
-            get => _trigger.enabled;
-            set => _trigger.enabled = value;
+            get => _enabledDamage;
+            set
+            {
+                _trigger.enabled = value;
+                _enabledDamage = value;
+            }
         }
 
         void Awake()
@@ -37,6 +41,8 @@ namespace Tests.Weapons.Sword
         }
         void WhenHitEnemy(GameObjTarget target)
         {
+            if (!_enabledDamage)
+                return;
             var obj = target.Obj;
             if (obj == null)
                 throw new NullReferenceException(nameof(target.Obj));

@@ -74,7 +74,17 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
                 boosting.TargetsCatcher = _targetsCatcher;
             }
         }
-
+        public override bool Activated
+        {
+            get => base.Activated;
+            set
+            {
+                base.Activated = value;
+                _targetsCatcher.Enabled = value;
+                statemachine.Enabled = value;
+                animator.Enabled = true;
+            }
+        }
         //TODO: 删除定义中增量速度相关内容
         public ArmedSwordArmBehaviour(IArmedSwordArmBehaviourDefinitions definitions, BoostingHelper boostingHelper, SlashHelper slashHelper, ArmedSwordArmAnimator animator)
         {
@@ -105,7 +115,6 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
 
             statemachine.AddTransitionFor(idle, boosting, () => boostingHelper.EntryEvent);
 
-            //var b_i = new BlendingTransition<object>(boosting, idle, null, null, 0, 0, 1, InterruptionSource.None);
             var b_s = new BlendingTransition<object>(boosting, slash, () => slashHelper.EntryEvent, null, 0);
             statemachine.AddTransitionFor(b_s);
 
@@ -122,14 +131,10 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         {
             slashHelper.Target = targets.Count > 0 ? targets[^1] : null;
         }
-        public void Update()
+        public override void Update()
         {
             boostingHelper.Update();
             animator.Update();
-        }
-        public void FixedUpdate()
-        {
-
         }
     }
 }
