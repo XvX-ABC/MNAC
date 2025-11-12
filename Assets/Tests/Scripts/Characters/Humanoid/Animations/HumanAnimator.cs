@@ -240,7 +240,7 @@ namespace Tests.Characters.Humanoid.Animations
             if (!blackboard.TryReadValue<InfluenceCore>(CharacterBlackboardFields.Character_Influence_Core, out var influenceCore))
                 throw new Exception();
             var stun = influenceCore.FindInfluence<Stun>() ?? throw new ArgumentNullException("stun");
-            var health = influenceCore.FindInfluence<Health>() ?? throw new ArgumentNullException("died");
+            var health = influenceCore.FindInfluence<Health>() ?? throw new ArgumentNullException("health");
 
             var stunningState = new StunningState(stun.Timeline, _controller, _definitions.Stunning);
             var diedState = new DiedState(_core.diedState.Timeline, _controller, _definitions.Death);
