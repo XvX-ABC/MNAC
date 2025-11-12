@@ -1,11 +1,14 @@
 ﻿using RootMotion.FinalIK;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.Behaviours.Arms.Weapons.Launchers;
 using Tests.Behaviours.Arms.Weapons.Launchers.Animations;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Humanoid.Locomotion;
 using Tests.Characters.UI;
+using Tests.Interaction;
 using Tests.TPhysics;
 using Tests.TPhysics.Environment;
 using Tests.UI;
@@ -150,7 +153,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         {
             //if (UnityEngine.Input.GetKeyDown(KeyCode.V))
             //    _targetsCatcher.Enabled = !_targetsCatcher.Enabled;
-            _targetsCatcher.Update();
+            _targetsCatcher.LateUpdate();
             _behaviour.Update();
         }
         public override void FixedUpdate()

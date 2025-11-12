@@ -1,5 +1,6 @@
 ﻿using System;
 using Tests.Animations;
+using Tests.Behaviours.Arm.Weapons;
 using Tests.Behaviours.Arms;
 using Tests.Behaviours.Arms.Animations;
 using Tests.Behaviours.Arms.Weapons;
@@ -135,8 +136,9 @@ namespace Tests.Characters.Humanoid.Arms
 
             if (!blackboard.TryReadValue<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph))
                 throw new Exception();
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Arm_Local, this.gameObject);
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Arm_Core_Local, this);
+
+
+
             var weaponDefinitions = _definitions.Weapon;
             var weaponMountPoint = FindMountPoint(weaponDefinitions.MountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.MountPointName);
             weaponMountPoint.field = _part switch
@@ -154,7 +156,7 @@ namespace Tests.Characters.Humanoid.Arms
 
 
 
-            InitializeChildNodes();
+
             animatorCore = new(graph, _definitions.Weapon, animationDefinitions.Weapon, new ArmedWeaponArmAnimator<IArmedWeaponArmBehaviour>(graph, armedWeaponControllerState));
             InitializeStateMachine();
 
@@ -235,7 +237,7 @@ namespace Tests.Characters.Humanoid.Arms
             transition_its = new(0, idle, weaponSwitching, () => _armInput.WeaponSwitch, null, 0.07f, 0, AnimationTransition.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.Next);
             //transition_its = new(0, idle, weaponSwitching, () => _input.Supply, null, 0.07f, 0, AnimationTransition.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.Next);
             stateMachine.AddTransitionFor(transition_its);
-            stateMachine.AddTransitionFor(idle, armedWeaponControllerState, 0.3f, () => armedWeaponControllerState.EntryFunc(), null);
+            stateMachine.AddTransitionFor(idle, armedWeaponControllerState, 1, () => armedWeaponControllerState.EntryFunc(), null);
             #endregion
 
             #region from armed weapon to other states
@@ -284,12 +286,10 @@ namespace Tests.Characters.Humanoid.Arms
             {
                 animatorCore.StatusNum = 3;
                 stateMachine.Enabled = true;
-                stateMachine.OnEnter();
             }
         }
         void OnDisable()
         {
-            stateMachine.OnExit();
             stateMachine.Enabled = false;
             animatorCore.StatusNum = 3;
         }

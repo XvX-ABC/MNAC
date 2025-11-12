@@ -147,12 +147,12 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             //if (UnityEngine.Input.GetKeyDown(KeyCode.V))
             //    _targetsCatcher.Enabled = !_targetsCatcher.Enabled;
             _behaviour.Update();
-            _targetsCatcher.Update();
+            _targetsCatcher.LateUpdate();
         }
         private void FixedUpdate()
         {
             //_targetsCatcher.Update();
-            
+
         }
     }
 }

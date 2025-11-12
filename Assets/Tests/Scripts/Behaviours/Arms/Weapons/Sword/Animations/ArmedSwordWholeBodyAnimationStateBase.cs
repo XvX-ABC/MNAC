@@ -30,6 +30,16 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
             baseWeight = Mathf.Lerp(_w0, 1 - exceptedValue, t);
             wholeBodyWeight = Mathf.Lerp(_w1, exceptedValue, t);
         }
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            UpdateWeights(1, 1);
+        }
+        public override void OnExit()
+        {
+            UpdateWeights(0, 1);
+            base.OnExit();
+        }
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
