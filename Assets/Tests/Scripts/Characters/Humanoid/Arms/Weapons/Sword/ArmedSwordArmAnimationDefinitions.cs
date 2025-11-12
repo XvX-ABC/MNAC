@@ -28,6 +28,11 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         public string SlashSpeedMultiplierName => _definitions.SlashSpeedMultiplierName;
 
         public float SlashClipLength => _definitions.SlashClipLength;
+
+        public StateTransitionOptions GetTransitionOptions(IArmedSwordArmAnimationDefinitions.Transition transition)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
 

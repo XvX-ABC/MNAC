@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
@@ -26,6 +27,8 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         string _slashSpeedMultiplierName;
         [SerializeField]
         float _slashClipLength;
+        [SerializeField]
+        StateTransitionOptions[] _transitionOptions;
         public ArmedSwordArmAnimationDefinitions()
         {
 
@@ -69,5 +72,10 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         public string SlashSwitchName => _slashSwitchName;
         public string SlashSpeedMultiplierName => _slashSpeedMultiplierName;
         public float SlashClipLength => _slashClipLength;
+
+        public StateTransitionOptions GetTransitionOptions(IArmedSwordArmAnimationDefinitions.Transition transition)
+        {
+            return _transitionOptions.FirstOrDefault(t => t.Transition == transition);
+        }
     }
 }

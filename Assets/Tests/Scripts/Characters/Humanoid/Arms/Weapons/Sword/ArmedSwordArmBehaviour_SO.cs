@@ -1,8 +1,5 @@
 ﻿using System;
 using Tests.Animations;
-using Tests.Behaviours.Arm.Weapons;
-using Tests.Behaviours.Arms.Animations;
-using Tests.Behaviours.Arms.Weapon.Animations;
 using Tests.Behaviours.Arms.Weapons.Sword.Animations;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Interaction.Input;
@@ -12,10 +9,10 @@ using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.MountPoints;
 using Tests.Weapons;
-using Unity.XR.OpenVR;
 using UnityEngine;
 using UnityEngine.Playables;
 using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
+using Transition = Tests.Behaviours.Arms.Weapons.Sword.IArmedSwordArmAnimationDefinitions.Transition;
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
 
@@ -63,12 +60,10 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         public override void OnEnter()
         {
             base.OnEnter();
-            Debug.Log("disable arm core");
             _armCore.enabled = false;
         }
         public override void OnExit()
         {
-            Debug.Log("enabled arm core");
             _armCore.enabled = true;
             base.OnExit();
         }
@@ -296,6 +291,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         }
         /// <summary>
         /// UNDONE: 与另一条手臂的协调逻辑
+        /// 问题：
+        /// - 过渡时间如何定义 （DONE）
+        /// - 还没支持另一条手臂被抢占时，动画的过渡
         /// </summary>
         void InitializeStatemachine(ArmCore currentArmCore, ArmCore otherArmCore, BoostingHelper boostingHelper, SlashHelper slashHelper)
         {
@@ -304,16 +302,18 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             _statemachine = new("arm_contorl");
 
             var otherArm = new OtherArm(otherArmCore, "other_arm");
-            var currentArm = new CurrentArm(otherArmCore, "occupy_state");
+            var currentArm = new CurrentArm(otherArmCore, "current_arm");
 
             _statemachine.AddState(otherArm);
             _statemachine.AddState(currentArm);
 
-            var oa_c = new BlendingTransition<object>(otherArm, currentArm, () => _behaviour.Activated && boostingHelper.EntryEvent, null, 0.1f);
+            var oa_c = new BlendingTransition<object>(otherArm, currentArm, () => _behaviour.Activated && boostingHelper.EntryEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Idle_Boosting));
             _statemachine.AddTransitionFor(oa_c);
 
-            var c_oa = new BlendingTransition<object>(currentArm, otherArm, () => _behaviour.Activated && boostingHelper.ExitEvent, null, 0.1f);
-            _statemachine.AddTransitionFor(c_oa);
+            var c_oa_s = new BlendingTransition<object>(currentArm, otherArm, () => _behaviour.Activated && slashHelper.ExitEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Slash_Idle));
+            var c_oa_b = new BlendingTransition<object>(currentArm, otherArm, () => _behaviour.Activated && !slashHelper.EntryEvent && boostingHelper.ExitEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Boosting_Idle));
+            _statemachine.AddTransitionFor(c_oa_b);
+            _statemachine.AddTransitionFor(c_oa_s);
 
             _occupy = new() { currentArm = currentArm, otherArm = otherArm };
 
@@ -386,7 +386,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         {
             base.OnUpdate();
             _statemachine?.OnUpdate();
-            Debug.Log(Part + ", " + _statemachine);
         }
 
         public override void OnExit()

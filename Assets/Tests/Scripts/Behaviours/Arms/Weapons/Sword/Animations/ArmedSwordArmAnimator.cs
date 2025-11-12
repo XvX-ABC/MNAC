@@ -4,9 +4,11 @@ using Tests.States;
 using Tests.TPhysics;
 using Tests.TPhysics.Environment;
 using Tests.TPhysics.Locomotion;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
+using Transition = Tests.Behaviours.Arms.Weapons.Sword.IArmedSwordArmAnimationDefinitions.Transition;
 
 namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
 {
@@ -85,6 +87,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
             //parent.AddChild(mnode);
 
             //mnode.AddChild(bnode);
+            wholeBodyController.OutputSetting.Weight = 0;
             mixer.Node.AddChild(wholeBodyController.Node);
             _wholeBody.mixer = mixer;
         }
@@ -95,15 +98,19 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
             statemachine.AddState(boosting);
             statemachine.AddState(slash);
 
-            var i_b = new BlendingTransition<object>(idle, boosting, () => _boostingHelper.EntryEvent, null, 0);
+            //var i_b = new BlendingTransition<object>(idle, boosting, () => _boostingHelper.EntryEvent, null, 0);
+            var i_b = new BlendingTransition<object>(idle, boosting, () => _boostingHelper.EntryEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Idle_Boosting));
             statemachine.AddTransitionFor(i_b);
 
+            //var b_s = new BlendingTransition<object>(boosting, slash, () => _slashHelper.EntryEvent, null, 0);
+            //var b_i = new BlendingTransition<object>(boosting, idle, () => _boostingHelper.ExitEvent, null, 0, 0, -1, InterruptionSource.None);
             var b_s = new BlendingTransition<object>(boosting, slash, () => _slashHelper.EntryEvent, null, 0);
-            var b_i = new BlendingTransition<object>(boosting, idle, () => _boostingHelper.ExitEvent, null, 0, 0, -1, InterruptionSource.None);
+            var b_i = new BlendingTransition<object>(boosting, idle, () => _boostingHelper.ExitEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Boosting_Idle));
             statemachine.AddTransitionFor(b_s);
             statemachine.AddTransitionFor(b_i);
 
-            var s_i = new BlendingTransition<object>(slash, idle, () => _slashHelper.ExitEvent, null, 0, 0, -1, InterruptionSource.None);
+            //var s_i = new BlendingTransition<object>(slash, idle, () => _slashHelper.ExitEvent, null, 0, 0, -1, InterruptionSource.None);
+            var s_i = new BlendingTransition<object>(slash, idle, () => _slashHelper.ExitEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Slash_Idle));
             statemachine.AddTransitionFor(s_i);
 
             state = new(this);

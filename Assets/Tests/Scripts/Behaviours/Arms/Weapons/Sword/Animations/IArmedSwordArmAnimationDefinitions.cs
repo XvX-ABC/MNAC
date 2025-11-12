@@ -1,9 +1,17 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Sword
 {
     public interface IArmedSwordArmAnimationDefinitions
     {
+        public enum Transition
+        {
+            None,
+            Idle_Boosting,
+            Boosting_Idle,
+            Slash_Idle,
+        }
         public RuntimeAnimatorController WholeBodyController { get; }
         public RuntimeAnimatorController ArmController { get; }
         string VelocityName_Y { get; }
@@ -14,5 +22,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         string SlashSwitchName { get; }
         string SlashSpeedMultiplierName { get; }
         float SlashClipLength { get; }
+        public StateTransitionOptions GetTransitionOptions(Transition transition);
+
     }
 }

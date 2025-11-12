@@ -46,6 +46,14 @@ namespace Tests.States
 
 
         }
+        public BlendingTransition(
+        IWithCallbackPlayableState<T> sourceState,
+        IWithCallbackPlayableState<T> destinationState,
+        Func<bool> triggerEvent,
+        Action<IPlayableState<T>, IPlayableState<T>, float> durationEvent,
+        BlendingTransitionOptions options) : this(sourceState, destinationState, triggerEvent, durationEvent, options.Duration, options.Offset, options.FixedExitTime, options.InterruptionSource)
+        {
+        }
         protected virtual void Begin(TimelineContext ctx)
         {
             var timeline = destinationState.Timeline;

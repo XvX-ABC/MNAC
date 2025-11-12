@@ -24,3 +24,22 @@ MonoBehaviour:
     _slashSwitchName: Slash_Switch
     _slashSpeedMultiplierName: Slash_Speed_Multiplier
     _slashClipLength: 2.458
+    _transitionOptions:
+    - _duration: 0.25
+      _offset: 0
+      _enableFixedExit: 0
+      _fixedExitTime: 0
+      _interruptionSource: 1
+      _transition: 1
+    - _duration: 0.001
+      _offset: 0
+      _enableFixedExit: 0
+      _fixedExitTime: 0
+      _interruptionSource: 0
+      _transition: 2
+    - _duration: 0.25
+      _offset: 0
+      _enableFixedExit: 0
+      _fixedExitTime: 0
+      _interruptionSource: 0
+      _transition: 3
