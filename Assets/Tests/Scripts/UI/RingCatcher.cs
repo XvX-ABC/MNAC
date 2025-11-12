@@ -1,6 +1,7 @@
 ﻿using System;
-using UnityEngine;
 
+using UnityEngine;
+using UnityEngine.UI;
 namespace Tests.UI
 {
     [ExecuteAlways]
@@ -23,9 +24,7 @@ namespace Tests.UI
             get => _mousePosition;
             set
             {
-                if (!_allowInputPosition)
-                    _mousePosition = value;
-
+                _mousePosition = value;
                 UpdateRingPosition();
             }
         }
@@ -78,19 +77,19 @@ namespace Tests.UI
         {
             if (_allowInputPosition)
             {
-                _mousePosition = UnityEngine.Input.mousePosition;
-                UpdateRingPosition();
+                MousePosition = UnityEngine.Input.mousePosition;
             }
             if (!Application.isPlaying)
             {
-                UpdateRingPosition();
+                MousePosition = UnityEngine.Input.mousePosition;
             }
         }
         void UpdateRingPosition()
         {
-            if (_camera != null && RectTransformUtility.ScreenPointToLocalPointInRectangle(_rectTransform, _mousePosition, _camera, out var localPos))
+            //_ringObj.transform.position = _mousePosition;
+            if (_camera != null && RectTransformUtility.ScreenPointToLocalPointInRectangle(_rectTransform, _mousePosition, null, out var localPos))
             {
-                _ringTransform.anchoredPosition = localPos;
+                _ringTransform.localPosition = localPos;
             }
         }
     }
