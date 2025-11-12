@@ -13,7 +13,6 @@ using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using Tests.Weapons;
 using UnityEngine;
-using EnvironmentCore_MonoComponent = Tests.Characters.EnvironmentCore_MonoComponent;
 using Stun = Tests.Interaction.Influence.Stun;
 
 namespace Tests.Characters.Humanoid
