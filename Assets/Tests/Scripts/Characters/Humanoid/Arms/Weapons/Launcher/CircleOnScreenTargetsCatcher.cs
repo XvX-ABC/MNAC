@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Tests.Behaviours.Input;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.UI;
@@ -12,14 +13,16 @@ using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
-    public class CircleOnScreenTargetsCatcher : ComponentBase, ITargetsCatcher
+    public partial class CircleOnScreenTargetsCatcher : ComponentBase, ITargetsCatcher_New<GameObjTarget>, ITargetsCatcher
     {
         GameObjsInScreenFilter _filter;
         Tests.Interaction.CircleOnScreenTargetsCatcher _catcher;
         RingCatcher _ringCatcher;
         TargetsDisplay _targetDisplay;
+        IndicatorsManager _indicatorsManager;
         Camera _camera;
         IBaseInput _input;
+        Action<IList<ITarget>> _targetsChangedAction;
 
         ICircleOnScreenTargetsCatcherDefinitions _definitions;
 
@@ -31,7 +34,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         }
         public CircleOnScreenTargetsCatcher(Camera camera, IBaseInput input, GameObject actorObj, RingCatcher ringCatcher, TargetsDisplay targetsDisplay, ICircleOnScreenTargetsCatcherDefinitions definitions, bool enabled = true)
         {
-            _filter = new(definitions.CatchingObjsTag, camera, definitions.FilterAmountOneFrame);
+            _filter = new(camera, definitions.FilterAmountOneFrame);
             _catcher = new(_filter.ObjsInScreen, actorObj, camera, definitions.TargetsMask, definitions.FilterAmountOneFrame);
             _ringCatcher = ringCatcher ?? throw new ArgumentNullException(nameof(ringCatcher));
             _actorObj = actorObj ?? throw new ArgumentNullException(nameof(actorObj));
@@ -43,12 +46,42 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             _camera = camera;
 
             Enabled = enabled;
+
+            _catcher.TargetsChangedAction += targets =>
+            {
+                _targetsChangedAction?.Invoke(targets.Cast<ITarget>().ToList());
+            };
         }
+
+        public CircleOnScreenTargetsCatcher(Camera camera, IBaseInput input, GameObject actorObj, RingCatcher ringCatcher, IndicatorsManager indicatorsManager, ICircleOnScreenTargetsCatcherDefinitions definitions, bool enabled = true)
+        {
+            _filter = new(camera, definitions.FilterAmountOneFrame);
+            _catcher = new(_filter.ObjsInScreen, actorObj, camera, definitions.TargetsMask, definitions.FilterAmountOneFrame);
+            _ringCatcher = ringCatcher ?? throw new ArgumentNullException(nameof(ringCatcher));
+            _actorObj = actorObj ?? throw new ArgumentNullException(nameof(actorObj));
+            _ringCatcher.Camera = camera;
+            _indicatorsManager = indicatorsManager ?? throw new ArgumentNullException(nameof(indicatorsManager));
+            _input = input ?? throw new ArgumentNullException(nameof(input));
+
+            _camera = camera;
+
+            Enabled = enabled;
+
+            _catcher.TargetsChangedAction += targets =>
+            {
+                _targetsChangedAction?.Invoke(targets.Cast<ITarget>().ToList());
+            };
+
+            _catcher.Radius = definitions.CatchingViewPortRadius;
+            _catcher.TargetCaughtAction += WhenTargetCaught;
+            _catcher.TargetReleaseAction += WhenTargetRelease;
+        }
+
         public override string Name => "launcher_targets_catcher_v0";
 
-        public IReadOnlyList<ITarget> Targets => _catcher.Targets;
+        public IReadOnlyList<GameObjTarget> Targets => _catcher.Targets;
 
-        public Action<IList<ITarget>> TargetsChangedAction { get => _catcher.TargetsChangedAction; set => _catcher.TargetsChangedAction = value; }
+        public Action<IList<GameObjTarget>> TargetsChangedAction { get => _catcher.TargetsChangedAction; set => _catcher.TargetsChangedAction = value; }
         public float CatchingRadius
         {
             get => _catcher.Radius;
@@ -79,46 +112,31 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                 return _catcher;
             }
         }
-        public override void Initialize(Blackboard blackboard)
-        {
-            base.Initialize(blackboard);
-            if (!blackboard.TryReadValue(CharacterBlackboardFields.Character_Camera_Main, out _camera))
-                throw new Exception();
-            blackboard.TryReadUIValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
-            if (!blackboard.TryReadValue(CharacterBlackboardFields.Character_Obj_Main, out _actorObj))
-                throw new Exception();
-            blackboard.TryReadUIValueOrThrowException(CharacterUIBlackboardFields.Catcher_Ring, out _ringCatcher);
-            blackboard.TryReadUIValueOrThrowException(CharacterUIBlackboardFields.Targets_Display, out _targetDisplay);
-            _filter = new(_definitions.CatchingObjsTag, _camera, _definitions.FilterAmountOneFrame);
-            _catcher = new(_filter.ObjsInScreen, _actorObj, _camera, _definitions.TargetsMask, _definitions.FilterAmountOneFrame);
 
-            _ringCatcher.Camera = _camera;
+        IReadOnlyList<ITarget> ITargetsCatcher.Targets => _catcher.Targets;
 
-            Enabled = base.Enabled;
-        }
-        void ShowAllWaitingForSelectObjs()
+        Action<IList<ITarget>> ITargetsCatcher.TargetsChangedAction { get => _targetsChangedAction; set => _targetsChangedAction = value; }
+        void WhenTargetCaught(GameObjTarget target)
         {
-            if (_filter.ObjsInScreen.Count == 0)
-                return;
-            var obj = _filter.ObjsInScreen[0];
-            _targetDisplay.Activated = obj != null;
-            if (_targetDisplay.Activated)
-            {
-                _targetDisplay.TargetWorldPos = obj.transform.position;
-            }
+            var obj = target.Obj;
+            _indicatorsManager.AddTargetFor<IndicatedTarget>(obj);
         }
-        public void Update()
+        void WhenTargetRelease(GameObjTarget target)
         {
-            _catcher.ActorPosition = _actorObj.transform.position;
+            var obj = target.Obj;
+            _indicatorsManager.RemoveTargetFor<IndicatedTarget>(obj);
+        }
+        public void LateUpdate()
+        {
             _catcher.MousePosition = _input.MousePosition;
             UpdateRingCatcher();
-            ShowAllWaitingForSelectObjs();
+            //ShowAllWaitingForSelectObjs();
         }
         void UpdateRingCatcher()
         {
             _ringCatcher.MousePosition = _input.MousePosition;
             var pixelSize = _camera.pixelRect.size;
-            _ringCatcher.RingRadius = Mathf.Min(pixelSize.x, pixelSize.y) * _catcher.Radius;
+            _ringCatcher.RingRadius = Mathf.Max(pixelSize.x, pixelSize.y) * _catcher.Radius;
         }
         public IEnumerator FilterUpdateWithCoroutine()
         {
