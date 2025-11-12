@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 namespace Tests.Interaction
+
 {
     public interface ITargetsCatcher
     {
