@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PlasticGui.WorkspaceWindow.PendingChanges;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 namespace Tests.Interaction
 {
     [Serializable]
-    public class CircleOnScreenTargetsCatcher : TargetsCatcherBase_New<GameObjTarget>
+    public class CircleOnScreenTargetsCatcher : TargetsCatcherBase_New<IGameObjTarget_New>
     {
         [SerializeField]
         protected Camera camera;
@@ -68,15 +69,26 @@ namespace Tests.Interaction
             var length = dv.sqrMagnitude;
             return length <= viewPortRadius;
         }
-        //TODO: 工作逻辑需要优化
-        //UNDONE: 等待测试
+        void AddTarget(GameObject obj)
+        {
+            var t = obj.AddComponent<GameObjTarget_New>();
+            t.Catcher = this;
+            AddItemImpl(t);
+        }
+        void RemoveTarget(GameObject obj)
+        {
+            var t = obj.GetComponent<GameObjTarget_New>();
+            RemoveItemImpl(t);
+            GameObject.Destroy(t);
+        }
+        //DONE：完成测试
         public override IEnumerator UpdateWithCoroutine()
         {
             while (true)
             {
                 if (!enabled)
                 {
-                    CleanAllTargets();
+                    CleanAll();
                     yield return null;
                 }
                 for (int i = 0; i < objsInScreen.Count; i++)
@@ -84,26 +96,30 @@ namespace Tests.Interaction
                     var obj = objsInScreen[i];
                     if (CheckObjValidity(obj))
                     {
-                        var idx = targets.FindIndex(t => t.obj == obj);
-                        var target = idx > -1 ? targets[idx] : null;
+                        var idx = caughtItems.FindIndex(t => t.Obj == obj);
+                        var target = idx > -1 ? caughtItems[idx] : null;
                         if (idx > -1)
                         {
                             if (!CheckObjInCatchRadius(obj) || !MaskCheck(obj))
                             {
-                                RemoveTarget(target);
-                                GameObjTarget.ReleaseInstance(target);
+                                //RemoveTarget(target);
+                                //GameObjTarget.ReleaseInstance(target as GameObjTarget);
+                                RemoveTarget(obj);
                             }
                         }
                         else
                         {
                             if (CheckObjInCatchRadius(obj) && MaskCheck(obj))
-                                AddTarget(GameObjTarget.GetInstance(obj));
+                            //AddTarget(GameObjTarget.GetInstance(obj));
+                            {
+                                AddTarget(obj);
+                            }
                         }
                     }
                     if (i > 0 && i % handleAmountInCoroutine == 0)
-                        yield return null;
+                        yield return new WaitForFixedUpdate();
                 }
-                yield return null;
+                yield return new WaitForFixedUpdate();
             }
         }
     }
