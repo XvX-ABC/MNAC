@@ -13,7 +13,7 @@ namespace Tests.UI
         IndicatorsManager _lockManager;
 
         public bool IsValid { get => this.enabled; }
-        public Vector3 WorldPosition { get => this.transform.position; }
+        public virtual Vector3 Position { get => this.transform.position; }
         public IndicatorType IndicatorType { get => indicatorType; }
         public virtual Indicator Indicator { get => indicator; set => indicator = value; }
         public IndicatorsManager Manager

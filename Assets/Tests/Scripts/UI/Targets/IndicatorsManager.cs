@@ -89,7 +89,7 @@ namespace Tests.UI
                     if (target.IsValid)
                     {
 
-                        var pos = target.WorldPosition;
+                        var pos = target.Position;
                         var spos = _camera.WorldToScreenPoint(pos);
 
                         if (!target.Indicator)
