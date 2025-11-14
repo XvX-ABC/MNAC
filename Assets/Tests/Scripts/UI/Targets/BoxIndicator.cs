@@ -43,7 +43,6 @@ namespace Tests.UI
                 _type = value;
                 _image.color = _type switch
                 {
-                    LockType.None => _image.color,
                     LockType.Unlock => _unlockColor,
                     LockType.LockOn_WaitConfirm => _lockOnColor,
                     LockType.LockOn_Confirmed => _confirmedColor,
@@ -53,7 +52,6 @@ namespace Tests.UI
         }
         public enum LockType
         {
-            None,
             Unlock,
             LockOn_WaitConfirm,
             LockOn_Confirmed,
