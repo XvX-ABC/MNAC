@@ -4,7 +4,7 @@ namespace Tests.UI
 {
     public interface ICursor
     {
-        public Vector3 MousePosition { get; set; }
+        public Vector3 CursorPosition { get; set; }
         public bool HIde { get; set; }
     }
 }

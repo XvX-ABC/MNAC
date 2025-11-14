@@ -30,7 +30,7 @@ namespace Tests.UI
         }
         private void Update()
         {
-            _catcher.MousePosition = _input.MousePosition;
+            _catcher.CursorPosition = _input.MousePosition;
         }
     }
 }
