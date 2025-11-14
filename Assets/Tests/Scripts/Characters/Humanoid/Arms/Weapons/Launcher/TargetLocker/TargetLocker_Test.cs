@@ -55,7 +55,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
             _locker.CursorPosition = UnityEngine.Input.mousePosition;
             _locker.OriginPosition = _camera.WorldToScreenPoint(_actor.transform.position);
-            _locker.CursorPositionDelta = UnityEngine.Input.mousePositionDelta;
+            //_locker.CursorPositionDelta = UnityEngine.Input.mousePositionDelta;
             _locker.Update();
 
 
@@ -84,10 +84,11 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                 GUILayout.Label("Cursor Position: " + _locker.CursorPosition);
                 GUILayout.Label("Origin Position: " + _locker.OriginPosition);
                 GUILayout.Label("Catch Angle: " + _locker.CatchAngle);
-                GUILayout.Label("Catch Direction: " + _locker._cursorPositionDeltaCache.normalized);
+                GUILayout.Label("Catch Direction: " + _locker.cursorPositionDeltaCache.normalized);
                 GUILayout.Label("Current Num: " + _locker._num);
                 GUILayout.Label("Enabled: " + _locker.Enabled);
                 GUILayout.Label("Main Target Name: : " + _locker.MainTargetObj);
+                GUILayout.Label(_locker.statemachine.ToString());
                 GUILayout.EndVertical();
 
             }
@@ -103,7 +104,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         }
         private void OnDrawGizmos()
         {
-            _locker.OnDrawGizmos();
+            _locker?.OnDrawGizmos();
         }
     }
 }

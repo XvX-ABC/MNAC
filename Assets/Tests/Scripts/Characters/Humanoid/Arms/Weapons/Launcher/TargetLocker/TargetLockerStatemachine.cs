@@ -1,0 +1,11 @@
+﻿using Tests.States;
+
+namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
+{
+    internal class TargetLockerStatemachine : WithCallbackPlayableStatemachine<object>
+    {
+        public TargetLockerStatemachine(string name = "launcher_target_locker_statemachine", bool enabled = true) : base(name, enabled)
+        {
+        }
+    }
+}

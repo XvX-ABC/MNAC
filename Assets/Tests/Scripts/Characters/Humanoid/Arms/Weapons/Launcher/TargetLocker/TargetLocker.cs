@@ -26,9 +26,17 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         Vector3 _cursorPosition;
         Vector3 _cursorPositionDelta;
         Timeline_V1 _cdTimeline;
-        internal Vector3 _cursorPositionDeltaCache;
         float _catchAngle;
+        internal Vector3 cursorPositionDeltaCache;
         internal byte _num;
+
+
+        internal TargetLockerStatemachine statemachine;
+        Unlock _unlock;
+        Locked _lockedState;
+        FindClosestTargetByOriginalPosition _findClosestTargetState_OP;
+        FindClosestTargetByMainTarget _findClosestTargetState_MT;
+        ReceiveCursorInput _receiveState;
         public bool Enabled
         {
             get => _screenObjsCatcher.Enabled;
@@ -61,6 +69,36 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             Enabled = enabled;
 
             _cdTimeline = new Timeline_V1(0.3f);
+
+            InitializeStatemachine();
+        }
+        void InitializeStatemachine()
+        {
+            _unlock = new(this, "unlock");
+            _lockedState = new(this, "locked");
+            _receiveState = new(this, "receive_input", 0.05f);
+            _findClosestTargetState_OP = new(this, "find_target_op");
+            _findClosestTargetState_MT = new(this, "find_target_mt");
+
+            statemachine = new();
+            statemachine.AddState(_findClosestTargetState_OP);
+            statemachine.AddState(_lockedState);
+            statemachine.AddState(_receiveState);
+            statemachine.AddState(_findClosestTargetState_MT);
+
+            statemachine.AddTransitionFor(_findClosestTargetState_OP, _lockedState, () => _mainTargetObj != null);
+
+            statemachine.AddTransitionFor(_lockedState, _receiveState, () => _cursorPositionDelta != Vector3.zero);
+            statemachine.AddTransitionFor(_lockedState, _findClosestTargetState_OP, () => _mainTargetObj == null);
+
+            statemachine.AddTransitionFor(_receiveState, _lockedState, () => _cursorPositionDelta == Vector3.zero && _receiveState.Timeline.NormalizedTime < 0.9f);
+
+            statemachine.AddTransitionFor(_receiveState, _findClosestTargetState_MT, () => _receiveState.Timeline.NormalizedTime >= 0.9f);
+
+            statemachine.AddTransitionFor(_findClosestTargetState_MT, _lockedState, () => _mainTargetObj != null);
+            statemachine.AddTransitionFor(_findClosestTargetState_MT, _findClosestTargetState_OP, () => _mainTargetObj == null);
+
+
         }
         void WhenCaughtItem(GameObject obj)
         {
@@ -72,25 +110,30 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             if (obj == _mainTargetObj)
             {
                 MainTargetObj = null;
-                _num = 0;
             }
         }
+
         void WhenCatchCompleted(List<GameObject> caughtObjs)
+        {
+            _findClosestTargetState_OP.Execute(caughtObjs);
+            _findClosestTargetState_MT.Execute(caughtObjs);
+        }
+        void WhenCatchCompleted_Obsolete(List<GameObject> caughtObjs)
         {
             if (_num == 0)
             {
-                MainTargetObj = GetClosestObj(caughtObjs);
+                MainTargetObj = FindClosestObj(caughtObjs);
                 _num = 2;
             }
             else if (_num == 1)
             {
-                var obj = FindClosestObjByMainObj(caughtObjs, _cursorPositionDeltaCache.normalized);
+                var obj = FindClosestObjByMainObj(caughtObjs);
                 if (obj != null)
                     MainTargetObj = obj;
                 _num = 2;
             }
         }
-        GameObject GetClosestObj(List<GameObject> objs)
+        internal GameObject FindClosestObj(List<GameObject> objs)
         {
             if (objs.Count == 0)
                 return null;
@@ -99,6 +142,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             var screenPos = (Vector2)_originPosition;
             foreach (var obj in objs)
             {
+                if (obj == _mainTargetObj)
+                    continue;
                 var pos = (Vector2)_camera.WorldToScreenPoint(obj.transform.position);
                 var distance = Vector3.Distance(pos, screenPos);
                 if (distance < minDistance)
@@ -113,8 +158,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         {
             _ringCatcher.CursorPosition = _mainTargetObj != null ? _camera.WorldToScreenPoint(_mainTargetObj.transform.position) : _cursorPosition;
         }
-        GameObject FindClosestObjByMainObj(List<GameObject> objs, Vector2 direction)
+        internal GameObject FindClosestObjByMainObj(List<GameObject> objs)
         {
+            var direction = (Vector2)cursorPositionDeltaCache.normalized;
             if (direction == Vector2.zero)
                 return null;
             var sb = new StringBuilder();
@@ -183,6 +229,11 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         }
         public void Update()
         {
+            statemachine.OnUpdate();
+            //Debug.Log(statemachine + ", t" + _receiveState.Timeline.NormalizedTime);
+        }
+        public void Update_Obsolete()
+        {
             if (_num == 2 && _cursorPositionDelta != Vector3.zero)
             {
                 //_num = 1;
@@ -203,9 +254,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                 Debug.Log("start find");
                 for (int i = 1; i < pos.Count; i++)
                 {
-                    _cursorPositionDeltaCache += pos[i];
+                    cursorPositionDeltaCache += pos[i];
                 }
-                _cursorPositionDeltaCache /= pos.Count;
+                cursorPositionDeltaCache /= pos.Count;
                 _num = 1;
                 count = 0;
             }
@@ -235,14 +286,13 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             if (count > 5)
             {
                 Debug.Log("start find");
-                var sum = Vector3.zero;
                 for (int i = 1; i < pos.Count; i++)
                 {
-                    sum += pos[i];
+                    cursorPositionDeltaCache += pos[i];
                 }
-                sum /= pos.Count;
+                cursorPositionDeltaCache /= pos.Count;
 
-                var obj = FindClosestObjByMainObj(_screenObjsCatcher.CaughtItems.ToList(), sum.normalized);
+                var obj = FindClosestObjByMainObj(_screenObjsCatcher.CaughtItems.ToList());
                 if (obj != null)
                     _mainTargetObj = obj;
                 //_cdTimeline.Restart();
@@ -259,20 +309,20 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         {
             if (!Application.isPlaying || _mainTargetObj == null)
                 return;
-            var originalPos = (Vector2)_camera.WorldToScreenPoint(_mainTargetObj.transform.position);
-            var minDistance = float.MaxValue;
-            var closestObj = default(GameObject);
-            var direction = _cursorPositionDeltaCache.normalized;
-            foreach (var obj in _screenObjsCatcher.CaughtItems)
-            {
-                if (obj == _mainTargetObj)
-                    continue;
-                var pos = (Vector2)_camera.WorldToScreenPoint(obj.transform.position);
-                var tv = pos - originalPos;
-                var angle = Vector2.Angle(direction, tv);
-                var distance = Vector2.Distance(pos, originalPos);
-                Handles.Label(obj.transform.position, $"a: {angle}, d: {distance}");
-            }
+            //var originalPos = (Vector2)_camera.WorldToScreenPoint(_mainTargetObj.transform.position);
+            //var minDistance = float.MaxValue;
+            //var closestObj = default(GameObject);
+            //var direction = cursorPositionDeltaCache.normalized;
+            //foreach (var obj in _screenObjsCatcher.CaughtItems)
+            //{
+            //    if (obj == _mainTargetObj)
+            //        continue;
+            //    var pos = (Vector2)_camera.WorldToScreenPoint(obj.transform.position);
+            //    var tv = pos - originalPos;
+            //    var angle = Vector2.Angle(direction, tv);
+            //    var distance = Vector2.Distance(pos, originalPos);
+            //    Handles.Label(obj.transform.position, $"a: {angle}, d: {distance}");
+            //}
         }
     }
 }
