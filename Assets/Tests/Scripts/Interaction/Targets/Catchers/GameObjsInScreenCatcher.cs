@@ -6,32 +6,28 @@ using UnityEngine;
 namespace Tests.Interaction
 {
     [Serializable]
-    public class GameObjsInScreenFilter
+    public class GameObjsInScreenCatcher
     {
         [SerializeField]
-        ushort _filterAmountInCoroutine;
+        ushort _handleAmountInCoroutine;
         [SerializeField]
         Camera _camera;
         List<GameObject> _objsInScreen;
         bool _enabled;
-        private GameObjsInScreenFilter()
+        private GameObjsInScreenCatcher()
         {
 
         }
-        public GameObjsInScreenFilter(Camera camera, ushort filterCountOneFrame)
+        public GameObjsInScreenCatcher(Camera camera, ushort filterCountOneFrame)
         {
             _camera = camera ?? throw new ArgumentNullException(nameof(camera));
-            FilterAmountInCoroutine = filterCountOneFrame;
+            HandleAmountInCoroutine = filterCountOneFrame;
             _objsInScreen = new List<GameObject>();
         }
 
         public bool Enabled { get => _enabled; set => _enabled = value; }
         public IReadOnlyList<GameObject> ObjsInScreen { get => _objsInScreen; }
-        internal ushort FilterAmountInCoroutine { get => _filterAmountInCoroutine; set => _filterAmountInCoroutine = (ushort)Mathf.Max(0, value); }
-        protected int GetAllObjsAmount()
-        {
-            return InteractionManager.Count;
-        }
+        public ushort HandleAmountInCoroutine { get => _handleAmountInCoroutine; set => _handleAmountInCoroutine = (ushort)Mathf.Max(0, value); }
         public IEnumerator Update()
         {
             while (true)
@@ -52,7 +48,7 @@ namespace Tests.Interaction
                             _objsInScreen.Add(obj);
                         }
                     }
-                    if (i > 0 && i % _filterAmountInCoroutine == 0)
+                    if (i > 0 && i % _handleAmountInCoroutine == 0)
                         yield return null;
                     i++;
                 }
