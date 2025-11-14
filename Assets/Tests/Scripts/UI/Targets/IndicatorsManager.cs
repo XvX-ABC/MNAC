@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Tests.Utilities.Blackboards;
 using UnityEngine;
 
@@ -85,6 +86,8 @@ namespace Tests.UI
             {
                 for (int i = 0; i < _targets.Count; i++)
                 {
+                    if (!this.enabled)
+                        break;
                     var target = _targets[i];
                     if (target.IsValid)
                     {
