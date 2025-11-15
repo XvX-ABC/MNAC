@@ -74,7 +74,7 @@ namespace Tests.Interaction
                 //}
                 //InteractionManager.waitingAddition.Clear();
                 //InteractionManager.waitingRemoval.Clear();
-                //InteractionManager.SynchronizeChanges();
+                InteractionManager.SynchronizeChanges();
                 foreach (var item in InteractionManager.items)
                 {
                     if (!this.enabled)

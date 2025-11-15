@@ -26,7 +26,7 @@ namespace Tests.Utilities.Composable
             }
         }
         public virtual string Name { get => this.name; }
-        public bool Enabled { get => enabled; set => enabled = value; }
+        public virtual bool Enabled { get => enabled; set => enabled = value; }
         protected virtual void Awake()
         {
 
