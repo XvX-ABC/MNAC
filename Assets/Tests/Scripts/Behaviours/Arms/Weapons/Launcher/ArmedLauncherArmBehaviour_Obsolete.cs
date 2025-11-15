@@ -10,7 +10,7 @@ using Tests.Weapons.Launcher;
 using UnityEngine;
 using ArmAim = Tests.Behaviours.Arms.ArmAim_Obsolete;
 
-namespace Tests.Behaviours.Arms.Weapons.Launchers
+namespace Tests.Behaviours.Arms.Weapons.Launcher
 {
     [Obsolete]
     public class ArmedLauncherArmBehaviour_Obsolete : ArmedWeaponArmBehaviourBase_Obsolete

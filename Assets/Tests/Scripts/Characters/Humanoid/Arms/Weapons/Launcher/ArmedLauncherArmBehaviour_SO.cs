@@ -3,8 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons;
-using Tests.Behaviours.Arms.Weapons.Launchers;
-using Tests.Behaviours.Arms.Weapons.Launchers.Animations;
+using Tests.Behaviours.Arms.Weapons.Launcher;
+using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Humanoid.Locomotion;
 using Tests.Characters.UI;
@@ -24,7 +24,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
     public class ArmedLauncherArmBehaviour_SO : ArmedWeaponArmBehaviourBase_SO
     {
         ArmedLauncherArmAnimator _animator;
-        Behaviours.Arms.Weapons.Launchers.ArmedLauncherArmBehaviour _behaviour;
+        Behaviours.Arms.Weapons.Launcher.ArmedLauncherArmBehaviour _behaviour;
         //IArmedLauncherArmBehaviourDefinitions _definitions;
         //IArmedLauncherArmAnimationDefinitions _animationDefinitions;
         [SerializeField]

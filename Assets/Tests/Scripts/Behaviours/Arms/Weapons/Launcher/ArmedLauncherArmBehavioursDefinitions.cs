@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launchers
+namespace Tests.Behaviours.Arms.Weapons.Launcher
 {
     [Serializable]
     public class ArmedLauncherArmBehavioursDefinitions : IArmedLauncherArmBehaviourDefinitions

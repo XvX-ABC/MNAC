@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launchers
+namespace Tests.Behaviours.Arms.Weapons.Launcher
 {
     public class ArmedLauncherArmBehavioursDefinitions_SO : ScriptableObject, IArmedLauncherArmBehaviourDefinitions
     {

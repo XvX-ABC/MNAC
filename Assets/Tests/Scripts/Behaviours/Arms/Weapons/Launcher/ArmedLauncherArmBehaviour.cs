@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tests.Behaviours.Arms.Weapons.Launchers.Animations;
+using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
 using Tests.Characters.Interaction.Input;
 using Tests.Input;
 using Tests.Interaction;
@@ -10,12 +10,14 @@ using Tests.Weapons.Launcher;
 using TMPro;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launchers
+namespace Tests.Behaviours.Arms.Weapons.Launcher
 {
     internal class ArmedLauncherArmBehaviour : ArmedWeaponArmBehaviourBase
     {
         IArmedLauncherArmBehaviourDefinitions _definitions;
+        [Obsolete]
         ITargetsCatcher _targetsCatcher;
+        //TargetLocker _targetLocker;
         IWeaponControlInput _winput;
         ILauncher _launcher;
         internal ITarget target;
@@ -23,7 +25,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
 
         internal Idle idle;
         internal ArmAiming aiming;
-        internal Behaviours.Arm.Weapons.Launcher.AmmoLoad ammoLoad;
+        internal AmmoLoad ammoLoad;
         internal WithCallbackPlayableStatemachine<object> statemachine;
         ArmedLauncherArmBehaviourState _state;
 
@@ -69,6 +71,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
                 _winput = value;
             }
         }
+        [Obsolete]
         public ITargetsCatcher TargetsCatcher
         {
             get => _targetsCatcher;
@@ -83,7 +86,18 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
                 _targetsCatcher = value;
             }
         }
-
+        //public TargetLocker TargetLocker
+        //{
+        //    get => _targetLocker;
+        //    set
+        //    {
+        //        if (_targetLocker != null)
+        //            _targetLocker.MainTargetChangedAction -= WhenTargetChanged;
+        //        if (value != null)
+        //            value.MainTargetChangedAction += WhenTargetChanged;
+        //        _targetLocker = value;
+        //    }
+        //}
         public override IWithCallbackPlayableState<object> State => _state;
         public override bool Activated
         {
@@ -101,12 +115,16 @@ namespace Tests.Behaviours.Arms.Weapons.Launchers
             target = targets.Count > 0 ? targets[^1] : null;
             animator.AimingTarget = target;
         }
+        void WhenTargetChanged(GameObject oldTarget, GameObject newTarget)
+        {
+            //TODO: 完善逻辑
+        }
         void InitializeStatemachine()
         {
             statemachine = new("armed_launcher_statemachine");
             idle = new Idle();
             aiming = new ArmAiming();
-            ammoLoad = new Behaviours.Arm.Weapons.Launcher.AmmoLoad();
+            ammoLoad = new AmmoLoad();
 
             statemachine.AddState(idle);
             statemachine.AddState(aiming);

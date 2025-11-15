@@ -1,4 +1,4 @@
-﻿using Tests.Behaviours.Arms.Weapons.Launchers.Animations;
+﻿using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
 using Tests.Behaviours.Arms.Weapons.Sword;
 using UnityEngine;
 

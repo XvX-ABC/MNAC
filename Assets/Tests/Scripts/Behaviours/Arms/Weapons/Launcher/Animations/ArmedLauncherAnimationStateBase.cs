@@ -3,7 +3,7 @@ using Tests.Animations;
 using Tests.States;
 using Tests.Utilities.Timeline;
 
-namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
+namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
 {
     //TOOD: 修改父类为ArmedWeaponAnimationStateBase
     internal class ArmedLauncherAnimationStateBase : WithCallbackPlayableState<object>

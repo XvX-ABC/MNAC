@@ -5,7 +5,7 @@ using Tests.TPhysics.Environment;
 using UnityEngine;
 using World = Tests.TPhysics.World;
 
-namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
+namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
 {
     internal class Idle : ArmedLauncherAnimationStateBase
     {

@@ -1,7 +1,7 @@
 ﻿using Tests.Characters.Humanoid.Arms.Weapons.Launchers;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launchers
+namespace Tests.Behaviours.Arms.Weapons.Launcher
 {
     public class ArmedLauncherArmBehavioursDefinitions_MonoComponent : MonoBehaviour, IArmedLauncherArmBehaviourDefinitions
     {

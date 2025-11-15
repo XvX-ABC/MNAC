@@ -2,7 +2,7 @@
 using Tests.Weapons.Launcher;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arm.Weapons.Launcher
+namespace Tests.Behaviours.Arms.Weapons.Launcher
 {
     internal class AmmoLoad : ArmedArmStateBase
     {

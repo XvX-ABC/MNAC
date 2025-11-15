@@ -4,7 +4,7 @@ using Tests.States;
 using Tests.Weapons.Launcher;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
+namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
 {
     internal class AmmoLoad : ArmedLauncherAnimationStateBase
     {

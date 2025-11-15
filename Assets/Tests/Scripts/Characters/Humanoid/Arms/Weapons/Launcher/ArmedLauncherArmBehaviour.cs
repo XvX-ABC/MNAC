@@ -2,7 +2,7 @@
 using RootMotion.FinalIK;
 using System;
 using Tests.Behaviours.Arms.Weapons;
-using Tests.Behaviours.Arms.Weapons.Launchers.Animations;
+using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
 using Tests.Characters.Humanoid.Arms.Weapons;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Humanoid.Locomotion;
@@ -22,7 +22,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
     public class ArmedLauncherArmBehaviour : ArmedWeaponArmBehaviourBase_MonoComponent
     {
         ArmedLauncherArmAnimator _animator;
-        Behaviours.Arms.Weapons.Launchers.ArmedLauncherArmBehaviour _behaviour;
+        Behaviours.Arms.Weapons.Launcher.ArmedLauncherArmBehaviour _behaviour;
         IArmedLauncherArmBehaviourDefinitions _definitions;
         IArmedLauncherArmAnimationDefinitions _animationDefinitions;
 
@@ -114,11 +114,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
             var weaponControlInput = armInput.WeaponControl;
 
-            //_animator = new(graph, _aimIK, rbody, world, groundDetector, locomotionCore, _definitions, _animationDefinitions, _targetsCatcher, input);
-            _animator = new(graph, _aimIK, rbody, world, groundDetector, locomotionCore, _definitions, _animationDefinitions, _targetsCatcher, weaponControlInput);
-            _behaviour = new(_definitions, _animator);
-            _behaviour.TargetsCatcher = _targetsCatcher;
-            //_behaviour.Input_Obsolete = input;
+            //_animator = new(graph, _aimIK, rbody, world, groundDetector, locomotionCore, _definitions, _animationDefinitions, _targetsCatcher, weaponControlInput);
+            //_behaviour = new(_definitions, _animator);
+            //_behaviour.TargetsCatcher = _targetsCatcher;
 
             _behaviour.Input = weaponControlInput;
 

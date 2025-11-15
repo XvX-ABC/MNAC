@@ -4,7 +4,7 @@ using Tests.Interaction;
 using Tests.Weapons;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
+namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
 {
     internal class AimingHelper
     {

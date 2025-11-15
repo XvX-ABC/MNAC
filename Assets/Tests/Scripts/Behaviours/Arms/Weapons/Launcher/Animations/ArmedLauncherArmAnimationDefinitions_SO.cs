@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
+namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
 {
     [CreateAssetMenu(fileName = "ArmedLauncherArmAnimationDefinitions", menuName = "Tests/Definitions/Characters/Humanoid/Arms/Weapons/Launchers/ArmedLauncherArmAnimationDefinitions")]
     internal class ArmedLauncherArmAnimationDefinitions_SO : ScriptableObject, IArmedLauncherArmAnimationDefinitions

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launchers.Animations
+namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
 {
     [Serializable]
     internal class ArmedLauncherArmAnimationDefinitions : IArmedLauncherArmAnimationDefinitions

@@ -1,6 +1,6 @@
 ﻿using System;
 using Tests.Behaviours.Arm.Weapons;
-using Tests.Behaviours.Arms.Weapons.Launchers;
+using Tests.Behaviours.Arms.Weapons.Launcher;
 using Tests.States;
 using Tests.Weapons.Launcher;
 

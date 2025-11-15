@@ -1,6 +1,6 @@
 ﻿using Tests.Utilities;
 using ActionsEnum = Tests.Weapons.Launcher.ILauncher.ActionsEnum;
-namespace Tests.Behaviours.Arms.Weapons.Launchers
+namespace Tests.Behaviours.Arms.Weapons.Launcher
 {
     public class LauncherActionsLock : ActionsLock<ActionsEnum>, ILauncherActionsLock
     {

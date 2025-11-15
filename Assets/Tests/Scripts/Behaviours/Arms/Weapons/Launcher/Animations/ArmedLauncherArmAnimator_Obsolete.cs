@@ -5,7 +5,7 @@ using UnityEngine.Animations;
 using UnityEngine.Playables;
 using ArmAim = Tests.Behaviours.Arms.ArmAim_Obsolete;
 
-namespace Tests.Behaviours.Arms.Weapons.Launchers
+namespace Tests.Behaviours.Arms.Weapons.Launcher
 {
     [Obsolete]
     internal class ArmedLauncherArmAnimator_Obsolete : IArmedWeaponArmAnimationPlayablePart

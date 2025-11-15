@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
     [Serializable]
-    internal class ArmedLauncherArmBehavioursDefinitions : Behaviours.Arms.Weapons.Launchers.ArmedLauncherArmBehavioursDefinitions, IArmedLauncherArmBehaviourDefinitions
+    internal class ArmedLauncherArmBehavioursDefinitions : Behaviours.Arms.Weapons.Launcher.ArmedLauncherArmBehavioursDefinitions, IArmedLauncherArmBehaviourDefinitions
     {
         [Obsolete]
         TargetsCatcherDefinitions targetsCatcher;

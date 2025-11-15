@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
-    internal class ArmedLauncherArmBehavioursDefinitions_MonoComponent : Behaviours.Arms.Weapons.Launchers.ArmedLauncherArmBehavioursDefinitions_MonoComponent, IArmedLauncherArmBehaviourDefinitions
+    internal class ArmedLauncherArmBehavioursDefinitions_MonoComponent : Behaviours.Arms.Weapons.Launcher.ArmedLauncherArmBehavioursDefinitions_MonoComponent, IArmedLauncherArmBehaviourDefinitions
     {
         [Obsolete]
         [SerializeField]

@@ -1,6 +1,6 @@
 ﻿using Tests.Behaviours.Arm.Weapons;
 
-namespace Tests.Behaviours.Arms.Weapons.Launchers
+namespace Tests.Behaviours.Arms.Weapons.Launcher
 {
     internal class Idle : ArmedArmStateBase
     {

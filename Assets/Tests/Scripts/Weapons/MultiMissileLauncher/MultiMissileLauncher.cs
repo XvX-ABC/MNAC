@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Tests.Behaviours.Arms.Weapons.Launchers;
+using Tests.Behaviours.Arms.Weapons.Launcher;
 using Tests.Utilities.Timeline;
 using Tests.Weapons.Launcher;
 using Tests.Weapons.MissileLauncher;

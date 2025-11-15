@@ -12,7 +12,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
     [RequiredComponent(typeof(AimIK))]
     internal class ArmedLauncherArmBehaviour_Obsolete : ArmedWeaponArmBehaviourBase_MonoComponent_Obsolete
     {
-        Behaviours.Arms.Weapons.Launchers.ArmedLauncherArmBehaviour_Obsolete _behaviour;
+        Behaviours.Arms.Weapons.Launcher.ArmedLauncherArmBehaviour_Obsolete _behaviour;
         //TargetsCatcher_Obsolete _targetsCatcher;
         IArmedLauncherArmBehaviourDefinitions _definitions;
         AimIK _aimIk;
