@@ -90,7 +90,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         [SerializeField]
         IndicatorsManager _manager;
         [SerializeField]
-        RingCatcher _ringCatcher;
+        CursorIndicator cursorIndicator;
         [SerializeField]
         ushort _handleAmountInCoroutine = 30;
         [SerializeField]
@@ -107,8 +107,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         {
             LockTarget.indicatorsManager = _manager;
             _screenObjsCatcher = new(_camera, _handleAmountInCoroutine);
-            _ringCatcher.Camera = _camera;
-            _locker = new(_screenObjsCatcher, LockTarget.GetInstance, LockTarget.ReleaseInstance, _camera, _manager, _ringCatcher, null, _handleAmountInCoroutine);
+            _locker = new(_screenObjsCatcher, LockTarget.GetInstance, LockTarget.ReleaseInstance, _camera, cursorIndicator, null, _handleAmountInCoroutine);
         }
         private void Start()
         {
@@ -165,19 +164,15 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
                 GUILayout.Label("Cursor Position: " + _locker.CursorPosition);
                 GUILayout.Label("Origin Position: " + _locker.OriginWorldPosition);
                 GUILayout.Label("Catch Angle: " + _locker.CatchAngle);
-                GUILayout.Label("Catch Direction: " + _locker.cursorPositionDeltaCache.normalized);
-                GUILayout.Label("Current Num: " + _locker._num);
                 GUILayout.Label("Enabled: " + _locker.Enabled);
                 GUILayout.Label("Main Target Name: : " + _locker.MainTargetObj);
                 GUILayout.Label("Main Lock Target Name" + _locker.MainLockTarget?.Obj?.name ?? "");
                 GUILayout.Label("Main Lock Target Type: " + (_locker.MainLockTarget?.LockType ?? LockType.None).ToString());
                 GUILayout.Label("Main Lock Target Indicator Type:" + (_locker.MainLockTarget?.indicator?.Type).ToString() ?? "null");
-                GUILayout.Label(_locker.statemachine.ToString());
                 GUILayout.EndVertical();
 
             }
 
-            _ringCatcher.OnGUIImpl();
             //GUILayout.BeginVertical();
             //GUILayout.Label("Target Locker Test");
             //GUILayout.Label("Cursor Position: " + _locker.CursorPosition);
