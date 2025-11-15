@@ -45,8 +45,13 @@ namespace Tests.UI
         }
         public bool HIde
         {
-            get => !gameObject.activeSelf;
-            set => gameObject.SetActive(!value);
+            get => this == null ? true : !gameObject.activeSelf;
+            set
+            {
+                if (this == null)
+                    return;
+                gameObject.SetActive(!value);
+            }
         }
 
         private void Awake()
