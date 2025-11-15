@@ -1,6 +1,6 @@
 ﻿using Tests.States;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher
+namespace Tests.Interaction
 {
     internal class TargetLockerStatemachine : WithCallbackPlayableStatemachine<object>
     {

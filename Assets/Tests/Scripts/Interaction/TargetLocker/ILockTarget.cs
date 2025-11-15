@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher
+namespace Tests.Interaction
 {
     public interface ILockTarget
     {

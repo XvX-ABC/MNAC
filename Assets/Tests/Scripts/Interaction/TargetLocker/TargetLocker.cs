@@ -1,17 +1,12 @@
-﻿using DG.Tweening;
+﻿using Codice.Client.Common.FsNodeReaders;
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Tests.Interaction;
 using Tests.States;
-using Tests.UI;
 using Tests.Utilities.Timeline;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Pool;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher
+namespace Tests.Interaction
 {
 
     public class TargetLocker<T> where T : class, ILockTarget
@@ -136,8 +131,9 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         ObstacleDetector _obstacleDetector;
 
 
-        IndicatorsManager _indicatorManager;
-        RingCatcher _ringCatcher;
+        //IndicatorsManager _indicatorManager;
+        //RingCatcher _ringCatcher;
+        ICursorReceiver _cursorReceiver;
 
         [Obsolete]
         GameObject _mainTargetObj;
@@ -174,7 +170,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             set
             {
                 _screenObjsCatcher.Enabled = value;
-                _ringCatcher.HIde = !value;
+                _cursorReceiver.Enabled = value;
             }
         }
 
@@ -193,7 +189,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
                 _mainTargetChangedAction?.Invoke(ov, value);
             }
         }
-        internal T MainLockTarget
+        public T MainLockTarget
         {
             get => _mainLockTarget;
             set
@@ -202,7 +198,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
                 if (value != null)
                 {
                     value.LockType = LockType.Lock_Confirmed;
-                    _targetChangeTween = DOTween.To(() => _ringCatcher.CursorPosition, pos => _ringCatcher.CursorPosition = pos, _camera.WorldToScreenPoint(value.Obj.transform.position), _targetChangDuration);
+                    _targetChangeTween = DOTween.To(() => _cursorReceiver.CursorPosition, pos => _cursorReceiver.CursorPosition = pos, _camera.WorldToScreenPoint(value.Obj.transform.position), _targetChangDuration);
                 }
                 _mainLockTarget = value;
                 _mainLockTargetChangedAction?.Invoke(ov, _mainLockTarget);
@@ -214,15 +210,14 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         internal Action<T, T> MainLockTargetChangedAction { get => _mainLockTargetChangedAction; set => _mainLockTargetChangedAction = value; }
         public ObstacleDetector ObstacleDetector { get => _obstacleDetector; set => _obstacleDetector = value; }
 
-        public TargetLocker(GameObjsInScreenCatcher_New screenObjsCatcher, Func<GameObject, LockType, T> getTargetFunc, Action<T> releaseTargetAction, Camera camera, IndicatorsManager indicatorsManager, RingCatcher ringCatcher, ObstacleDetector obstacleDetector = null, ushort handleAmountInCoroutine = 30, float catchAngle = 60, float targetChangedDuration = 0.2f, float receiveInputDuration = 0.05f, bool enabled = true)
+        public TargetLocker(GameObjsInScreenCatcher_New screenObjsCatcher, Func<GameObject, LockType, T> getTargetFunc, Action<T> releaseTargetAction, Camera camera, ICursorReceiver cursorReceiver, ObstacleDetector obstacleDetector = null, ushort handleAmountInCoroutine = 30, float catchAngle = 60, float targetChangedDuration = 0.2f, float receiveInputDuration = 0.05f, bool enabled = true)
         {
             _targets = new();
             _getTargetFunc = getTargetFunc ?? throw new ArgumentNullException(nameof(getTargetFunc));
             _releaseTargetAction = releaseTargetAction ?? throw new ArgumentNullException(nameof(releaseTargetAction));
             _camera = camera ?? throw new ArgumentNullException(nameof(camera));
-            _indicatorManager = indicatorsManager;
+            _cursorReceiver = cursorReceiver ?? throw new ArgumentNullException(nameof(cursorReceiver));
             _screenObjsCatcher = screenObjsCatcher ?? throw new ArgumentNullException(nameof(screenObjsCatcher));
-            _ringCatcher = ringCatcher;
             _obstacleDetector = obstacleDetector;
 
             CatchAngle = catchAngle;
@@ -269,11 +264,9 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         void WhenCaughtItem(GameObject obj)
         {
             AddTargetBy(obj, LockType.Lock_Unconfirm);
-            _indicatorManager?.AddTargetFor<IndicatedTarget>(obj);
         }
         void WhenReleaseItem(GameObject obj)
         {
-            _indicatorManager?.RemoveTargetFor<IndicatedTarget>(obj);
             if (obj == _mainTargetObj)
             {
                 MainTargetObj = null;
@@ -335,7 +328,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         {
             //_ringCatcher.CursorPosition = _mainTargetObj != null ? _camera.WorldToScreenPoint(_mainTargetObj.transform.position) : _cursorPosition;
             if (_targetChangeTween == null || !_targetChangeTween.IsPlaying())
-                _ringCatcher.CursorPosition = _mainLockTarget != null ? _camera.WorldToScreenPoint(_mainLockTarget.Obj.transform.position) : _cursorPosition;
+                _cursorReceiver.CursorPosition = _mainLockTarget != null ? _camera.WorldToScreenPoint(_mainLockTarget.Obj.transform.position) : _cursorPosition;
         }
         bool IsBehindObstacle(GameObject obj)
         {
