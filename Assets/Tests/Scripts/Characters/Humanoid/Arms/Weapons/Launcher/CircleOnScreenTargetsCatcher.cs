@@ -4,21 +4,37 @@ using System.Collections.Generic;
 using System.Linq;
 using Tests.Behaviours.Arms.Weapons.Launcher;
 using Tests.Behaviours.Input;
-using Tests.Characters.Humanoid.Interaction.Input;
-using Tests.Characters.UI;
 using Tests.Interaction;
 using Tests.UI;
-using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
+using IndicatedTarget = Tests.Behaviours.Arms.Weapons.Launcher.IndicatedTarget;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
-    public partial class CircleOnScreenTargetsCatcher : ComponentBase, ITargetsCatcher_New<GameObjTarget>, ITargetsCatcher
+    //public class LauncherLocker
+    //{
+    //    CircleOnScreenTargetsCatcher _circleCatcher;
+    //    IGameObjTarget _mainTarget;
+    //    public LauncherLocker()
+    //    {
+    //        _circleCatcher.TargetsChangedAction += WhenTargetsChanged;
+    //    }
+    //    void WhenTargetsChanged(List<IGameObjTarget> targets)
+    //    {
+    //        targets.Sort((a, b) =>
+    //        {
+    //            return 0;
+    //        });
+    //    }
+
+    //}
+    public partial class CircleOnScreenTargetsCatcher : ComponentBase, ITargetsCatcher_New<IGameObjTarget_New>
     {
-        GameObjsInScreenFilter _filter;
+        GameObjsInScreenCatcher _screenCatcher;
         Tests.Interaction.CircleOnScreenTargetsCatcher _catcher;
         RingCatcher _ringCatcher;
+        [Obsolete]
         TargetsDisplay _targetDisplay;
         IndicatorsManager _indicatorsManager;
         Camera _camera;
@@ -33,10 +49,11 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         {
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
         }
+        [Obsolete]
         public CircleOnScreenTargetsCatcher(Camera camera, IBaseInput input, GameObject actorObj, RingCatcher ringCatcher, TargetsDisplay targetsDisplay, ICircleOnScreenTargetsCatcherDefinitions definitions, bool enabled = true)
         {
-            _filter = new(camera, definitions.FilterAmountOneFrame);
-            _catcher = new(_filter.ObjsInScreen, actorObj, camera, definitions.TargetsMask, definitions.FilterAmountOneFrame);
+            _screenCatcher = new(camera, definitions.FilterAmountOneFrame);
+            _catcher = new(_screenCatcher.ObjsInScreen, actorObj, camera, definitions.TargetsMask, definitions.FilterAmountOneFrame);
             _ringCatcher = ringCatcher ?? throw new ArgumentNullException(nameof(ringCatcher));
             _actorObj = actorObj ?? throw new ArgumentNullException(nameof(actorObj));
             _targetDisplay = targetsDisplay ?? throw new ArgumentNullException(nameof(targetsDisplay));
@@ -48,7 +65,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
             Enabled = enabled;
 
-            _catcher.TargetsChangedAction += targets =>
+            _catcher.CaughtItemsChangedAction += targets =>
             {
                 _targetsChangedAction?.Invoke(targets.Cast<ITarget>().ToList());
             };
@@ -56,8 +73,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
         public CircleOnScreenTargetsCatcher(Camera camera, IBaseInput input, GameObject actorObj, RingCatcher ringCatcher, IndicatorsManager indicatorsManager, ICircleOnScreenTargetsCatcherDefinitions definitions, bool enabled = true)
         {
-            _filter = new(camera, definitions.FilterAmountOneFrame);
-            _catcher = new(_filter.ObjsInScreen, actorObj, camera, definitions.TargetsMask, definitions.FilterAmountOneFrame);
+            _screenCatcher = new(camera, definitions.FilterAmountOneFrame);
+            _catcher = new(_screenCatcher.ObjsInScreen, actorObj, camera, definitions.TargetsMask, definitions.FilterAmountOneFrame);
             _ringCatcher = ringCatcher ?? throw new ArgumentNullException(nameof(ringCatcher));
             _actorObj = actorObj ?? throw new ArgumentNullException(nameof(actorObj));
             _ringCatcher.Camera = camera;
@@ -68,21 +85,21 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
             Enabled = enabled;
 
-            _catcher.TargetsChangedAction += targets =>
+            _catcher.CaughtItemsChangedAction += targets =>
             {
                 _targetsChangedAction?.Invoke(targets.Cast<ITarget>().ToList());
             };
 
             _catcher.Radius = definitions.CatchingViewPortRadius;
-            _catcher.TargetCaughtAction += WhenTargetCaught;
-            _catcher.TargetReleaseAction += WhenTargetRelease;
+            _catcher.ItemCaughtAction += WhenTargetCaught;
+            _catcher.ItemReleaseAction += WhenTargetRelease;
         }
 
         public override string Name => "launcher_targets_catcher_v0";
 
-        public IReadOnlyList<GameObjTarget> Targets => _catcher.Targets;
+        public IReadOnlyList<IGameObjTarget_New> CaughtItems => _catcher.CaughtItems;
 
-        public Action<IList<GameObjTarget>> TargetsChangedAction { get => _catcher.TargetsChangedAction; set => _catcher.TargetsChangedAction = value; }
+        public Action<List<IGameObjTarget_New>> CaughtItemsChangedAction { get => _catcher.CaughtItemsChangedAction; set => _catcher.CaughtItemsChangedAction = value; }
         public float CatchingRadius
         {
             get => _catcher.Radius;
@@ -101,7 +118,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                 _catcher.Enabled = value;
                 if (_ringCatcher != null)
                     _ringCatcher.HIde = !value;
-                _filter.Enabled = value;
+                _screenCatcher.Enabled = value;
             }
         }
         internal Tests.Interaction.CircleOnScreenTargetsCatcher catcher
@@ -114,15 +131,14 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             }
         }
 
-        IReadOnlyList<ITarget> ITargetsCatcher.Targets => _catcher.Targets;
 
-        Action<IList<ITarget>> ITargetsCatcher.TargetsChangedAction { get => _targetsChangedAction; set => _targetsChangedAction = value; }
-        void WhenTargetCaught(GameObjTarget target)
+
+        void WhenTargetCaught(IGameObjTarget_New target)
         {
             var obj = target.Obj;
             _indicatorsManager.AddTargetFor<IndicatedTarget>(obj);
         }
-        void WhenTargetRelease(GameObjTarget target)
+        void WhenTargetRelease(IGameObjTarget_New target)
         {
             var obj = target.Obj;
             _indicatorsManager.RemoveTargetFor<IndicatedTarget>(obj);
@@ -135,17 +151,27 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         }
         void UpdateRingCatcher()
         {
-            _ringCatcher.MousePosition = _input.MousePosition;
+            _ringCatcher.CursorPosition = _input.MousePosition;
             var pixelSize = _camera.pixelRect.size;
             _ringCatcher.RingRadius = Mathf.Max(pixelSize.x, pixelSize.y) * _catcher.Radius;
         }
         public IEnumerator FilterUpdateWithCoroutine()
         {
-            return _filter.Update();
+            return _screenCatcher.Update();
         }
         public IEnumerator CatcherUpdateWithCoroutine()
         {
             return _catcher.UpdateWithCoroutine();
+        }
+
+        public void AddItem(IGameObjTarget_New target)
+        {
+            _catcher.AddItem(target);
+        }
+
+        public void RemoveItem(IGameObjTarget_New target)
+        {
+            _catcher.RemoveItem(target);
         }
     }
 }
