@@ -28,7 +28,7 @@ namespace Tests.UI
         [SerializeField]
         Color _unlockColor;
         [SerializeField]
-        Color _lockOnColor;
+        Color _unconfirmColor;
         [SerializeField]
         Color _confirmedColor;
         [SerializeField]
@@ -44,8 +44,8 @@ namespace Tests.UI
                 _image.color = _type switch
                 {
                     LockType.Unlock => _unlockColor,
-                    LockType.LockOn_WaitConfirm => _lockOnColor,
-                    LockType.LockOn_Confirmed => _confirmedColor,
+                    LockType.Lock_Unconfirm => _unconfirmColor,
+                    LockType.Lock_Confirmed => _confirmedColor,
                     _ => throw new NotImplementedException()
                 };
             }
@@ -53,8 +53,8 @@ namespace Tests.UI
         public enum LockType
         {
             Unlock,
-            LockOn_WaitConfirm,
-            LockOn_Confirmed,
+            Lock_Unconfirm,
+            Lock_Confirmed,
         }
         protected override void Awake()
         {

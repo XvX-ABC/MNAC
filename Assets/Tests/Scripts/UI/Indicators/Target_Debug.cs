@@ -28,8 +28,8 @@ namespace Tests.UI
                 var t = _health switch
                 {
                     < 50 => LockType.Unlock,
-                    >= 50 and < 75 => LockType.LockOn_WaitConfirm,
-                    >= 75 => LockType.LockOn_Confirmed,
+                    >= 50 and < 75 => LockType.Lock_Unconfirm,
+                    >= 75 => LockType.Lock_Confirmed,
                 };
                 _indicator.Type = t;
             }

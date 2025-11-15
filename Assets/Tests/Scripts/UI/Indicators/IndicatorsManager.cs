@@ -43,15 +43,16 @@ namespace Tests.UI
             base.Dispose();
             blackboard.TryUnregisterField(UIBlackboardFields.Indicators_Manager);
         }
-        public void AddTarget(IndicatedTarget target)
+        internal void AddTarget(IndicatedTarget target)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
             if (_targets.Contains(target))
                 return;
+            target.Indicator = GetIndicator(target.IndicatorType);
             _targets.Add(target);
         }
-        public void RemoveTarget(IndicatedTarget target)
+        internal void RemoveTarget(IndicatedTarget target)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -92,15 +93,16 @@ namespace Tests.UI
                     if (target.IsValid)
                     {
 
-                        var pos = target.Position;
-                        var spos = _camera.WorldToScreenPoint(pos);
+                        //var pos = target.Position;
+                        //var spos = _camera.WorldToScreenPoint(pos);
+                        var spos = target.GetScreenPosition(_camera);
 
-                        if (!target.Indicator)
-                            target.Indicator = GetIndicator(target.IndicatorType);
+                        //if (!target.Indicator)
+                        //    target.Indicator = GetIndicator(target.IndicatorType);
 
                         var indicator = target.Indicator;
                         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(_rectTransform, spos, null, out var localPos))
-                            indicator.GetComponent<RectTransform>().localPosition = localPos;
+                            indicator.LocalPosition = localPos;
                     }
                     if (_handleAmountInCoroutine <= 0 || i % _handleAmountInCoroutine == 0)
                         yield return null;

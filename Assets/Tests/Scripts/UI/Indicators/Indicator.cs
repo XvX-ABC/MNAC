@@ -17,7 +17,7 @@ namespace Tests.UI
         [SerializeField]
         protected float width;
         [SerializeField]
-        protected float lockOnDuration;
+        protected float animationDuration;
         [SerializeField]
         protected Animation animationDefinitions;
         protected RectTransform rectTransform;
@@ -31,8 +31,10 @@ namespace Tests.UI
                 UpdateWidth();
             }
         }
-        public virtual float LockOnDuration { get => lockOnDuration; set => lockOnDuration = value; }
+        public virtual float AnimationDuration { get => animationDuration; set => animationDuration = value; }
         public virtual Animation AnimationDefinitions { get => animationDefinitions; set => animationDefinitions = value; }
+        public Vector3 LocalPosition { get => rectTransform.localPosition; set => rectTransform.localPosition = value; }
+
         protected override void Awake()
         {
             base.Awake();
@@ -44,9 +46,9 @@ namespace Tests.UI
         }
         protected virtual void OnEnable()
         {
-            if (lockOnDuration > 0 && animationDefinitions.DiffusionProportion >= 1)
+            if (animationDuration > 0 && animationDefinitions.DiffusionProportion >= 1)
             {
-                DOTween.To(() => width * animationDefinitions.DiffusionProportion, x => Width = x, width, lockOnDuration);
+                DOTween.To(() => width * animationDefinitions.DiffusionProportion, x => Width = x, width, animationDuration);
 
             }
         }
