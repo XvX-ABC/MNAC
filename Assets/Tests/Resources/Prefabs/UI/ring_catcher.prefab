@@ -52,6 +52,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 0}
   _allowInputPosition: 1
+  _allowShowCursor: 0
+  _cursorPositionChangeDuration: 0.3
 --- !u!114 &1435074950683465101
 MonoBehaviour:
   m_ObjectHideFlags: 0
