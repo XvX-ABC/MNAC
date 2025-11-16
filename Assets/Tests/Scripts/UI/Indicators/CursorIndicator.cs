@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Tests.UI
 {
+    [ExecuteAlways]
     [RequireComponent(typeof(RectTransform))]
     public class CursorIndicator : ComponentBase_MonoComponent, ICursorIndicator
     {
@@ -45,6 +46,11 @@ namespace Tests.UI
         {
             base.Awake();
             rectTransform = GetComponent<RectTransform>();
+        }
+        private void OnValidate()
+        {
+            if (rectTransform != null)
+                UpdateWidth();
         }
 
         void UpdateWidth()
