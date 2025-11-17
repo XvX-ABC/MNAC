@@ -111,7 +111,8 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
             set
             {
                 _enabled = value;
-                _controller.OutputSetting.Weight = _wholeBody.controller.OutputSetting.Weight = value ? 1 : 0;
+                //DONE：动画器初始化完成后，输出权重错误为1，应该为0
+                //_controller.OutputSetting.Weight = _wholeBody.controller.OutputSetting.Weight = value ? 1 : 0;
             }
         }
         public ISword Sword
