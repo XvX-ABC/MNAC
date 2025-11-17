@@ -12,18 +12,17 @@ using Tests.Utilities.Timeline;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
-//TODO: 修改字符串中的character单词
 namespace Tests.Characters.Humanoid.Animations
 {
     internal class HumanAnimationStatemachine : WithCallbackPlayableStatemachine<object>
     {
-        public HumanAnimationStatemachine(bool enabled = true) : base("character_statemachine", enabled)
+        public HumanAnimationStatemachine(bool enabled = true) : base("humanoid_statemachine", enabled)
         {
         }
     }
     internal class HumanAnimationStateBase : WithCallbackPlayableState<object>
     {
-        public HumanAnimationStateBase(string name, float duration = 0, bool enabled = true) : base(name == null ? "character_animation_state" : $"character_animation_state_{name}", duration, enabled)
+        public HumanAnimationStateBase(string name, float duration = 0, bool enabled = true) : base(name == null ? "humanoid_animation_state" : $"humanoid_animation_state_{name}", duration, enabled)
         {
         }
     }
@@ -154,12 +153,10 @@ namespace Tests.Characters.Humanoid.Animations
                 if (_enabled)
                 {
 
-                    Debug.Log("graph start playing: " + graph.IsPlaying());
                     graph.Play();
                 }
                 else
                 {
-                    Debug.Log("graph stop playing: " + graph.IsPlaying());
                     graph.Stop();
                 }
             }
