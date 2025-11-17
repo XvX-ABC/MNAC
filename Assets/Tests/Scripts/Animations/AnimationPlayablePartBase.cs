@@ -10,10 +10,10 @@ namespace Tests.Animations
         protected Playable playablePart;
         OutputSetting _outputSetting;
         protected AnimationPlayableNode node;
-        //HACK: 临时处理，后续需要修改
         protected internal IOutputSetting outputSetting
         {
             get => _outputSetting;
+        //HACK: 临时处理，后续需要修改
             set => _outputSetting = value as OutputSetting;
         }
         public Playable PlayablePart => playablePart;
