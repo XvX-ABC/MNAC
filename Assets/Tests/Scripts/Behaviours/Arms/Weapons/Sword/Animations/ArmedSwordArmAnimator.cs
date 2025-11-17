@@ -73,7 +73,6 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
 
             InitializeStatemachine();
         }
-        //DONE: 双手同时加载时，会出现抢占输入端口情况
         void InitializeWholeBodyAnimation(PlayableGraph graph, ControllerPlayable baseController, WholeBodyMixerPlayable mixer, ControllerPlayable wholeBodyController)
         {
             wholeBodyController.OutputSetting.Weight = 0;
@@ -87,18 +86,14 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
             statemachine.AddState(boosting);
             statemachine.AddState(slash);
 
-            //var i_b = new BlendingTransition<object>(idle, boosting, () => _boostingHelper.EntryEvent, null, 0);
             var i_b = new BlendingTransition<object>(idle, boosting, () => _boostingHelper.EntryEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Idle_Boosting));
             statemachine.AddTransitionFor(i_b);
 
-            //var b_s = new BlendingTransition<object>(boosting, slash, () => _slashHelper.EntryEvent, null, 0);
-            //var b_i = new BlendingTransition<object>(boosting, idle, () => _boostingHelper.ExitEvent, null, 0, 0, -1, InterruptionSource.None);
             var b_s = new BlendingTransition<object>(boosting, slash, () => _slashHelper.EntryEvent, null, 0);
             var b_i = new BlendingTransition<object>(boosting, idle, () => _boostingHelper.ExitEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Boosting_Idle));
             statemachine.AddTransitionFor(b_s);
             statemachine.AddTransitionFor(b_i);
 
-            //var s_i = new BlendingTransition<object>(slash, idle, () => _slashHelper.ExitEvent, null, 0, 0, -1, InterruptionSource.None);
             var s_i = new BlendingTransition<object>(slash, idle, () => _slashHelper.ExitEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Slash_Idle));
             statemachine.AddTransitionFor(s_i);
 

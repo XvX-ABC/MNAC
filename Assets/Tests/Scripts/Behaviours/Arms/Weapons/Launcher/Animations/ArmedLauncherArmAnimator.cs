@@ -37,7 +37,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         internal AmmoLoad reload;
         internal WithCallbackPlayableStatemachine<object> statemachine;
         internal ArmedLauncherAnimationState state;
-        //TODO: 不该从LocomotionCore.definitions获取速度，将LocomotionCore修改为速度字段
         [Obsolete]
         public ArmedLauncherArmAnimator(
             PlayableGraph graph,

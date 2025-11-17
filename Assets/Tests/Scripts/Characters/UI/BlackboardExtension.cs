@@ -5,7 +5,6 @@ namespace Tests.Characters.UI
 {
     public static class BlackboardExtension
     {
-        //TODO: 通用Blackboard修改为UIBlackboard
         public static bool TryRegisterUIBlackboard(this Blackboard blackboard, Blackboard uiBlackboard)
         {
             if (blackboard == null)
