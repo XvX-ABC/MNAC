@@ -9,14 +9,14 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
     internal class AimingHelper
     {
         AimIK _aimIK;
-        ITarget _target;
+        IGameObjTarget _currentTarget;
         IWeapon _controlledWeapon;
         public AimingHelper(AimIK aimIK)
         {
             _aimIK = aimIK ?? throw new ArgumentNullException(nameof(aimIK));
         }
 
-        public ITarget Target { get => _target; set => _target = value; }
+        public IGameObjTarget Target
         public IWeapon ControlledWeapon
         {
             get => _controlledWeapon;

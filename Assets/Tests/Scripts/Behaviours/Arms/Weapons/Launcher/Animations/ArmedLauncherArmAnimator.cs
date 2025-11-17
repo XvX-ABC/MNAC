@@ -112,7 +112,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
                 _controller.OutputSetting.Weight = value ? 1 : 0;
             }
         }
-        public ITarget AimingTarget { get => _aimingHelper.Target; set => _aimingHelper.Target = value; }
+        public IGameObjTarget AimingTarget { get => _aimingHelper.Target; set => _aimingHelper.Target = value; }
         public ILauncher Launcher
         {
             get => _launcher;
@@ -134,10 +134,10 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
 
 
         }
-        void WhenTargetsChanged(IList<ITarget> targets)
-        {
-            _aimingHelper.Target = targets.Count > 0 ? targets[^1] : null;
-        }
+        //void WhenTargetsChanged(IList<Interaction.ITarget_Obsolete> targets)
+        //{
+        //    _aimingHelper.Target = targets.Count > 0 ? targets[^1] : null;
+        //}
 
         void InitializeStatemacine(AimIK aimIK)
         {

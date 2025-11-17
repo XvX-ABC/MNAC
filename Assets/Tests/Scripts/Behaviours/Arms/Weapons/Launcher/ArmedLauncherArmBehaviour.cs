@@ -17,10 +17,10 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         IArmedLauncherArmBehaviourDefinitions _definitions;
         [Obsolete]
         ITargetsCatcher _targetsCatcher;
-        //TargetLocker _targetLocker;
+        TargetLocker _targetLocker;
         IWeaponControlInput _winput;
         ILauncher _launcher;
-        internal ITarget target;
+        internal Interaction.ITarget_Obsolete target;
 
 
         internal Idle idle;
@@ -71,33 +71,33 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
                 _winput = value;
             }
         }
-        [Obsolete]
-        public ITargetsCatcher TargetsCatcher
-        {
-            get => _targetsCatcher;
-            set
-            {
-                if (_targetsCatcher != null)
-                {
-                    _targetsCatcher.TargetsChangedAction -= WhenTargetsChanged;
-                }
-                if (value != null)
-                    value.TargetsChangedAction += WhenTargetsChanged;
-                _targetsCatcher = value;
-            }
-        }
-        //public TargetLocker TargetLocker
+        //[Obsolete]
+        //public ITargetsCatcher TargetsCatcher
         //{
-        //    get => _targetLocker;
+        //    get => _targetsCatcher;
         //    set
         //    {
-        //        if (_targetLocker != null)
-        //            _targetLocker.MainTargetChangedAction -= WhenTargetChanged;
+        //        if (_targetsCatcher != null)
+        //        {
+        //            _targetsCatcher.TargetsChangedAction -= WhenTargetsChanged;
+        //        }
         //        if (value != null)
-        //            value.MainTargetChangedAction += WhenTargetChanged;
-        //        _targetLocker = value;
+        //            value.TargetsChangedAction += WhenTargetsChanged;
+        //        _targetsCatcher = value;
         //    }
         //}
+        public TargetLocker TargetLocker
+        {
+            get => _targetLocker;
+            set
+            {
+                if (_targetLocker != null)
+                    _targetLocker.MainObjTargetChangedAction -= WhenTargetChanged;
+                if (value != null)
+                    value.MainObjTargetChangedAction += WhenTargetChanged;
+                _targetLocker = value;
+            }
+        }
         public override IWithCallbackPlayableState<object> State => _state;
         public override bool Activated
         {
@@ -105,19 +105,20 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             set
             {
                 base.Activated = value;
-                _targetsCatcher.Enabled = value;
+                //_targetsCatcher.Enabled = value;
                 statemachine.Enabled = value;
                 animator.Enabled = value;
             }
         }
-        void WhenTargetsChanged(IList<ITarget> targets)
+        //[Obsolete]
+        //void WhenTargetsChanged(IList<Interaction.ITarget_Obsolete> targets)
+        //{
+        //    target = targets.Count > 0 ? targets[^1] : null;
+        //    animator.AimingTarget = target;
+        //}
+        void WhenTargetChanged(IGameObjTarget _, IGameObjTarget newTarget)
         {
-            target = targets.Count > 0 ? targets[^1] : null;
-            animator.AimingTarget = target;
-        }
-        void WhenTargetChanged(GameObject oldTarget, GameObject newTarget)
-        {
-            //TODO: 完善逻辑
+            animator.AimingTarget = newTarget;
         }
         void InitializeStatemachine()
         {
