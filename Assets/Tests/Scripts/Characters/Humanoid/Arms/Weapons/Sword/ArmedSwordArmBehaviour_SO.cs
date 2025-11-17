@@ -397,7 +397,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
-            _statemachine.ChangeStateTo(_occupy.otherArm);
+            _statemachine?.ChangeStateTo(_occupy.otherArm);
             _statemachine?.FromPreviousStateTransitionBegin(currentTransition);
         }
 
