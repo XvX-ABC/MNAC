@@ -57,6 +57,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
             foreach (var b in controller.behavioursCache)
             {
                 Node.AddChild(b.Node);
+                b.Activated = false;
             }
 
         }

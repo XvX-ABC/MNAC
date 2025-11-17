@@ -39,6 +39,8 @@ namespace Tests.Behaviours.Arms.Weapons
                 throw new ArgumentNullException(nameof(weaponCore));
             behaviours = behaviours.Where(b => b != null).ToArray();
             this.behavioursCache = behaviours;
+            foreach (var b in behavioursCache)
+                b.Activated = false;
             //weaponBehavioursMapping = new();
 
             //foreach (var od in definitions.Origins)
