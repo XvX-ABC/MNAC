@@ -76,17 +76,6 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         //DONE: 双手同时加载时，会出现抢占输入端口情况
         void InitializeWholeBodyAnimation(PlayableGraph graph, ControllerPlayable baseController, WholeBodyMixerPlayable mixer, ControllerPlayable wholeBodyController)
         {
-            //var bnode = baseController.Node;
-            //var parent = bnode.Parent;
-            //parent.RemoveChild(bnode);
-
-            ////var mixer = new MixerPlayable(graph, 2);
-            //mixer.OutputSetting.Weight = 1;
-
-            //var mnode = mixer.Node;
-            //parent.AddChild(mnode);
-
-            //mnode.AddChild(bnode);
             wholeBodyController.OutputSetting.Weight = 0;
             mixer.Node.AddChild(wholeBodyController.Node);
             _wholeBody.mixer = mixer;
