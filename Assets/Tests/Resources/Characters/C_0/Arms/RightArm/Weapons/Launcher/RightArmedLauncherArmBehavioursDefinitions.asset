@@ -13,23 +13,6 @@ MonoBehaviour:
   m_Name: RightArmedLauncherArmBehavioursDefinitions
   m_EditorClassIdentifier: 
   _definitions:
-    aimingClip: {fileID: 7400000, guid: a73c1b60d5549de45949867a79b9748f, type: 2}
-    reloadClip: {fileID: 7400000, guid: 6a26022e94c42484db2f6e3019b314d8, type: 2}
     idleAndAimTransitionLength: 0
     aimAndReloadTransitionsLength: 0
-    targetsCatcher:
-      terrainMask:
-        serializedVersion: 2
-        m_Bits: 0
-      targetsMask:
-        serializedVersion: 2
-        m_Bits: 0
-      catchingRange: {x: 0, y: 0, z: 0, w: 0}
-      allowCatchTerrain: 0
-    targetsCatcherV0:
-      _tag: 
-      _filterCountOneFrame: 3
-      _targetsMask:
-        serializedVersion: 2
-        m_Bits: 1
-      _selectionViewPortRadius: 0.5
+    _targetLocker: {fileID: 11400000, guid: 8e5d341e187da164b8dd152a6d71620e, type: 2}
