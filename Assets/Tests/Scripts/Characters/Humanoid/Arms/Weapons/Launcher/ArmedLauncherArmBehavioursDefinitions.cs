@@ -8,11 +8,18 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
     {
         [Obsolete]
         TargetsCatcherDefinitions targetsCatcher;
-        [SerializeField]
+        [Obsolete]
         CircleOnScreenTargetsCatcherDefinitions targetsCatcherV0;
+        //[SerializeField]
+        //TargetLockerDefinitions _targetLocker;
+        [SerializeField]
+        TargetLockerDefinitions_SO _targetLocker;
         [Obsolete]
         public ITargetsCatcherDefinitions TargetsCatcher => targetsCatcher;
 
+        [Obsolete]
         public ICircleOnScreenTargetsCatcherDefinitions CircleOnScreenTargetsCatcher => targetsCatcherV0;
+        public ITargetLockerDefinitions TargetLocker { get => _targetLocker; }
+
     }
 }

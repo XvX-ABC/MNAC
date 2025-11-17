@@ -1,7 +1,5 @@
 ﻿using RootMotion.FinalIK;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.Behaviours.Arms.Weapons.Launcher;
 using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
@@ -27,8 +25,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
     {
         ArmedLauncherArmAnimator _animator;
         Behaviours.Arms.Weapons.Launcher.ArmedLauncherArmBehaviour _behaviour;
-        //IArmedLauncherArmBehaviourDefinitions _definitions;
-        //IArmedLauncherArmAnimationDefinitions _animationDefinitions;
         [SerializeField]
         ArmedLauncherArmBehavioursDefinitions_SO _definitions;
         [SerializeField]
@@ -42,14 +38,12 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         public override IWeapon Weapon
         {
             get => _behaviour.Weapon;
-            //set => _behaviour.Weapon = value;
             set
             {
                 _behaviour.Weapon = value;
                 if (value is ILauncher launcher)
                 {
                     var definitions = launcher.Definitions;
-                    _targetsCatcher.CatchingRadius = definitions.TargetLock.ViewPortRadius;
                 }
             }
         }
@@ -80,6 +74,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                     _behaviour.Activated = value;
                     _targetLocker.Enabled = value;
                 }
+                Cursor.visible = !value;
                 enabled = value;
             }
         }
@@ -109,8 +104,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             blackboard.TryReadUIValueOrThrowException<ICursorIndicator>(CharacterUIBlackboardFields.Character_Actor_Cursor_Indicator, out var cursorIndicator);
             var aimIK = armObj.GetComponent<AimIK>();
 
-            _aimIK = armObj.GetComponent<AimIK>();
-
             var armInput = Part switch
             {
                 HumanPart.LeftArm => input.LArm,
@@ -125,9 +118,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             //_behaviour = new(_definitions, _animator);
             //_behaviour.TargetsCatcher = _targetsCatcher;
 
-            _animator = new(graph, _aimIK, rbody, world, groundDetector, locomotionCore, _definitions, _animationDefinitions, _targetsCatcher, weaponControlInput);
-            _behaviour = new(_definitions, _animator);
-            _behaviour.TargetsCatcher = _targetsCatcher;
 
             InitializeTargetLocker(input, camera, cursorIndicator);
             InitializeBehaviourAndAnimator(graph, aimIK, camera, input.BaseInput, rbody, world, groundDetector, locomotionCore, armInput.WeaponControl);
@@ -177,10 +167,16 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         }
         void UpdateTargetsCatcherFor(Blackboard blackboard)
         {
-            if (Activated)
-                blackboard.TryRegisterFieldOrWriteValue(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
-            else
-                blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher);
+            //if (Activated)
+            //{
+            //    blackboard.TryRegisterFieldOrWriteValue(CharacterBlackboardFields.TargetsCatcher, _targetLocker);
+            //}
+            //else
+            //{
+            //    blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher);
+            //}
+
+
             //if (Activated)
             //    blackboard.TryRegisterFieldOrWriteValue(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
             //else
@@ -192,6 +188,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             //    _targetsCatcher.Enabled = !_targetsCatcher.Enabled;
             //_targetsCatcher.LateUpdate();
             _behaviour.Update();
+            Cursor.lockState = _targetLocker.MainLockTarget == null ? CursorLockMode.None : CursorLockMode.Locked;
+        }
         public override void LateUpdate()
         {
             _targetLocker.LateUpdate();

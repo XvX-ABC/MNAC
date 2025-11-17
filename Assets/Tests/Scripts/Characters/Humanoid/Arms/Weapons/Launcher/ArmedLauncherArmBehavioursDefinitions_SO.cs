@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
@@ -9,6 +10,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         ArmedLauncherArmBehavioursDefinitions _definitions;
         public ITargetsCatcherDefinitions TargetsCatcher => _definitions.TargetsCatcher;
 
+        [Obsolete]
         public ICircleOnScreenTargetsCatcherDefinitions CircleOnScreenTargetsCatcher => _definitions.CircleOnScreenTargetsCatcher;
 
         public AnimationClip AimingClip => _definitions.AimingClip;
@@ -18,5 +20,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         public float IdleAndAimTransitionLength => _definitions.IdleAndAimTransitionLength;
 
         public float AimAndReloadTransitionLength => _definitions.AimAndReloadTransitionLength;
+
+        public ITargetLockerDefinitions TargetLocker => _definitions.TargetLocker;
     }
 }

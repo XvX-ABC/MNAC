@@ -1,5 +1,6 @@
 ﻿using System;
 using Tests.Interaction;
+using Tests.Weapons.Launcher;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
@@ -7,6 +8,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
     {
         [Obsolete]
         public ITargetsCatcherDefinitions TargetsCatcher { get; }
+        [Obsolete]
         public ICircleOnScreenTargetsCatcherDefinitions CircleOnScreenTargetsCatcher { get; }
+        public ITargetLockerDefinitions TargetLocker { get; }
     }
 }

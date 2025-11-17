@@ -14,5 +14,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         public ITargetsCatcherDefinitions TargetsCatcher => targetsCatcher;
 
         public ICircleOnScreenTargetsCatcherDefinitions CircleOnScreenTargetsCatcher => targetsCatcherV0;
+
+        public ITargetLockerDefinitions TargetLocker => throw new NotImplementedException();
     }
 }
