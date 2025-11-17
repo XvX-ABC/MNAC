@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb771b57a2a77b84bb27bc8cf27ecd33, type: 3}
+  m_Name: TargetLockerDefinitions
+  m_EditorClassIdentifier: 
+  _definitions:
+    _obstacleDetector:
+      _obstacleMask:
+        serializedVersion: 2
+        m_Bits: 0
+      _enableDebug: 0
+    _handleAmountInCoroutine: 30
+    _catchAngle: 60
+    _targetChangedDuration: 0.2
+    _receiveInputDuration: 0.03
+    _enabled: 1
