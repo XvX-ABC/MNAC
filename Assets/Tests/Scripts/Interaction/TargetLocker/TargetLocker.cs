@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Tests.Interaction
 {
 
-    public class TargetLocker<T> where T : class, ILockTarget
+    public class TargetLocker<T> : ITargetLocker<T> where T : class, ILockTarget
     {
         #region internal classes
         internal abstract class TargetLockerState : WithCallbackPlayableState
@@ -205,9 +205,7 @@ namespace Tests.Interaction
             }
         }
         public float CatchAngle { get => _catchAngle * 2; set => _catchAngle = value / 2; }
-        [Obsolete]
-        public Action<GameObject, GameObject> MainTargetChangedAction { get => _mainTargetChangedAction; set => _mainTargetChangedAction = value; }
-        internal Action<T, T> MainLockTargetChangedAction { get => _mainLockTargetChangedAction; set => _mainLockTargetChangedAction = value; }
+        public Action<T, T> MainTargetChangedAction { get => _mainLockTargetChangedAction; set => _mainLockTargetChangedAction = value; }
         public ObstacleDetector ObstacleDetector { get => _obstacleDetector; set => _obstacleDetector = value; }
 
         public TargetLocker(GameObjsInScreenCatcher_New screenObjsCatcher, Func<GameObject, LockType, T> getTargetFunc, Action<T> releaseTargetAction, Camera camera, ICursorReceiver cursorReceiver, ObstacleDetector obstacleDetector = null, ushort handleAmountInCoroutine = 30, float catchAngle = 60, float targetChangedDuration = 0.2f, float receiveInputDuration = 0.05f, bool enabled = true)
