@@ -15,12 +15,12 @@ namespace Tests.Weapons.Sword
             public Action<GameObjTarget> WhenTargetAdditionAction { get => _whenTargetAdditionAction; set => _whenTargetAdditionAction = value; }
             public Action<GameObjTarget> WhenTargetRemovalAction { get => _whenTargetRemovalAction; set => _whenTargetRemovalAction = value; }
 
-            protected override void AddTarget(ITarget target)
+            protected override void AddTarget(ITarget_Obsolete target)
             {
                 base.AddTarget(target);
                 _whenTargetAdditionAction?.Invoke((GameObjTarget)target);
             }
-            protected override void RemoveTarget(ITarget target)
+            protected override void RemoveTarget(ITarget_Obsolete target)
             {
                 base.RemoveTarget(target);
                 _whenTargetRemovalAction?.Invoke((GameObjTarget)target);

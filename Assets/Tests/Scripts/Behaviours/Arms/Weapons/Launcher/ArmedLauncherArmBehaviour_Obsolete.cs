@@ -97,7 +97,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             };
 
         }
-        void TargetsChanged(IList<ITarget> targets)
+        void TargetsChanged(IList<Interaction.ITarget_Obsolete> targets)
         {
             var target = targets.Count > 0 ? targets[^1] : null;
             _aim.Target = target;

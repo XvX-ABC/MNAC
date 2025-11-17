@@ -30,9 +30,9 @@ namespace Tests.Interaction
             }
         }
 
-        public IReadOnlyList<ITarget> Targets => catcher.Targets;
+        public IReadOnlyList<ITarget_Obsolete> Targets => catcher.Targets;
 
-        public Action<IList<ITarget>> TargetsChangedAction { get => catcher.TargetsChangedAction; set => catcher.TargetsChangedAction = value; }
+        public Action<IList<ITarget_Obsolete>> TargetsChangedAction { get => catcher.TargetsChangedAction; set => catcher.TargetsChangedAction = value; }
 
         public override string ToString()
         {

@@ -9,7 +9,7 @@ namespace Tests.TPhysics.Locomotion
         WorldRotationLocomotion _b;
         Camera _camera;
         Vector3 _mouseScreenPosition;
-        ITarget _target;
+        ITarget_Obsolete _target;
         public RotationByMouseOrTargetLocomotion(Camera camera)
         {
             Camera = camera;
@@ -27,7 +27,7 @@ namespace Tests.TPhysics.Locomotion
         }
         public Vector3 Origin { get => _b.Origin; set => _b.Origin = value; }
         public Vector3 MouseScreenPosition { get => _mouseScreenPosition; set => _mouseScreenPosition = value; }
-        public ITarget Target { get => _target; set => _target = value; }
+        public ITarget_Obsolete Target { get => _target; set => _target = value; }
 
         public override Context OnEnd(Context context)
         {

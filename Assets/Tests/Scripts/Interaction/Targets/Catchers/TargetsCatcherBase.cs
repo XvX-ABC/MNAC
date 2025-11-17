@@ -7,20 +7,20 @@ namespace Tests.Interaction
 {
     public abstract class TargetsCatcherBase : ITargetsCatcher
     {
-        protected internal List<ITarget> targets;
-        protected internal Action<IList<ITarget>> targetsChangedAction;
+        protected internal List<ITarget_Obsolete> targets;
+        protected internal Action<IList<ITarget_Obsolete>> targetsChangedAction;
         protected internal bool enabled;
         public TargetsCatcherBase()
         {
             targets = NewTargetsContainer() ?? throw new NullReferenceException(nameof(targets));
         }
-        protected virtual List<ITarget> NewTargetsContainer()
+        protected virtual List<ITarget_Obsolete> NewTargetsContainer()
         {
-            return new List<ITarget>();
+            return new List<ITarget_Obsolete>();
         }
-        public IReadOnlyList<ITarget> Targets => targets;
+        public IReadOnlyList<ITarget_Obsolete> Targets => targets;
 
-        public Action<IList<ITarget>> TargetsChangedAction { get => targetsChangedAction; set => targetsChangedAction = value; }
+        public Action<IList<ITarget_Obsolete>> TargetsChangedAction { get => targetsChangedAction; set => targetsChangedAction = value; }
         public virtual bool Enabled
         {
             get => enabled;
@@ -32,14 +32,14 @@ namespace Tests.Interaction
             }
         }
 
-        internal protected virtual void AddTarget(ITarget target)
+        internal protected virtual void AddTarget(ITarget_Obsolete target)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
             targets.Add(target);
             targetsChangedAction?.Invoke(targets);
         }
-        internal protected virtual void RemoveTarget(ITarget target)
+        internal protected virtual void RemoveTarget(ITarget_Obsolete target)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));

@@ -11,7 +11,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
     internal class SlashHelper
     {
         internal Slash state;
-        internal ITarget target;
+        internal Interaction.ITarget_Obsolete target;
         public SlashHelper(LocomotionCore locomotionCore, IRotationLocker rotationLocker, float slashDuration)
         {
             state = new(locomotionCore, rotationLocker, slashDuration);
@@ -27,7 +27,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         //    }
         //}
         public virtual bool ExitEvent { get => state.Timeline.NormalizedTime >= 1; }
-        public ITarget Target
+        public Interaction.ITarget_Obsolete Target
         {
             get => target;
             set => target = value;

@@ -45,7 +45,7 @@ namespace Tests.Interaction
 
         public GameObject Obj => obj;
 
-        public Vector3 Position => obj == null ? ITarget.InvalidPosition : obj.transform.position;
+        public Vector3 Position => obj == null ? ITarget_Obsolete.InvalidPosition : obj.transform.position;
         public override string ToString()
         {
             var sb = new StringBuilder();

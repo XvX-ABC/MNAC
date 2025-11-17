@@ -34,9 +34,9 @@ namespace Tests.Interaction
             if (_definitions.AllowCatchTerrain)
                 _terrainTarget = new();
         }
-        protected override List<ITarget> NewTargetsContainer()
+        protected override List<ITarget_Obsolete> NewTargetsContainer()
         {
-            return new List<ITarget>(2);
+            return new List<ITarget_Obsolete>(2);
         }
         bool CatchRangeCheck(Vector3 pos)
         {

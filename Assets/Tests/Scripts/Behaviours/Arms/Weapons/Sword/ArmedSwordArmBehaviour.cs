@@ -17,7 +17,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         ISword _sword;
         ISphereTriggerTargetsCatcher _targetsCatcher;
 
-        ITarget _target;
+        Interaction.ITarget_Obsolete _target;
 
         internal Idle idle;
         internal BoostingHelper boostingHelper;
@@ -127,7 +127,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
 
             _state = new(this);
         }
-        void WhenTargetsChanged(IList<ITarget> targets)
+        void WhenTargetsChanged(IList<Interaction.ITarget_Obsolete> targets)
         {
             slashHelper.Target = targets.Count > 0 ? targets[^1] : null;
         }

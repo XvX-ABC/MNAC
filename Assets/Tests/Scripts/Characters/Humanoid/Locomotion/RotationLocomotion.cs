@@ -18,7 +18,7 @@ namespace Tests.Characters.Humanoid.Locomotion
         Rigidbody _rb;
         RotationByMouseOrTargetLocomotion _locomotion;
 
-        ITarget _target;
+        Tests.Interaction.ITarget_Obsolete _target;
         IBaseInput _input;
         ITargetsCatcher _targetCather;
 
@@ -83,7 +83,7 @@ namespace Tests.Characters.Humanoid.Locomotion
                 targetsCatcher = nc;
             }
         }
-        void CatchTarget(IList<ITarget> targets)
+        void CatchTarget(IList<Tests.Interaction.ITarget_Obsolete> targets)
         {
             _target = targets.Count > 0 ? targets[^1] : null;
         }

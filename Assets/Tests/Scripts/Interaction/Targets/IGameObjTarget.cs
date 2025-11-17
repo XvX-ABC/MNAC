@@ -2,7 +2,7 @@
 
 namespace Tests.Interaction
 {
-    public interface IGameObjTarget : ITarget
+    public interface IGameObjTarget : ITarget_Obsolete
     {
         public GameObject Obj { get; }
     }

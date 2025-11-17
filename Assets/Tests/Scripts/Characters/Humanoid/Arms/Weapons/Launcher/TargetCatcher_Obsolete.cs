@@ -27,9 +27,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                 return _catcher;
             }
         }
-        public IReadOnlyList<ITarget> Targets => catcher.Targets;
+        public IReadOnlyList<Tests.Interaction.ITarget_Obsolete> Targets => catcher.Targets;
 
-        public Action<IList<ITarget>> TargetsChangedAction { get => catcher.TargetsChangedAction; set => catcher.TargetsChangedAction = value; }
+        public Action<IList<Tests.Interaction.ITarget_Obsolete>> TargetsChangedAction { get => catcher.TargetsChangedAction; set => catcher.TargetsChangedAction = value; }
 
         public override string Name => "launcher_targets_catcher";
         public override void Initialize(Blackboard blackboard)

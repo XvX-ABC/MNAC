@@ -6,7 +6,7 @@ namespace Tests.TPhysics.Locomotion
     public class MoveTowardTargetLocomotion : LocomotionModuleBase
     {
         HorizontalLocomotion _base;
-        ITarget _target;
+        ITarget_Obsolete _target;
         public MoveTowardTargetLocomotion(float maxSpeed, float acceleratedSpeed)
         {
             _base = new(maxSpeed, acceleratedSpeed);
@@ -26,7 +26,7 @@ namespace Tests.TPhysics.Locomotion
             get => _base.HorizontalVector;
             set => _base.HorizontalVector = value;
         }
-        public ITarget Target
+        public ITarget_Obsolete Target
         {
             get => _target;
             set => _target = value;

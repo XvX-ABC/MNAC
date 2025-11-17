@@ -14,12 +14,12 @@ namespace Tests.Behaviours.Arms
     {
         AimIK _aimIK;
         IInput_Obsolete _input;
-        ITarget _target;
+        Interaction.ITarget_Obsolete _target;
         internal Action<float> weightChangedAction;
-        internal Action<ITarget> targetChangedAction;
+        internal Action<Interaction.ITarget_Obsolete> targetChangedAction;
         private ILauncher _weapon;
 
-        public ITarget Target
+        public Interaction.ITarget_Obsolete Target
         {
             get => _target;
             set

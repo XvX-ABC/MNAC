@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Tests.Behaviours.Arms.Weapons.Launcher;
 using Tests.Behaviours.Input;
 using Tests.Interaction;
 using Tests.UI;
@@ -39,7 +38,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         IndicatorsManager _indicatorsManager;
         Camera _camera;
         IBaseInput _input;
-        Action<IList<ITarget>> _targetsChangedAction;
+        Action<IList<Tests.Interaction.ITarget_Obsolete>> _targetsChangedAction;
 
         ICircleOnScreenTargetsCatcherDefinitions _definitions;
 
@@ -67,7 +66,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
             _catcher.CaughtItemsChangedAction += targets =>
             {
-                _targetsChangedAction?.Invoke(targets.Cast<ITarget>().ToList());
+                _targetsChangedAction?.Invoke(targets.Cast<Tests.Interaction.ITarget_Obsolete>().ToList());
             };
         }
 
@@ -87,7 +86,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
             _catcher.CaughtItemsChangedAction += targets =>
             {
-                _targetsChangedAction?.Invoke(targets.Cast<ITarget>().ToList());
+                _targetsChangedAction?.Invoke(targets.Cast<Tests.Interaction.ITarget_Obsolete>().ToList());
             };
 
             _catcher.Radius = definitions.CatchingViewPortRadius;
