@@ -106,16 +106,19 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         private void Awake()
         {
             LockTarget.indicatorsManager = _manager;
-            _screenObjsCatcher = new(_camera, _handleAmountInCoroutine);
-            _locker = new(_screenObjsCatcher, LockTarget.GetInstance, LockTarget.ReleaseInstance, _camera, cursorIndicator, null, _handleAmountInCoroutine);
+    
         }
         private void Start()
         {
+            _screenObjsCatcher = new(_camera, _handleAmountInCoroutine);
+            _locker = new(_screenObjsCatcher, LockTarget.GetInstance, LockTarget.ReleaseInstance, _camera, cursorIndicator, null, _handleAmountInCoroutine);
             StartCoroutine(_screenObjsCatcher.UpdateWithCoroutine());
+
         }
         private void OnEnable()
         {
-            _locker.Enabled = true;
+            if (_locker != null)
+                _locker.Enabled = true;
         }
         private void OnDisable()
         {
@@ -132,7 +135,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             _locker.CursorPosition = UnityEngine.Input.mousePosition;
             _locker.OriginWorldPosition = _actor.transform.position;
             _locker.CursorPositionDelta = UnityEngine.Input.mousePositionDelta;
-            _locker.Update();
+            _locker.FixedUpdate();
 
 
             //_locker.CursorPosition = UnityEngine.Input.mousePosition;
