@@ -86,5 +86,10 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         {
             throw new NotImplementedException();
         }
+
+        public void LateUpdate()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

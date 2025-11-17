@@ -22,6 +22,7 @@ namespace Tests.Behaviours.Arms.Weapons
         public virtual void Update()
         {
         }
+        public virtual void LateUpdate() { }
     }
     public abstract class ArmedWeaponArmBehaviourBase_Obsolete : PlayableStateBase, IArmedWeaponArmBehaviour
     {
@@ -44,6 +45,10 @@ namespace Tests.Behaviours.Arms.Weapons
         public virtual void FixedUpdate()
         {
 
+        }
+
+        public virtual void LateUpdate()
+        {
         }
 
         public virtual void Update()

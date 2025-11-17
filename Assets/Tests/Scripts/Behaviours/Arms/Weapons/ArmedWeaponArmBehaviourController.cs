@@ -168,6 +168,11 @@ namespace Tests.Behaviours.Arms.Weapons
             if (activatedBehaviour != null)
                 activatedBehaviour.Update();
         }
+        public void LateUpdate()
+        {
+            if (activatedBehaviour != null)
+                activatedBehaviour.LateUpdate();
+        }
         public void FixedUpdate()
         {
             if (activatedBehaviour != null)

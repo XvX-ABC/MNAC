@@ -17,6 +17,7 @@ namespace Tests.Behaviours.Arms
 
         public IWithCallbackPlayableState<object> State { get => null; }
         public void Update();
+        public void LateUpdate();
         public void FixedUpdate();
     }
 }

@@ -97,5 +97,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         public virtual void FixedUpdate()
         {
         }
+        public virtual void LateUpdate() { }
     }
 }

@@ -155,6 +155,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             //    _targetsCatcher.Enabled = !_targetsCatcher.Enabled;
             _targetsCatcher.LateUpdate();
             _behaviour.Update();
+        public override void LateUpdate()
+        {
+            _targetLocker.LateUpdate();
         }
         public override void FixedUpdate()
         {

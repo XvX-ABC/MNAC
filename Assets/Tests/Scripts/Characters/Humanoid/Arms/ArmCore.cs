@@ -302,6 +302,10 @@ namespace Tests.Characters.Humanoid.Arms
         {
             _armedWeaponController.FixedUpdate();
         }
+        void LateUpdate()
+        {
+            _armedWeaponController.LateUpdate();
+        }
         public void Dispose()
         {
         }
