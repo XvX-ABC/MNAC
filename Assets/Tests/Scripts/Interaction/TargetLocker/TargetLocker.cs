@@ -1,5 +1,4 @@
-﻿using Codice.Client.Common.FsNodeReaders;
-using DG.Tweening;
+﻿using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using Tests.States;
@@ -377,7 +376,7 @@ namespace Tests.Interaction
             else if (target != _mainLockTarget)
                 target.LockType = LockType.Lock_Unconfirm;
         }
-        public void Update()
+        public virtual void FixedUpdate()
         {
             statemachine.OnUpdate();
         }
