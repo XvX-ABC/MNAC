@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace Tests.Weapons.Launcher
 {
-    [Serializable]
-    public class TargetLockDefinitions:ITargetLockDefinitions
+    //[Serializable]
+    public class TargetLockDefinitions : ITargetLockDefinitions
     {
-        [Range(0,1)]
-        [SerializeField]
+        //[Range(0, 1)]
+        //[SerializeField]
         float _radius;
         public float ViewPortRadius
         {
