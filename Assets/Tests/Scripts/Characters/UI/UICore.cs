@@ -28,14 +28,11 @@ namespace Tests.Characters.UI
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            //blackboard.TryReadValueOrThrowException<IInput_Obsolete>(CharacterBlackboardFields.Character_Input_Main_Obsolete, out var input);
             blackboard.TryReadValueOrThrowException<IBaseInput>(CharacterBlackboardFields.Character_Input_Main_Base, out var binput);
             blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Character_Camera_Main, out var camera);
 
-            //_core.Initialize(camera, input);
             _core.Initialize(camera, new Input(binput));
 
-            //blackboard.TryRegisterField(CharacterUIBlackboardFields.Blackboard_Main, _core.Blackboard);
             blackboard.TryRegisterUIBlackboard(_core.Blackboard);
 
 
