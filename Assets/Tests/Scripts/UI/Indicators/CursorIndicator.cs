@@ -5,7 +5,7 @@ namespace Tests.UI
 {
     [ExecuteAlways]
     [RequireComponent(typeof(RectTransform))]
-    public class CursorIndicator : ComponentBase_MonoComponent, ICursorIndicator
+    public class CursorIndicator : UIComponent, ICursorIndicator
     {
         protected RectTransform rectTransform;
         [SerializeField]
@@ -55,8 +55,11 @@ namespace Tests.UI
 
         void UpdateWidth()
         {
-            rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
-            rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, width);
+            //rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
+            //rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, width);
+            var wh = rectTransform.rect.size;
+            var v = width <= 0 ? 0 : Mathf.Max(wh.x, wh.y) / width;
+            rectTransform.localScale = new Vector3(v, v, v);
         }
 
     }
