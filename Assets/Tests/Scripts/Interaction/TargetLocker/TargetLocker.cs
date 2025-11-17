@@ -335,7 +335,7 @@ namespace Tests.Interaction
         internal T FindClosestObjByMainObj(List<GameObject> objs)
         {
             var direction = (Vector2)cursorPositionDeltaCache.normalized;
-            if (direction == Vector2.zero)
+            if (direction == Vector2.zero || _mainLockTarget == null)
                 return null;
             var originalPos = (Vector2)_camera.WorldToScreenPoint(_mainLockTarget.Obj.transform.position);
             var minDistance = float.MaxValue;
