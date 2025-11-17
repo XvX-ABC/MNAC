@@ -1,6 +1,8 @@
 ﻿using RootMotion.FinalIK;
 using System;
 using Tests.Interaction;
+using Tests.Utilities.Timeline;
+using Tests.Utilities.Timeline.Events.Range;
 using Tests.Weapons;
 using UnityEngine;
 
@@ -11,12 +13,38 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         AimIK _aimIK;
         IGameObjTarget _currentTarget;
         IWeapon _controlledWeapon;
-        public AimingHelper(AimIK aimIK)
+        Vector3 _preTargetPosition;
+        ITimeline _targetChangeTimeline;
+
+        public AimingHelper(AimIK aimIK, float targetChangeDuration)
         {
             _aimIK = aimIK ?? throw new ArgumentNullException(nameof(aimIK));
+            _targetChangeTimeline = new Timeline_V1(targetChangeDuration);
+            _targetChangeTimeline.AddRangeEvent(0, 1, ctx =>
+            {
+                if (!_aimIK.enabled || _aimIK.solver.IKPositionWeight <= 0)
+                    return;
+                var pos = Vector3.Lerp(_preTargetPosition, _currentTarget.Position, ctx.NormalizedTime);
+                _aimIK.solver.SetIKPosition(pos);
+            });
         }
 
         public IGameObjTarget Target
+        {
+            get => _currentTarget;
+            set
+            {
+                var currentTarget = _currentTarget;
+                var newTarget = value;
+                _targetChangeTimeline.End();
+                if (currentTarget != null && newTarget != null && currentTarget != newTarget)
+                {
+                    _preTargetPosition = currentTarget.Position;
+                    _targetChangeTimeline.Restart();
+                }
+                _currentTarget = value;
+            }
+        }
         public IWeapon ControlledWeapon
         {
             get => _controlledWeapon;
@@ -41,10 +69,12 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         }
         public void TargetUpdate()
         {
-            if (_aimIK.enabled && _target != null && _aimIK.solver.IKPositionWeight > 0)
+            if (_aimIK.enabled && _aimIK.solver.IKPositionWeight > 0)
             {
-                _aimIK.solver.SetIKPosition(_target.Position);
+                if (!_targetChangeTimeline.IsRunning && _currentTarget != null)
+                    _aimIK.solver.SetIKPosition(_currentTarget.Position);
             }
+            _targetChangeTimeline.OnUpdate(Time.deltaTime);
         }
     }
 }

@@ -57,7 +57,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
             _targetsCatcher = targetsCatcher ?? throw new ArgumentNullException(nameof(targetsCatcher));
             _input = input ?? throw new ArgumentNullException(nameof(_input));
 
-            _aimingHelper = new AimingHelper(aimIK);
+            _aimingHelper = new AimingHelper(aimIK, 0);
 
             _aimIK = aimIK ?? throw new ArgumentNullException(nameof(_aimIK));
 
@@ -79,6 +79,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
           World world,
           IGroundDetector groundDetector,
           LocomotionCore locomotionCore,
+          float targetChangeDuration,
           IArmedLauncherArmBehaviourDefinitions definitions,
           IArmedLauncherArmAnimationDefinitions animationDefinitions,
           IWeaponControlInput input)
@@ -88,7 +89,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
             _animationDefinitions = animationDefinitions ?? throw new ArgumentNullException(nameof(animationDefinitions));
             _input = input ?? throw new ArgumentNullException(nameof(_input));
 
-            _aimingHelper = new AimingHelper(aimIK);
+            _aimingHelper = new AimingHelper(aimIK, targetChangeDuration);
 
             _aimIK = aimIK ?? throw new ArgumentNullException(nameof(_aimIK));
 
