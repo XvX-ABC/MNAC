@@ -324,7 +324,7 @@ namespace Tests.Interaction
         void UpdateRingCatcher()
         {
             //_ringCatcher.CursorPosition = _mainTargetObj != null ? _camera.WorldToScreenPoint(_mainTargetObj.transform.position) : _cursorPosition;
-            if (_targetChangeTween == null || !_targetChangeTween.IsPlaying())
+            if (_targetChangeTween == null || !_targetChangeTween.IsActive() || !_targetChangeTween.IsPlaying())
                 _cursorReceiver.CursorPosition = _mainLockTarget != null ? _camera.WorldToScreenPoint(_mainLockTarget.Obj.transform.position) : _cursorPosition;
         }
         bool IsBehindObstacle(GameObject obj)

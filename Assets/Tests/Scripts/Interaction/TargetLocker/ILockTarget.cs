@@ -2,9 +2,8 @@
 
 namespace Tests.Interaction
 {
-    public interface ILockTarget
+    public interface ILockTarget : IGameObjTarget_New, IPositionTarget
     {
         LockType LockType { get; set; }
-        GameObject Obj { get; set; }
     }
 }
