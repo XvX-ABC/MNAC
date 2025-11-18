@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Tests.Behaviours.Arms.Weapons.Launcher;
 using Tests.Behaviours.Input;
-using Tests.Input;
 using Tests.Interaction;
 using Tests.TPhysics.Locomotion;
 using Tests.Utilities.Blackboards;
@@ -18,9 +17,10 @@ namespace Tests.Characters.Humanoid.Locomotion
         Rigidbody _rb;
         RotationByMouseOrTargetLocomotion _locomotion;
 
-        Tests.Interaction.ITarget_Obsolete _target;
+        //Tests.Interaction.ITarget_Obsolete _target;
+        ITargetLocker<ILockTarget> _targetLocker;
+        IPositionTarget _target;
         IBaseInput _input;
-        ITargetsCatcher _targetCather;
 
         public RotationLocomotion([NotNull] Camera camera, [NotNull] Rigidbody rigidbody, [NotNull] LCore core, IBaseInput input)
         {
@@ -33,18 +33,25 @@ namespace Tests.Characters.Humanoid.Locomotion
         }
 
         public override string Name => "character_rotation";
-
-        protected ITargetsCatcher targetsCatcher
+        internal IPositionTarget target
         {
-            get => _targetCather;
+            get => _target;
             set
             {
-                if (_targetCather != null)
-                    _targetCather.TargetsChangedAction -= CatchTarget;
-
+                _locomotion.Target = value;
+                _target = value;
+            }
+        }
+        internal ITargetLocker<ILockTarget> targetLocker
+        {
+            get => _targetLocker;
+            set
+            {
+                if (_targetLocker != null)
+                    _targetLocker.MainTargetChangedAction -= WhenTargetChange;
                 if (value != null)
-                    value.TargetsChangedAction += CatchTarget;
-                _targetCather = value;
+                    value.MainTargetChangedAction += WhenTargetChange;
+                _targetLocker = value;
             }
         }
 
@@ -56,37 +63,37 @@ namespace Tests.Characters.Humanoid.Locomotion
             //blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Input_Main, out _input);
             if (blackboard.TryReadValue<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler) && !TryReadTargetsCatcher(blackboard))
             {
-                handler.RegisterAction<ITargetsCatcher>(CharacterBlackboardFields.TargetsCatcher, TargetCatherUpdate);
+                handler.RegisterAction<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.TargetsCatcher, UpdateTargetLocker);
             }
             enabled = true;
         }
         public override void Dispose()
         {
-            _core.RemoveModule(_locomotion);
             if (blackboard.TryReadValue<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler))
             {
-                handler.UnregisterAction<ITargetsCatcher>(CharacterBlackboardFields.TargetsCatcher, TargetCatherUpdate);
+                handler.UnregisterAction<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.TargetsCatcher, UpdateTargetLocker);
             }
-            targetsCatcher = null;
             enabled = false;
         }
         bool TryReadTargetsCatcher(Blackboard blackboard)
         {
             var r = blackboard.TryReadValue<ITargetsCatcher>(CharacterBlackboardFields.TargetsCatcher, out var targetsCatcher);
-            this.targetsCatcher = targetsCatcher;
             return r;
         }
-        void TargetCatherUpdate(FieldEventType type, ITargetsCatcher oc, ITargetsCatcher nc)
+        void UpdateTargetLocker(FieldEventType type, ITargetLocker<ILockTarget> oc, ITargetLocker<ILockTarget> nc)
         {
-            if (type != FieldEventType.Reading)
-            {
-                targetsCatcher = nc;
-            }
+            if (type == FieldEventType.Reading)
+                return;
+            targetLocker = nc;
         }
-        void CatchTarget(IList<Tests.Interaction.ITarget_Obsolete> targets)
+        void WhenTargetChange(ILockTarget _, ILockTarget target)
         {
-            _target = targets.Count > 0 ? targets[^1] : null;
+            this.target = target;
         }
+        //void CatchTarget(IList<Tests.Interaction.ITarget_Obsolete> targets)
+        //{
+        //    _target = targets.Count > 0 ? targets[^1] : null;
+        //}
         //public void OnUpdate()
         //{
         //    var cpos = _camera.transform.position;
@@ -107,7 +114,11 @@ namespace Tests.Characters.Humanoid.Locomotion
             _locomotion.Origin = bpos;
             //_locomotion.MouseScreenPosition = _input_obsolete.MousePosition;
             _locomotion.MouseScreenPosition = _input.MousePosition;
-            _locomotion.Target = _target;
+            //_locomotion.Target = _target;
+        }
+        ~RotationLocomotion()
+        {
+            _core.RemoveModule(_locomotion);
         }
     }
 }
