@@ -50,18 +50,23 @@ namespace Tests.Utilities.Blackboards
                 throw new ArgumentNullException(nameof(action));
             RegisterAction(key, (e, o, n) =>
             {
-                if (o == null)
+                if ((o != null && o is not T) || (n != null && n is not T))
                 {
-                    action(e, default, (T)n);
+                    Debug.LogWarning($"The values type '{o?.GetType()?.ToString() ?? "null"}, {n?.GetType()?.ToString() ?? "null"}' has one is not the expected type  '{typeof(T)}'.");
+                    return;
                 }
-                else if (o is T oldValue)
-                {
-                    action(e, oldValue, (T)n);
-                }
-                else
-                {
-                    Debug.LogWarning($"The value type '{o.GetType()}' is not the expected type  '{typeof(T)}'.");
-                }
+                action(e, (T)o, (T)n);
+                //if (o == null)
+                //{
+                //    action(e, default, (T)n);
+                //}
+                //else if (o is T oldValue)
+                //{
+                //    action(e, oldValue, (T)n);
+                //}
+                //else
+                //{
+                //}
             });
         }
         public void UnregisterAction<T>(K key, Action<FieldEventType, T, T> action)
