@@ -15,10 +15,12 @@ namespace Tests.Characters.UI
             Blackboard_Main = Guid.NewGuid();
             Targets_Display = UIBlackboardFields.Targets_Display;
             Character_Actor_Cursor_Indicator = UIBlackboardFields.Character_Actor_Cursor_Indicator;
+            Indicators_Manager = UIBlackboardFields.Indicators_Manager;
         }
         public readonly static Guid Catcher_Ring;
         public readonly static Guid Blackboard_Main;
         public readonly static Guid Targets_Display;
         public readonly static Guid Character_Actor_Cursor_Indicator;
+        public readonly static Guid Indicators_Manager;
     }
 }

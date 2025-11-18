@@ -17,6 +17,7 @@ using Tests.Weapons;
 using Tests.Weapons.Launcher;
 using UnityEngine;
 using UnityEngine.Playables;
+using IndicatedTarget = Tests.Behaviours.Arms.Weapons.Launcher.IndicatedTarget;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
@@ -31,6 +32,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         ArmedLauncherArmAnimationDefinitions_SO _animationDefinitions;
         TargetLocker _targetLocker;
         GameObjsInScreenCatcher_New _screenCatcher;
+        IndicatorsManager _indicatorsManager;
         //TargetLocker _targetLocker;
         ArmCore _armCore;
         public override WeaponType Type => WeaponType.Launcher;
@@ -104,6 +106,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             //blackboard.TryReadUIValueOrThrowException<RingCatcher>(CharacterUIBlackboardFields.Catcher_Ring, out var ringCatcher);
             //blackboard.TryReadUIValueOrThrowException<TargetsDisplay>(CharacterUIBlackboardFields.Targets_Display, out var targetsDisplay);
             blackboard.TryReadUIValueOrThrowException<ICursorIndicator>(CharacterUIBlackboardFields.Character_Actor_Cursor_Indicator, out var cursorIndicator);
+            blackboard.TryReadUIValueOrThrowException<IndicatorsManager>(CharacterUIBlackboardFields.Indicators_Manager, out _indicatorsManager);
             var aimIK = armObj.GetComponent<AimIK>();
 
             var armInput = Part switch
@@ -128,7 +131,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         {
             var definitions = _definitions.TargetLocker;
             _screenCatcher = new(camera, definitions.HandleAmountInCoroutine);
-            _targetLocker = new(input, _screenCatcher, LockTarget.GetInstance, LockTarget.ReleaseInstance, camera, cursorIndicator, definitions.ObstacleDetector, definitions.HandleAmountInCoroutine, definitions.CatchAngle, definitions.TargetChangedDuration, definitions.ReceiveInputDuration);
+            _targetLocker = new(input, _screenCatcher, CreateLockTarget, ReleaseLockTarget, camera, cursorIndicator, definitions.ObstacleDetector, definitions.HandleAmountInCoroutine, definitions.CatchAngle, definitions.TargetChangedDuration, definitions.ReceiveInputDuration);
         }
         void InitializeBehaviourAndAnimator(
             PlayableGraph graph,
@@ -145,6 +148,18 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             _behaviour = new(_definitions, _animator);
             _behaviour.Input = weaponControlInput;
             _behaviour.TargetLocker = _targetLocker;
+        }
+        LockTarget CreateLockTarget(GameObject obj, LockType lockType)
+        {
+            var result = LockTarget.GetInstance(obj, lockType);
+            var it = _indicatorsManager.AddTargetFor<IndicatedTarget>(obj);
+            result.indicatedTarget = it;
+            return result;
+        }
+        void ReleaseLockTarget(LockTarget target)
+        {
+            _indicatorsManager.RemoveTargetFor<IndicatedTarget>(target.Obj);
+            LockTarget.ReleaseInstance(target);
         }
         public override void OnEnter()
         {

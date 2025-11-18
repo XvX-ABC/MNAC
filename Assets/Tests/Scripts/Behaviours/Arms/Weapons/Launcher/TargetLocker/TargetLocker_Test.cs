@@ -11,7 +11,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         static ObjectPool<LockTarget> s_pool;
         static GameObject _currentObj;
         static LockType _currentType;
-        internal static IndicatorsManager indicatorsManager;
+        //internal static IndicatorsManager indicatorsManager;
         static LockTarget()
         {
             s_pool = new(CreateInstance, WhenGetInstance, WhenReleaseInstance, DestroyInstance, false, 5, 1000);
@@ -20,16 +20,16 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         {
             _currentObj = obj;
             _currentType = type;
-            var it = indicatorsManager.AddTargetFor<IndicatedTarget>(obj);
+            //var it = indicatorsManager.AddTargetFor<IndicatedTarget>(obj);
             var result = s_pool.Get();
-            result.indicatedTarget = it;
+            //result.indicatedTarget = it;
             _currentObj = null;
             _currentType = default;
             return result;
         }
         public static void ReleaseInstance(LockTarget target)
         {
-            indicatorsManager.RemoveTargetFor<IndicatedTarget>(target.Obj);
+            //indicatorsManager.RemoveTargetFor<IndicatedTarget>(target.Obj);
             s_pool.Release(target);
         }
         static LockTarget CreateInstance()
@@ -105,7 +105,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         Vector3 _lastPos;
         private void Awake()
         {
-            LockTarget.indicatorsManager = _manager;
+            //LockTarget.indicatorsManager = _manager;
     
         }
         private void Start()

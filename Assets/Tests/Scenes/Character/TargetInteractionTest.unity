@@ -2130,6 +2130,16 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7096179566550039492, guid: fb7110c94038f05409f6fb1f09541b12,
+        type: 3}
+      propertyPath: _components.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7096179566550039492, guid: fb7110c94038f05409f6fb1f09541b12,
+        type: 3}
+      propertyPath: '_components.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1212474571}
     - target: {fileID: 8864264844519982144, guid: fb7110c94038f05409f6fb1f09541b12,
         type: 3}
       propertyPath: _camera
