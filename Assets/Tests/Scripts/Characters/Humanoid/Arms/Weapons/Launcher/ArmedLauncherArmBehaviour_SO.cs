@@ -156,10 +156,10 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             result.indicatedTarget = it;
             return result;
         }
-        void ReleaseLockTarget(LockTarget target)
+        void ReleaseLockTarget(ILockTarget target)
         {
             _indicatorsManager.RemoveTargetFor<IndicatedTarget>(target.Obj);
-            LockTarget.ReleaseInstance(target);
+            LockTarget.ReleaseInstance(target as LockTarget);
         }
         public override void OnEnter()
         {
@@ -180,7 +180,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             //blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
 
 
-            //blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher);
+            blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher);
         }
         void UpdateTargetsCatcherFor(Blackboard blackboard)
         {
@@ -198,6 +198,11 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             //    blackboard.TryRegisterFieldOrWriteValue(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
             //else
             //    blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher);
+
+            if (Activated)
+                blackboard.TryRegisterFieldOrWriteValue(CharacterBlackboardFields.TargetsCatcher, _targetLocker);
+            else
+                blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher);
         }
         public override void Update()
         {

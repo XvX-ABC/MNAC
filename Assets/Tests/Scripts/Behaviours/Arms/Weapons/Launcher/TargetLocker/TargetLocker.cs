@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Interaction;
 using UnityEngine;
@@ -10,7 +6,7 @@ using UnityEngine;
 namespace Tests.Behaviours.Arms.Weapons.Launcher
 {
 
-    internal class TargetLocker : TargetLocker<LockTarget>
+    internal class TargetLocker : TargetLocker<ILockTarget>
     {
         IHumanInput _input;
         GameObjTarget _currentObjTarget;
@@ -19,8 +15,8 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         public TargetLocker(
             IHumanInput input,
             GameObjsInScreenCatcher_New screenObjsCatcher,
-            Func<GameObject, LockType, LockTarget> getTargetFunc,
-            Action<LockTarget> releaseTargetAction,
+            Func<GameObject, LockType, ILockTarget> getTargetFunc,
+            Action<ILockTarget> releaseTargetAction,
             Camera camera,
             ICursorReceiver cursorReceiver,
             ObstacleDetector obstacleDetector = null,
@@ -52,18 +48,18 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         }
         public Action<IGameObjTarget, IGameObjTarget> MainObjTargetChangedAction { get => _mainObjTargetChangedAction; set => _mainObjTargetChangedAction = value; }
 
-        void WhenTargetChangedAction(LockTarget oldTarget, LockTarget newTarget)
+        void WhenTargetChangedAction(ILockTarget oldTarget, ILockTarget newTarget)
         {
             _mainObjChangedAction?.Invoke(oldTarget?.Obj, newTarget?.Obj);
 
             var ov = _currentObjTarget;
-  
+
             if (newTarget != null)
                 _currentObjTarget = GameObjTarget.GetInstance(newTarget.Obj);
             else
                 _currentObjTarget = null;
 
-          
+
             _mainObjTargetChangedAction?.Invoke(ov, _currentObjTarget);
 
             if (ov != null && oldTarget?.Obj == ov.Obj)
