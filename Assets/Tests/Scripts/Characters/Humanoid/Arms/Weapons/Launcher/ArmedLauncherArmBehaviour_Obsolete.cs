@@ -28,7 +28,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
         public override Func<bool> ExitFunc => behaviour.ExitFunc;
 
-        public override IWeapon Weapon { get => behaviour.Weapon; set => behaviour.Weapon = value; }
+        public override IWeapon_Obsolete Weapon { get => behaviour.Weapon; set => behaviour.Weapon = value; }
         protected override ArmedWeaponArmBehaviourBase_Obsolete behaviour
         {
             get

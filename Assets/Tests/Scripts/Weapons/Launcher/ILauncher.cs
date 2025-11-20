@@ -4,7 +4,7 @@ using Tests.Utilities.Timeline;
 
 namespace Tests.Weapons.Launcher
 {
-    public interface ILauncher : IWeapon
+    public interface ILauncher : IWeapon_Obsolete
     {
         public enum ActionsEnum
         {

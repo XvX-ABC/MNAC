@@ -80,7 +80,7 @@ namespace Tests.Weapons.Launcher
         public ITimeline ReloadTimeline { get => reloadTimeline; }
         ILauncherActionsLock ILauncher.actionsLock { get => actionsLock; }
 
-        WeaponType IWeapon.Type => WeaponType.Launcher;
+        WeaponType IWeapon_Obsolete.Type => WeaponType.Launcher;
 
         public Action<ILauncher> LaunchAction { get => launchAction; set => launchAction = value; }
         public Action<ILauncher> ReloadAction { get => reloadAction; set => reloadAction = value; }

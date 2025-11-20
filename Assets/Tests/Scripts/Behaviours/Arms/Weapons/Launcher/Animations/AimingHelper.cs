@@ -12,7 +12,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
     {
         AimIK _aimIK;
         IGameObjTarget _currentTarget;
-        IWeapon _controlledWeapon;
+        IWeapon_Obsolete _controlledWeapon;
         Vector3 _preTargetPosition;
         ITimeline _targetChangeTimeline;
 
@@ -45,7 +45,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
                 _currentTarget = value;
             }
         }
-        public IWeapon ControlledWeapon
+        public IWeapon_Obsolete ControlledWeapon
         {
             get => _controlledWeapon;
             set

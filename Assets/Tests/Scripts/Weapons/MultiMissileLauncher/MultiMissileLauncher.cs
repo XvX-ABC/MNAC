@@ -67,9 +67,9 @@ namespace Tests.Weapons.MultiMissileLauncher
         ILauncherActionsLock ILauncher.actionsLock => _actionsLock;
 
 
-        string IWeapon.Name => this.gameObject.name;
+        string IWeapon_Obsolete.Name => this.gameObject.name;
 
-        WeaponType IWeapon.Type => WeaponType.Launcher;
+        WeaponType IWeapon_Obsolete.Type => WeaponType.Launcher;
 
         public Action<ILauncher> LaunchAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public Action<ILauncher> ReloadAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

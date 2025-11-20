@@ -25,7 +25,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
 
         internal ArmedLauncherArmAnimator_Obsolete animator;
 
-        public override IWeapon Weapon
+        public override IWeapon_Obsolete Weapon
         {
             get => _launcher;
             set

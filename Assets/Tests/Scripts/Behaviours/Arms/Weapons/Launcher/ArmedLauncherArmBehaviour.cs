@@ -36,7 +36,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
 
         public override WeaponType Type => WeaponType.Launcher;
 
-        public override IWeapon Weapon
+        public override IWeapon_Obsolete Weapon
         {
             get => _launcher;
             set

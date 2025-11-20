@@ -23,7 +23,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         }
 
         public abstract WeaponType Type { get; }
-        public virtual IWeapon Weapon { get => behaviour.Weapon; set => behaviour.Weapon = value; }
+        public virtual IWeapon_Obsolete Weapon { get => behaviour.Weapon; set => behaviour.Weapon = value; }
         public virtual IArmedWeaponArmAnimationPlayablePart Animator { get => behaviour.Animator; }
         public virtual Func<bool> EntryFunc { get => behaviour.EntryFunc; }
         public virtual Func<bool> ExitFunc { get => behaviour.ExitFunc; }

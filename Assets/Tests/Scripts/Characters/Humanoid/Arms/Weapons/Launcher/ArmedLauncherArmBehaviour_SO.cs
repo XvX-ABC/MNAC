@@ -37,7 +37,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         ArmCore _armCore;
         public override WeaponType Type => WeaponType.Launcher;
 
-        public override IWeapon Weapon
+        public override IWeapon_Obsolete Weapon
         {
             get => _behaviour.Weapon;
             set

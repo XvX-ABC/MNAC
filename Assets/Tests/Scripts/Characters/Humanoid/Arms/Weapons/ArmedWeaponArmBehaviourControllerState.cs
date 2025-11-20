@@ -29,8 +29,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         public ArmedWeaponArmBehaviourControllerState(WeaponCore weaponCore, IArmedWeaponArmDefinitions definitions, HumanPart part, params IArmedWeaponArmBehaviour[] behaviours) : this(new(weaponCore, definitions, behaviours), part)
         {
         }
-        public Action<IWeapon, IArmedWeaponArmBehaviour> ActivatedAction { get => controller.ActivatedAction; set => controller.ActivatedAction = value; }
-        public Action<IWeapon, IArmedWeaponArmBehaviour> UnactivatedAction { get => controller.UnactivatedAction; set => controller.UnactivatedAction = value; }
+        public Action<IWeapon_Obsolete, IArmedWeaponArmBehaviour> ActivatedAction { get => controller.ActivatedAction; set => controller.ActivatedAction = value; }
+        public Action<IWeapon_Obsolete, IArmedWeaponArmBehaviour> UnactivatedAction { get => controller.UnactivatedAction; set => controller.UnactivatedAction = value; }
         public Func<bool> EntryFunc { get => controller.EntryFunc; }
         public Func<bool> ExitFunc { get => controller.ExitFunc; }
 
@@ -40,12 +40,12 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
             foreach (var b in behaviours)
                 b.Part = part;
         }
-        public void ActivateBehaviourBy(IWeapon weapon)
+        public void ActivateBehaviourBy(IWeapon_Obsolete weapon)
         {
             controller.ActivateBehaviourBy(weapon);
         }
 
-        public void UnactivateBehaviourBy(IWeapon weapon)
+        public void UnactivateBehaviourBy(IWeapon_Obsolete weapon)
         {
             controller.UnactivateBehaviourBy(weapon);
         }

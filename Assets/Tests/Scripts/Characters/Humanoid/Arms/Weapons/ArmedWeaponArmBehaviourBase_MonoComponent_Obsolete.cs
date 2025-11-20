@@ -22,7 +22,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         public abstract Func<bool> ExitFunc { get; }
 
 
-        public abstract IWeapon Weapon { get; set; }
+        public abstract IWeapon_Obsolete Weapon { get; set; }
         protected abstract ArmedWeaponArmBehaviourBase_Obsolete behaviour { get; }
 
         public HumanPart Part => throw new NotImplementedException();

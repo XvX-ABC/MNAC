@@ -10,7 +10,7 @@ namespace Tests.Behaviours.Arms
     internal interface IArmedWeaponArmBehaviour_Obsolete : IArmBehaviour, IArmedWeaponArmBehaviour
     {
         public WeaponType Type { get; }
-        public IWeapon Weapon { get; set; }
+        public IWeapon_Obsolete Weapon { get; set; }
         public IPlayableState<object> StateNode { get; }
         public IArmedWeaponArmAnimationPlayablePart Animator { get; }
 

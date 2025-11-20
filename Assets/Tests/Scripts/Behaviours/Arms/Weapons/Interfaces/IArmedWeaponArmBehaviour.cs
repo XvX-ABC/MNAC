@@ -10,7 +10,7 @@ namespace Tests.Behaviours.Arms
     {
         public bool Activated { get; set; }
         public WeaponType Type { get; }
-        public IWeapon Weapon { get; set; }
+        public IWeapon_Obsolete Weapon { get; set; }
         public IArmedWeaponArmAnimationPlayablePart Animator { get; }
         public Func<bool> EntryFunc { get; }
         public Func<bool> ExitFunc { get; }

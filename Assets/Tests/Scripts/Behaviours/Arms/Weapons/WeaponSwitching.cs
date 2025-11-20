@@ -17,9 +17,9 @@ namespace Tests.Behaviours.Arms.Weapons
         internal ITimeline timeline;
         GameObject _weaponObj;
         DefaultWeaponSelector _defaultSelector;
-        Func<IWeapon, IWeapon, IWeapon> _switchingEvent;
+        Func<IWeapon_Obsolete, IWeapon_Obsolete, IWeapon_Obsolete> _switchingEvent;
 
-        public Func<IWeapon, IWeapon, IWeapon> SwitchingEvent
+        public Func<IWeapon_Obsolete, IWeapon_Obsolete, IWeapon_Obsolete> SwitchingEvent
         {
             get => _switchingEvent;
             set
@@ -29,20 +29,20 @@ namespace Tests.Behaviours.Arms.Weapons
                 {
                     _mountPoint.LoadObjChangeFunc = (ol, nl) =>
                     {
-                        var ow = default(IWeapon);
-                        var nw = default(IWeapon);
+                        var ow = default(IWeapon_Obsolete);
+                        var nw = default(IWeapon_Obsolete);
 
 
                         if (ol != null)
                         {
                             var ob = ol.Obj;
-                            ow = ob.GetComponent<IWeapon>() ?? throw new ComponentCantFindException(ob, typeof(IWeapon));
+                            ow = ob.GetComponent<IWeapon_Obsolete>() ?? throw new ComponentCantFindException(ob, typeof(IWeapon_Obsolete));
                             ob.SetActive(false);
                         }
                         if (nl != null)
                         {
                             var nb = nl.Obj;
-                            nw = nb.GetComponent<IWeapon>() ?? throw new ComponentCantFindException(nb, typeof(IWeapon));
+                            nw = nb.GetComponent<IWeapon_Obsolete>() ?? throw new ComponentCantFindException(nb, typeof(IWeapon_Obsolete));
                             nb.SetActive(true);
                         }
                         var w = _switchingEvent?.Invoke(ow, nw);

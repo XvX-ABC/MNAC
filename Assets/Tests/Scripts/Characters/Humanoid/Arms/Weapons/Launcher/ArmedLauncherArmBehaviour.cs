@@ -30,7 +30,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         CircleOnScreenTargetsCatcher _targetsCatcher;
         public override WeaponType Type => WeaponType.Launcher;
 
-        public override IWeapon Weapon
+        public override IWeapon_Obsolete Weapon
         {
             get => _behaviour.Weapon;
             //set => _behaviour.Weapon = value;

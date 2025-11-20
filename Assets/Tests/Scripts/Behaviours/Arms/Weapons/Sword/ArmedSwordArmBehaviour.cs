@@ -32,7 +32,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         ArmedSwordArmBehaviourState _state;
         public override WeaponType Type => WeaponType.Sword;
 
-        public override IWeapon Weapon
+        public override IWeapon_Obsolete Weapon
         {
             get => _sword;
             set

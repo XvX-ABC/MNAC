@@ -30,7 +30,7 @@ namespace Tests.Characters.Humanoid.Arms
         }
 
 
-        public Func<IWeapon, IWeapon, IWeapon> SwitchingEvent
+        public Func<IWeapon_Obsolete, IWeapon_Obsolete, IWeapon_Obsolete> SwitchingEvent
         {
             get => _switching.SwitchingEvent;
             set => _switching.SwitchingEvent = value;

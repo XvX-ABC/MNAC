@@ -9,7 +9,7 @@ namespace Tests.Behaviours.Arms.Weapons
         protected bool enabled;
         public virtual bool Activated { get => enabled; set => enabled = value; }
         public abstract WeaponType Type { get; }
-        public abstract IWeapon Weapon { get; set; }
+        public abstract IWeapon_Obsolete Weapon { get; set; }
         public abstract IArmedWeaponArmAnimationPlayablePart Animator { get; }
         public abstract Func<bool> EntryFunc { get; }
         public abstract Func<bool> ExitFunc { get; }
@@ -34,7 +34,7 @@ namespace Tests.Behaviours.Arms.Weapons
         }
 
         public abstract WeaponType Type { get; }
-        public abstract IWeapon Weapon { get; set; }
+        public abstract IWeapon_Obsolete Weapon { get; set; }
         public abstract IArmedWeaponArmAnimationPlayablePart Animator { get; }
 
 

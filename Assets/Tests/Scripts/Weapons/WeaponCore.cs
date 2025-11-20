@@ -82,7 +82,7 @@ namespace Tests.Weapons
             description = default;
             if (name == null || name.Length == 0)
                 return false;
-            if (TryGetWeaponOriginObj(name, out var obj) && obj.TryGetComponent<IWeapon>(out var w))
+            if (TryGetWeaponOriginObj(name, out var obj) && obj.TryGetComponent<IWeapon_Obsolete>(out var w))
             {
                 description = new WeaponDescription { Name = w.Name, Type = w.Type };
                 return true;
