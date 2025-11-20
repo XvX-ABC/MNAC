@@ -15,9 +15,9 @@ MonoBehaviour:
   _definitions:
     _weapon:
       _origins:
-      - Name: Sword
-        Type: 1
       - Name: Gun_V0
+        Type: 0
+      - Name: Sword
         Type: 0
       _mountPointName: MP_Hand_R
       _switchingDurationTime: 5
