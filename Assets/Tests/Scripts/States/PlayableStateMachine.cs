@@ -144,6 +144,7 @@ namespace Tests.States
         protected override ITransition<T> CheckTransitions()
         {
             var transition = base.CheckTransitions();
+            //TODO：删除无用代码
             if (transition != null && currentState.ExitWhenEnd)
             {
                 var timeline = currentState.Timeline;
