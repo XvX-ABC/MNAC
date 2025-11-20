@@ -56,6 +56,9 @@ namespace Tests.Weapons_New.Launcher
         public virtual Func<bool> ReloadTrigger { get => reloadTrigger; set => reloadTrigger = value; }
         public Transform MuzzleTrans { get => _muzzleTrans; }
 
+
+        public GameObject Obj => this.Obj;
+
         protected virtual void Awake()
         {
             definitions = GetDefinitions();
