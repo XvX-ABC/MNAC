@@ -2,7 +2,7 @@
 
 namespace Tests.Weapons_New.Launcher
 {
-    internal interface ILauncherDefinitions
+    public interface ILauncherDefinitions
     {
         public ushort AmmoReserveAmount { get; }
         public ushort AmmoInMagazineAmount { get; }
