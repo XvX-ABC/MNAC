@@ -1,0 +1,31 @@
+﻿using System;
+using UnityEngine;
+
+namespace Tests.Weapons_New.Launcher
+{
+    public class LauncherDefinitions_Debug : MonoBehaviour, ILauncherDefinitions
+    {
+        [SerializeField]
+        ushort _ammoReserveAmount;
+        [SerializeField]
+        ushort _ammoInMagazineAmount;
+        [SerializeField]
+        float _launchingIntervalTime;
+        [SerializeField]
+        float _reloadDurationTime;
+        [SerializeField]
+        Vector2 _launchDelayRange;
+
+
+        public ushort AmmoInMagazineAmount => _ammoInMagazineAmount;
+
+        public float ReloadDurationTime => _reloadDurationTime;
+
+
+        public Vector2 LaunchDelayRange => _launchDelayRange;
+
+        public ushort AmmoReserveAmount => _ammoReserveAmount;
+
+        public float LaunchingIntervalTime => _launchingIntervalTime;
+    }
+}

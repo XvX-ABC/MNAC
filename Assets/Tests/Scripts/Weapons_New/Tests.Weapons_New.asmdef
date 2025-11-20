@@ -1,0 +1,19 @@
+{
+    "name": "Tests.Weapons_New",
+    "rootNamespace": "Tests.Weapons_New",
+    "references": [
+        "GUID:e77376900b62a3d41a6e000c035ec369",
+        "GUID:e4edb5abb6d3d2f4fbd7f53d5012ce27",
+        "GUID:24b41075e961be54bb0ee4da2412e627",
+        "GUID:d8b63aba1907145bea998dd612889d6b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
