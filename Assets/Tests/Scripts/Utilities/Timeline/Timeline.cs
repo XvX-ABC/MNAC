@@ -7,9 +7,60 @@ using UTime = UnityEngine.Time;
 
 namespace Tests.Utilities.Timeline
 {
+    public class Timeline_V2 : Timeline_V1
+    {
+        public Timeline_V2(float duration) : base(duration)
+        {
+        }
+
+        public Timeline_V2(float duration, bool isLoop) : base(duration, isLoop)
+        {
+        }
+
+        public override void OnUpdate(float deltaTime)
+        {
+            if (!isRunning)
+                return;
+            var context = new TimelineContext() { DeltaTime = deltaTime, Time = time, NormalizedTime = length == 0 ? 1 : time / length, Duration = length };
+
+            if (!startActionExecuted)
+            {
+                startAction?.Invoke(context);
+                startActionExecuted = true;
+            }
+
+            updateAction?.Invoke(time / length);
+            foreach (var executor in executors)
+                executor.Execute(context);
+            if (time >= length)
+            {
+                if (!isLoop)
+                {
+                    endAction?.Invoke(context);
+                    //Reset();
+                    Pause();
+                }
+                else
+                {
+                    Reset();
+                }
+            }
+            else
+                time += deltaTime;
+        }
+    }
     public class Timeline_V1 : Timeline
     {
         public Timeline_V1(float duration) : base(duration) { }
+
+        public Timeline_V1(float duration, bool isLoop) : base(duration, isLoop)
+        {
+        }
+
+        protected Timeline_V1()
+        {
+        }
+
         public override void OnUpdate(float deltaTime)
         {
             if (!isRunning)
@@ -157,7 +208,7 @@ namespace Tests.Utilities.Timeline
                 time -= length;
             else
                 time = 0;
-            isRunning = isLoop;
+            isRunning = isLoop & isRunning;
             startActionExecuted = false;
             ResetExecutors();
         }
