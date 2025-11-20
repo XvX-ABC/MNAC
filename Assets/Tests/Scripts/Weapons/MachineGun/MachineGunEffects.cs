@@ -17,7 +17,7 @@ namespace Tests.Weapons.MachineGuns
         MuzzleFlashEffect[] _flashEffects;
         MachineGun _gun;
 
-        ILauncher _owner;
+        ILauncher_Obsolete _owner;
         Random _random;
         ILauncherDefinitions _definitions;
         ITimelineEvent _event;
@@ -47,7 +47,7 @@ namespace Tests.Weapons.MachineGuns
             }
         }
 
-        public ILauncher Owner => _owner;
+        public ILauncher_Obsolete Owner => _owner;
 
 
         void PlayFlame()
@@ -57,11 +57,11 @@ namespace Tests.Weapons.MachineGuns
             var effect = _flashEffects[_random.NextInt(0, _flashEffects.Length)];
             effect.Play();
         }
-        void FollowOwnerPlay(ILauncher launcher)
+        void FollowOwnerPlay(ILauncher_Obsolete launcher)
         {
             PlayFlame();
         }
-        public void Initialize(ILauncher owner)
+        public void Initialize(ILauncher_Obsolete owner)
         {
             _owner = owner;
             _definitions = _owner.Definitions;

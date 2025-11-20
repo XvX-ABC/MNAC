@@ -40,7 +40,7 @@ namespace Tests.Weapons.MultiMissileLauncher.Animation
         {
             //_prepareLaunchTimeline.OnUpdate(Time.deltaTime);
         }
-        void LauncherInitializeAction(ILauncher l)
+        void LauncherInitializeAction(ILauncher_Obsolete l)
         {
             var controller = _animator.runtimeAnimatorController;
             var clips = controller.animationClips;

@@ -8,7 +8,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
 {
     internal class AmmoLoad : ArmedLauncherAnimationStateBase
     {
-        ILauncher _launcher;
+        ILauncher_Obsolete _launcher;
         string _animationName;
         string _multiplierName;
         float _clipLength;
@@ -18,7 +18,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
             _multiplierName = animationMultiplier ?? throw new ArgumentNullException(nameof(animationMultiplier));
             _clipLength = Mathf.Max(0, clipLength);
         }
-        internal ILauncher TargetLauncher
+        internal ILauncher_Obsolete TargetLauncher
         {
             get => _launcher;
             set

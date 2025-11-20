@@ -4,7 +4,7 @@ using Tests.Utilities.Timeline;
 
 namespace Tests.Weapons.Launcher
 {
-    public interface ILauncher : IWeapon_Obsolete
+    public interface ILauncher_Obsolete : IWeapon_Obsolete
     {
         public enum ActionsEnum
         {
@@ -17,9 +17,9 @@ namespace Tests.Weapons.Launcher
             All = 255,
         }
         [Obsolete]
-        public Action<ILauncher> InitializationAction { get; set; }
-        public Action<ILauncher> LaunchAction { get; set; }
-        public Action<ILauncher> ReloadAction { get; set; }
+        public Action<ILauncher_Obsolete> InitializationAction { get; set; }
+        public Action<ILauncher_Obsolete> LaunchAction { get; set; }
+        public Action<ILauncher_Obsolete> ReloadAction { get; set; }
         public ITimeline DelayLaunchTimeline { get; }
         public ITimeline LaunchDurationTimeline { get; }
         public ITimeline ReloadTimeline { get; }

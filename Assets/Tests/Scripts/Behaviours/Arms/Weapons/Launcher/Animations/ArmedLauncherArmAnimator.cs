@@ -26,7 +26,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
 
         IWeaponControlInput _input;
         ITargetsCatcher _targetsCatcher;
-        ILauncher _launcher;
+        ILauncher_Obsolete _launcher;
 
 
         AimingHelper _aimingHelper;
@@ -113,7 +113,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
             }
         }
         public IGameObjTarget AimingTarget { get => _aimingHelper.Target; set => _aimingHelper.Target = value; }
-        public ILauncher Launcher
+        public ILauncher_Obsolete Launcher
         {
             get => _launcher;
             set

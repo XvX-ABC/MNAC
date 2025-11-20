@@ -1,7 +1,7 @@
 ﻿using System;
 using Tests.Utilities;
 using Unity.Collections.LowLevel.Unsafe;
-using ActionsEnum = Tests.Weapons.Launcher.ILauncher.ActionsEnum;
+using ActionsEnum = Tests.Weapons.Launcher.ILauncher_Obsolete.ActionsEnum;
 namespace Tests.Behaviours.Arms.Weapons.Launcher
 {
     public class LauncherActionsLockGroup : ActionsLockGroup<ActionsEnum>, ILauncherActionsLock

@@ -24,7 +24,7 @@ namespace Tests.Weapons.MultiMissileLauncher
 
         ushort _ammoSpareQuantity;
         ushort _ammoInMagazineQuantity;
-        Action<ILauncher> _initializationAction;
+        Action<ILauncher_Obsolete> _initializationAction;
         Action<IMissileLauncher, IGameObjTarget> _targetChangeAction;
         IGameObjTarget _target;
         ILauncherActionsLock _actionsLock;
@@ -37,7 +37,7 @@ namespace Tests.Weapons.MultiMissileLauncher
         public ushort MagazineAmmoCount { get => _ammoInMagazineQuantity; }
         public ILauncherDefinitions Definitions { get => definitions; }
         IMissileLauncherDefinitions IMissileLauncher.Definitions => definitions;
-        public Action<ILauncher> InitializationAction { get => _initializationAction; set => _initializationAction = value; }
+        public Action<ILauncher_Obsolete> InitializationAction { get => _initializationAction; set => _initializationAction = value; }
         public IGameObjTarget Target
         {
             get => _target;
@@ -64,15 +64,15 @@ namespace Tests.Weapons.MultiMissileLauncher
                 _targetChangeAction = value;
             }
         }
-        ILauncherActionsLock ILauncher.actionsLock => _actionsLock;
+        ILauncherActionsLock ILauncher_Obsolete.actionsLock => _actionsLock;
 
 
         string IWeapon_Obsolete.Name => this.gameObject.name;
 
         WeaponType IWeapon_Obsolete.Type => WeaponType.Launcher;
 
-        public Action<ILauncher> LaunchAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Action<ILauncher> ReloadAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Action<ILauncher_Obsolete> LaunchAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Action<ILauncher_Obsolete> ReloadAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public GameObject Obj => this.gameObject;
 

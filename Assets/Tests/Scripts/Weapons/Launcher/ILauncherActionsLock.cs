@@ -1,5 +1,5 @@
 ﻿using Tests.Utilities;
-using static Tests.Weapons.Launcher.ILauncher;
+using static Tests.Weapons.Launcher.ILauncher_Obsolete;
 
 namespace Tests.Behaviours.Arms.Weapons.Launcher
 {

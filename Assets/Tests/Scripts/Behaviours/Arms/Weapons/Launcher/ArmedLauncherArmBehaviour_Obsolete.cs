@@ -15,7 +15,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
     [Obsolete]
     public class ArmedLauncherArmBehaviour_Obsolete : ArmedWeaponArmBehaviourBase_Obsolete
     {
-        ILauncher _launcher;
+        ILauncher_Obsolete _launcher;
         PlayableStateMachine _stateMachine;
         ArmAim_Obsolete _aim;
         AmmoLoad_Obsolete _ammoLoad;
@@ -30,7 +30,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             get => _launcher;
             set
             {
-                if (value is ILauncher launcher)
+                if (value is ILauncher_Obsolete launcher)
                 {
                     _launcher = launcher;
                     _ammoLoad.Launcher = launcher;

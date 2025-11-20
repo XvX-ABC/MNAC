@@ -7,26 +7,26 @@ using UnityEngine;
 using UnityEngine.Pool;
 using Tests.Utilities.Timeline.Events.Point;
 using Tests.Utilities.Timeline.Events.Range;
-using ActionsEnum = Tests.Weapons.Launcher.ILauncher.ActionsEnum;
+using ActionsEnum = Tests.Weapons.Launcher.ILauncher_Obsolete.ActionsEnum;
 namespace Tests.Weapons.Launcher
 {
     [DisallowMultipleComponent]
-    public class LauncherBase : MonoBehaviour, ILauncher
+    public class LauncherBase : MonoBehaviour, ILauncher_Obsolete
     {
         [Serializable]
         protected internal class EffectorSupporter : ILauncherEffector
         {
             ILauncherEffector[] _effectors;
-            ILauncher _owner;
+            ILauncher_Obsolete _owner;
             public EffectorSupporter(ILauncherEffector[] effectors)
             {
                 _effectors = effectors;
             }
 
-            public ILauncher Owner => _effectors[0].Owner;
+            public ILauncher_Obsolete Owner => _effectors[0].Owner;
 
 
-            public void Initialize(ILauncher owner)
+            public void Initialize(ILauncher_Obsolete owner)
             {
                 _owner = owner ?? throw new ArgumentNullException(nameof(owner));
                 foreach (var e in _effectors)
@@ -52,7 +52,7 @@ namespace Tests.Weapons.Launcher
         [SerializeField]
         protected ushort ammoReservesQuantity;
 
-        protected Action<ILauncher> initializationAction;
+        protected Action<ILauncher_Obsolete> initializationAction;
         protected float lastLaunchTime;
 
 
@@ -65,8 +65,8 @@ namespace Tests.Weapons.Launcher
 
 
         protected LauncherActionsLock actionsLock;
-        protected Action<ILauncher> launchAction;
-        protected Action<ILauncher> reloadAction;
+        protected Action<ILauncher_Obsolete> launchAction;
+        protected Action<ILauncher_Obsolete> reloadAction;
 
         public string Name { get => this.name; }
         public ushort ReservesAmmoCount { get => ammoReservesQuantity; }
@@ -74,16 +74,16 @@ namespace Tests.Weapons.Launcher
         public ILauncherDefinitions Definitions { get => definitions; protected set => definitions = value; }
         public Vector3 MagazinePosition => this.transform.TransformPoint(definitions.MagazinePosition);
         public Vector3 MuzzlePosition => this.transform.TransformPoint(definitions.MuzzlePosition);
-        public Action<ILauncher> InitializationAction { get => initializationAction; set => initializationAction = value; }
+        public Action<ILauncher_Obsolete> InitializationAction { get => initializationAction; set => initializationAction = value; }
         public ITimeline DelayLaunchTimeline { get => delayLaunchTimeline; }
         public ITimeline LaunchDurationTimeline { get => launchDurationTimeline; }
         public ITimeline ReloadTimeline { get => reloadTimeline; }
-        ILauncherActionsLock ILauncher.actionsLock { get => actionsLock; }
+        ILauncherActionsLock ILauncher_Obsolete.actionsLock { get => actionsLock; }
 
         WeaponType IWeapon_Obsolete.Type => WeaponType.Launcher;
 
-        public Action<ILauncher> LaunchAction { get => launchAction; set => launchAction = value; }
-        public Action<ILauncher> ReloadAction { get => reloadAction; set => reloadAction = value; }
+        public Action<ILauncher_Obsolete> LaunchAction { get => launchAction; set => launchAction = value; }
+        public Action<ILauncher_Obsolete> ReloadAction { get => reloadAction; set => reloadAction = value; }
 
         public GameObject Obj => this.gameObject;
 

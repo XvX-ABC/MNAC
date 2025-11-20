@@ -14,12 +14,12 @@ namespace Assets.Tests.Scripts.Weapons.MVC
     {
         [SerializeField]
         protected string url;
-        protected ILauncher launcher;
+        protected ILauncher_Obsolete launcher;
         public string URL => url;
 
         protected virtual void Awake()
         {
-            this.launcher = GetComponent<ILauncher>();
+            this.launcher = GetComponent<ILauncher_Obsolete>();
             if (launcher == null)
             {
                 throw new Exception();
@@ -35,7 +35,7 @@ namespace Assets.Tests.Scripts.Weapons.MVC
         {
             MVCCore.UnregisteredController(this);
         }
-        internal T ConvertLauncherOfBase<T>() where T : ILauncher
+        internal T ConvertLauncherOfBase<T>() where T : ILauncher_Obsolete
         {
             if (this.launcher is T mlauncher)
                 return mlauncher;

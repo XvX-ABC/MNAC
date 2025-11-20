@@ -9,15 +9,15 @@ namespace Tests.Weapons.MachineGuns
     {
         [Obsolete]
         GameObject _definitionsObj;
-        ILauncher _owner;
+        ILauncher_Obsolete _owner;
         [SerializeField]
         Vector3 _direction;
         [SerializeField, Range(0, 50)]
         float _force = 10f;
         internal new ICaseEjectingDeviceDefinitions definitions { get => (ICaseEjectingDeviceDefinitions)base.definitions; }
 
-        public ILauncher Owner => _owner;
-        public void Initialize(ILauncher owner)
+        public ILauncher_Obsolete Owner => _owner;
+        public void Initialize(ILauncher_Obsolete owner)
         {
             _owner = owner ?? throw new ArgumentNullException(nameof(owner));
             _owner.LaunchAction += FollowOwnerLaunch;
@@ -111,7 +111,7 @@ namespace Tests.Weapons.MachineGuns
             return true;
         }
 
-        void FollowOwnerLaunch(ILauncher owner)
+        void FollowOwnerLaunch(ILauncher_Obsolete owner)
         {
             this.Launch();
         }

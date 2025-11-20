@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Tests.Weapons
 {
-    public class Weapon_Test : MonoBehaviour, ILauncher
+    public class Weapon_Test : MonoBehaviour, ILauncher_Obsolete
     {
         [SerializeField]
         string _name;
@@ -18,49 +18,49 @@ namespace Tests.Weapons
         ITimeline _reloadTimeline;
         public string Name { get => _name; set => _name = value; }
         public WeaponType Type { get => _type; set => _type = value; }
-        Action<ILauncher> ILauncher.InitializationAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Action<ILauncher_Obsolete> ILauncher_Obsolete.InitializationAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        ITimeline ILauncher.DelayLaunchTimeline => throw new NotImplementedException();
+        ITimeline ILauncher_Obsolete.DelayLaunchTimeline => throw new NotImplementedException();
 
-        ITimeline ILauncher.LaunchDurationTimeline => throw new NotImplementedException();
+        ITimeline ILauncher_Obsolete.LaunchDurationTimeline => throw new NotImplementedException();
 
-        ITimeline ILauncher.ReloadTimeline => _reloadTimeline;
-        ILauncherDefinitions ILauncher.Definitions => throw new NotImplementedException();
+        ITimeline ILauncher_Obsolete.ReloadTimeline => _reloadTimeline;
+        ILauncherDefinitions ILauncher_Obsolete.Definitions => throw new NotImplementedException();
 
-        ushort ILauncher.ReservesAmmoCount => throw new NotImplementedException();
+        ushort ILauncher_Obsolete.ReservesAmmoCount => throw new NotImplementedException();
 
-        ushort ILauncher.MagazineAmmoCount => throw new NotImplementedException();
+        ushort ILauncher_Obsolete.MagazineAmmoCount => throw new NotImplementedException();
 
-        ILauncherActionsLock ILauncher.actionsLock => throw new NotImplementedException();
+        ILauncherActionsLock ILauncher_Obsolete.actionsLock => throw new NotImplementedException();
 
-        public Action<ILauncher> LaunchAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Action<ILauncher> ReloadAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Action<ILauncher_Obsolete> LaunchAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Action<ILauncher_Obsolete> ReloadAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public GameObject Obj => this.gameObject;
 
-        bool ILauncher.EndLaunch()
+        bool ILauncher_Obsolete.EndLaunch()
         {
             throw new NotImplementedException();
         }
 
-        bool ILauncher.EndReload()
+        bool ILauncher_Obsolete.EndReload()
         {
             _reloadTimeline.Pause();
             return true;
             //throw new NotImplementedException();
         }
 
-        int ILauncher.Fill(int num)
+        int ILauncher_Obsolete.Fill(int num)
         {
             throw new NotImplementedException();
         }
 
-        bool ILauncher.StartLaunch()
+        bool ILauncher_Obsolete.StartLaunch()
         {
             throw new NotImplementedException();
         }
 
-        bool ILauncher.StartReload()
+        bool ILauncher_Obsolete.StartReload()
         {
             _reloadTimeline.Restart();
             return true;

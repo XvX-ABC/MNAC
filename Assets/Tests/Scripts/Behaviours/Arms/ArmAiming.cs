@@ -10,13 +10,13 @@ namespace Tests.Behaviours.Arms
     internal class ArmAiming : ArmedArmStateBase
     {
         IWeaponControlInput _input;
-        ILauncher _controlledWeapon;
+        ILauncher_Obsolete _controlledWeapon;
         public ArmAiming() : base("aiming", 0)
         {
         }
 
         public IWeaponControlInput Input { get => _input; set => _input = value; }
-        public ILauncher ControlledWeapon
+        public ILauncher_Obsolete ControlledWeapon
         {
             get => _controlledWeapon;
             //set => _controlledWeapon = value;

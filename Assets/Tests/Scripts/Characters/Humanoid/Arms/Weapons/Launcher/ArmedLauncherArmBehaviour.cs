@@ -37,7 +37,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             set
             {
                 _behaviour.Weapon = value;
-                if (value is ILauncher launcher)
+                if (value is ILauncher_Obsolete launcher)
                 {
                     var definitions = launcher.Definitions;
                     _targetsCatcher.CatchingRadius = definitions.TargetLock.ViewPortRadius;

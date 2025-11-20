@@ -7,8 +7,8 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
     internal class AmmoLoad : ArmedArmStateBase
     {
 
-        ILauncher _launcher;
-        public ILauncher TargetLauncher
+        ILauncher_Obsolete _launcher;
+        public ILauncher_Obsolete TargetLauncher
         {
             set
             {

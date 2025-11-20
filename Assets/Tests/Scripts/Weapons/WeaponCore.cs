@@ -111,7 +111,7 @@ namespace Tests.Weapons
             return true;
             //return false;
         }
-        public bool StartSupplyForLauncher(ILauncher launcher)
+        public bool StartSupplyForLauncher(ILauncher_Obsolete launcher)
         {
             if (launcher == null || !_supplyDepots.TryGetValue(SupplyDepotType.Launcher, out var depot))
             {
@@ -119,7 +119,7 @@ namespace Tests.Weapons
             }
             return depot.StartToSupply(launcher.Fill);
         }
-        public bool StopSupplyForLauncher(ILauncher launcher)
+        public bool StopSupplyForLauncher(ILauncher_Obsolete launcher)
         {
             if (launcher == null || !_supplyDepots.TryGetValue(SupplyDepotType.Launcher, out var depot))
                 return false;

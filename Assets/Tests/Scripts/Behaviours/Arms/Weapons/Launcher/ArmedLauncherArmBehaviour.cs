@@ -15,7 +15,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         ITargetsCatcher _targetsCatcher;
         TargetLocker _targetLocker;
         IWeaponControlInput _winput;
-        ILauncher _launcher;
+        ILauncher_Obsolete _launcher;
         internal Interaction.ITarget_Obsolete target;
 
 
@@ -41,7 +41,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             get => _launcher;
             set
             {
-                if (value is ILauncher launcher)
+                if (value is ILauncher_Obsolete launcher)
                 {
                     _launcher = launcher;
                     ammoLoad.TargetLauncher = launcher;

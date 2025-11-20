@@ -11,8 +11,8 @@ namespace Tests.Behaviours.Arm.Weapons.Launcher
     {
 
         ReloadAnimator_Obsolete _reloadAnimator;
-        ILauncher _launcher;
-        public ILauncher Launcher
+        ILauncher_Obsolete _launcher;
+        public ILauncher_Obsolete Launcher
         {
             set
             {

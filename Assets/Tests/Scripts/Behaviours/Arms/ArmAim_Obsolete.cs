@@ -17,7 +17,7 @@ namespace Tests.Behaviours.Arms
         Interaction.ITarget_Obsolete _target;
         internal Action<float> weightChangedAction;
         internal Action<Interaction.ITarget_Obsolete> targetChangedAction;
-        private ILauncher _weapon;
+        private ILauncher_Obsolete _weapon;
 
         public Interaction.ITarget_Obsolete Target
         {
@@ -49,7 +49,7 @@ namespace Tests.Behaviours.Arms
                 weightChangedAction?.Invoke(v);
             }
         }
-        public ILauncher Weapon
+        public ILauncher_Obsolete Weapon
         {
             get => _weapon;
             set

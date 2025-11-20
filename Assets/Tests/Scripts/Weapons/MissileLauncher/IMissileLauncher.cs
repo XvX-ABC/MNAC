@@ -4,7 +4,7 @@ using Tests.Weapons.Launcher;
 
 namespace Tests.Weapons.MissileLauncher
 {
-    public interface IMissileLauncher : ILauncher
+    public interface IMissileLauncher : ILauncher_Obsolete
     {
         public IGameObjTarget Target { get; set; }
         public Action<IMissileLauncher, IGameObjTarget> TargetChangeAction { get; set; }
