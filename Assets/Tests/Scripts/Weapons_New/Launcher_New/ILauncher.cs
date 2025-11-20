@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tests.Weapons_New.Launcher
 {
-    internal interface ILauncher
+    public interface ILauncher : IWeapon
     {
         Transform MuzzleTrans { get; }
         ILauncherDefinitions Definitions { get; }
@@ -13,12 +13,10 @@ namespace Tests.Weapons_New.Launcher
         Action<ILauncher> LaunchedCallback { get; set; }
         ITimeline LaunchingIntervalTimeline { get; }
         ushort MagazineAmmoAmount { get; }
-        string Name { get; }
         Action<ILauncher> ReloadCallback { get; set; }
         ITimeline ReloadTimeline { get; }
         Func<bool> ReloadTrigger { get; set; }
         ushort ReserveAmmoAmount { get; }
-        WeaponType Type { get; }
 
         void FillReserve(int amount);
     }
