@@ -18,6 +18,6 @@ namespace Tests.Utilities.Timeline.Events.Point
                 return 0;
             }
         }
-        public float TriggeredProportion { get; }
+        public float TriggeredProportion { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Tests.Utilities.Timeline;
+using UnityEngine;
 
 namespace Tests.Utilities.Timeline.Events.Point
 {
@@ -17,7 +18,7 @@ namespace Tests.Utilities.Timeline.Events.Point
         protected float _triggeredProportion;
 
 
-        public float TriggeredProportion { get => _triggeredProportion; }
+        public float TriggeredProportion { get => _triggeredProportion; set => _triggeredProportion = Mathf.Clamp01(value); }
         public virtual Func<TimelineContext, bool> Trigger { get => triggeredFunc; }
 
         public abstract void Execute(TimelineContext context);
