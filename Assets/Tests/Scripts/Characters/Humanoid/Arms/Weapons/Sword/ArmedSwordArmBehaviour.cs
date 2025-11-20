@@ -53,12 +53,14 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             CreateSphereTriggerTargetsCatcher();
             _load = new(_targetsCatcher.gameObject);
         }
-        private void Update()
+        public override void Update()
         {
+            base.Update();
             _behaviour?.Update();
         }
-        private void FixedUpdate()
+        public override void FixedUpdate()
         {
+            base.FixedUpdate();
             _behaviour.FixedUpdate();
         }
         void UpdateTargetsCatcherFor(Blackboard blackboard)
