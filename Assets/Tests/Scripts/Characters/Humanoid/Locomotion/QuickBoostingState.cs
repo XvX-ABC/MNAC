@@ -50,7 +50,6 @@ namespace Tests.Characters.Humanoid.Locomotion
             _cdTimeline.OnUpdate(Time.deltaTime);
         }
     }
-    //TODO: 删除定义中增量速度相关内容
     internal class QuickBoostingState : LocomotionStateBase
     {
         BoostingLocomotion locomotion;

@@ -85,7 +85,6 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
                 animator.Enabled = true;
             }
         }
-        //TODO: 删除定义中增量速度相关内容
         public ArmedSwordArmBehaviour(IArmedSwordArmBehaviourDefinitions definitions, BoostingHelper boostingHelper, SlashHelper slashHelper, ArmedSwordArmAnimator animator)
         {
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));

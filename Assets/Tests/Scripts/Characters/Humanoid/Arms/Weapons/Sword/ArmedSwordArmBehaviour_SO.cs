@@ -78,7 +78,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
     [CreateAssetMenu(fileName = "ArmedSwordArmBehaviour", menuName = "Tests/Behaviours/Characters/Humanoid/Arms/Weapons/Sword/ArmedSwordArmBehaviour")]
     public class ArmedSwordArmBehaviour_SO : ArmedWeaponArmBehaviourBase_SO
     {
-        //TODO: 删除定义中增量速度相关内容
         //IArmedSwordArmBehaviourDefinitions _definitions;
         //IArmedSwordArmAnimationDefinitions _animationDefinitions;
         [SerializeField]
