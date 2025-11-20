@@ -123,8 +123,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             //_behaviour = new(_definitions, _animator);
             //_behaviour.TargetsCatcher = _targetsCatcher;
 
-
-            InitializeTargetLocker(input, camera, cursorIndicator);
+            if (!blackboard.TryReadValue<TargetLocker>(CharacterBlackboardFields.TargetsCatcher, out _targetLocker))
+                InitializeTargetLocker(input, camera, cursorIndicator);
             InitializeBehaviourAndAnimator(graph, aimIK, camera, input.BaseInput, rbody, world, groundDetector, locomotionCore, armInput.WeaponControl);
         }
         void InitializeTargetLocker(IHumanInput input, Camera camera, ICursorIndicator cursorIndicator)
