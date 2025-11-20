@@ -17,7 +17,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     public class ArmedSwordArmBehaviour : ArmedWeaponArmBehaviourBase_MonoComponent
     {
-        //TODO: 删除定义中增量速度相关内容
         IArmedSwordArmBehaviourDefinitions _definitions;
         IArmedSwordArmAnimationDefinitions _animationDefinitions;
 
