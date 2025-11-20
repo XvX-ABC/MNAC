@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
 using Tests.Characters.Interaction.Input;
-using Tests.Input;
 using Tests.Interaction;
 using Tests.States;
 using Tests.Weapons;
 using Tests.Weapons.Launcher;
-using TMPro;
-using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Launcher
 {
@@ -140,7 +136,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             statemachine.AddTransitionFor(aiming, idle, length, () => target == null, null);
             statemachine.AddTransitionFor(aiming, ammoLoad, length, ReloadTriggered, null, InterruptionSource.None);
 
-            //FIXME: 装弹状态没有正常退出
+            //BUG: 装弹状态没有正常退出
             var l_i = new BlendingTransition<object>(ammoLoad, idle, () => target == null, null, 0, 0, 1);
             var l_a = new BlendingTransition<object>(ammoLoad, aiming, () => target != null, null, length, 0, 0.75f);
             statemachine.AddTransitionFor(l_i);
