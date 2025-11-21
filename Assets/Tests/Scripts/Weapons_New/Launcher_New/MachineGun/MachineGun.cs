@@ -9,6 +9,13 @@ namespace Tests.Weapons_New.Launcher
         [SerializeField]
         BulletPool_MonoComponent _bulletPool;
 
+        protected internal override IProjectile Launch()
+        {
+            var bullet = (Bullet)base.Launch();
+            var ray = new Ray(MuzzleTrans.position, this.transform.forward);
+            bullet.ShootingRay = ray;
+            return bullet;
+        }
         protected override IProjectile GetProjectile()
         {
             return _bulletPool.Get();
