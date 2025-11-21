@@ -130,7 +130,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             }
         }
 
-
+        public Action<IGameObjTarget_New> ItemCaughtAction { get => _catcher.ItemCaughtAction; set => _catcher.ItemCaughtAction = value; }
+        public Action<IGameObjTarget_New> ItemReleaseAction { get => _catcher.ItemReleaseAction; set => _catcher.ItemReleaseAction = value; }
 
         void WhenTargetCaught(IGameObjTarget_New target)
         {
