@@ -86,7 +86,6 @@ namespace Tests.Weapons_New.Launcher
         protected virtual void Update()
         {
             statemachine.OnUpdate();
-            Debug.Log(statemachine);
         }
         protected virtual ILauncherDefinitions GetDefinitions()
         {
