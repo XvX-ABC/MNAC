@@ -141,7 +141,7 @@ namespace Tests.Weapons_New.Launcher
         {
             return reloadTrigger == null ? false : ammo.MagazineAmount == definitions.AmmoInMagazineAmount && reloadTrigger();
         }
-        protected internal virtual void Launch()
+        protected internal virtual IProjectile Launch()
         {
             var projectile = GetProjectile();
             var obj = projectile.Obj;
@@ -149,6 +149,7 @@ namespace Tests.Weapons_New.Launcher
             projectile.StartAction();
             ammo.MagazineAmount--;
             _launchedCallback?.Invoke(this);
+            return projectile;
         }
         protected internal virtual void Reload()
         {

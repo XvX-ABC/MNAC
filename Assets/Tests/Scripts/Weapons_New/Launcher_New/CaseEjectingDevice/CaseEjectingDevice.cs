@@ -77,7 +77,7 @@ namespace Tests.Weapons_New.Launcher
             var rb = c.Rbody;
             rb.AddForceAtPosition(this.transform.TransformDirection(_direction) * _force, c.Obj.transform.position, ForceMode.Impulse);
         }
-        protected internal override void Launch()
+        protected internal override IProjectile Launch()
         {
             var c = GetProjectile();
             var obj = c.Obj;
@@ -85,13 +85,18 @@ namespace Tests.Weapons_New.Launcher
             c.StartAction();
             EjectCase((Case)c);
             ammo.MagazineAmount--;
+            return c;
         }
         void WhenOwnerLauncherLaunch(ILauncher owner)
         {
+            if (!this.enabled)
+                return;
             Launch();
         }
         void WhenOwnerLauncherReload(ILauncher owner)
         {
+            if (!this.enabled)
+                return;
             Reload();
         }
         void BindLauncher(ILauncher launcher)
