@@ -7,8 +7,8 @@ namespace Tests.Interaction
     {
         [SerializeField]
         Collider _collider;
-        public LayerMask IncludeMask { get => _collider.includeLayers; set => _collider.includeLayers = value; }
-        public LayerMask ExcludeMask { get => _collider.excludeLayers; set => _collider.excludeLayers = value; }
+        public LayerMask IncludeLayerMask { get => _collider.includeLayers; set => _collider.includeLayers = value; }
+        public LayerMask ExcludeLayerMask { get => _collider.excludeLayers; set => _collider.excludeLayers = value; }
         public TargetsTriggerBase(Collider collider)
         {
             _collider = collider ?? throw new ArgumentNullException(nameof(collider));
