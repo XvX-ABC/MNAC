@@ -22,12 +22,14 @@ namespace Tests.Weapons_New.Projectiles
         public override Action<IProjectile, GameObject> HitAction { get; set; }
         public Rigidbody Rbody { get => _rb; }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _rb = GetComponent<Rigidbody>();
         }
-        void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             _timer = 0;
         }
         private void OnCollisionEnter(Collision collision)
