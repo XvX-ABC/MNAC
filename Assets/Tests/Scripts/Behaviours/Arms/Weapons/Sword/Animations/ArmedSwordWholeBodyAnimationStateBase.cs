@@ -12,12 +12,14 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         float _w1;
         MixerPlayable _mixer;
         ControllerPlayable _baseController;
+        protected WholeBodyControllerPlayable wholeBodyController;
         float baseWeight { get => _baseController.OutputSetting.Weight; set => _baseController.OutputSetting.Weight = value; }
         float wholeBodyWeight { get => controller.OutputSetting.Weight; set => controller.OutputSetting.Weight = value; }
 
-        public ArmedSwordWholeBodyAnimationStateBase(ControllerPlayable baseWholeBodyController, ControllerPlayable wholeBodyController, string name, float duration = 0, bool enabled = true) : base(wholeBodyController, name, duration, enabled)
+        public ArmedSwordWholeBodyAnimationStateBase(ControllerPlayable baseWholeBodyController, WholeBodyControllerPlayable wholeBodyController, string name, float duration = 0, bool enabled = true) : base(wholeBodyController, name, duration, enabled)
         {
             _baseController = baseWholeBodyController ?? throw new ArgumentNullException(nameof(baseWholeBodyController));
+            this.wholeBodyController = wholeBodyController ?? throw new ArgumentNullException(nameof(wholeBodyController));
         }
 
         void RecordWeights()
@@ -37,7 +39,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         }
         public override void OnExit()
         {
-            UpdateWeights(0, 1);
+            //UpdateWeights(0, 1);
             base.OnExit();
         }
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)

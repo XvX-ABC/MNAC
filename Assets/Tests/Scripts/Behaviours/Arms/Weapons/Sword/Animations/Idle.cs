@@ -12,18 +12,15 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
     {
         float _maxSpeed;
         float _accelerationSpeed;
-        string _velocityName_x;
-        string _velocityName_y;
         LocomotionCore _locomotionCore;
         IdleArmAnimationLocomotion _locomotion;
-        public Idle(ControllerPlayable wholeBodyController, LocomotionCore locomotionCore, float maxSpeed, float accelerationSpeed, string velocityName_x, string velocityName_y, bool enabled = true) : base(wholeBodyController, "idle", 0, enabled)
+        ArmControllerPlayable _armController;
+        public Idle(ArmControllerPlayable armController, LocomotionCore locomotionCore, float maxSpeed, float accelerationSpeed, bool enabled = true) : base(armController, "idle", 0, enabled)
         {
             _maxSpeed = Mathf.Max(0, maxSpeed);
             _accelerationSpeed = Mathf.Max(0, accelerationSpeed);
+            _armController = armController;
 
-
-            _velocityName_x = velocityName_x ?? throw new ArgumentNullException(nameof(velocityName_x));
-            _velocityName_y = velocityName_y ?? throw new ArgumentNullException(nameof(velocityName_y));
 
 
             _locomotionCore = locomotionCore ?? throw new ArgumentNullException(nameof(locomotionCore));
@@ -31,14 +28,11 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
             //_locomotionCore.AddModule(_locomotion);
             _locomotionCore.EvaluationModules = _locomotionCore.EvaluationModules.Append(_locomotion).ToArray();
         }
-        internal Idle(ControllerPlayable wholeBodyController, LocomotionCore locomotionCore, IdleArmAnimationLocomotion locomotion, float maxSpeed, float accelerationSpeed, string velocityName_x, string velocityName_y, bool enabled = true) : base(wholeBodyController, "idle", 0, enabled)
+        internal Idle(ArmControllerPlayable armController, LocomotionCore locomotionCore, IdleArmAnimationLocomotion locomotion, float maxSpeed, float accelerationSpeed, bool enabled = true) : base(armController, "idle", 0, enabled)
         {
             _maxSpeed = Mathf.Max(0, _maxSpeed);
             _accelerationSpeed = Mathf.Max(0, _accelerationSpeed);
-
-
-            _velocityName_x = velocityName_x ?? throw new ArgumentNullException(nameof(velocityName_x));
-            _velocityName_y = velocityName_y ?? throw new ArgumentNullException(nameof(velocityName_y));
+            _armController = armController;
 
 
             _locomotionCore = locomotionCore ?? throw new ArgumentNullException(nameof(locomotionCore));
@@ -64,8 +58,9 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
                 rotation *= Quaternion.FromToRotation(world.Up, gg.GroundsNormal);
             }
             velocity = Quaternion.Inverse(rotation * context.CurrentRotation) * (velocity.normalized * v);
-            controller.SetFloat(_velocityName_x, velocity.x);
-            controller.SetFloat(_velocityName_y, velocity.z);
+            //controller.SetFloat(_velocityName_x, velocity.x);
+            //controller.SetFloat(_velocityName_y, velocity.z);
+            _armController.SetVelocity(new Vector2(velocity.x, velocity.z));
         }
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {

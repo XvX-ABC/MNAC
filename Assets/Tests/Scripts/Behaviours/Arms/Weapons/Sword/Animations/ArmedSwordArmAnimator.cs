@@ -16,7 +16,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
     {
         class WholeBody
         {
-            internal ControllerPlayable controller;
+            internal WholeBodyControllerPlayable controller;
             internal WholeBodyMixerPlayable mixer;
         }
         IArmedSwordArmBehaviourDefinitions _definitions;
@@ -27,7 +27,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
 
 
         WholeBody _wholeBody;
-        ControllerPlayable _controller;
+        ArmControllerPlayable _armController;
 
         BoostingHelper _boostingHelper;
         SlashHelper _slashHelper;
@@ -55,21 +55,29 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
             _boostingHelper = boostingHelper ?? throw new ArgumentNullException(nameof(_boostingHelper));
             _slashHelper = slashHelper ?? throw new ArgumentNullException(nameof(slashHelper));
 
-            _controller = new(graph, _animationDefinitions.ArmController);
+            _armController = new ArmControllerPlayable(graph, _animationDefinitions.VelocityName_X, _animationDefinitions.VelocityName_Y, _animationDefinitions.ArmController);
             _wholeBody = new()
             {
-                controller = new(graph, _animationDefinitions.WholeBodyController),
+                controller = new(
+                    graph,
+                    _animationDefinitions.BoostingSwitchName,
+                    _animationDefinitions.BoostingSpeedMultiplierName,
+                    _animationDefinitions.BoostingClipLength,
+                    _animationDefinitions.SlashSwitchName,
+                    _animationDefinitions.SlashSpeedMultiplierName,
+                    _animationDefinitions.SlashClipLength,
+                    _animationDefinitions.WholeBodyController),
             };
 
             var baseWholeBodyController = baseController;
             var wholeBodyController = _wholeBody.controller;
-            var armController = _controller;
+            var armController = _armController;
             InitializeWholeBodyAnimation(graph, baseController, mixer ?? throw new ArgumentNullException(nameof(mixer)), wholeBodyController);
 
 
-            idle = new(wholeBodyController, locomotionCore, maxSpeed, accelerationSpeed, animationDefinitions.VelocityName_X, animationDefinitions.VelocityName_Y);
-            boosting = new(baseWholeBodyController, wholeBodyController, armController, animationDefinitions.BoostingSwitchName, animationDefinitions.BoostingSpeedMultiplierName, animationDefinitions.BoostingClipLength, definitions.Boosting.MaxDuration);
-            slash = new(baseWholeBodyController, wholeBodyController, armController, _animationDefinitions.SlashSwitchName, animationDefinitions.SlashSpeedMultiplierName, animationDefinitions.SlashClipLength, definitions.Slash.Duration);
+            idle = new(armController, locomotionCore, maxSpeed, accelerationSpeed);
+            boosting = new(baseWholeBodyController, wholeBodyController, armController, definitions.Boosting.MaxDuration);
+            slash = new(baseWholeBodyController, wholeBodyController, armController, definitions.Slash.Duration, definitions.Slash.RecoveryDuration);
 
             InitializeStatemachine();
         }
@@ -99,7 +107,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
 
             state = new(this);
         }
-        public IOutputSetting OutputSetting { get => _controller.OutputSetting; set => _controller.OutputSetting = value; }
+        public IOutputSetting OutputSetting { get => _armController.OutputSetting; set => _armController.OutputSetting = value; }
         public bool Enabled
         {
             get => _enabled;
@@ -121,14 +129,15 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
 
         public Playable GetPlayablePart(PlayableGraph graph)
         {
-            return _controller.PlayablePart;
+            return _armController.PlayablePart;
         }
         public void Update()
         {
-            statemachine.OnUpdate();
-            var p = (AnimatorControllerPlayable)_wholeBody.controller.PlayablePart;
-            var state = p.GetCurrentAnimatorStateInfo(0);
-            var t = p.GetAnimatorTransitionInfo(0);
+            //statemachine.OnUpdate();
+            //Debug.Log(statemachine);
+            //var p = (AnimatorControllerPlayable)_wholeBody.controller.PlayablePart;
+            //var state = p.GetCurrentAnimatorStateInfo(0);
+            //var t = p.GetAnimatorTransitionInfo(0);
             //Debug.Log($"idle: {state.IsName("Idle")}, boosting: {state.IsName("baked_armed_sword_boosting_V0")}, slash: {state.IsName("baked_armed_sword_slash_v0")}, boosting_sw:{_wholeBody.controller.GetBool(_animationDefinitions.BoostingSwitchName)}, slash_sw: {_wholeBody.controller.GetBool(_animationDefinitions.SlashSwitchName)}, {t.IsName("Idle -> baked_armed_sword_boosting_V0")}, {t.IsName("baked_armed_sword_boosting_V0 -> baked_armed_sword_slash_v0")}");
         }
     }

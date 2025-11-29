@@ -12,18 +12,16 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         string _switchName;
         string _multiplierName;
         float _clipLength;
-        ControllerPlayable _armController;
-        public Boosting(ControllerPlayable baseWholeBodyController, ControllerPlayable wholeBodyController, ControllerPlayable armController, string switchName, string multiplierName, float clipLength, float duration = 0, bool enabled = true) : base(baseWholeBodyController, wholeBodyController, "boosting", duration, enabled)
+        ArmControllerPlayable _armController;
+        public Boosting(ControllerPlayable baseWholeBodyController, WholeBodyControllerPlayable wholeBodyController, ArmControllerPlayable armController, float duration = 0, bool enabled = true) : base(baseWholeBodyController, wholeBodyController, "boosting", duration, enabled)
         {
-            _switchName = switchName ?? throw new ArgumentNullException(nameof(switchName));
-            _multiplierName = multiplierName ?? throw new ArgumentNullException(nameof(multiplierName));
-            _clipLength = Mathf.Max(0, clipLength);
             _armController = armController;
         }
         void UpdateSpeedMultiplier()
         {
-            var m = _clipLength / (timeline.Length <= 0 ? 1 : timeline.Length);
-            controller.SetFloat(_multiplierName, m);
+            //var m = _clipLength / (timeline.Length <= 0 ? 1 : timeline.Length);
+            //controller.SetFloat(_multiplierName, m);
+            wholeBodyController.SetBoostingMultiplier(timeline.Length);
         }
 
 
@@ -32,7 +30,8 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
             base.FromPreviousStateTransitionBegin(currentTransition);
             UpdateSpeedMultiplier();
             _armController.OutputSetting.Weight = 0;
-            controller.SetBool(_switchName, true);
+            //controller.SetBool(_switchName, true);
+            wholeBodyController.SetBoostingSwitch(true);
         }
         public override void OnEnter()
         {
@@ -46,7 +45,8 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         }
         public override void OnExit()
         {
-            controller.SetBool(_switchName, false);
+            //controller.SetBool(_switchName, false);
+            wholeBodyController.SetBoostingSwitch(false);
             timeline.End();
             _armController.OutputSetting.Weight = 1;
             base.OnExit();
