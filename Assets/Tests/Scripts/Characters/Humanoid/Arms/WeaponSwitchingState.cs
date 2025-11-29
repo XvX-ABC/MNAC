@@ -5,6 +5,7 @@ using Tests.States;
 using Tests.Utilities.Composable;
 using Tests.Utilities.MountPoints;
 using Tests.Weapons;
+using Tests.Weapons_New;
 using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Arms
@@ -25,7 +26,7 @@ namespace Tests.Characters.Humanoid.Arms
             _switching = switching;
         }
 
-        public WeaponSwitchingState(IArmedWeaponArmDefinitions definitions, MountPoint mountPoint, WeaponCore weaponCore, Func<WeaponDescription[], string> selectionFunc = null) : this(new(definitions, mountPoint, weaponCore, selectionFunc))
+        public WeaponSwitchingState(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, WeaponCore weaponCore, Func<WeaponDescription[], string> selectionFunc = null) : this(new(definitions, launcherMountPoint, swordMountPoint, weaponCore, selectionFunc))
         {
         }
 

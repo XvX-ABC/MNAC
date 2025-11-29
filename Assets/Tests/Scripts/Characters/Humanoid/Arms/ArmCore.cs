@@ -1,6 +1,5 @@
 ﻿using System;
 using Tests.Animations;
-using Tests.Behaviours.Arm.Weapons;
 using Tests.Behaviours.Arms;
 using Tests.Behaviours.Arms.Animations;
 using Tests.Behaviours.Arms.Weapons;
@@ -11,12 +10,11 @@ using Tests.Characters.MountPoints;
 using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
-using Tests.Weapons;
+using Tests.Weapons_New;
 using UnityEngine;
 using UnityEngine.Playables;
 using IArmedWeaponArmBehaviour = Tests.Characters.Humanoid.Arms.Weapons.IArmedWeaponArmBehaviour;
 using IArmedWeaponArmDefinitions = Tests.Characters.Humanoid.Arms.Weapons.IArmedWeaponArmDefinitions;
-using MountPoint = Tests.Characters.MountPoints.MountPoint;
 
 namespace Tests.Characters.Humanoid.Arms
 {
@@ -112,7 +110,7 @@ namespace Tests.Characters.Humanoid.Arms
 
         private void Start()
         {
-            var mp = FindMountPoint(_definitions.Weapon.MountPointName);
+            var mp = FindMountPoint(_definitions.Weapon.LauncherMountPointName);
             var n = _definitions.Weapon.Origins[0].Name;
 
         }
@@ -125,10 +123,24 @@ namespace Tests.Characters.Humanoid.Arms
             }
             return null;
         }
+        internal MountPoint FindMountPoint(MountPointPlace fieldEnum)
+        {
+            foreach (var m in _mountPoints)
+                if (m.place == fieldEnum)
+                    return m;
+            return null;
+        }
         void InitializeChildNodes()
         {
             _node.AddChild(weaponSwitching.Node);
             _node.AddChild(armedWeaponControllerState.Node);
+        }
+        void RegisterMountPoints(Blackboard blackboard)
+        {
+            foreach (var m in _mountPoints)
+            {
+                blackboard.TryRegisterMountPoint(m.place, m);
+            }
         }
         public void Initialize(Blackboard blackboard)
         {
@@ -138,19 +150,22 @@ namespace Tests.Characters.Humanoid.Arms
                 throw new Exception();
 
 
-
             var weaponDefinitions = _definitions.Weapon;
-            var weaponMountPoint = FindMountPoint(weaponDefinitions.MountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.MountPointName);
-            weaponMountPoint.field = _part switch
+            //var launcherMountPoint = FindMountPoint(weaponDefinitions.LauncherMountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.LauncherMountPointName);
+            //var swordMountPoint = FindMountPoint(weaponDefinitions.SwordMountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.SwordMountPointName);
+            var launcherMountPoint = FindMountPoint(weaponDefinitions.LauncherMountPointPlace) ?? throw new NullReferenceException("launcherMountPoint");
+            var swordMountPoint = FindMountPoint(weaponDefinitions.SwordMountPointPlace) ?? throw new NullReferenceException("swordMountPoint");
+            var place = _part switch
             {
-                HumanPart.LeftArm => MountPointFields.Enum.Left_Arm_Hand_Weapon,
-                HumanPart.RightArm => MountPointFields.Enum.Right_Arm_Hand_Weapon,
+                HumanPart.LeftArm => MountPointPlace.Left_Hand_Weapon,
+                HumanPart.RightArm => MountPointPlace.Right_Hand_Weapon,
                 _ => throw new Exception("The part of definitions must is left arm or right arm.")
             };
 
-            blackboard.TryRegisterMountPoint(weaponMountPoint);
+            //launcherMountPoint.field = swordMountPoint.field = place;
+            RegisterMountPoints(blackboard);
 
-            InitializeSwitchingBehaviour(weaponDefinitions, weaponMountPoint);
+            InitializeSwitchingBehaviour(weaponDefinitions, launcherMountPoint, swordMountPoint);
 
             InitializeArmedWeaponBehaviours(weaponDefinitions);
 
@@ -181,14 +196,16 @@ namespace Tests.Characters.Humanoid.Arms
 
 
 
+
+
             InitializeChildNodes();
 
-            SetDefaultWeapon(weaponMountPoint, weaponDefinitions.Origins[0].Name, _weaponCore);
+            SetDefaultWeapon(launcherMountPoint, weaponDefinitions.Origins[0].Name, _weaponCore);
 
         }
-        void InitializeSwitchingBehaviour(IArmedWeaponArmDefinitions definitions, MountPoint mountPoint)
+        void InitializeSwitchingBehaviour(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint)
         {
-            weaponSwitching = new(definitions, mountPoint, _weaponCore);
+            weaponSwitching = new(definitions, launcherMountPoint, swordMountPoint, _weaponCore);
         }
         void InitializeArmedWeaponBehaviours(IArmedWeaponArmDefinitions definitions)
         {
@@ -261,9 +278,9 @@ namespace Tests.Characters.Humanoid.Arms
 
         void SetDefaultWeapon(MountPoint weaponMountPoint, string weaponName, WeaponCore weaponCore)
         {
-            if (!weaponCore.TryCreateWeaponObj(weaponName, out var obj))
+            if (!weaponCore.TryGetWeapon(weaponName, out var weapon))
                 throw new Exception();
-            weaponMountPoint.LoadObj = obj;
+            weaponMountPoint.LoadObj = weapon.Obj;
 
         }
         //public override void OnUpdate()

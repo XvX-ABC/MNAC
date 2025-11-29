@@ -12,10 +12,10 @@ namespace Tests.Characters.Humanoid.Arms
             get => base.LoadObj;
             set
             {
-                var s = field switch
+                var s = place switch
                 {
-                    MountPointFields.Enum.Left_Arm_Hand_Weapon => "_left",
-                    MountPointFields.Enum.Right_Arm_Hand_Weapon => "_right",
+                    MountPointPlace.Left_Hand_Weapon => "_left",
+                    MountPointPlace.Right_Hand_Weapon => "_right",
                     _ => ""
                 };
                 if (value != null)
