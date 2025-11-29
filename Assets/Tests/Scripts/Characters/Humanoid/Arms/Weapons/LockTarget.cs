@@ -1,9 +1,11 @@
-﻿using Tests.Interaction;
+﻿using Tests.Characters.UI;
+using Tests.Interaction;
 using Tests.UI;
 using UnityEngine;
 using UnityEngine.Pool;
+using IndicatedTarget = Tests.Characters.UI.IndicatedTarget;
 using ULockType = Tests.UI.BoxIndicator.LockType;
-namespace Tests.Behaviours.Arms.Weapons.Launcher
+namespace Tests.Characters.Humanoid.Arms.Weapons
 {
     internal class LockTarget : ILockTarget
     {
