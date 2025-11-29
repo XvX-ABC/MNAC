@@ -14,5 +14,9 @@ namespace Tests.Weapons_New.Launcher
                 launcher.Reload();
             });
         }
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+        }
     }
 }

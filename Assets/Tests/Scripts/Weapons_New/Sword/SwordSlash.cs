@@ -18,7 +18,8 @@ namespace Tests.Weapons_New.Sword
         }
         protected override void OnDisable()
         {
-            sword.tipTrigger.enabled = false;
+            if (sword != null)
+                sword.tipTrigger.enabled = false;
             base.OnDisable();
         }
     }

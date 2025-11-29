@@ -2,7 +2,6 @@
 
 namespace Tests.Weapons_New.Sword
 {
-    [ExecuteAlways]
     [RequireComponent(typeof(Collider))]
     internal class SwordExtensionControl : SwordComponent
     {

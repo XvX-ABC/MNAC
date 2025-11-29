@@ -46,7 +46,7 @@ namespace Tests.Characters.Humanoid.Locomotion
         {
             if (locomotion.Enabled)
                 //locomotion.HorizontalVector = context.Input_Obsolete.HorizontalVector;
-                locomotion.HorizontalVector = input.HorizontalVector;
+                locomotion.DirectionVector = input.HorizontalVector;
         }
 
     }

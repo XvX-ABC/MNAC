@@ -23,8 +23,8 @@ namespace Tests.TPhysics.Locomotion
         }
         public Vector3 HorizontalVectorWhenNoTarget
         {
-            get => _base.HorizontalVector;
-            set => _base.HorizontalVector = value;
+            get => _base.DirectionVector;
+            set => _base.DirectionVector = value;
         }
         public ITarget_Obsolete Target
         {
@@ -48,7 +48,7 @@ namespace Tests.TPhysics.Locomotion
                 var tpos = _target.Position;
                 var cpos = context.CurrentPosition;
                 var tv = tpos - cpos;
-                _base.HorizontalVector = Vector3.ProjectOnPlane(tv, Vector3.up).normalized;
+                _base.DirectionVector = Vector3.ProjectOnPlane(tv, Vector3.up).normalized;
             }
                 return _base.OnUpdate(context);
         }

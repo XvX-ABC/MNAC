@@ -1,6 +1,7 @@
 ﻿using System;
 using Tests.Characters.Humanoid.Animations;
 using Tests.Characters.Humanoid.Arms;
+using Tests.Characters.Humanoid.Arms.Weapons;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Humanoid.Legs;
 using Tests.Characters.Humanoid.Locomotion;
@@ -9,9 +10,11 @@ using Tests.Characters.UI;
 using Tests.Input;
 using Tests.Interaction.Influence;
 using Tests.States;
+using Tests.Utilities.Assets_New;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using Tests.Weapons;
+using Tests.Weapons_New;
 using UnityEngine;
 using Stun = Tests.Interaction.Influence.Stun;
 
@@ -36,6 +39,8 @@ namespace Tests.Characters.Humanoid
         CustomPlayerInput _input_obsolete;
         [SerializeField]
         HumanInput_MonoComponent _input_mc;
+        [SerializeField]
+        ResourceLoader<TargetLocker> _targetLockerLoader;
         HumanInput _input => _input_mc;
         [SerializeField]
         UICore _uiCore;
@@ -84,6 +89,8 @@ namespace Tests.Characters.Humanoid
             InitializeAnimator();
 
             InitializeLocomotionCore();
+
+            InitializeTargetLocker();
 
             InitializeArmCore();
 
@@ -151,6 +158,13 @@ namespace Tests.Characters.Humanoid
         {
             Node.AddChild(_uiCore.Node);
         }
+        void InitializeTargetLocker()
+        {
+            if (_targetLockerLoader.Load())
+            {
+                Node.AddChild(_targetLockerLoader.Resource.Node);
+            }
+        }
 
         void InitializeStatemachine(InfluenceCore influenceCore)
         {
@@ -192,6 +206,8 @@ namespace Tests.Characters.Humanoid
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Main, gameObject);
 
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Influence_Core, influenceCore);
+
+
 
             var rbody = GetComponent<Rigidbody>() ?? throw new ComponentCantFindException(gameObject, typeof(Rigidbody));
             blackboard.TryRegisterField(CharacterBlackboardFields.Rigidbody, rbody);

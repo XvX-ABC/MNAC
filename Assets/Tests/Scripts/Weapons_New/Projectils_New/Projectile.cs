@@ -8,7 +8,7 @@ namespace Tests.Weapons.Projectiles_New
     public abstract class Projectile : MonoBehaviour, IProjectile
     {
         [SerializeField]
-        ProjectileComponent[] _subComponents;
+        internal ProjectileComponent[] subComponents;
         Action<IProjectile> _actionStartCallback;
         Action<IProjectile> _actionEndCallback;
         protected Blackboard blackboard;
@@ -24,12 +24,16 @@ namespace Tests.Weapons.Projectiles_New
         }
         protected virtual void OnEnable()
         {
-            foreach (var comp in _subComponents)
+            foreach (var comp in subComponents)
                 comp.Initialize(blackboard);
+        }
+        protected virtual void Start()
+        {
+
         }
         protected virtual void OnDisable()
         {
-            foreach (var comp in _subComponents)
+            foreach (var comp in subComponents)
                 comp.Dispose();
         }
         public virtual void EndAction()

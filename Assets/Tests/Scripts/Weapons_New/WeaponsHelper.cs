@@ -20,7 +20,7 @@ namespace Tests.Weapons_New
         {
             PutInParent(obj?.transform, parent);
         }
-        public static void SynchronizeWorldPosition(Transform source, Transform target)
+        public static void SynchronizeWorldTransform(Transform source, Transform target)
         {
             if (source == null || target == null)
                 throw new ArgumentNullException($"{nameof(source)} or {nameof(target)} is null");
@@ -29,7 +29,7 @@ namespace Tests.Weapons_New
         }
         public static void SynchronizeWorldPosition(GameObject source, GameObject target)
         {
-            SynchronizeWorldPosition(source?.transform, target?.transform);
+            SynchronizeWorldTransform(source?.transform, target?.transform);
         }
     }
 }

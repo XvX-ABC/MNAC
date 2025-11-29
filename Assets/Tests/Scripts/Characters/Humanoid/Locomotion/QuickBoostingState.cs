@@ -75,12 +75,12 @@ namespace Tests.Characters.Humanoid.Locomotion
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
             context.Core.EnableModule(module);
-            locomotion.HorizontalVector = _input == null ? Vector3.zero : _input.HorizontalVector;
+            locomotion.DirectionVector = _input == null ? Vector3.zero : _input.HorizontalVector;
             //locomotion.HorizontalVector = context.Input_Obsolete.HorizontalVector;
         }
         public override void OnExit()
         {
-            locomotion.HorizontalVector = Vector3.zero;
+            locomotion.DirectionVector = Vector3.zero;
             base.OnExit();
         }
     }

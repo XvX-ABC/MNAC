@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Characters.MountPoints;
 using Tests.Weapons;
 using UnityEngine;
 
@@ -10,7 +11,13 @@ namespace Tests.Behaviours.Arms.Weapons
         [SerializeField]
         WeaponDescription[] _origins;
         [SerializeField]
-        string _mountPointName;
+        string _launcherMountPointName;
+        [SerializeField]
+        string _swordMountPointName;
+        [SerializeField]
+        MountPointPlace _launcherMountPointPlace;
+        [SerializeField]
+        MountPointPlace _swordMountPointPlace;
         [SerializeField]
         float _switchingDurationTime;
         [SerializeField]
@@ -18,9 +25,15 @@ namespace Tests.Behaviours.Arms.Weapons
         [SerializeField]
         float _switchingToBehavioursDurationTime;
         public WeaponDescription[] Origins { get => _origins; }
-        public string MountPointName { get => _mountPointName; }
+        public string LauncherMountPointName { get => _launcherMountPointName; }
         public float SwitchingDurationTime { get => _switchingDurationTime; }
         public float SwitchingMountedProportion { get => _switchingMountedProportion; }
         public float SwitchingToBehavioursDurationTime { get => _switchingToBehavioursDurationTime; }
+
+        public string SwordMountPointName => _swordMountPointName;
+
+        public MountPointPlace LauncherMountPointPlace => _launcherMountPointPlace;
+
+        public MountPointPlace SwordMountPointPlace => _swordMountPointPlace;
     }
 }

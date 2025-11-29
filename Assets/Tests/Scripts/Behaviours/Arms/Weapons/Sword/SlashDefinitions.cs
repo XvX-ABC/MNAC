@@ -8,10 +8,15 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
     {
         [SerializeField]
         float _duration;
-        public SlashDefinitions(float duration)
+        [SerializeField]
+        float _recoveryDuration;
+        public SlashDefinitions(float duration, float recoveryDuration)
         {
             _duration = Mathf.Max(0, duration);
+            _recoveryDuration = Mathf.Max(0, recoveryDuration);
         }
         public float Duration => _duration;
+
+        public float RecoveryDuration { get => _recoveryDuration; }
     }
 }

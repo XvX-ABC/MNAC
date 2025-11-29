@@ -10,7 +10,8 @@ namespace Tests.Weapons_New.Launcher
     internal class CaseEjectingDevice : Launcher
     {
         [SerializeField]
-        CasePool _casePool;
+        ProjectilePoolSource<Case> _casePoolSource;
+        IProjectilePool<Case> _casePool;
         [SerializeField]
         Vector3 _direction;
         [SerializeField, Range(0, 50)]
@@ -49,6 +50,11 @@ namespace Tests.Weapons_New.Launcher
         protected override void Awake()
         {
         }
+        protected override void Start()
+        {
+            _casePoolSource.Initialize();
+            _casePool = _casePoolSource.Pool;
+        }
         protected override void OnEnable()
         {
         }
@@ -81,7 +87,7 @@ namespace Tests.Weapons_New.Launcher
         {
             var c = GetProjectile();
             var obj = c.Obj;
-            WeaponsHelper.SynchronizeWorldPosition(obj.transform, this.transform);
+            WeaponsHelper.SynchronizeWorldTransform(obj.transform, this.transform);
             c.StartAction();
             EjectCase((Case)c);
             ammo.MagazineAmount--;

@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Tests.Interaction
 {
+    [Serializable]
     public class GameObjsInScreenCatcher_New : CatcherBase<GameObject>
     {
         [SerializeField]

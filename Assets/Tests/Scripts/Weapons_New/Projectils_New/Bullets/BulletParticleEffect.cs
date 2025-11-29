@@ -13,8 +13,8 @@ namespace Tests.Weapons.Projectiles_New
         }
         public override void Play()
         {
-            //if (particleSystem == null)
-            //    particleSystem = GetComponent<ParticleSystem>();
+            if (particleSystem == null)
+                particleSystem = GetComponent<ParticleSystem>();
             particleSystem.Play();
         }
         public override void Stop()

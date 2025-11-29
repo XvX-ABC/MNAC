@@ -11,7 +11,8 @@ namespace Tests.Weapons.Projectiles_New
         [SerializeField]
         BulletHitParticleEffect _hitEffect;
         [SerializeField]
-        LayerMask _collisionLayer;
+        LayerMask _collisionLayerMask;
+        protected LayerMask collisionLayerMask { get => _collisionLayerMask; set => _collisionLayerMask = value; }
         private void OnEnable()
         {
             _movingEffect.gameObject.SetActive(true);
@@ -28,15 +29,25 @@ namespace Tests.Weapons.Projectiles_New
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
+            if (blackboard.TryReadValue<LayerMask>(ProjectileFields.Hit_LayerMask, out var layerMask))
+                _collisionLayerMask = layerMask;
+            blackboard.RegisterFieldChangeAction<LayerMask>(ProjectileFields.Hit_LayerMask, WhenLayerMaskToHitChange);
             _hitEffect.Parent = this.owner.transform;
             owner.HitAction += WhenHItObj;
             owner.StartMoveAction += WhenStartMove;
         }
         public override void Dispose()
         {
-            base.Dispose();
+            blackboard.UnregisterFieldChangeAction<LayerMask>(ProjectileFields.Hit_LayerMask, WhenLayerMaskToHitChange);
             owner.HitAction -= WhenHItObj;
             owner.StartMoveAction -= WhenStartMove;
+            base.Dispose();
+        }
+        void WhenLayerMaskToHitChange(FieldEventType type, LayerMask ov, LayerMask nv)
+        {
+            if (type == FieldEventType.Reading)
+                return;
+            collisionLayerMask = nv;
         }
         protected virtual void WhenHItObj(IProjectile projectile, GameObject hitObj)
         {
@@ -45,7 +56,7 @@ namespace Tests.Weapons.Projectiles_New
             var collider = owner.GetComponent<CapsuleCollider>();
             if (collider != null)
             {
-                if (Physics.SphereCast(shootingRay, collider.radius, out var hitInfo, Mathf.Infinity, _collisionLayer))
+                if (Physics.SphereCast(shootingRay, collider.radius, out var hitInfo, Mathf.Infinity, _collisionLayerMask))
                 {
                     var point = hitInfo.point;
                     var normal = hitInfo.normal;

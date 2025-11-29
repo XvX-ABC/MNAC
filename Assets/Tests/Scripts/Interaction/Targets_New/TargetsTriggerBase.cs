@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Tests.Interaction
 {
-    public abstract class TargetsTriggerBase<T> : CatcherBase<T>
+    public abstract class TargetsTriggerBase<T> : CatcherBase<T>, ITargetsTrigger<T>
     {
         [SerializeField]
         Collider _collider;
@@ -12,8 +12,10 @@ namespace Tests.Interaction
         public TargetsTriggerBase(Collider collider)
         {
             _collider = collider ?? throw new ArgumentNullException(nameof(collider));
+            _collider.isTrigger = true;
         }
         public abstract void OnTriggerEnter(Collider collider);
+
         public abstract void OnTriggerExit(Collider collider);
     }
 }

@@ -9,14 +9,14 @@ namespace Tests.States
     public class StateLifeCycleWatcher<T>
     {
         WithCallbackPlayableState<T> _boundState;
-        LifeCycle _currentLifeCycle;
+        LifeCycleState _currentLifeCycle;
 
-        public LifeCycle CurrentLifeCycle { get => _currentLifeCycle; }
+        public LifeCycleState CurrentState { get => _currentLifeCycle; }
 
         public StateLifeCycleWatcher(WithCallbackPlayableState<T> boundState)
         {
             _boundState = boundState ?? throw new ArgumentNullException(nameof(boundState));
-            _currentLifeCycle = LifeCycle.Ready;
+            _currentLifeCycle = LifeCycleState.Ready;
 
             _boundState.EntryAction = WhenStateEntered;
             _boundState.UpdateAction = WhenStateUpdate;
@@ -24,15 +24,15 @@ namespace Tests.States
         }
         void WhenStateEntered()
         {
-            _currentLifeCycle = LifeCycle.Entered;
+            _currentLifeCycle = LifeCycleState.Entered;
         }
         void WhenStateUpdate()
         {
-            _currentLifeCycle = LifeCycle.Update;
+            _currentLifeCycle = LifeCycleState.Update;
         }
         void WhenStateExited()
         {
-            _currentLifeCycle = LifeCycle.Exited;
+            _currentLifeCycle = LifeCycleState.Exited;
         }
 
     }

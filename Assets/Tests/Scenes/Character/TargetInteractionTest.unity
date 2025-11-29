@@ -679,6 +679,27 @@ PrefabInstance:
       propertyPath: leftArm
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1631308057019428777, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _originAssets.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631308057019428777, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _originAssets.Array.data[0]._asset
+      value: 
+      objectReference: {fileID: 433208743350065253, guid: 43dff15377e4f6845828bfde9f6c946b,
+        type: 3}
+    - target: {fileID: 1631308057019428777, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _originAssets.Array.data[0].definitions.Name
+      value: MachineGun
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631308057019428777, guid: cda3572f260d2fd4aa54e5b415780ea9,
+        type: 3}
+      propertyPath: _originAssets.Array.data[0].definitions.DirPath
+      value: Tests/Resources/Prefabs/Weapons
+      objectReference: {fileID: 0}
     - target: {fileID: 4034119584180155670, guid: cda3572f260d2fd4aa54e5b415780ea9,
         type: 3}
       propertyPath: m_Enabled

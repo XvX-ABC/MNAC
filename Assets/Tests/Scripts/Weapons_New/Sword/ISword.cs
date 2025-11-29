@@ -8,6 +8,7 @@ namespace Tests.Weapons_New.Sword
         Action<GameObject> HitAction { get; set; }
         GameObject OwnerObj { get; set; }
         Vector3 WorldUp { get; set; }
+        float Length { get; }
 
         SwordAction GetSwordAction(SwordActionType type);
     }

@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Tests.Interaction.Targets
 {
     [RequireComponent(typeof(SphereCollider))]
-    public class SphereTriggerTargetsCatcher : TargetsTrigger_MonoComponent, ISphereTriggerTargetsCatcher
+    [Obsolete]
+    public class SphereTriggerTargetsCatcher_Obsolete : TargetsTrigger_MonoComponent, ISphereTriggerTargetsCatcher_Obsolete
     {
         SphereCollider _collider;
         public float Radius

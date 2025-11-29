@@ -7,7 +7,7 @@ namespace Tests.Characters.MountPoints
     internal class MountPoint : Utilities.MountPoints.MountPoint
     {
         [SerializeField]
-        internal MountPointFields.Enum field;
+        internal MountPointPlace place;
 
     }
 }

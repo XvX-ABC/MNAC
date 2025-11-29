@@ -4,62 +4,75 @@ using UnityEngine;
 
 namespace Tests.Characters.MountPoints
 {
+    public enum MountPointPlace
+    {
+        None,
+        Blackboard_Main,
+        Left_Hand_Weapon,
+        Left_LowerArm_Weapon,
+        Right_Hand_Weapon,
+        Right_LowerArm_Weapon,
+        Right_Chest_Trigger,
+        Left_Chest_Trigger
+    }
     internal static class MountPointFields
     {
-        public enum Enum
-        {
-            None,
-            Blackboard_Main,
-            Left_Arm_Hand_Weapon,
-            Right_Arm_Hand_Weapon,
-            Right_Chest_Trigger,
-            Left_Chest_Trigger
-        }
+
         static MountPointFields()
         {
             Blackboard_Main = Guid.NewGuid();
-            Left_Arm_Hand_Weapon = Guid.NewGuid();
+            Left_Hand_Weapon = Guid.NewGuid();
+            Left_LowerArm_Weapon = Guid.NewGuid();
             Left_Chest_Trigger = Guid.NewGuid();
-            Right_Arm_Hand_Weapon = Guid.NewGuid();
+            Right_Hand_Weapon = Guid.NewGuid();
+            Right_LowerArm_Weapon = Guid.NewGuid();
             Right_Chest_Trigger = Guid.NewGuid();
         }
         public static readonly Guid Blackboard_Main;
-        public static readonly Guid Right_Arm_Hand_Weapon;
+        public static readonly Guid Right_Hand_Weapon;
+        private static readonly Guid Right_LowerArm_Weapon;
         public static readonly Guid Right_Chest_Trigger;
-        public static readonly Guid Left_Arm_Hand_Weapon;
+        public static readonly Guid Left_Hand_Weapon;
+        private static readonly Guid Left_LowerArm_Weapon;
         public static readonly Guid Left_Chest_Trigger;
-        public static Enum GetEnumType(Guid guid)
+        public static MountPointPlace GetEnumType(Guid guid)
         {
             if (guid == Guid.Empty)
-                return Enum.None;
+                return MountPointPlace.None;
             if (guid == Blackboard_Main)
-                return Enum.Blackboard_Main;
-            else if (guid == Left_Arm_Hand_Weapon)
-                return Enum.Left_Arm_Hand_Weapon;
-            else if (guid == Right_Arm_Hand_Weapon)
-                return Enum.Right_Arm_Hand_Weapon;
+                return MountPointPlace.Blackboard_Main;
+            else if (guid == Left_Hand_Weapon)
+                return MountPointPlace.Left_Hand_Weapon;
+            else if (guid == Right_Hand_Weapon)
+                return MountPointPlace.Right_Hand_Weapon;
+            else if (guid == Left_LowerArm_Weapon)
+                return MountPointPlace.Left_LowerArm_Weapon;
+            else if (guid == Right_LowerArm_Weapon)
+                return MountPointPlace.Right_LowerArm_Weapon;
             else if (guid == Right_Chest_Trigger)
-                return Enum.Right_Chest_Trigger;
+                return MountPointPlace.Right_Chest_Trigger;
             else if (guid == Left_Chest_Trigger)
-                return Enum.Left_Chest_Trigger;
+                return MountPointPlace.Left_Chest_Trigger;
             else
-                return Enum.None;
+                return MountPointPlace.None;
         }
-        public static Guid GetGuid(Enum enumType)
+        public static Guid GetGuid(MountPointPlace enumType)
         {
             return enumType switch
             {
-                Enum.Blackboard_Main => Blackboard_Main,
-                Enum.Left_Arm_Hand_Weapon => Left_Arm_Hand_Weapon,
-                Enum.Right_Arm_Hand_Weapon => Right_Arm_Hand_Weapon,
-                Enum.Right_Chest_Trigger => Right_Chest_Trigger,
-                Enum.Left_Chest_Trigger => Left_Chest_Trigger,
+                MountPointPlace.Blackboard_Main => Blackboard_Main,
+                MountPointPlace.Left_Hand_Weapon => Left_Hand_Weapon,
+                MountPointPlace.Left_LowerArm_Weapon => Left_LowerArm_Weapon,
+                MountPointPlace.Right_Hand_Weapon => Right_Hand_Weapon,
+                MountPointPlace.Right_LowerArm_Weapon => Right_LowerArm_Weapon,
+                MountPointPlace.Right_Chest_Trigger => Right_Chest_Trigger,
+                MountPointPlace.Left_Chest_Trigger => Left_Chest_Trigger,
                 _ => Guid.Empty,
             };
         }
         public static bool TryFindGuid(MountPoint mountPoint, out Guid guid)
         {
-            guid = GetGuid(mountPoint.field);
+            guid = GetGuid(mountPoint.place);
             if (guid == Guid.Empty)
             {
                 Debug.LogWarning($"Cannot find a field to match the mount point '{mountPoint.Name}''");

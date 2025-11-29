@@ -23,6 +23,10 @@ namespace Tests.Weapons_New.Launcher
             _gun.FireTrigger = () => UInput.GetKey(_fireKey);
             _gun.ReloadTrigger = () => UInput.GetKeyDown(_reloadKey);
         }
+        private void Start()
+        {
+
+        }
         private void Update()
         {
         }

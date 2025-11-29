@@ -9,7 +9,7 @@ using Tests.Interaction.Targets;
 using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.MountPoints;
-using Tests.Weapons;
+using Tests.Weapons_New;
 using UnityEngine;
 using UnityEngine.Playables;
 using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
@@ -22,7 +22,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
         Behaviours.Arms.Weapons.Sword.ArmedSwordArmBehaviour _behaviour;
         ArmedSwordArmAnimator _animator;
-        SphereTriggerTargetsCatcher _targetsCatcher;
+        SphereTriggerTargetsCatcher_Obsolete _targetsCatcher;
         LoadBase _load;
         public override WeaponType Type => WeaponType.Sword;
 
@@ -68,12 +68,12 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             if (Activated)
                 WriteTargetsCatcherTo(blackboard);
             else
-                blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher);
+                blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker);
         }
         void WriteTargetsCatcherTo(Blackboard blackboard)
         {
-            if (!blackboard.TryWriteValue(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher))
-                blackboard.TryRegisterField(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
+            if (!blackboard.TryWriteValue(CharacterBlackboardFields.TargetLocker, _targetsCatcher))
+                blackboard.TryRegisterField(CharacterBlackboardFields.TargetLocker, _targetsCatcher);
         }
         void CreateSphereTriggerTargetsCatcher()
         {
@@ -81,8 +81,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             obj.transform.SetParent(transform, false);
             obj.transform.localPosition = Vector3.zero;
             obj.transform.localRotation = Quaternion.identity;
-            _targetsCatcher = obj.AddComponent<SphereTriggerTargetsCatcher>();
-            _targetsCatcher.ExcludeLayers = _definitions.ExcludeLayers;
+            _targetsCatcher = obj.AddComponent<SphereTriggerTargetsCatcher_Obsolete>();
+            _targetsCatcher.ExcludeLayers = _definitions.ExcludeLayerMask;
         }
         public override void Initialize(Blackboard blackboard)
         {
@@ -101,7 +101,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             blackboard.TryReadValueOrThrowException<ControllerPlayable>(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, out var controller);
 
 
-
             InitializeTargetsCatcher(blackboard);
 
             _definitions.InitializeBy(locomotionCore.definitions);
@@ -114,8 +113,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 winput = input.LArm?.WeaponControl;
             else if (Part == HumanPart.RightArm)
                 winput = input.RArm?.WeaponControl;
-            var boostingHelper = new BoostingHelper(locomotionCore.core, camera, input.BaseInput, winput, _definitions.Boosting);
-            var slashHelper = new SlashHelper(locomotionCore.core, rotationLocker, _definitions.Slash.Duration);
+            //var boostingHelper = new BoostingHelper(locomotionCore.core, camera, input.BaseInput, winput, _definitions.Boosting);
+            var boostingHelper = default(BoostingHelper);
+            var slashHelper = new SlashHelper(locomotionCore.core, rotationLocker, _definitions.Slash.Duration, _definitions.Slash.RecoveryDuration);
             var mixer = new WholeBodyMixerPlayable(graph, 3);
             _animator = new(
                 graph,
@@ -130,7 +130,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 _animationDefinitions);
 
             _behaviour = new(_definitions, boostingHelper, slashHelper, _animator);
-            _behaviour.TargetsCatcher = _targetsCatcher;
+            //_behaviour.TargetsTrigger = _targetsCatcher;
 
 
             var _swordBoostingState = new SwordBoosting(boostingHelper);
@@ -173,7 +173,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         public override void Dispose()
         {
             base.Dispose();
-            blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher);
+            blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker);
             blackboard.TryGetMountPointOrThrowException(MountPointFields.Right_Chest_Trigger, out var mountPoint);
             mountPoint.Load = null;
         }

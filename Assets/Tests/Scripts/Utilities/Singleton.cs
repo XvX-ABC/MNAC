@@ -51,5 +51,9 @@ namespace Tests.Utilities
                 DontDestroyOnLoad(gameObject);
             }
         }
+        public virtual void OnApplicationQuit()
+        {
+            Destroy(this);
+        }
     }
 }

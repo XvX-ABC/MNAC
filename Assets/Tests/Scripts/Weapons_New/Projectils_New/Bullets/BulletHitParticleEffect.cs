@@ -26,8 +26,10 @@ namespace Tests.Weapons.Projectiles_New
         public override void Stop()
         {
             base.Stop();
-            Debug.Log($"stop parent: {_parent.name}, {_parent.gameObject.activeSelf}");
-            this.transform.SetParent(_parent);
+            if (_parent != null)
+            {
+                this.transform.SetParent(_parent);
+            }
             this.transform.localPosition = Vector3.zero;
             this.transform.localRotation = Quaternion.identity;
         }

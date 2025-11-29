@@ -2,12 +2,20 @@
 using Tests.Behaviours.Arm.Weapons;
 using Tests.States;
 using Tests.Utilities.Timeline;
+using Tests.Weapons_New.Sword;
 using UnityEngine;
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     internal class SwordBoosting : ArmedArmStateBase
     {
+        ISword _sword;
         BoostingHelper _helper;
+        SwordAction _extensionAction;
+        ArmedArmStateBase _followingSlashState;
+
+        internal ArmedArmStateBase FollowingSlashState { get => _followingSlashState; set => _followingSlashState = value; }
+        public SwordAction ExtensionAction { get => _extensionAction; set => _extensionAction = value; }
+
         public SwordBoosting(BoostingHelper boostingHelper) : base("sword_boosting", 0)
         {
             _helper = boostingHelper ?? throw new ArgumentNullException(nameof(boostingHelper));
@@ -22,6 +30,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         public override void OnEnter()
         {
             base.OnEnter();
+            if (_extensionAction != null )
+                _extensionAction.Enabled = true;
             timeline.Restart();
         }
         public override void OnUpdate()
@@ -32,6 +42,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         public override void OnExit()
         {
             _helper.inBoosting = false;
+            _extensionAction.Enabled = false;
             base.OnExit();
         }
     }

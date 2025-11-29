@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Tests.Weapons_New.Launcher
 {
-    public class LauncherDefinitions_Debug : MonoBehaviour, ILauncherDefinitions
+    public class LauncherDefinitions : MonoBehaviour, ILauncherDefinitions
     {
         [SerializeField]
         ushort _ammoReserveAmount;

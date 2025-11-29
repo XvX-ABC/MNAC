@@ -7,7 +7,7 @@ using IProjectile = Tests.Weapons_New.Projectiles.IProjectile;
 namespace Tests.Weapons_New.Launcher
 {
     //DONE: 使用状态机重写发射器逻辑
-    internal abstract class Launcher : MonoBehaviour, ILauncher
+    internal abstract class Launcher : Weapon, ILauncher
     {
         protected struct Ammo
         {
@@ -47,17 +47,17 @@ namespace Tests.Weapons_New.Launcher
         public Action<ILauncher> LaunchedCallback { get => _launchedCallback; set => _launchedCallback = value; }
         public Action<ILauncher> ReloadCallback { get => _reloadCallback; set => _reloadCallback = value; }
 
-        public string Name { get => name; }
+        //public string Name { get => name; }
         public ushort ReserveAmmoAmount { get => (ushort)ammo.ReserveAmount; }
         public ushort MagazineAmmoAmount { get => (ushort)ammo.MagazineAmount; }
         public ILauncherDefinitions Definitions { get => definitions; }
-        public WeaponType Type { get => WeaponType.Launcher; }
+        public override WeaponType Type { get => WeaponType.Launcher; }
         public virtual Func<bool> FireTrigger { get => fireTrigger; set => fireTrigger = value; }
         public virtual Func<bool> ReloadTrigger { get => reloadTrigger; set => reloadTrigger = value; }
         public Transform MuzzleTrans { get => _muzzleTrans; }
 
 
-        public GameObject Obj => this.Obj;
+        //public GameObject Obj => this.gameObject;
 
         protected virtual void Awake()
         {
@@ -71,11 +71,15 @@ namespace Tests.Weapons_New.Launcher
             _blackboard = new();
 
         }
-        protected virtual void OnEnable()
+        protected virtual void Start()
         {
             _blackboard.TryRegisterField(LauncherComponent.OwnerLauncher, this);
             foreach (var comp in _subComponents)
                 comp?.Initialize(_blackboard);
+        }
+        protected virtual void OnEnable()
+        {
+
         }
         protected virtual void OnDisable()
         {
@@ -114,13 +118,13 @@ namespace Tests.Weapons_New.Launcher
 
 
             var i_d = new Transition(idle, delayLaunch, HoldingFire, null, 0);
-            var i_r = new Transition(idle, reload, reloadTrigger, null, 0);
+            var i_r = new Transition(idle, reload, CanReload, null, 0);
             statemachine.AddTransitionFor(i_d);
             statemachine.AddTransitionFor(i_r);
 
             var d_l = new Transition(delayLaunch, launching, HoldingFire, null, 0, 0, 1);
             var d_i = new Transition(delayLaunch, idle, StopFire, null, 0, 0, 1);
-            var d_r = new Transition(delayLaunch, reload, reloadTrigger, null, 0, 0);
+            var d_r = new Transition(delayLaunch, reload, CanReload, null, 0, 0);
             statemachine.AddTransitionFor(d_l);
             statemachine.AddTransitionFor(d_r);
 
@@ -139,13 +143,13 @@ namespace Tests.Weapons_New.Launcher
         }
         protected virtual bool CanReload()
         {
-            return reloadTrigger == null ? false : ammo.MagazineAmount == definitions.AmmoInMagazineAmount && reloadTrigger();
+            return reloadTrigger == null ? false : ammo.MagazineAmount != definitions.AmmoInMagazineAmount && reloadTrigger();
         }
         protected internal virtual IProjectile Launch()
         {
             var projectile = GetProjectile();
             var obj = projectile.Obj;
-            WeaponsHelper.SynchronizeWorldPosition(obj.transform, _muzzleTrans);
+            WeaponsHelper.SynchronizeWorldTransform(obj.transform, _muzzleTrans);
             projectile.StartAction();
             ammo.MagazineAmount--;
             _launchedCallback?.Invoke(this);

@@ -4,13 +4,13 @@ namespace Tests.TPhysics.Locomotion
 {
     public class HorizontalLocomotion : LocomotionModuleBase
     {
-        Vector3 _horizontalVector;
+        Vector3 _direction;
         float _maxSpeed;
         float _acceleratedSpeed;
-        public Vector3 HorizontalVector
+        public Vector3 DirectionVector
         {
-            get => _horizontalVector;
-            set => _horizontalVector = value;
+            get => _direction;
+            set => _direction = value.normalized;
         }
         public float MaxSpeed
         {
@@ -27,7 +27,7 @@ namespace Tests.TPhysics.Locomotion
         {
             MaxSpeed = maxSpeed;
             AcceleratedSpeed = acceleratedSpeed;
-            _horizontalVector = horizontalVector;
+            _direction = horizontalVector;
         }
         public HorizontalLocomotion(float maxSpeed, float acceleratedSpeed) : this(maxSpeed, acceleratedSpeed, Vector3.zero)
         {
@@ -36,7 +36,7 @@ namespace Tests.TPhysics.Locomotion
 
         Vector3 CalculateDirection(Context context)
         {
-            var direction = _horizontalVector;
+            var direction = _direction;
             var grounds = context.GroundDetector.Grounds;
 
             var groundNormal = context.GroundDetector.GroundsNormal;

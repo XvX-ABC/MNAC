@@ -12,11 +12,13 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         public BoostingHelper(
                 TPhysics.Locomotion.LocomotionCore locomotionCore,
                 Camera camera,
+                TargetLocker targetLocker,
                 IBaseInput baseInput,
                 IWeaponControlInput weaponControlInput,
                 ISwordBoostingDefinitions definitions) : base(
                      locomotionCore,
                      camera,
+                     targetLocker,
                      baseInput,
                      weaponControlInput,
                      definitions

@@ -7,8 +7,14 @@ namespace Tests.Weapons_New.Launcher
     internal class MachineGun : Launcher
     {
         [SerializeField]
-        BulletPool_MonoComponent _bulletPool;
-
+        ProjectilePoolSource<Bullet> _bulletPoolSource;
+        IProjectilePool<Bullet> _bulletPool;
+        protected override void Start()
+        {
+            base.Start();
+            _bulletPoolSource.Initialize();
+            _bulletPool = _bulletPoolSource.Pool;
+        }
         protected internal override IProjectile Launch()
         {
             var bullet = (Bullet)base.Launch();
@@ -24,6 +30,11 @@ namespace Tests.Weapons_New.Launcher
         protected override void ReleaseProjectile(IProjectile projectile)
         {
             _bulletPool.Release(projectile as Bullet);
+        }
+        protected override void Update()
+        {
+            base.Update();
+            //Debug.Log(statemachine);
         }
     }
 }

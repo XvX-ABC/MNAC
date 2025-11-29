@@ -128,19 +128,19 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         public override void Dispose()
         {
             base.Dispose();
-            blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
+            blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker, _targetsCatcher);
         }
         void UpdateTargetsCatcherFor(Blackboard blackboard)
         {
             if (Activated)
                 WriteTargetsCatcherTo(blackboard);
             else
-                blackboard.TryUnregisterField(CharacterBlackboardFields.TargetsCatcher);
+                blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker);
         }
         void WriteTargetsCatcherTo(Blackboard blackboard)
         {
-            if (!blackboard.TryWriteValue(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher))
-                blackboard.TryRegisterField(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
+            if (!blackboard.TryWriteValue(CharacterBlackboardFields.TargetLocker, _targetsCatcher))
+                blackboard.TryRegisterField(CharacterBlackboardFields.TargetLocker, _targetsCatcher);
         }
         private void Update()
         {

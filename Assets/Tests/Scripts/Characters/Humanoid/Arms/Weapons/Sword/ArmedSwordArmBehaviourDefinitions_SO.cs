@@ -8,11 +8,14 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         [SerializeField]
         ArmedSwordArmBehaviourDefinitions _definitions;
 
-        public LayerMask ExcludeLayers => _definitions.ExcludeLayers;
+        public LayerMask ExcludeLayerMask => _definitions.ExcludeLayerMask;
 
         public Behaviours.Arms.Weapons.Sword.IBoostingDefinitions Boosting => _definitions.Boosting;
 
         public Behaviours.Arms.Weapons.Sword.ISlashDefinitions Slash => _definitions.Slash;
+
+        public LayerMask IncludeLayerMask => _definitions.IncludeLayerMask;
+
 
         public void InitializeBy(ILocomotionDefinitions locomotionDefinitions)
         {

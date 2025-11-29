@@ -10,10 +10,22 @@ namespace Tests.Weapons
         LoadBase _load;
 
         public GameObject Obj => gameObject;
+
+        public GameObject Handle
+        {
+            get => _handle;
+            set
+            {
+                _handle = value;
+                if (_handle != null)
+                    CalculateLocalPositionAndRotation();
+            }
+        }
+
         void Awake()
         {
             _load = new(gameObject);
-            CalculateLocalPositionAndRotation();
+            Handle = _handle;
         }
         void CalculateLocalPositionAndRotation()
         {

@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace Tests.Interaction
 {
-
     public class TargetLocker<T> : ITargetLocker<T> where T : class, ILockTarget
     {
         #region internal classes
@@ -15,7 +14,7 @@ namespace Tests.Interaction
         {
             StateLifeCycleWatcher<object> _lifeWatcher;
             protected TargetLocker<T> locker;
-            LifeCycle _lifeCycle { get => _lifeWatcher.CurrentLifeCycle; }
+            LifeCycleState _lifeCycle { get => _lifeWatcher.CurrentState; }
             public TargetLockerState(TargetLocker<T> locker, string name, float duration = 0, bool enabled = true) : base(name, duration, enabled)
             {
                 this.locker = locker ?? throw new ArgumentNullException(nameof(locker));
@@ -24,7 +23,7 @@ namespace Tests.Interaction
             protected abstract void OnExecute(List<GameObject> caughtObjs);
             public void Execute(List<GameObject> caughtObjs)
             {
-                if (_lifeCycle == LifeCycle.Ready || _lifeCycle == LifeCycle.Exited)
+                if (_lifeCycle == LifeCycleState.Ready || _lifeCycle == LifeCycleState.Exited)
                     return;
                 OnExecute(caughtObjs);
             }
@@ -206,8 +205,20 @@ namespace Tests.Interaction
         public float CatchAngle { get => _catchAngle * 2; set => _catchAngle = value / 2; }
         public Action<T, T> MainTargetChangedAction { get => _mainLockTargetChangedAction; set => _mainLockTargetChangedAction = value; }
         public ObstacleDetector ObstacleDetector { get => _obstacleDetector; set => _obstacleDetector = value; }
+        public Camera Camera { get => _camera; set => _camera = value; }
 
-        public TargetLocker(GameObjsInScreenCatcher_New screenObjsCatcher, Func<GameObject, LockType, T> getTargetFunc, Action<T> releaseTargetAction, Camera camera, ICursorReceiver cursorReceiver, ObstacleDetector obstacleDetector = null, ushort handleAmountInCoroutine = 30, float catchAngle = 60, float targetChangedDuration = 0.2f, float receiveInputDuration = 0.05f, bool enabled = true)
+        public TargetLocker(
+            GameObjsInScreenCatcher_New screenObjsCatcher,
+            Func<GameObject, LockType, T> getTargetFunc,
+            Action<T> releaseTargetAction,
+            Camera camera,
+            ICursorReceiver cursorReceiver,
+            ObstacleDetector obstacleDetector = null,
+            ushort handleAmountInCoroutine = 30,
+            float catchAngle = 60,
+            float targetChangedDuration = 0.2f,
+            float receiveInputDuration = 0.05f,
+            bool enabled = true)
         {
             _targets = new();
             _getTargetFunc = getTargetFunc ?? throw new ArgumentNullException(nameof(getTargetFunc));
@@ -321,7 +332,7 @@ namespace Tests.Interaction
             }
             return closestTarget;
         }
-        void UpdateRingCatcher()
+        void UpdateCursorReceiver()
         {
             //_ringCatcher.CursorPosition = _mainTargetObj != null ? _camera.WorldToScreenPoint(_mainTargetObj.transform.position) : _cursorPosition;
             if (_targetChangeTween == null || !_targetChangeTween.IsActive() || !_targetChangeTween.IsPlaying())
@@ -376,13 +387,13 @@ namespace Tests.Interaction
             else if (target != _mainLockTarget)
                 target.LockType = LockType.Lock_Unconfirm;
         }
-        public virtual void FixedUpdate()
+        public virtual void OnFixedUpdate()
         {
             statemachine.OnUpdate();
         }
-        public void LateUpdate()
+        public void OnLateUpdate()
         {
-            UpdateRingCatcher();
+            UpdateCursorReceiver();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Tests.States
 {
-    public enum LifeCycle
+    public enum LifeCycleState
     {
         Ready,
         Entered,

@@ -27,7 +27,7 @@ namespace Tests.Characters
             Character_Influence_Core = Guid.NewGuid();
 
             FieldChangeHandler = MiddlewareFields.FieldChangeHandler;
-            TargetsCatcher = Guid.NewGuid();
+            TargetLocker = Guid.NewGuid();
 
             Character_Input_Main_Obsolete = Guid.NewGuid();
             Character_Input_Main = Guid.NewGuid();
@@ -54,7 +54,7 @@ namespace Tests.Characters
         public static readonly Guid Character_Arm_Right_Core;
         public static readonly Guid Character_Influence_Core;
         public static readonly Guid FieldChangeHandler;
-        public static readonly Guid TargetsCatcher;
+        public static readonly Guid TargetLocker;
         public static readonly Guid Character_Input_Main_Obsolete;
         public static readonly Guid Character_Input_Main;
         public static readonly Guid Character_Input_Main_Base;

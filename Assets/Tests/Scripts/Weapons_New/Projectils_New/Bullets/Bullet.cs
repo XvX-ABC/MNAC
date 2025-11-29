@@ -1,5 +1,4 @@
 ﻿using System;
-using Tests.Utilities.Blackboards;
 using Tests.Weapons_New.Projectiles;
 using UnityEngine;
 
@@ -11,6 +10,8 @@ namespace Tests.Weapons.Projectiles_New
     {
         [SerializeField]
         float _speed;
+        [SerializeField]
+        LayerMask _layerMaskToHit;
         Ray _shootingRay;
         Action<IProjectile, GameObject> _hitAction;
         Rigidbody _rbody;
@@ -19,12 +20,22 @@ namespace Tests.Weapons.Projectiles_New
 
         public override Action<IProjectile, GameObject> HitAction { get => _hitAction; set => _hitAction = value; }
         public Action<IProjectile> StartMoveAction { get => _startMoveAction; set => _startMoveAction = value; }
+        public LayerMask LayerMaskToHit
+        {
+            get => _layerMaskToHit;
+            set
+            {
+                _layerMaskToHit = value;
+                blackboard.TryRegisterFieldOrWriteValue<LayerMask>(ProjectileFields.Hit_LayerMask, _layerMaskToHit);
+            }
+        }
 
         protected override void Awake()
         {
             base.Awake();
             _rbody = GetComponent<Rigidbody>();
             blackboard.TryRegisterField(BulletComponent.OwnerBullet, this);
+            LayerMaskToHit = _layerMaskToHit;
         }
         private void OnTriggerEnter(Collider other)
         {
@@ -35,8 +46,9 @@ namespace Tests.Weapons.Projectiles_New
         {
             base.OnEnable();
             _rbody.position = this.transform.position;
+            _rbody.rotation = this.transform.rotation;
         }
-        void Start()
+        protected override void Start()
         {
             _startMoveAction?.Invoke(this);
         }

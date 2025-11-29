@@ -30,21 +30,21 @@ namespace Tests.Weapons_New.Sword
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
+            UpdateMultiplier(0);
+            Play(0);
         }
         void UpdateMultiplier(float duration)
         {
             var m = duration == 0 ? 0 : _clipLength / duration;
-            _animator.SetFloat(_multiplier, m);
+            _animator.SetFloat(_multiplier, m * multiplier);
 
         }
 
         protected override void Awake()
         {
             base.Awake();
-        }
-        private void Start()
-        {
             UpdateMultiplier(0);
+            Play(0);
         }
         protected override void OnEnable()
         {
@@ -54,7 +54,6 @@ namespace Tests.Weapons_New.Sword
         }
         protected override void OnDisable()
         {
-            //Play(1);
             UpdateMultiplier(-_duration);
             Play(1);
             base.OnDisable();

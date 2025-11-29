@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Tests.Weapons.Sword
 {
     [RequireComponent(typeof(WeaponLoad))]
-    public class SwordBase : MonoBehaviour, ISword
+    public class SwordBase : MonoBehaviour, ISword_Obsolete
     {
         [SerializeField]
         float _slashRadius;

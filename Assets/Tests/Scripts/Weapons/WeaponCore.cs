@@ -1,32 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Tests.Assets;
 using Tests.Weapons.Launcher;
 using UnityEngine;
 
 namespace Tests.Weapons
 {
-    public class WeaponNotContainsException : Exception
-    {
-        public WeaponNotContainsException(WeaponCore core, string name) : base($"There is not exists a weapon origin which's name is '{name}' in the weapon core '{core.name}'")
-        {
-
-        }
-    }
-    public class WeaponObjGetFailedByName : Exception
-    {
-        public WeaponObjGetFailedByName(string name) : base($"Get a weapon obj by the name '{name}'  failed.")
-        {
-
-        }
-    }
-    public class WeaponCore : MonoBehaviour
+    public class WeaponCore_Obsolete : MonoBehaviour
     {
         Dictionary<SupplyDepotType, ISupplyDepot> _supplyDepots;
         [SerializeField]
         PrefabAssetAgent_Managed[] _originAssets;
         Dictionary<string, GameObject> _cache;
-        public WeaponCore()
+        public WeaponCore_Obsolete()
         {
 
             _supplyDepots = new();

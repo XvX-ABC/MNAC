@@ -2,17 +2,36 @@
 using Tests.Behaviours.Arm.Weapons;
 using Tests.States;
 using Tests.Utilities.Timeline;
+using Tests.Utilities.Timeline.Events.Point;
+using Tests.Weapons_New.Sword;
 using UnityEngine;
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     internal class SwordSlash : ArmedArmStateBase
     {
         SlashHelper _helper;
+        float _oldMultiplier;
+        SwordAction _extensionAction;
+        SwordAction _slashAction;
+
+        public SwordAction ExtensionAction { get => _extensionAction; set => _extensionAction = value; }
+        public SwordAction SlashAction { get => _slashAction; set => _slashAction = value; }
+
         public SwordSlash(SlashHelper slashHelper) : base("sword_slash", 0)
         {
             _helper = slashHelper ?? throw new ArgumentNullException(nameof(slashHelper));
             var timeline = _helper.state.Timeline;
-            this.timeline = new Timeline_V1(timeline.Length);
+            var length = timeline.Length;
+            this.timeline = new Timeline_V1(length);
+            var v = length > 0 ? _helper.slashDuration / length : 0;
+            this.timeline.AddPointEvent(v, _ =>
+            {
+                if (_extensionAction != null)
+                {
+                    _extensionAction.Multiplier = _oldMultiplier;
+                    _extensionAction.Enabled = false;
+                }
+            });
         }
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
@@ -21,7 +40,17 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         }
         public override void OnEnter()
         {
+            Debug.Log("slash enter");
             base.OnEnter();
+            if (_extensionAction != null)
+            {
+                Debug.Log("extensino enter");
+                _oldMultiplier = _extensionAction.Multiplier;
+                _extensionAction.Multiplier = 100f;
+                _extensionAction.Enabled = true;
+            }
+            if (_slashAction != null)
+                _slashAction.Enabled = true;
             timeline.Restart();
         }
         public override void OnUpdate()
@@ -31,8 +60,14 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         }
         public override void OnExit()
         {
+            Debug.Log("slash exit");
             _helper.slashing = false;
             timeline.End();
+            //if (_extensionAction != null)
+            //{
+            //    _extensionAction.Multiplier = _oldMultiplier;
+            //    _extensionAction.Enabled = false;
+            //}
             base.OnExit();
         }
     }

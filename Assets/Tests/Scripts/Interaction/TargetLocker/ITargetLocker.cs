@@ -14,7 +14,7 @@ namespace Tests.Interaction
         ObstacleDetector ObstacleDetector { get; set; }
         Vector3 OriginWorldPosition { get; set; }
 
-        void FixedUpdate();
-        void LateUpdate();
+        void OnFixedUpdate();
+        void OnLateUpdate();
     }
 }

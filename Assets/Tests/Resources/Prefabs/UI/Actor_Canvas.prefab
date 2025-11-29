@@ -120,6 +120,7 @@ MonoBehaviour:
   _camera: {fileID: 0}
   _components:
   - {fileID: 1270622968324527138}
+  - {fileID: 8864264844519982144}
   _inputCore: {fileID: 0}
   _allowInitializeOnAwake: 0
 --- !u!114 &2434856305077404550
@@ -494,3 +495,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 8843854536491502350}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8864264844519982144 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 125994348873862990, guid: 69377306673e87e43a968036501f6bcc,
+    type: 3}
+  m_PrefabInstance: {fileID: 8843854536491502350}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84a6968396686c84997d15cb1c1247a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

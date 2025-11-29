@@ -15,12 +15,15 @@ MonoBehaviour:
   _definitions:
     _weapon:
       _origins:
-      - Name: Gun_V0
+      - Name: MachineGun
         Type: 0
       - Name: Sword
-        Type: 0
-      _mountPointName: MP_Hand_R
-      _switchingDurationTime: 5
+        Type: 1
+      _launcherMountPointName: 
+      _swordMountPointName: 
+      _launcherMountPointPlace: 4
+      _swordMountPointPlace: 5
+      _switchingDurationTime: 2
       _switchingMountedProportion: 0.5
       _switchingToBehavioursDurationTime: 5
       _armedBehaviours:

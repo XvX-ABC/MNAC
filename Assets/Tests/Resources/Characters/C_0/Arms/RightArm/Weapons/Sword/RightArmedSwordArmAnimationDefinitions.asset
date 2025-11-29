@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RightArmedSwordArmAnimationDefinitions
   m_EditorClassIdentifier: 
   _definitions:
-    _wholeBodyController: {fileID: 9100000, guid: 149f4945b40a2e74bb3c811b28f55cfe,
+    _wholeBodyController: {fileID: 9100000, guid: ba524ecde508d7e46870058518a5c77e,
       type: 2}
     _armController: {fileID: 9100000, guid: 6c2b5cf7b5f150a4ca96ecda10a16430, type: 2}
     _velocityName_Y: Velocity_Y
@@ -31,13 +31,13 @@ MonoBehaviour:
       _fixedExitTime: 0
       _interruptionSource: 1
       _transition: 1
-    - _duration: 0.001
+    - _duration: 0.25
       _offset: 0
       _enableFixedExit: 0
       _fixedExitTime: 0
       _interruptionSource: 0
       _transition: 2
-    - _duration: 0.25
+    - _duration: 0.1
       _offset: 0
       _enableFixedExit: 0
       _fixedExitTime: 0

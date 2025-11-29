@@ -1,5 +1,6 @@
 ﻿using System;
 using Tests.Utilities.Composable;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace Tests.Weapons_New.Launcher
@@ -22,8 +23,11 @@ namespace Tests.Weapons_New.Launcher
             set
             {
                 _duration = value;
-                var m = _duration <= 0 ? 1 : _clipLength / _duration;
-                _animator.SetFloat(_speedMultiplierName, m);
+                if (_animator != null)
+                {
+                    var m = _duration <= 0 ? 1 : _clipLength / _duration;
+                    _animator.SetFloat(_speedMultiplierName, m);
+                }
             }
         }
         protected override void Awake()

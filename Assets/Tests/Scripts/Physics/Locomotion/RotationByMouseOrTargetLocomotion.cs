@@ -9,6 +9,7 @@ namespace Tests.TPhysics.Locomotion
         WorldRotationLocomotion _b;
         Camera _camera;
         Vector3 _mouseScreenPosition;
+        Vector3 _origin;
         IPositionTarget _target;
         public RotationByMouseOrTargetLocomotion(Camera camera)
         {
@@ -25,7 +26,7 @@ namespace Tests.TPhysics.Locomotion
                 _camera = value;
             }
         }
-        public Vector3 Origin { get => _b.Origin; set => _b.Origin = value; }
+        public Vector3 Origin { get => _origin; set => _origin = value; }
         public Vector3 MouseScreenPosition { get => _mouseScreenPosition; set => _mouseScreenPosition = value; }
         public IPositionTarget Target { get => _target; set => _target = value; }
 
@@ -41,11 +42,12 @@ namespace Tests.TPhysics.Locomotion
 
         public override Context OnUpdate(Context context)
         {
-            var p = context.WorldPlane;
-            _b.TargetPos = _target == null ? CalculateMousePositionInWorld(p) : Vector3.ProjectOnPlane(_target.Position, p.normal);
+            var p = context.GroundPlane;
+            _b.Origin = Vector3.ProjectOnPlane(_origin, p.normal);
+            _b.TargetPos = _target == null ? CalculateMousePositionOn(p) : Vector3.ProjectOnPlane(_target.Position, p.normal);
             return _b.OnUpdate(context);
         }
-        Vector3 CalculateMousePositionInWorld(Plane plane)
+        Vector3 CalculateMousePositionOn(Plane plane)
         {
             var ray = _camera.ScreenPointToRay(_mouseScreenPosition);
             if (plane.Raycast(ray, out var p))

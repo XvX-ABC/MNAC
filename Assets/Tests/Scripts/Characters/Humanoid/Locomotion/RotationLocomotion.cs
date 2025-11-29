@@ -63,7 +63,7 @@ namespace Tests.Characters.Humanoid.Locomotion
             //blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Input_Main, out _input);
             if (blackboard.TryReadValue<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler) && !TryReadTargetsCatcher(blackboard))
             {
-                handler.RegisterAction<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.TargetsCatcher, UpdateTargetLocker);
+                handler.RegisterAction<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.TargetLocker, UpdateTargetLocker);
             }
             enabled = true;
         }
@@ -71,13 +71,13 @@ namespace Tests.Characters.Humanoid.Locomotion
         {
             if (blackboard.TryReadValue<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler))
             {
-                handler.UnregisterAction<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.TargetsCatcher, UpdateTargetLocker);
+                handler.UnregisterAction<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.TargetLocker, UpdateTargetLocker);
             }
             enabled = false;
         }
         bool TryReadTargetsCatcher(Blackboard blackboard)
         {
-            var r = blackboard.TryReadValue<ITargetsCatcher>(CharacterBlackboardFields.TargetsCatcher, out var targetsCatcher);
+            var r = blackboard.TryReadValue<ITargetsCatcher>(CharacterBlackboardFields.TargetLocker, out var targetsCatcher);
             return r;
         }
         void UpdateTargetLocker(FieldEventType type, ITargetLocker<ILockTarget> oc, ITargetLocker<ILockTarget> nc)
@@ -90,31 +90,13 @@ namespace Tests.Characters.Humanoid.Locomotion
         {
             this.target = target;
         }
-        //void CatchTarget(IList<Tests.Interaction.ITarget_Obsolete> targets)
-        //{
-        //    _target = targets.Count > 0 ? targets[^1] : null;
-        //}
-        //public void OnUpdate()
-        //{
-        //    var cpos = _camera.transform.position;
-        //    var bpos = _rb.position;
-        //    var world = _locomotion.World;
-        //    var r = Quaternion.LookRotation(Vector3.ProjectOnPlane(bpos - cpos, world.Up), world.Up);
-        //    //_locomotion.RotationOffset = r;
-
-        //    var bspos = _camera.WorldToViewportPoint(bpos);
-        //    _locomotion.Origin = bspos;
-        //    _locomotion.TargetPos = _target == null ? _camera.ScreenToViewportPoint(_input.MousePosition) : _camera.WorldToViewportPoint(_target.Position);
-        //}
         public void OnUpdate()
         {
             if (!enabled)
                 return;
             var bpos = _rb.position;
             _locomotion.Origin = bpos;
-            //_locomotion.MouseScreenPosition = _input_obsolete.MousePosition;
             _locomotion.MouseScreenPosition = _input.MousePosition;
-            //_locomotion.Target = _target;
         }
         ~RotationLocomotion()
         {

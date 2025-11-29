@@ -1,5 +1,5 @@
 ﻿using Tests.Characters.MountPoints;
-﻿using Tests.Weapons;
+using Tests.Weapons;
 
 namespace Tests.Behaviours.Arms.Weapons
 {

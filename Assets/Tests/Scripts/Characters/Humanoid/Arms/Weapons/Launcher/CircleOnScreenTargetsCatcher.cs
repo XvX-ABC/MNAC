@@ -7,7 +7,7 @@ using Tests.Interaction;
 using Tests.UI;
 using Tests.Utilities.Composable;
 using UnityEngine;
-using IndicatedTarget = Tests.Behaviours.Arms.Weapons.Launcher.IndicatedTarget;
+using IndicatedTarget = Tests.Characters.UI.IndicatedTarget;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {

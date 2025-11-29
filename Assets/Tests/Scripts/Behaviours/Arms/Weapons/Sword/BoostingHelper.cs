@@ -14,10 +14,10 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         internal BoostingLocomotion locomotion;
         ITimeline _cdTimeline;
         IWeaponControlInput _input;
-        public BoostingHelper(LocomotionCore locomotionCore, Camera camera, IBaseInput baseInput, IWeaponControlInput weaponControlInput, IBoostingDefinitions definitions)
+        public BoostingHelper(LocomotionCore locomotionCore, Camera camera, TargetLocker targetLocker, IBaseInput baseInput, IWeaponControlInput weaponControlInput, IBoostingDefinitions definitions)
         {
             locomotion = new BoostingLocomotion(definitions.MaxSpeed, 0);
-            state = new(locomotion, locomotionCore, camera, baseInput, definitions.MaxDuration);
+            state = new(locomotion, locomotionCore, camera, targetLocker, baseInput, definitions.MaxDuration);
             _input = weaponControlInput;
             var cd = definitions.ColdDownDuration;
             if (cd > 0)

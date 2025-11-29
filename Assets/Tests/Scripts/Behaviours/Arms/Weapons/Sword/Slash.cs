@@ -4,35 +4,11 @@ using Tests.Interaction;
 using Tests.States;
 using Tests.TPhysics.Locomotion;
 using Tests.Utilities.Timeline;
+using Tests.Weapons_New.Sword;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Sword
 {
-    internal class SlashHelper
-    {
-        internal Slash state;
-        internal Interaction.ITarget_Obsolete target;
-        public SlashHelper(LocomotionCore locomotionCore, IRotationLocker rotationLocker, float slashDuration)
-        {
-            state = new(locomotionCore, rotationLocker, slashDuration);
-            state.EntryAction += () => target = null;
-        }
-        public virtual bool EntryEvent { get => target != null; }
-        //public virtual bool EntryEvent
-        //{
-        //    get
-        //    {
-        //        var r = _target != null;
-        //        return r;
-        //    }
-        //}
-        public virtual bool ExitEvent { get => state.Timeline.NormalizedTime >= 1; }
-        public Interaction.ITarget_Obsolete Target
-        {
-            get => target;
-            set => target = value;
-        }
-    }
     internal class Slash : ArmedArmStateBase
     {
         LocomotionCore _lcore;
@@ -61,8 +37,8 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         public override void OnEnter()
         {
             base.OnEnter();
-            if (_sword != null)
-                _sword.EnableDamage = true;
+            //if (_sword != null)
+            //    _sword.EnableDamage = true;
             timeline.Restart();
             _lcore.EnableModule(_locomotion);
         }
@@ -74,8 +50,8 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         }
         public override void OnExit()
         {
-            if (_sword != null)
-                _sword.EnableDamage = false;
+            //if (_sword != null)
+            //    _sword.EnableDamage = false;
             timeline.End();
             _lcore.DisableModule(_locomotion);
             _rotationLocker.UnLock();

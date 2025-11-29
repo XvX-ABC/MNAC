@@ -6,7 +6,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
     internal class SlashHelper : Behaviours.Arms.Weapons.Sword.SlashHelper
     {
         internal bool slashing;
-        public SlashHelper(TPhysics.Locomotion.LocomotionCore locomotionCore, IRotationLocker rotationLocker, float slashDuration) : base(locomotionCore, rotationLocker, slashDuration)
+        public SlashHelper(TPhysics.Locomotion.LocomotionCore locomotionCore, IRotationLocker rotationLocker, float slashDuration, float recoveryDuration) : base(locomotionCore, rotationLocker, slashDuration, recoveryDuration)
         {
         }
         //public override bool EntryEvent => slashing && base.EntryEvent;
