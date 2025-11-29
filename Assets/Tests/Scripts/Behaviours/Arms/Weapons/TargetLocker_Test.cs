@@ -1,8 +1,9 @@
 ﻿using Mono.Cecil.Cil;
+using Tests.Characters.Humanoid.Arms.Weapons;
 using Tests.Interaction;
 using Tests.UI;
 using UnityEngine;
-namespace Tests.Behaviours.Arms.Weapons.Launcher
+namespace Tests.Behaviours.Arms.Weapons
 {
     internal class TargetLocker_Test : MonoBehaviour
     {
@@ -56,7 +57,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             _locker.CursorPosition = UnityEngine.Input.mousePosition;
             _locker.OriginWorldPosition = _actor.transform.position;
             _locker.CursorPositionDelta = UnityEngine.Input.mousePositionDelta;
-            _locker.FixedUpdate();
+            _locker.OnFixedUpdate();
 
 
             //_locker.CursorPosition = UnityEngine.Input.mousePosition;
@@ -67,7 +68,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         }
         private void LateUpdate()
         {
-            _locker.LateUpdate();
+            _locker.OnLateUpdate();
         }
         bool _showTargetLockerOptions;
         private void OnGUI()

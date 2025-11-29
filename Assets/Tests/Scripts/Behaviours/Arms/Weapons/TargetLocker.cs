@@ -1,11 +1,12 @@
 ﻿using System;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Interaction;
+using Tests.Utilities.Blackboards;
+using Tests.Utilities.Composable;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher
+namespace Tests.Behaviours.Arms.Weapons
 {
-
     internal class TargetLocker : TargetLocker<ILockTarget>
     {
         IHumanInput _input;
@@ -38,7 +39,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
                 enabled)
         {
             _input = input ?? throw new ArgumentNullException(nameof(input));
-            base.MainTargetChangedAction += WhenTargetChangedAction;
+            MainTargetChangedAction += WhenTargetChangedAction;
         }
 
         public Action<GameObject, GameObject> MainObjChangedAction
@@ -65,12 +66,11 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             if (ov != null && oldTarget?.Obj == ov.Obj)
                 GameObjTarget.ReleaseInstance(ov);
         }
-        public override void FixedUpdate()
+        public override void OnFixedUpdate()
         {
             CursorPosition = _input.MousePosition;
-            CursorPositionDelta = Vector3.zero;
             CursorPositionDelta = _input.MousePositionDelta;
-            base.FixedUpdate();
+            base.OnFixedUpdate();
         }
     }
 }
