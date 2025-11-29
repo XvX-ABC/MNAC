@@ -3,6 +3,7 @@ using Tests.Behaviours.Arm.Weapons;
 using Tests.Characters.Interaction.Input;
 using Tests.Input;
 using Tests.Weapons.Launcher;
+using Tests.Weapons_New.Launcher;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arms
@@ -10,38 +11,43 @@ namespace Tests.Behaviours.Arms
     internal class ArmAiming : ArmedArmStateBase
     {
         IWeaponControlInput _input;
-        ILauncher_Obsolete _controlledWeapon;
+        ILauncher _controlledWeapon;
         public ArmAiming() : base("aiming", 0)
         {
         }
 
         public IWeaponControlInput Input { get => _input; set => _input = value; }
-        public ILauncher_Obsolete ControlledWeapon
+        public ILauncher ControlledWeapon
         {
             get => _controlledWeapon;
             //set => _controlledWeapon = value;
             set
             {
-                if (_controlledWeapon != null && value != _controlledWeapon && _controlledWeapon.LaunchDurationTimeline.IsRunning)
-                    _controlledWeapon.EndLaunch();
+                if (_controlledWeapon != null)
+                    _controlledWeapon.FireTrigger -= FireTrigger;
+                if (value != null)
+                    value.FireTrigger += FireTrigger;
                 _controlledWeapon = value;
             }
         }
-
-        public override void OnUpdate()
+        bool FireTrigger()
         {
-            base.OnUpdate();
-            //if (_input != null && _input.Fire)
-            if (_input != null && _input.Fire)
-            {
-                _controlledWeapon.StartLaunch();
-            }
+            return _input != null && _input.Fire;
         }
-        public override void OnExit()
-        {
-            base.OnExit();
-            if (_input != null)
-                _controlledWeapon.EndLaunch();
-        }
+        //public override void OnUpdate()
+        //{
+        //    base.OnUpdate();
+        //    //if (_input != null && _input.Fire)
+        //    if (_input != null && _input.Fire)
+        //    {
+        //        _controlledWeapon.StartLaunch();
+        //    }
+        //}
+        //public override void OnExit()
+        //{
+        //    base.OnExit();
+        //    if (_input != null)
+        //        _controlledWeapon.EndLaunch();
+        //}
     }
 }

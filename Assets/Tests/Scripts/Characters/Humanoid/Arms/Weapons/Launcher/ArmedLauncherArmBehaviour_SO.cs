@@ -15,9 +15,10 @@ using Tests.UI;
 using Tests.Utilities.Blackboards;
 using Tests.Weapons;
 using Tests.Weapons.Launcher;
+using Tests.Weapons_New;
 using UnityEngine;
 using UnityEngine.Playables;
-using IndicatedTarget = Tests.Behaviours.Arms.Weapons.Launcher.IndicatedTarget;
+using WeaponType = Tests.Weapons_New.WeaponType;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
@@ -37,7 +38,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         ArmCore _armCore;
         public override WeaponType Type => WeaponType.Launcher;
 
-        public override IWeapon_Obsolete Weapon
+        public override IWeapon Weapon
         {
             get => _behaviour.Weapon;
             set

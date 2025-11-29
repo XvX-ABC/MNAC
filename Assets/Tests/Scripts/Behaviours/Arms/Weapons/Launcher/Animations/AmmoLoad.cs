@@ -2,13 +2,14 @@
 using Tests.Animations;
 using Tests.States;
 using Tests.Weapons.Launcher;
+using Tests.Weapons_New.Launcher;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
 {
     internal class AmmoLoad : ArmedLauncherAnimationStateBase
     {
-        ILauncher_Obsolete _launcher;
+        ILauncher _launcher;
         string _animationName;
         string _multiplierName;
         float _clipLength;
@@ -18,7 +19,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
             _multiplierName = animationMultiplier ?? throw new ArgumentNullException(nameof(animationMultiplier));
             _clipLength = Mathf.Max(0, clipLength);
         }
-        internal ILauncher_Obsolete TargetLauncher
+        internal ILauncher TargetLauncher
         {
             get => _launcher;
             set

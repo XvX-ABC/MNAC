@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Tests.Extensions;
 using Tests.Weapons;
+using Tests.Weapons_New;
 using UnityEngine;
 using UnityEngine.Playables;
 using IAnimationPlayablePart = Tests.Animations.IAnimationPlayablePart;
@@ -42,7 +43,7 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
             _playablePart = new(graph);
         }
         [Obsolete]
-        void ActivatedAnimator_Obsolete(IWeapon_Obsolete weapon, T behaviour)
+        void ActivatedAnimator_Obsolete(IWeapon weapon, T behaviour)
         {
             var name = weapon.Name;
             if (_animators.TryGetValue(name, out var animator))
@@ -58,7 +59,7 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
                 Debug.LogWarning($"No animator found for weapon '{name}'");
             }
         }
-        void ActivatedAnimator(IWeapon_Obsolete weapon, T behaviour)
+        void ActivatedAnimator(IWeapon weapon, T behaviour)
         {
             _activatedAnimator = behaviour.Animator;
             _playablePart.animator = _activatedAnimator;
@@ -76,7 +77,7 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
             //    Debug.LogWarning($"No animator found for weapon '{name}'");
             //}
         }
-        void UnactivatedAnimator(IWeapon_Obsolete weapon, T behaviour)
+        void UnactivatedAnimator(IWeapon weapon, T behaviour)
         {
             if (behaviour.Animator != _activatedAnimator)
                 return;

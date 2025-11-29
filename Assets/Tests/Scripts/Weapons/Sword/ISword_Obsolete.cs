@@ -7,7 +7,8 @@ using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Sword
 {
-    public interface ISword : IWeapon_Obsolete
+    [Obsolete]
+    public interface ISword_Obsolete : IWeapon_Obsolete
     {
         public float SlashRadius { get; }
         public bool EnableDamage { get; set; }

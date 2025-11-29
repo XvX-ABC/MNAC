@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Tests.Weapons;
+using Tests.Weapons_New;
 using Debug = UnityEngine.Debug;
 
 namespace Tests.Behaviours.Arms.Weapons
@@ -14,11 +15,11 @@ namespace Tests.Behaviours.Arms.Weapons
         internal Dictionary<string, T> weaponBehavioursMapping;
         internal T activatedBehaviour;
 
-        Action<IWeapon_Obsolete, T> _activatedAction;
-        Action<IWeapon_Obsolete, T> _unactivatedAction;
+        Action<IWeapon, T> _activatedAction;
+        Action<IWeapon, T> _unactivatedAction;
 
-        public Action<IWeapon_Obsolete, T> ActivatedAction { get => _activatedAction; set => _activatedAction = value; }
-        public Action<IWeapon_Obsolete, T> UnactivatedAction { get => _unactivatedAction; set => _unactivatedAction = value; }
+        public Action<IWeapon, T> ActivatedAction { get => _activatedAction; set => _activatedAction = value; }
+        public Action<IWeapon, T> UnactivatedAction { get => _unactivatedAction; set => _unactivatedAction = value; }
         public Func<bool> EntryFunc { get => EnterBehaviour; }
         public Func<bool> ExitFunc { get => ExitBehaviour; }
         internal T currentActivatedBehaviour
@@ -63,7 +64,7 @@ namespace Tests.Behaviours.Arms.Weapons
             //}
         }
         [Obsolete]
-        public void ActivateBehaviourBy_Obsolete(IWeapon_Obsolete weapon)
+        public void ActivateBehaviourBy_Obsolete(IWeapon weapon)
         {
             if (weapon == null)
                 throw new ArgumentNullException(nameof(weapon));
@@ -85,7 +86,7 @@ namespace Tests.Behaviours.Arms.Weapons
             b.Activated = true;
             _activatedAction?.Invoke(weapon, b);
         }
-        public void ActivateBehaviourBy(IWeapon_Obsolete weapon)
+        public void ActivateBehaviourBy(IWeapon weapon)
         {
             Debug.Log("activated weapon name: " + weapon.Name);
             if (weapon == null)
@@ -102,7 +103,7 @@ namespace Tests.Behaviours.Arms.Weapons
             _activatedAction?.Invoke(weapon, b);
         }
         [Obsolete]
-        public void UnactivateBehaviourBy_Obsolete(IWeapon_Obsolete weapon)
+        public void UnactivateBehaviourBy_Obsolete(IWeapon weapon)
         {
             if (weapon == null)
                 throw new ArgumentNullException(nameof(weapon));
@@ -139,7 +140,7 @@ namespace Tests.Behaviours.Arms.Weapons
             b.Activated = false;
             _unactivatedAction?.Invoke(weapon, b);
         }
-        public void UnactivateBehaviourBy(IWeapon_Obsolete weapon)
+        public void UnactivateBehaviourBy(IWeapon weapon)
         {
             if (weapon == null)
                 throw new ArgumentNullException(nameof(weapon));

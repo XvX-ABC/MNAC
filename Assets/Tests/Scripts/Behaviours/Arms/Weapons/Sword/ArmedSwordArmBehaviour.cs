@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons.Sword.Animations;
-using Tests.Input;
 using Tests.Interaction;
-using Tests.Interaction.Targets;
 using Tests.States;
 using Tests.TPhysics.Locomotion;
-using Tests.Weapons;
+using Tests.Weapons_New;
+using Tests.Weapons_New.Sword;
 using UnityEngine;
+using WeaponType = Tests.Weapons_New.WeaponType;
 
 namespace Tests.Behaviours.Arms.Weapons.Sword
 {
@@ -15,8 +15,11 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
     {
         IArmedSwordArmBehaviourDefinitions _definitions;
         ISword _sword;
-        ISphereTriggerTargetsCatcher _targetsCatcher;
+        [Obsolete]
+        TargetLocker _targetLocker;
+        ISphericalObjsTrigger _targetsTrigger;
 
+        [Obsolete]
         Interaction.ITarget_Obsolete _target;
 
         internal Idle idle;
@@ -32,7 +35,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         ArmedSwordArmBehaviourState _state;
         public override WeaponType Type => WeaponType.Sword;
 
-        public override IWeapon_Obsolete Weapon
+        public override IWeapon Weapon
         {
             get => _sword;
             set
@@ -40,8 +43,9 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
                 if (value is ISword sword)
                 {
                     _sword = sword;
-                    if (_targetsCatcher != null)
-                        _targetsCatcher.Radius = _sword.SlashRadius * 0.5f;
+                    if (_targetsTrigger != null)
+                        _targetsTrigger.Radius = _sword.Length;
+
                     slash.Sword = _sword;
                 }
                 else
@@ -56,22 +60,23 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         public override Func<bool> ExitFunc => () => !this.enabled;
 
         public override IWithCallbackPlayableState<object> State => _state;
-
-        public ISphereTriggerTargetsCatcher TargetsCatcher
+        public ISphericalObjsTrigger TargetsTrigger
         {
-            get => _targetsCatcher;
+            get => _targetsTrigger;
             set
             {
-                if (_targetsCatcher != null)
+                if (_targetsTrigger != null)
                 {
-                    _targetsCatcher.TargetsChangedAction -= WhenTargetsChanged;
+                    _targetsTrigger.CaughtItemsChangedAction -= WhenTargetsChanged;
                 }
                 if (value != null)
-                    value.TargetsChangedAction += WhenTargetsChanged;
-                value.Radius = _sword == null ? 0 : _sword.SlashRadius;
-                _targetsCatcher = value;
+                {
+                    value.CaughtItemsChangedAction += WhenTargetsChanged;
+                    value.Radius = _sword?.Length ?? 0;
+                }
+                _targetsTrigger = value;
 
-                boosting.TargetsCatcher = _targetsCatcher;
+                boosting.TargetsTrigger = _targetsTrigger;
             }
         }
         public override bool Activated
@@ -80,7 +85,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
             set
             {
                 base.Activated = value;
-                _targetsCatcher.Enabled = value;
+                _targetsTrigger.Enabled = value;
                 statemachine.Enabled = value;
                 animator.Enabled = true;
             }
@@ -114,6 +119,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
 
             statemachine.AddTransitionFor(idle, boosting, () => boostingHelper.EntryEvent);
 
+
             var b_s = new BlendingTransition<object>(boosting, slash, () => slashHelper.EntryEvent, null, 0);
             statemachine.AddTransitionFor(b_s);
 
@@ -126,7 +132,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
 
             _state = new(this);
         }
-        void WhenTargetsChanged(IList<Interaction.ITarget_Obsolete> targets)
+        void WhenTargetsChanged(IList<GameObject> targets)
         {
             slashHelper.Target = targets.Count > 0 ? targets[^1] : null;
         }
@@ -134,6 +140,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         {
             boostingHelper.Update();
             animator.Update();
+
         }
     }
 }

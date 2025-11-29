@@ -1,6 +1,8 @@
 ﻿using System;
 using Tests.States;
 using Tests.Weapons;
+using Tests.Weapons_New;
+using WeaponType = Tests.Weapons_New.WeaponType;
 
 namespace Tests.Behaviours.Arms.Weapons
 {
@@ -9,7 +11,7 @@ namespace Tests.Behaviours.Arms.Weapons
         protected bool enabled;
         public virtual bool Activated { get => enabled; set => enabled = value; }
         public abstract WeaponType Type { get; }
-        public abstract IWeapon_Obsolete Weapon { get; set; }
+        public abstract IWeapon Weapon { get; set; }
         public abstract IArmedWeaponArmAnimationPlayablePart Animator { get; }
         public abstract Func<bool> EntryFunc { get; }
         public abstract Func<bool> ExitFunc { get; }

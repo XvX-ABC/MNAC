@@ -3,8 +3,10 @@ using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
 using Tests.Characters.Interaction.Input;
 using Tests.Interaction;
 using Tests.States;
-using Tests.Weapons;
-using Tests.Weapons.Launcher;
+using Tests.Weapons_New;
+using Tests.Weapons_New.Launcher;
+using UnityEngine;
+using WeaponType = Tests.Weapons_New.WeaponType;
 
 namespace Tests.Behaviours.Arms.Weapons.Launcher
 {
@@ -15,8 +17,9 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         ITargetsCatcher _targetsCatcher;
         TargetLocker _targetLocker;
         IWeaponControlInput _winput;
-        ILauncher_Obsolete _launcher;
-        internal Interaction.ITarget_Obsolete target;
+        ILauncher _launcher;
+        //internal Interaction.ITarget_Obsolete target;
+        internal IGameObjTarget target;
 
 
         internal Idle idle;
@@ -36,12 +39,12 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
 
         public override WeaponType Type => WeaponType.Launcher;
 
-        public override IWeapon_Obsolete Weapon
+        public override IWeapon Weapon
         {
             get => _launcher;
             set
             {
-                if (value is ILauncher_Obsolete launcher)
+                if (value is ILauncher launcher)
                 {
                     _launcher = launcher;
                     ammoLoad.TargetLauncher = launcher;
@@ -115,6 +118,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         void WhenTargetChanged(IGameObjTarget _, IGameObjTarget newTarget)
         {
             animator.AimingTarget = newTarget;
+            target = newTarget;
         }
         void InitializeStatemachine()
         {
@@ -136,9 +140,9 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             statemachine.AddTransitionFor(aiming, idle, length, () => target == null, null);
             statemachine.AddTransitionFor(aiming, ammoLoad, length, ReloadTriggered, null, InterruptionSource.None);
 
-            //BUG: 装弹状态没有正常退出
+            //DONE: 装弹状态没有正常退出
             var l_i = new BlendingTransition<object>(ammoLoad, idle, () => target == null, null, 0, 0, 1);
-            var l_a = new BlendingTransition<object>(ammoLoad, aiming, () => target != null, null, length, 0, 0.75f);
+            var l_a = new BlendingTransition<object>(ammoLoad, aiming, () => target != null, null, length, 0, 1);
             statemachine.AddTransitionFor(l_i);
             statemachine.AddTransitionFor(l_a);
 
@@ -146,7 +150,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
 
             bool WeaponCanToReload()
             {
-                return _launcher.Definitions.AmmoInMagazineQuantity > _launcher.MagazineAmmoCount && _launcher.ReservesAmmoCount > 0;
+                return _launcher.Definitions.AmmoInMagazineAmount > _launcher.MagazineAmmoAmount && _launcher.ReserveAmmoAmount > 0;
             }
             bool ReloadTriggered()
             {

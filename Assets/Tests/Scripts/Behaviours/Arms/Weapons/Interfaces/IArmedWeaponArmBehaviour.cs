@@ -2,7 +2,9 @@
 using Tests.Behaviours.Arms.Weapons;
 using Tests.States;
 using Tests.Weapons;
+using Tests.Weapons_New;
 using UnityEngine;
+using WeaponType = Tests.Weapons_New.WeaponType;
 
 namespace Tests.Behaviours.Arms
 {
@@ -10,7 +12,7 @@ namespace Tests.Behaviours.Arms
     {
         public bool Activated { get; set; }
         public WeaponType Type { get; }
-        public IWeapon_Obsolete Weapon { get; set; }
+        public IWeapon Weapon { get; set; }
         public IArmedWeaponArmAnimationPlayablePart Animator { get; }
         public Func<bool> EntryFunc { get; }
         public Func<bool> ExitFunc { get; }

@@ -1,5 +1,9 @@
-﻿using Tests.Behaviours.Arm.Weapons;
+﻿using System.Threading;
+using Tests.Behaviours.Arm.Weapons;
+using Tests.States;
+using Tests.Utilities.Timeline;
 using Tests.Weapons.Launcher;
+using Tests.Weapons_New.Launcher;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Launcher
@@ -7,43 +11,60 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
     internal class AmmoLoad : ArmedArmStateBase
     {
 
-        ILauncher_Obsolete _launcher;
-        public ILauncher_Obsolete TargetLauncher
+        ILauncher _launcher;
+        StateLifeCycleWatcher<object> _lifeCycleWatcher;
+        float timeer;
+        public ILauncher TargetLauncher
         {
             set
             {
-                this.timeline = value.ReloadTimeline;
+                //this.timeline = value.ReloadTimeline;
+
+                if (_launcher != null)
+                    _launcher.ReloadTrigger -= ReloadTrigger;
+
+                if (value != null)
+                {
+                    value.ReloadTrigger += ReloadTrigger;
+                    timeline.UpdateLength(value.ReloadTimeline.Length);
+                }
                 this._launcher = value;
             }
         }
         public AmmoLoad() : base("ammo_load", 0)
         {
+            _lifeCycleWatcher = new(this);
+        }
+        protected override ITimeline NewTimeline(float duration)
+        {
+            return new Timeline_V2(duration);
         }
         public override void OnEnter()
         {
-            _launcher.StartReload();
+            base.OnEnter();
+            timeline.Restart();
+        }
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+            timeline.OnUpdate(Time.deltaTime);
         }
         public override void OnExit()
         {
-            _launcher.EndReload();
+            timeline.End();
+            base.OnExit();
         }
-        //public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
+        bool ReloadTrigger()
+        {
+            return _lifeCycleWatcher.CurrentState == LifeCycleState.Entered || _lifeCycleWatcher.CurrentState == LifeCycleState.Update;
+        }
+        //public override void OnEnter()
         //{
-        //    base.FromPreviousStateTransitionBegin(currentTransition);
+        //    _launcher.StartReload();
         //}
-        //public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
+        //public override void OnExit()
         //{
-        //    base.FromPreviousStateTransitionRunning(currentTransition);
-        //    var time = currentTransition.Timeline.NormalizedTime;
-        //    if (time >= 0.8f)
-        //        _reloadAnimator.Play();
-        //}
-        //public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
-        //{
-        //    base.ToNextStateTransitionRunning(currentTransition);
-        //    var time = currentTransition.Timeline.NormalizedTime;
-        //    if (time >= 0.8f)
-        //        _reloadAnimator.Stop();
+        //    _launcher.EndReload();
         //}
     }
 }

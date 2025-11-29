@@ -10,6 +10,7 @@ using Tests.Interaction;
 using Tests.States;
 using Tests.TPhysics.Environment;
 using Tests.Weapons.Launcher;
+using Tests.Weapons_New.Launcher;
 using UnityEngine;
 using UnityEngine.Playables;
 using World = Tests.TPhysics.World;
@@ -26,7 +27,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
 
         IWeaponControlInput _input;
         ITargetsCatcher _targetsCatcher;
-        ILauncher_Obsolete _launcher;
+        ILauncher _launcher;
 
 
         AimingHelper _aimingHelper;
@@ -113,7 +114,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
             }
         }
         public IGameObjTarget AimingTarget { get => _aimingHelper.Target; set => _aimingHelper.Target = value; }
-        public ILauncher_Obsolete Launcher
+        public ILauncher Launcher
         {
             get => _launcher;
             set
@@ -169,7 +170,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
             state = new(this);
 
             //bool TriggeredReload() => _input == null ? false : _input.Reload;
-            bool TriggeredReload() => _input == null ? false : _input.Reload && _launcher.Definitions.AmmoInMagazineQuantity > _launcher.MagazineAmmoCount && _launcher.ReservesAmmoCount > 0;
+            bool TriggeredReload() => _input == null ? false : _input.Reload && _launcher.Definitions.AmmoInMagazineAmount > _launcher.MagazineAmmoAmount && _launcher.ReserveAmmoAmount > 0;
         }
         public void Update()
         {

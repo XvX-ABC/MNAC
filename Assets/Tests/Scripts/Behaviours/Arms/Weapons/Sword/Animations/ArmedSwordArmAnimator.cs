@@ -21,7 +21,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         }
         IArmedSwordArmBehaviourDefinitions _definitions;
         IArmedSwordArmAnimationDefinitions _animationDefinitions;
-        ISword _sword;
+        ISword_Obsolete _sword;
 
         bool _enabled;
 
@@ -110,7 +110,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
                 //_controller.OutputSetting.Weight = _wholeBody.controller.OutputSetting.Weight = value ? 1 : 0;
             }
         }
-        public ISword Sword
+        public ISword_Obsolete Sword
         {
             get => _sword;
             set

@@ -13,8 +13,10 @@ using Tests.UI;
 using Tests.Utilities.Blackboards;
 using Tests.Weapons;
 using Tests.Weapons.Launcher;
+using Tests.Weapons_New;
 using UnityEngine;
 using UnityEngine.Playables;
+using WeaponType = Tests.Weapons_New.WeaponType;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
@@ -30,7 +32,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         CircleOnScreenTargetsCatcher _targetsCatcher;
         public override WeaponType Type => WeaponType.Launcher;
 
-        public override IWeapon_Obsolete Weapon
+        public override IWeapon Weapon
         {
             get => _behaviour.Weapon;
             //set => _behaviour.Weapon = value;

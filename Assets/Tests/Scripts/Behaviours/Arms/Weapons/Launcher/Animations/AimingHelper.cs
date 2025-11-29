@@ -4,6 +4,7 @@ using Tests.Interaction;
 using Tests.Utilities.Timeline;
 using Tests.Utilities.Timeline.Events.Range;
 using Tests.Weapons;
+using Tests.Weapons_New;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
@@ -12,7 +13,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
     {
         AimIK _aimIK;
         IGameObjTarget _currentTarget;
-        IWeapon_Obsolete _controlledWeapon;
+        IWeapon _controlledWeapon;
         Vector3 _preTargetPosition;
         ITimeline _targetChangeTimeline;
 
@@ -45,7 +46,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
                 _currentTarget = value;
             }
         }
-        public IWeapon_Obsolete ControlledWeapon
+        public IWeapon ControlledWeapon
         {
             get => _controlledWeapon;
             set
