@@ -19,64 +19,6 @@ using Transition = Tests.Behaviours.Arms.Weapons.Sword.IArmedSwordArmAnimationDe
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
 
-    class AnotherArm : PlayableStatemachineState<object>
-    {
-        ArmCore _armCore;
-        public AnotherArm(ArmCore otherArmCore, string name, bool enabled = true) : base(otherArmCore.stateMachine, name, 0, enabled)
-        {
-            _armCore = otherArmCore ?? throw new ArgumentNullException(nameof(otherArmCore));
-        }
-
-        public ArmCore ArmCore
-        {
-            get => _armCore;
-            set
-            {
-                if (_armCore != null)
-                {
-                    if (value != null)
-                        value.enabled = _armCore.enabled;
-                    _armCore.enabled = false;
-                }
-                _armCore = value;
-            }
-        }
-
-        public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
-        {
-            base.FromPreviousStateTransitionBegin(currentTransition);
-            //_armCore.enabled = true;
-        }
-        public override void ToNextStateTransitionEnd(IReadonlyPlayableTransition<object> currentTransition)
-        {
-            base.ToNextStateTransitionEnd(currentTransition);
-            //_armCore.enabled = false;
-        }
-    }
-    class CurrentArm : WithCallbackPlayableState
-    {
-        ArmCore _armCore;
-        public CurrentArm(ArmCore anotherArmCore, string name, bool enabled = true) : base(name, 0, enabled)
-        {
-            _armCore = anotherArmCore ?? throw new ArgumentNullException(nameof(anotherArmCore));
-        }
-        public override void OnEnter()
-        {
-            base.OnEnter();
-            _armCore.enabled = false;
-        }
-        public override void OnExit()
-        {
-            _armCore.enabled = true;
-            base.OnExit();
-        }
-    }
-    class ArmOccupation
-    {
-        internal AnotherArm anotherArm;
-        internal CurrentArm currentArm;
-    }
-
 
     [CreateAssetMenu(fileName = "ArmedSwordArmBehaviour", menuName = "Tests/Behaviours/Characters/Humanoid/Arms/Weapons/Sword/ArmedSwordArmBehaviour")]
     public class ArmedSwordArmBehaviour_SO : ArmedWeaponArmBehaviourBase_SO
