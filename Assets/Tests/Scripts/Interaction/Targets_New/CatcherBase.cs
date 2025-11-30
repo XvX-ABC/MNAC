@@ -66,7 +66,7 @@ namespace Tests.Interaction
             for (int i = 0; i < caughtItems.Count;)
             {
                 var item = caughtItems[i];
-                if (caughtItems.Remove(item))
+                if (caughtItems.Remove(item) && item != null)
                     itemReleaseAction?.Invoke(item);
             }
             caughtItems.TrimExcess();
