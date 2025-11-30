@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Linq;
 using Tests.Environment;
-using Tests.Locomotion_Obsolete;
-using TMPro.EditorUtilities;
 using UnityEngine;
 
 namespace Locomotion
