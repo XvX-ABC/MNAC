@@ -1,5 +1,4 @@
-﻿using Tests.Utilities.Composable;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Tests.Interaction
 {
