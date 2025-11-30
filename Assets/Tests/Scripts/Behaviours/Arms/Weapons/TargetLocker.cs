@@ -19,7 +19,7 @@ namespace Tests.Behaviours.Arms.Weapons
             Func<GameObject, LockType, ILockTarget> getTargetFunc,
             Action<ILockTarget> releaseTargetAction,
             Camera camera,
-            ICursorReceiver cursorReceiver,
+            ICursorController cursorReceiver,
             ObstacleDetector obstacleDetector = null,
             ushort handleAmountInCoroutine = 30,
             float catchAngle = 60,

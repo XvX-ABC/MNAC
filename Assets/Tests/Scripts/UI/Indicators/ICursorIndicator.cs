@@ -2,7 +2,7 @@
 
 namespace Tests.UI
 {
-    public interface ICursorIndicator : ICursorReceiver
+    public interface ICursorIndicator : ICursorController
     {
         float Width { get; set; }
     }

@@ -131,7 +131,7 @@ namespace Tests.Interaction
 
         //IndicatorsManager _indicatorManager;
         //RingCatcher _ringCatcher;
-        ICursorReceiver _cursorReceiver;
+        ICursorController _cursorController;
 
         [Obsolete]
         GameObject _mainTargetObj;
@@ -168,7 +168,7 @@ namespace Tests.Interaction
             set
             {
                 _screenObjsCatcher.Enabled = value;
-                _cursorReceiver.Enabled = value;
+                _cursorController.Enabled = value;
             }
         }
 
@@ -196,7 +196,7 @@ namespace Tests.Interaction
                 if (value != null)
                 {
                     value.LockType = LockType.Lock_Confirmed;
-                    _targetChangeTween = DOTween.To(() => _cursorReceiver.CursorPosition, pos => _cursorReceiver.CursorPosition = pos, _camera.WorldToScreenPoint(value.Obj.transform.position), _targetChangDuration);
+                    _targetChangeTween = DOTween.To(() => _cursorController.CursorPosition, pos => _cursorController.CursorPosition = pos, _camera.WorldToScreenPoint(value.Obj.transform.position), _targetChangDuration);
                 }
                 _mainLockTarget = value;
                 _mainLockTargetChangedAction?.Invoke(ov, _mainLockTarget);
@@ -212,7 +212,7 @@ namespace Tests.Interaction
             Func<GameObject, LockType, T> getTargetFunc,
             Action<T> releaseTargetAction,
             Camera camera,
-            ICursorReceiver cursorReceiver,
+            ICursorController cursorController,
             ObstacleDetector obstacleDetector = null,
             ushort handleAmountInCoroutine = 30,
             float catchAngle = 60,
@@ -224,7 +224,7 @@ namespace Tests.Interaction
             _getTargetFunc = getTargetFunc ?? throw new ArgumentNullException(nameof(getTargetFunc));
             _releaseTargetAction = releaseTargetAction ?? throw new ArgumentNullException(nameof(releaseTargetAction));
             _camera = camera ?? throw new ArgumentNullException(nameof(camera));
-            _cursorReceiver = cursorReceiver ?? throw new ArgumentNullException(nameof(cursorReceiver));
+            _cursorController = cursorController ?? throw new ArgumentNullException(nameof(cursorController));
             _screenObjsCatcher = screenObjsCatcher ?? throw new ArgumentNullException(nameof(screenObjsCatcher));
             _obstacleDetector = obstacleDetector;
 
@@ -336,7 +336,7 @@ namespace Tests.Interaction
         {
             //_ringCatcher.CursorPosition = _mainTargetObj != null ? _camera.WorldToScreenPoint(_mainTargetObj.transform.position) : _cursorPosition;
             if (_targetChangeTween == null || !_targetChangeTween.IsActive() || !_targetChangeTween.IsPlaying())
-                _cursorReceiver.CursorPosition = _mainLockTarget != null ? _camera.WorldToScreenPoint(_mainLockTarget.Obj.transform.position) : _cursorPosition;
+                _cursorController.CursorPosition = _mainLockTarget != null ? _camera.WorldToScreenPoint(_mainLockTarget.Obj.transform.position) : _cursorPosition;
         }
         bool IsBehindObstacle(GameObject obj)
         {
