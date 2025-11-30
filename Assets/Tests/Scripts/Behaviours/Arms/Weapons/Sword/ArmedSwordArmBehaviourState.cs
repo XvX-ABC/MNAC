@@ -68,7 +68,6 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         {
             base.OnUpdate();
             _animationState.OnUpdate();
-            Debug.Log(statemachine);
         }
 
         public override void ToNextStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)

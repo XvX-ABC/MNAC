@@ -11,7 +11,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         {
             _animator = animator;
         }
-        //BUG：从其他状态到此状态的过渡开始时，动画会产生意外的扭曲行为
+ 
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             statemachine.ChangeStateTo(_animator.AimingTarget == null ? _animator.idle : _animator.aiming);

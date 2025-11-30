@@ -18,7 +18,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         TargetLocker _targetLocker;
         IWeaponControlInput _winput;
         ILauncher _launcher;
-        //internal Interaction.ITarget_Obsolete target;
         internal IGameObjTarget target;
 
 
@@ -70,21 +69,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
                 _winput = value;
             }
         }
-        //[Obsolete]
-        //public ITargetsCatcher TargetsCatcher
-        //{
-        //    get => _targetsCatcher;
-        //    set
-        //    {
-        //        if (_targetsCatcher != null)
-        //        {
-        //            _targetsCatcher.TargetsChangedAction -= WhenTargetsChanged;
-        //        }
-        //        if (value != null)
-        //            value.TargetsChangedAction += WhenTargetsChanged;
-        //        _targetsCatcher = value;
-        //    }
-        //}
         public TargetLocker TargetLocker
         {
             get => _targetLocker;
@@ -109,12 +93,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
                 animator.Enabled = value;
             }
         }
-        //[Obsolete]
-        //void WhenTargetsChanged(IList<Interaction.ITarget_Obsolete> targets)
-        //{
-        //    target = targets.Count > 0 ? targets[^1] : null;
-        //    animator.AimingTarget = target;
-        //}
         void WhenTargetChanged(IGameObjTarget _, IGameObjTarget newTarget)
         {
             animator.AimingTarget = newTarget;
@@ -140,7 +118,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             statemachine.AddTransitionFor(aiming, idle, length, () => target == null, null);
             statemachine.AddTransitionFor(aiming, ammoLoad, length, ReloadTriggered, null, InterruptionSource.None);
 
-            //DONE: 装弹状态没有正常退出
             var l_i = new BlendingTransition<object>(ammoLoad, idle, () => target == null, null, 0, 0, 1);
             var l_a = new BlendingTransition<object>(ammoLoad, aiming, () => target != null, null, length, 0, 1);
             statemachine.AddTransitionFor(l_i);
@@ -154,7 +131,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             }
             bool ReloadTriggered()
             {
-                //return _input == null ? false : _input.Reload && WeaponCanToReload();
                 return _winput == null ? false : _winput.Reload && WeaponCanToReload();
             }
         }

@@ -124,7 +124,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
             var b = controller?.currentActivatedBehaviour;
             if (b != null)
             {
-                b.Activated = true;
+                b.Activated = false;
                 b.ToNextStateTransitionEnd(currentTransition);
             }
         }

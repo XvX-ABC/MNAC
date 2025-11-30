@@ -239,16 +239,7 @@ namespace Tests.Behaviours.Arms.Animations
                 playablePart.Pause();
             }
         }
-        //public override bool Initialize(PlayableGraph graph)
-        //{
-        //    _initialized = true;
-        //    InitializeStates();
-        //    return true;
-        //}
-        //public override void Dispose()
-        //{
-        //    _initialized = false;
-        //}
+
         protected bool CheckArmedAnimator()
         {
             return armedAnimator.PlayablePart.animator != null;

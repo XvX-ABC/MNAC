@@ -26,18 +26,6 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
         {
             _animators = new();
             _controller = controller ?? throw new ArgumentNullException(nameof(controller));
-            //foreach (var kv in _controller.Behaviours)
-            //{
-            //    var name = kv.Key;
-            //    var animator = kv.Value.Animator;
-            //    if (animator == null)
-            //    {
-            //        Debug.LogWarning(new NullReferenceException(nameof(animator)));
-            //        continue;
-            //    }
-            //    _animators.Add(name, animator);
-            //    animator.GetPlayablePart(graph);
-            //}
             _controller.ActivatedAction += ActivatedAnimator;
             _controller.UnactivatedAction += UnactivatedAnimator;
             _playablePart = new(graph);
@@ -63,19 +51,6 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
         {
             _activatedAnimator = behaviour.Animator;
             _playablePart.animator = _activatedAnimator;
-            //var name = weapon.Name;
-            //if (_animators.TryGetValue(name, out var animator))
-            //{
-            //    if (_activatedAnimators == null)
-            //        _activatedAnimators = new IArmedWeaponArmAnimationPlayablePart[] { animator };
-            //    else
-            //        ArrayExtensions.Append(ref _activatedAnimators, animator);
-            //    _playablePart.animator = animator;
-            //}
-            //else
-            //{
-            //    Debug.LogWarning($"No animator found for weapon '{name}'");
-            //}
         }
         void UnactivatedAnimator(IWeapon weapon, T behaviour)
         {
@@ -83,17 +58,6 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
                 return;
             _activatedAnimator = null;
             _playablePart.animator = null;
-            //if (_activatedAnimators == null)
-            //    return;
-            //var name = weapon.Name;
-            //if (_animators.TryGetValue(name, out var animator))
-            //{
-            //    if (_activatedAnimators.Length == 1)
-            //        _activatedAnimators = null;
-            //    else
-            //        _activatedAnimators.Remove(animator);
-            //    _playablePart.animator = null;
-            //}
         }
         public void OnUpdate()
         {
