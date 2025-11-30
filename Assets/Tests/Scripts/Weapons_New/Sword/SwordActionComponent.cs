@@ -1,6 +1,5 @@
-﻿using Codice.CM.Common;
-using Tests.Utilities.Blackboards;
-using UnityEditor.Build.Content;
+﻿using Tests.Utilities.Blackboards;
+using UnityEngine;
 
 namespace Tests.Weapons_New.Sword
 {
@@ -9,6 +8,7 @@ namespace Tests.Weapons_New.Sword
         protected Sword sword;
         protected internal float multiplier;
         SwordAction _ownerAction;
+
         protected abstract SwordActionType actionType { get; }
         protected override void Awake()
         {

@@ -237,7 +237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _layerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 0
   _hitEffect: {fileID: 3662794463905514041}
 --- !u!1001 &860489831544529208
 PrefabInstance:
@@ -470,6 +470,12 @@ MonoBehaviour:
   tipTrigger: {fileID: 4067666868927023470}
   ownerObj: {fileID: 0}
   length: 10
+  collisionLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  damageLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   _subComponents:
   - {fileID: 3934036442846841672}
   - {fileID: 4940065253491257568}

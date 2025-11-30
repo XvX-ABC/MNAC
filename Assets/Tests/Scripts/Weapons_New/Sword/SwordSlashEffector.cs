@@ -11,7 +11,6 @@ namespace Tests.Weapons_New.Sword
         SwordHitEffect _hitEffect;
 
         protected override SwordActionType actionType => SwordActionType.Slash;
-
         protected override void Awake()
         {
             base.Awake();
@@ -24,14 +23,18 @@ namespace Tests.Weapons_New.Sword
 
         protected override void WhenTargetEnter(GameObject ob)
         {
+            //if (sword != null)
+            //    _layerMask = sword.collisionLayerMask;
+            //Debug.Log("collision layer mask: " + _layerMask.value);
         }
 
         protected override void WhenTargetExit(GameObject obj)
         {
+            Debug.Log("exit: " + obj.name);
             var pos = sword.transform.position;
             if (sword.OwnerObj != null)
                 pos = sword.OwnerObj.transform.position;
-            
+
             var tpos = obj.transform.position;
 
             var direction = Vector3.ProjectOnPlane(tpos - pos, sword.worldUp);

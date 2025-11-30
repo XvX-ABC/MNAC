@@ -15,6 +15,10 @@ namespace Tests.Weapons_New.Sword
         internal GameObject ownerObj;
         [SerializeField]
         internal float length;
+        [SerializeField]
+        internal LayerMask collisionLayerMask;
+        [SerializeField]
+        internal LayerMask damageLayerMask;
         internal Vector3 worldUp = Vector3.up;
 
         internal Dictionary<SwordActionType, SwordAction> actions;
@@ -32,6 +36,17 @@ namespace Tests.Weapons_New.Sword
         public override WeaponType Type => WeaponType.Sword;
 
         public float Length { get => length; }
+        public LayerMask CollisionLayerMask
+        {
+            get => collisionLayerMask;
+            set => collisionLayerMask = value;
+        }
+        public LayerMask DamageLayerMask
+        {
+            get => damageLayerMask;
+            set => damageLayerMask = value;
+        }
+
 
         protected void Awake()
         {
