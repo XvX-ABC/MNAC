@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Tests.Utilities;
+using UnityEngine;
 
 namespace Tests.Weapons_New.Sword
 {
@@ -20,14 +21,17 @@ namespace Tests.Weapons_New.Sword
         {
             base.OnDisable();
         }
-    
+
         protected override void WhenTargetEnter(GameObject ob)
         {
         }
 
         protected override void WhenTargetExit(GameObject obj)
         {
-            var pos = sword.OwnerObj?.transform?.position ?? sword.transform.position;
+            var pos = sword.transform.position;
+            if (sword.OwnerObj != null)
+                pos = sword.OwnerObj.transform.position;
+            
             var tpos = obj.transform.position;
 
             var direction = Vector3.ProjectOnPlane(tpos - pos, sword.worldUp);

@@ -14,7 +14,6 @@ namespace Tests.Weapons_New.Sword
         public LayerMask IncludedLayerMask { get => _trigger.IncludeLayerMask; set => _trigger.IncludeLayerMask = value; }
         public Action<GameObject> EntryAction { get => _trigger.ItemCaughtAction; set => _trigger.ItemCaughtAction = value; }
         public Action<GameObject> ExitAction { get => _trigger.ItemReleaseAction; set => _trigger.ItemReleaseAction = value; }
-
         public void AddItem(GameObject target)
         {
             _trigger.AddItem(target);
@@ -32,16 +31,22 @@ namespace Tests.Weapons_New.Sword
             _collider.isTrigger = true;
             _trigger = new(_collider);
         }
+        protected virtual void OnEnable()
+        {
+            _trigger.Enabled = true;
+            _collider.enabled = true;
+        }
+        protected virtual void OnDisable()
+        {
+            _trigger.Enabled = false;
+            _collider.enabled = false;
+        }
         void OnTriggerEnter(Collider other)
         {
-            if (!enabled)
-                return;
             _trigger.OnTriggerEnter(other);
         }
         private void OnTriggerExit(Collider other)
         {
-            if (!enabled)
-                return;
             _trigger.OnTriggerExit(other);
         }
     }

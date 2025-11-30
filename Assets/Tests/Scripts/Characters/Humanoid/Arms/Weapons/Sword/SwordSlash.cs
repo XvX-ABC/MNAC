@@ -31,6 +31,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                     _extensionAction.Multiplier = _oldMultiplier;
                     _extensionAction.Enabled = false;
                 }
+                if (_slashAction != null)
+                    _slashAction.Enabled = false;
             });
         }
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
@@ -40,11 +42,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         }
         public override void OnEnter()
         {
-            Debug.Log("slash enter");
             base.OnEnter();
             if (_extensionAction != null)
             {
-                Debug.Log("extensino enter");
                 _oldMultiplier = _extensionAction.Multiplier;
                 _extensionAction.Multiplier = 100f;
                 _extensionAction.Enabled = true;
@@ -60,14 +60,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         }
         public override void OnExit()
         {
-            Debug.Log("slash exit");
             _helper.slashing = false;
             timeline.End();
-            //if (_extensionAction != null)
-            //{
-            //    _extensionAction.Multiplier = _oldMultiplier;
-            //    _extensionAction.Enabled = false;
-            //}
             base.OnExit();
         }
     }
