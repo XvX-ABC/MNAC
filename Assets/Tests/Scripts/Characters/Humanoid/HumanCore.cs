@@ -36,7 +36,7 @@ namespace Tests.Characters.Humanoid
         [SerializeField]
         WeaponCore _weaponCore;
         [Obsolete]
-        CustomPlayerInput _input_obsolete;
+        CustomPlayerInput_Obsolete _input_obsolete;
         [SerializeField]
         HumanInput_MonoComponent _input_mc;
         [SerializeField]

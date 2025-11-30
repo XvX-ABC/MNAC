@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Tests.Weapons.MachineGuns
 {
-    [RequireComponent(typeof(CustomPlayerInput))]
+    [RequireComponent(typeof(CustomPlayerInput_Obsolete))]
     public class MachineGun_Test : MonoBehaviour
     {
         IInput_Obsolete _input;
@@ -22,7 +22,7 @@ namespace Tests.Weapons.MachineGuns
         float _distance;
         private void Awake()
         {
-            _input = GetComponent<CustomPlayerInput>();
+            _input = GetComponent<CustomPlayerInput_Obsolete>();
         }
         private void Update()
         {

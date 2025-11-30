@@ -13,7 +13,8 @@ namespace Tests.Input
         Supply,
     }
     [Serializable]
-    public class CustomPlayerInput : MonoBehaviour, IInput_Obsolete
+    [Obsolete]
+    public class CustomPlayerInput_Obsolete : MonoBehaviour, IInput_Obsolete
     {
         [SerializeField]
         KeyCode _forward;

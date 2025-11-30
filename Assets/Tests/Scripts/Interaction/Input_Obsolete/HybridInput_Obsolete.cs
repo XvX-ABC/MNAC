@@ -1,16 +1,18 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 namespace Tests.Input
 {
-    public class HybridInput : MonoBehaviour, IHybridInput
+    [Obsolete]
+    public class HybridInput_Obsolete : MonoBehaviour, IHybridInput
     {
         [SerializeField]
-        CustomPlayerInput _playerInput;
+        CustomPlayerInput_Obsolete _playerInput;
         VirtualInput _virtualInput;
         IHybridInput.Mode _mode;
 
 
         IInput_Obsolete _currentInput;
-        public HybridInput()
+        public HybridInput_Obsolete()
         {
             _virtualInput = new();
         }
