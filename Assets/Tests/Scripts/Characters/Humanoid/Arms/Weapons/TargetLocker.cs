@@ -41,6 +41,16 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         {
             StartCoroutine(_screenCatcher.UpdateWithCoroutine());
         }
+        void OnEnable()
+        {
+            if (_locker != null)
+                _locker.Enabled = true;
+        }
+        void OnDisable()
+        {
+            if (_locker != null)
+                _locker.Enabled = false;
+        }
         void FixedUpdate()
         {
             _locker.OnFixedUpdate();

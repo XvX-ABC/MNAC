@@ -126,9 +126,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 {
                     //UpdateTargetsCatcherFor(blackboard);
                     _behaviour.Activated = value;
-                    if (Activated)
-                        Cursor.lockState = CursorLockMode.Confined;
-
+                    _targetLocker.Enabled = value;
                 }
             }
         }
