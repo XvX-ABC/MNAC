@@ -1,9 +1,11 @@
-﻿using Tests.Characters.Animations;
+﻿using System;
+using Tests.Characters.Animations;
 using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Animations
 {
-    public class HumanAnimationDefinitions : MonoBehaviour, IHumanAnimationDefinitions
+    [Serializable]
+    public class HumanAnimationDefinitions : IHumanAnimationDefinitions
     {
         [SerializeField]
         HumanArmAnimationDefinitions _leftArm;

@@ -1,13 +1,15 @@
 ﻿using Locomotion;
+using System;
 using Tests.Characters.Humanoid.Locomotion.Animations;
 using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Locomotion
 {
-    public class LocomotionDefinitions : LocomotionDefinitionsBase, ILocomotionDefinitions
+    [Serializable]
+    internal class LocomotionDefinitions : ILocomotionDefinitions
     {
         [SerializeField]
-        ushort _postureEvaluationFramesQuantity;
+        ushort _postureEvaluationFramesAmount;
         [SerializeField]
         WalkingDefinitions _walking;
         [SerializeField]
@@ -15,8 +17,10 @@ namespace Tests.Characters.Humanoid.Locomotion
         [SerializeField]
         QuickBoostingDefinitions _quickBoosting;
         [SerializeField]
+        JumpDefinitions _jump;
+        [SerializeField]
         LocomotionAnimatorDefinitions _animation;
-        public ushort PostureEvaluationFramesQuantity => _postureEvaluationFramesQuantity;
+        public ushort PostureEvaluationFramesAmount => _postureEvaluationFramesAmount;
 
         public IWalkingDefinitions Walking => _walking;
 
@@ -24,6 +28,8 @@ namespace Tests.Characters.Humanoid.Locomotion
 
         public ILocomotionAnimatorDefinitions Animation => _animation;
 
-        IBoostingDefinitions ILocomotionDefinitions.Boosting => _boosting;
+        public IJumpDefinitions Jump => _jump;
+
+        public IBoostingDefinitions Boosting => _boosting;
     }
 }

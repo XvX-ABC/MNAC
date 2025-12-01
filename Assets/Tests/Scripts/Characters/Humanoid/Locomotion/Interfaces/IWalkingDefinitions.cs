@@ -6,17 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tests.Characters.Humanoid.Locomotion
 {
-    public interface IMovementDefinitions
-    {
-        public float MaxSpeed { get; }
-        public float AcceleratedSpeed { get; }
-    }
     public interface IWalkingDefinitions : IMovementDefinitions
     {
-    }
-    public interface IBoostingDefinitions
-    {
-        public float AcceleratedSpeedPower { get; }
-        public float MaxSpeedPower { get; }
     }
 }
