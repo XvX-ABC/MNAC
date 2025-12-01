@@ -1,22 +1,29 @@
 ﻿using Codice.CM.Common.Tree.Partial;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Graphs;
 using UnityEngine;
 
 namespace Tests.Weapons_New
 {
-    public class WeaponCore : MonoBehaviour
+    [Serializable]
+    public class WeaponCore : IDisposable
     {
         IWeaponSource[] _sources;
 #if UNITY_EDITOR
         [SerializeField]
         List<string> _weaponNames;
 #endif
-        private void Awake()
+        private WeaponCore()
         {
-            _sources = GetComponentsInChildren<IWeaponSource>();
+
+        }
+        public WeaponCore(IWeaponSource[] sources)
+        {
+            _sources = sources ?? throw new ArgumentNullException(nameof(sources));
             foreach (var s in _sources)
                 s.Initialize();
 #if UNITY_EDIOR
@@ -25,10 +32,9 @@ namespace Tests.Weapons_New
                 _weaponNames.Add(s.Name); 
 #endif
         }
-        private void OnDestroy()
+        ~WeaponCore()
         {
-            foreach (var s in _sources)
-                s.Dispose();
+            Dispose();
         }
         int FindIndex(string weaponName)
         {
@@ -60,5 +66,12 @@ namespace Tests.Weapons_New
             weapon = GetWeapon(weaponName);
             return weapon != null;
         }
+
+        public void Dispose()
+        {
+            foreach (var s in _sources)
+                s.Dispose();
+        }
+
     }
 }
