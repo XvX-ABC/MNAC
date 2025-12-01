@@ -14,7 +14,10 @@ namespace Tests.Characters.Humanoid.Legs
     {
         [SerializeField]
         GameObject _footObj;
-        ILegDefinitions _definitions;
+        [SerializeField]
+        LayerMask _groundLayerMask;
+        [SerializeField]
+        Vector3 _offset;
         LegIK _legIk;
         SimpleFootIK _footIk;
         float _weight;
@@ -47,14 +50,13 @@ namespace Tests.Characters.Humanoid.Legs
         {
             base.Awake();
             _legIk = GetComponent<LegIK>();
-            _definitions = GetComponent<ILegDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(ILegDefinitions));
         }
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
             if (!blackboard.TryReadValue(CharacterBlackboardFields.World, out _world))
                 throw new Exception();
-            _footIk = new(_footObj, _legIk, _definitions.FootIKLayer, _definitions.FootIKPositionOffset, World.DefaultUp);
+            _footIk = new(_footObj, _legIk, _groundLayerMask, _offset, World.DefaultUp);
         }
         private void LateUpdate()
         {
