@@ -1,6 +1,7 @@
 ﻿using System;
 using Tests.Behaviours.Input;
 using Tests.Characters.Interaction.Input;
+using Tests.Characters.Weapons;
 using Tests.Input;
 using UnityEngine;
 using ISwordBoostingDefinitions = Tests.Behaviours.Arms.Weapons.Sword.IBoostingDefinitions;

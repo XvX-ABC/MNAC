@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons;
+using Tests.Characters.Weapons;
 using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
-using Tests.Weapons;
 using Tests.Weapons_New;
+using WeaponCore = Tests.Characters.Weapons.WeaponCore;
+
 
 namespace Tests.Characters.Humanoid.Arms.Weapons
 {
@@ -24,10 +26,10 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
             InitializeBehaviours(this.controller.behavioursCache, part);
         }
         [Obsolete]
-        public ArmedWeaponArmBehaviourControllerState(WeaponCore weaponCore, IArmedWeaponArmDefinitions definitions, params IArmedWeaponArmBehaviour[] behaviours) : this(new(weaponCore, definitions, behaviours))
+        public ArmedWeaponArmBehaviourControllerState(WeaponCore weaponCore, IArmedWeaponArmDefinitions definitions, params IArmedWeaponArmBehaviour[] behaviours) : this(new((Weapons_New.WeaponCore)weaponCore, definitions, behaviours))
         {
         }
-        public ArmedWeaponArmBehaviourControllerState(WeaponCore weaponCore, IArmedWeaponArmDefinitions definitions, HumanPart part, params IArmedWeaponArmBehaviour[] behaviours) : this(new(weaponCore, definitions, behaviours), part)
+        public ArmedWeaponArmBehaviourControllerState(WeaponCore weaponCore, IArmedWeaponArmDefinitions definitions, HumanPart part, params IArmedWeaponArmBehaviour[] behaviours) : this(new((Weapons_New.WeaponCore)weaponCore, definitions, behaviours), part)
         {
         }
         public Action<IWeapon, IArmedWeaponArmBehaviour> ActivatedAction { get => controller.ActivatedAction; set => controller.ActivatedAction = value; }

@@ -9,7 +9,7 @@ using Tests.Utilities.Composable;
 using UnityEngine;
 using IndicatedTarget = Tests.Characters.UI.IndicatedTarget;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons
+namespace Tests.Characters.Weapons
 {
     internal class TargetLocker : ComponentBase_MonoComponent, ITargetLocker<ILockTarget>
     {

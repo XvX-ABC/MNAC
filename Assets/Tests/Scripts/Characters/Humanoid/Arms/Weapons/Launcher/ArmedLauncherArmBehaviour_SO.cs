@@ -7,6 +7,7 @@ using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Humanoid.Locomotion;
 using Tests.Characters.Interaction.Input;
 using Tests.Characters.UI;
+using Tests.Characters.Weapons;
 using Tests.TPhysics;
 using Tests.TPhysics.Environment;
 using Tests.UI;
@@ -15,6 +16,7 @@ using Tests.Weapons.Launcher;
 using Tests.Weapons_New;
 using UnityEngine;
 using UnityEngine.Playables;
+using TargetLocker = Tests.Characters.Weapons.TargetLocker;
 using WeaponType = Tests.Weapons_New.WeaponType;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers

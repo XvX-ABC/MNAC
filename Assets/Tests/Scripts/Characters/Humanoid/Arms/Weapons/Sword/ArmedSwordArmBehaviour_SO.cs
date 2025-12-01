@@ -5,6 +5,7 @@ using Tests.Behaviours.Arms.Weapons.Sword.Animations;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Interaction.Input;
 using Tests.Characters.MountPoints;
+using Tests.Characters.Weapons;
 using Tests.Interaction;
 using Tests.Interaction.Targets;
 using Tests.States;

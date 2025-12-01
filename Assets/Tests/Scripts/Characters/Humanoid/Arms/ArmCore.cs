@@ -15,6 +15,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using IArmedWeaponArmBehaviour = Tests.Characters.Humanoid.Arms.Weapons.IArmedWeaponArmBehaviour;
 using IArmedWeaponArmDefinitions = Tests.Characters.Humanoid.Arms.Weapons.IArmedWeaponArmDefinitions;
+using WeaponCore = Tests.Weapons_New.WeaponCore;
 
 namespace Tests.Characters.Humanoid.Arms
 {
