@@ -6,18 +6,19 @@ namespace Tests.TPhysics.Locomotion
 {
     public class JumpLocomotion : LocomotionModuleBase
     {
-        IJumpDefinitions _definitions;
         ITimeline _timeline;
+        float _height;
         public ITimeline Timeline { get => _timeline; }
-        public JumpLocomotion(IJumpDefinitions definitions)
+        public float Height { get => _height; set => _height = Mathf.Max(0, value); }
+
+        public JumpLocomotion(float height)
         {
-            _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
+            Height = height;
             _timeline = new Timeline_V1(0);
         }
-
         public override Context OnStart(Context context)
         {
-            var jv = Mathf.Sqrt(-2 * world.Gravity.y * _definitions.Height);
+            var jv = Mathf.Sqrt(-2 * world.Gravity.y * _height);
             var ov = context.CurrentVelocity;
             context.CurrentVelocity += Quaternion.FromToRotation(World.DefaultUp, world.Up) * new Vector3(0, jv, 0);
             var time = jv / -world.Gravity.y;

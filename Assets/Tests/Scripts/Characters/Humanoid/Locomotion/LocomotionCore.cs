@@ -45,7 +45,7 @@ namespace Tests.Characters.Humanoid.Locomotion
             base.Awake();
             definitions = GetComponent<ILocomotionDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(ILocomotionDefinitions));
             walking = new(definitions.Walking);
-            jump = new(definitions.Jump);
+            jump = new(definitions.Jump.Height);
             quickBoostingHelper = new(definitions.Walking, definitions.QuickBoosting);
             quickBoosting = quickBoostingHelper.State;
             boosting = new(definitions.Walking, definitions.Boosting);

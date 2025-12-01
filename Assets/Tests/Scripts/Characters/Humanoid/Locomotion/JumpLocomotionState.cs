@@ -1,4 +1,5 @@
-﻿using Tests.TPhysics.Locomotion;
+﻿using System;
+using Tests.TPhysics.Locomotion;
 using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Locomotion
@@ -6,9 +7,14 @@ namespace Tests.Characters.Humanoid.Locomotion
     internal class JumpLocomotionState : LocomotionStateBase
     {
         internal JumpLocomotion locomotion;
-        public JumpLocomotionState(IJumpDefinitions definitions, bool enabled = true) : base("jump", 0, enabled)
+        public float Height
         {
-            locomotion = new(definitions);
+            get => locomotion.Height;
+            set => locomotion.Height = value;
+        }
+        public JumpLocomotionState(float height, bool enable = true) : base("jump", 0, enable)
+        {
+            locomotion = new(height);
             timeline = locomotion.Timeline;
         }
 
