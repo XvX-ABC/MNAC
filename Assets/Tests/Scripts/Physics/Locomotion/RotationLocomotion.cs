@@ -2,13 +2,13 @@
 
 namespace Tests.TPhysics.Locomotion
 {
-    internal class WorldRotationLocomotion : LocomotionModuleBase
+    internal class RotationLocomotion : LocomotionModuleBase
     {
         Quaternion _offset;
         Vector3 _origin;
         Vector3 _forward;
         Vector3 _targetPos;
-        public WorldRotationLocomotion()
+        public RotationLocomotion()
         {
             _forward = Vector3.forward;
             _offset = Quaternion.identity;
@@ -37,7 +37,7 @@ namespace Tests.TPhysics.Locomotion
         Quaternion CalculateRotation(Context context)
         {
             var tpos = _targetPos - _origin;
-            var r = Quaternion.FromToRotation(_forward, tpos);
+            var r = Quaternion.FromToRotation(_forward, tpos.normalized);
             if (_offset != Quaternion.identity)
                 return Quaternion.Slerp(context.CurrentRotation, _offset * r, Time.deltaTime * 15);
             else
