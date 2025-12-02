@@ -1,12 +1,13 @@
 ﻿using System;
 using Tests.Interaction;
+using Tests.Utilities;
 using UnityEngine;
 
 namespace Tests.TPhysics.Locomotion
 {
     public class RotationByMouseOrTargetLocomotion : LocomotionModuleBase
     {
-        WorldRotationLocomotion _b;
+        RotationLocomotion _b;
         Camera _camera;
         Vector3 _mouseScreenPosition;
         Vector3 _origin;
@@ -42,9 +43,11 @@ namespace Tests.TPhysics.Locomotion
 
         public override Context OnUpdate(Context context)
         {
-            var p = context.GroundPlane;
-            _b.Origin = Vector3.ProjectOnPlane(_origin, p.normal);
-            _b.TargetPos = _target == null ? CalculateMousePositionOn(p) : Vector3.ProjectOnPlane(_target.Position, p.normal);
+            var p = context.WorldPlane;
+            var origin = context.CurrentPosition;
+            var tpos = _target == null ? CalculateMousePositionOn(p) : _target.Position;
+            _b.Origin = Vector3.ProjectOnPlane(origin, p.normal);
+            _b.TargetPos = Vector3.ProjectOnPlane(tpos, p.normal);
             return _b.OnUpdate(context);
         }
         Vector3 CalculateMousePositionOn(Plane plane)
