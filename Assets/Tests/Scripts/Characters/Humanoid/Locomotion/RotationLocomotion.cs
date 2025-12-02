@@ -4,6 +4,7 @@ using Tests.Behaviours.Arms.Weapons.Launcher;
 using Tests.Behaviours.Input;
 using Tests.Interaction;
 using Tests.TPhysics.Locomotion;
+using Tests.Utilities;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
@@ -50,7 +51,11 @@ namespace Tests.Characters.Humanoid.Locomotion
                 if (_targetLocker != null)
                     _targetLocker.MainTargetChangedAction -= WhenTargetChange;
                 if (value != null)
+                {
                     value.MainTargetChangedAction += WhenTargetChange;
+                    target = value.MainLockTarget;
+                }
+
                 _targetLocker = value;
             }
         }
@@ -77,7 +82,8 @@ namespace Tests.Characters.Humanoid.Locomotion
         }
         bool TryReadTargetsCatcher(Blackboard blackboard)
         {
-            var r = blackboard.TryReadValue<ITargetsCatcher>(CharacterBlackboardFields.TargetLocker, out var targetsCatcher);
+            var r = blackboard.TryReadValue<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.TargetLocker, out var targetLocker);
+            this.targetLocker = targetLocker;
             return r;
         }
         void UpdateTargetLocker(FieldEventType type, ITargetLocker<ILockTarget> oc, ITargetLocker<ILockTarget> nc)
