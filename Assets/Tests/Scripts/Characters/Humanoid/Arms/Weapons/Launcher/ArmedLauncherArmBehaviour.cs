@@ -29,6 +29,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         IArmedLauncherArmAnimationDefinitions _animationDefinitions;
 
         AimIK _aimIK;
+        [Obsolete]
         CircleOnScreenTargetsCatcher _targetsCatcher;
         public override WeaponType Type => WeaponType.Launcher;
 
@@ -69,7 +70,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             {
                 base.Activated = value;
                 //_targetsCatcher.Enabled = value;
-                UpdateTargetsCatcherFor(blackboard);
+                //UpdateTargetsCatcherFor(blackboard);
                 _targetsCatcher.Enabled = value;
             }
         }
@@ -93,7 +94,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             blackboard.TryReadValueOrThrowException<IGroundDetector>(CharacterBlackboardFields.GroundDetector, out var groundDetector);
             blackboard.TryReadValueOrThrowException<LocomotionCore>(CharacterBlackboardFields.Character_Locomotion_Core, out var locomotionCore);
             blackboard.TryReadValueOrThrowException<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph);
-            blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Character_Camera_Main, out var camera);
+            //blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Player_Camera_Main, out var camera);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Main, out var actorObj);
 
             //blackboard.TryReadValue<IInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
@@ -110,7 +111,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             else if (Part == HumanPart.RightArm)
                 armInput = input.RArm;
 
-            _targetsCatcher = new(camera, input.BaseInput, actorObj, ringCatcher, targetsDisplay, _definitions.CircleOnScreenTargetsCatcher, Activated);
+            //_targetsCatcher = new(camera, input.BaseInput, actorObj, ringCatcher, targetsDisplay, _definitions.CircleOnScreenTargetsCatcher, Activated);
 
             //this.node.AddChild(_targetsCatcher.node);
 
@@ -130,18 +131,18 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             base.Dispose();
             blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker, _targetsCatcher);
         }
-        void UpdateTargetsCatcherFor(Blackboard blackboard)
-        {
-            if (Activated)
-                WriteTargetsCatcherTo(blackboard);
-            else
-                blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker);
-        }
-        void WriteTargetsCatcherTo(Blackboard blackboard)
-        {
-            if (!blackboard.TryWriteValue(CharacterBlackboardFields.TargetLocker, _targetsCatcher))
-                blackboard.TryRegisterField(CharacterBlackboardFields.TargetLocker, _targetsCatcher);
-        }
+        //void UpdateTargetsCatcherFor(Blackboard blackboard)
+        //{
+        //    if (Activated)
+        //        WriteTargetsCatcherTo(blackboard);
+        //    else
+        //        blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker);
+        //}
+        //void WriteTargetsCatcherTo(Blackboard blackboard)
+        //{
+        //    if (!blackboard.TryWriteValue(CharacterBlackboardFields.TargetLocker, _targetsCatcher))
+        //        blackboard.TryRegisterField(CharacterBlackboardFields.TargetLocker, _targetsCatcher);
+        //}
         private void Update()
         {
             //if (UnityEngine.Input.GetKeyDown(KeyCode.V))
