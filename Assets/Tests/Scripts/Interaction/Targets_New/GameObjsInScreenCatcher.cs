@@ -7,21 +7,21 @@ using UnityEngine;
 namespace Tests.Interaction
 {
     [Serializable]
-    public class GameObjsInScreenCatcher_New : CatcherBase<GameObject>
+    public class GameObjsInScreenCatcher : CatcherBase<GameObject>
     {
         [SerializeField]
-        ushort _handleAmountInCoroutine;
+        ushort _processingAmountOfFrames;
         [SerializeField]
         Camera _camera;
         Action<List<GameObject>> _catchCompletedAction;
-        public GameObjsInScreenCatcher_New(Camera camera, ushort handleAmountInCoroutine = 30)
+        public GameObjsInScreenCatcher(Camera camera, ushort processingAmountInCoroutine = 30)
         {
-            _handleAmountInCoroutine = handleAmountInCoroutine;
+            _processingAmountOfFrames = processingAmountInCoroutine;
             _camera = camera ?? throw new ArgumentNullException(nameof(camera));
             InteractionManager.itemRemovedAction += item => RemoveItemImpl(item.Obj);
         }
         public Camera Camera { get => _camera; set => _camera = value ?? throw new NullReferenceException(nameof(_camera)); }
-        public ushort HandleAmountInCoroutine { get => _handleAmountInCoroutine; set => _handleAmountInCoroutine = value; }
+        public ushort ProcessingAmountOfFrames { get => _processingAmountOfFrames; set => _processingAmountOfFrames = value; }
         public Action<List<GameObject>> CatchCompletedAction { get => _catchCompletedAction; set => _catchCompletedAction = value; }
         public override void Update()
         {
@@ -105,7 +105,7 @@ namespace Tests.Interaction
                             AddItemImpl(obj);
                         }
                     }
-                    if (i <= 0 || i % _handleAmountInCoroutine == 0)
+                    if (i <= 0 || i % _processingAmountOfFrames == 0)
                         yield return null;
                     i++;
                 }
