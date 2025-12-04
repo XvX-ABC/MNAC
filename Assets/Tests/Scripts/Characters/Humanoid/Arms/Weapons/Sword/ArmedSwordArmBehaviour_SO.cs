@@ -235,21 +235,21 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
             var anotherArmCoreField = GetAnotherArmCoreField();
 
-            if (blackboard.TryReadValue<ArmCore>(anotherArmCoreField, out var anotherArmCore))
+            if (blackboard.TryReadValue<ArmController>(anotherArmCoreField, out var anotherArmCore))
             {
                 WhenAnotherArmEnable(FieldEventType.Writing, null, anotherArmCore);
             }
             else
             {
                 blackboard.TryReadValueOrThrowException<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler);
-                handler.RegisterAction<ArmCore>(anotherArmCoreField, WhenAnotherArmEnable);
+                handler.RegisterAction<ArmController>(anotherArmCoreField, WhenAnotherArmEnable);
             }
 
 
             this.Activated = this.Activated;
 
         }
-        void WhenAnotherArmEnable(FieldEventType type, ArmCore _, ArmCore no)
+        void WhenAnotherArmEnable(FieldEventType type, ArmController _, ArmController no)
         {
             if (type != FieldEventType.Register && type != FieldEventType.Writing)
                 return;
@@ -265,7 +265,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                     _ => throw new NotImplementedException()
                 };
 
-                blackboard.TryReadValueOrThrowException<ArmCore>(currentField, out var currentArmCore);
+                blackboard.TryReadValueOrThrowException<ArmController>(currentField, out var currentArmCore);
                 var anotherArmCore = core;
 
                 InitializeStatemachine(anotherArmCore, _boostingHelper, _slashHelper);
@@ -287,7 +287,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         /// - 过渡时间如何定义 （DONE）
         /// - 还没支持另一条手臂被抢占时，动画的过渡
         /// </summary>
-        void InitializeStatemachine(ArmCore anotherArmCore, BoostingHelper boostingHelper, SlashHelper slashHelper)
+        void InitializeStatemachine(ArmController anotherArmCore, BoostingHelper boostingHelper, SlashHelper slashHelper)
         {
             if (anotherArmCore == null)
                 return;
@@ -363,7 +363,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
             blackboard.TryReadValueOrThrowException<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler);
             field = GetAnotherArmCoreField();
-            handler.UnregisterAction<ArmCore>(field, WhenAnotherArmEnable);
+            handler.UnregisterAction<ArmController>(field, WhenAnotherArmEnable);
 
             mountPoint.Load = null;
         }

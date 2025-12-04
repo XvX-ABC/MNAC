@@ -1,6 +1,5 @@
 ﻿using System;
 using Tests.Animations;
-using Tests.Behaviours.Arms;
 using Tests.Behaviours.Arms.Animations;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.Behaviours.Arms.Weapons.Animations;
@@ -10,7 +9,6 @@ using Tests.Characters.MountPoints;
 using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
-using Tests.Weapons_New;
 using UnityEngine;
 using UnityEngine.Playables;
 using IArmedWeaponArmBehaviour = Tests.Characters.Humanoid.Arms.Weapons.IArmedWeaponArmBehaviour;
@@ -19,7 +17,7 @@ using WeaponCore = Tests.Weapons_New.WeaponCore;
 
 namespace Tests.Characters.Humanoid.Arms
 {
-    public class ArmCore : State_MonoComponent, IArmBehaviour
+    internal class ArmController : HumanoidComponent, IArmBehaviour
     {
         internal class IdleState : WithCallbackPlayableState
         {
@@ -45,7 +43,7 @@ namespace Tests.Characters.Humanoid.Arms
             }
         }
 
-        public static implicit operator StateBase<object>(ArmCore core)
+        public static implicit operator StateBase<object>(ArmController core)
         {
             return core.stateMachine;
         }
@@ -89,10 +87,6 @@ namespace Tests.Characters.Humanoid.Arms
                 _blackboard = value;
             }
         }
-        public IComponentNode Node
-        {
-            get => _node;
-        }
 
         public IOutputSetting OutputSetting { get => animatorCore.OutputSetting; set => animatorCore.OutputSetting = value; }
         public Action<Playable> UpdateAction { get => throw new Exception(); set => throw new Exception(); }
@@ -124,7 +118,7 @@ namespace Tests.Characters.Humanoid.Arms
             }
             return null;
         }
-        internal MountPoint FindMountPoint(MountPointPlace fieldEnum)
+        internal MountPoint FindMountPoint(MountPointLocation fieldEnum)
         {
             foreach (var m in _mountPoints)
                 if (m.place == fieldEnum)
@@ -143,23 +137,30 @@ namespace Tests.Characters.Humanoid.Arms
                 blackboard.TryRegisterMountPoint(m.place, m);
             }
         }
-        public void Initialize(Blackboard blackboard)
+        public override void Initialize(Blackboard blackboard)
         {
+            base.Initialize(blackboard);
             Blackboard = blackboard;
 
             if (!blackboard.TryReadValue<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph))
                 throw new Exception();
 
 
+            if (_part == HumanPart.LeftArm)
+                owner.leftArm = this;
+            else if (_part == HumanPart.RightArm)
+                owner.rightArm = this;
+            this.Enabled = true;
+
+
+
             var weaponDefinitions = _definitions.Weapon;
-            //var launcherMountPoint = FindMountPoint(weaponDefinitions.LauncherMountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.LauncherMountPointName);
-            //var swordMountPoint = FindMountPoint(weaponDefinitions.SwordMountPointName) ?? throw new CantFindMountPointByNameException(weaponDefinitions.SwordMountPointName);
             var launcherMountPoint = FindMountPoint(weaponDefinitions.LauncherMountPointPlace) ?? throw new NullReferenceException("launcherMountPoint");
             var swordMountPoint = FindMountPoint(weaponDefinitions.SwordMountPointPlace) ?? throw new NullReferenceException("swordMountPoint");
-            var place = _part switch
+            var location = _part switch
             {
-                HumanPart.LeftArm => MountPointPlace.Left_Hand_Weapon,
-                HumanPart.RightArm => MountPointPlace.Right_Hand_Weapon,
+                HumanPart.LeftArm => MountPointLocation.Left_Hand_Weapon,
+                HumanPart.RightArm => MountPointLocation.Right_Hand_Weapon,
                 _ => throw new Exception("The part of definitions must is left arm or right arm.")
             };
 
@@ -313,7 +314,9 @@ namespace Tests.Characters.Humanoid.Arms
         }
         void Update()
         {
-            OnUpdate();
+            stateMachine.OnUpdate();
+            _armedWeaponController.Update();
+            animatorCore.OnUpdate();
         }
 
         void FixedUpdate()
@@ -324,23 +327,20 @@ namespace Tests.Characters.Humanoid.Arms
         {
             _armedWeaponController.LateUpdate();
         }
-        public void Dispose()
-        {
-        }
 
-        public override void OnEnter()
-        {
-        }
+        //public override void OnEnter()
+        //{
+        //}
 
-        public override void OnExit()
-        {
-        }
+        //public override void OnExit()
+        //{
+        //}
 
-        public override void OnUpdate()
-        {
-            stateMachine.OnUpdate();
-            _armedWeaponController.Update();
-            animatorCore.OnUpdate();
-        }
+        //public override void OnUpdate()
+        //{
+        //    stateMachine.OnUpdate();
+        //    _armedWeaponController.Update();
+        //    animatorCore.OnUpdate();
+        //}
     }
 }

@@ -4,8 +4,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     class CurrentArm : WithCallbackPlayableState
     {
-        ArmCore _armCore;
-        public CurrentArm(ArmCore anotherArmCore, string name, bool enabled = true) : base(name, 0, enabled)
+        ArmController _armCore;
+        public CurrentArm(ArmController anotherArmCore, string name, bool enabled = true) : base(name, 0, enabled)
         {
             _armCore = anotherArmCore ?? throw new ArgumentNullException(nameof(anotherArmCore));
         }

@@ -33,7 +33,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         ArmedLauncherArmAnimationDefinitions_SO _animationDefinitions;
         ITargetLocker _targetLocker;
         IndicatorsManager _indicatorsManager;
-        ArmCore _armCore;
+        ArmController _armCore;
         public override WeaponType Type => WeaponType.Launcher;
 
         public override IWeapon Weapon
@@ -95,7 +95,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Character_Camera_Main, out var camera);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Main, out var actorObj);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Arm_Local, out var armObj);
-            blackboard.TryReadValueOrThrowException<ArmCore>(CharacterBlackboardFields.Character_Arm_Core_Local, out _armCore);
+            blackboard.TryReadValueOrThrowException<ArmController>(CharacterBlackboardFields.Character_Arm_Core_Local, out _armCore);
 
             blackboard.TryReadValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
 

@@ -4,13 +4,13 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     class AnotherArm : PlayableStatemachineState<object>
     {
-        ArmCore _armCore;
-        public AnotherArm(ArmCore otherArmCore, string name, bool enabled = true) : base(otherArmCore.stateMachine, name, 0, enabled)
+        ArmController _armCore;
+        public AnotherArm(ArmController otherArmCore, string name, bool enabled = true) : base(otherArmCore.stateMachine, name, 0, enabled)
         {
             _armCore = otherArmCore ?? throw new ArgumentNullException(nameof(otherArmCore));
         }
 
-        public ArmCore ArmCore
+        public ArmController ArmCore
         {
             get => _armCore;
             set
