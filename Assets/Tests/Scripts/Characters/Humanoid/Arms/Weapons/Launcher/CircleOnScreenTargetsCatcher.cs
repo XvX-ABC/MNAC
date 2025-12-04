@@ -30,7 +30,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
     //}
     public partial class CircleOnScreenTargetsCatcher : ComponentBase, ITargetsCatcher_New<IGameObjTarget_New>
     {
-        GameObjsInScreenCatcher _screenCatcher;
+        GameObjsInScreenCatcher_Obsolete _screenCatcher;
         Tests.Interaction.CircleOnScreenTargetsCatcher _catcher;
         RingCatcher _ringCatcher;
         [Obsolete]
