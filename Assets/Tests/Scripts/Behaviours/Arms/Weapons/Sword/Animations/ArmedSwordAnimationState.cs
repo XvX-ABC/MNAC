@@ -26,7 +26,8 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         }
         public override void OnUpdate()
         {
-            base.UpdateAction?.Invoke();
+            //base.UpdateAction?.Invoke();
+            base.OnUpdate();
         }
     }
 }
