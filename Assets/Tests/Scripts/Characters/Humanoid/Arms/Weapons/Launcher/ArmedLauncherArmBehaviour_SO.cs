@@ -91,7 +91,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             blackboard.TryReadValueOrThrowException<IGroundDetector>(CharacterBlackboardFields.GroundDetector, out var groundDetector);
             blackboard.TryReadValueOrThrowException<LocomotionCore>(CharacterBlackboardFields.Character_Locomotion_Core, out var locomotionCore);
             blackboard.TryReadValueOrThrowException<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph);
-            blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Character_Camera_Main, out var camera);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Main, out var actorObj);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Arm_Local, out var armObj);
             blackboard.TryReadValueOrThrowException<ArmController>(CharacterBlackboardFields.Character_Arm_Core_Local, out _armCore);
@@ -113,12 +112,11 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
             var weaponControlInput = armInput.WeaponControl;
             blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Component_TargetLocker, out _targetLocker);
-            InitializeBehaviourAndAnimator(graph, aimIK, camera, input.BaseInput, rbody, world, groundDetector, locomotionCore, armInput.WeaponControl);
+            InitializeBehaviourAndAnimator(graph, aimIK,  input.BaseInput, rbody, world, groundDetector, locomotionCore, armInput.WeaponControl);
         }
         void InitializeBehaviourAndAnimator(
             PlayableGraph graph,
             AimIK aimIK,
-            Camera camera,
             IBaseInput baseInput,
             Rigidbody rbody,
             World world,
