@@ -1,6 +1,7 @@
 ﻿using Mono.Cecil.Cil;
-using Tests.Characters.Humanoid.Arms.Weapons;
+using Tests.Characters.Weapons;
 using Tests.Interaction;
+using Tests.Player;
 using Tests.UI;
 using UnityEngine;
 namespace Tests.Behaviours.Arms.Weapons
@@ -20,8 +21,8 @@ namespace Tests.Behaviours.Arms.Weapons
         [SerializeField]
         ObstacleDetector _obstacleDetector;
 
-        GameObjsInScreenCatcher_New _screenObjsCatcher;
-        TargetLocker<LockTarget> _locker;
+        GameObjsInScreenCatcher_Obsolete _screenObjsCatcher;
+        PlayerTargetLocker<LockTarget> _locker;
 
 
         Vector3 _lastPos;

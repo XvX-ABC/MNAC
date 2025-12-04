@@ -7,15 +7,14 @@ using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons
 {
-    internal class TargetLocker : TargetLocker<ILockTarget>
+    internal class PlayerTargetLocker : PlayerTargetLocker<ILockTarget>, ITargetLocker
     {
         IHumanInput _input;
         GameObjTarget _currentObjTarget;
         Action<GameObject, GameObject> _mainObjChangedAction;
-        Action<IGameObjTarget, IGameObjTarget> _mainObjTargetChangedAction;
-        public TargetLocker(
+        public PlayerTargetLocker(
             IHumanInput input,
-            GameObjsInScreenCatcher_New screenObjsCatcher,
+            GameObjsInScreenCatcher screenObjsCatcher,
             Func<GameObject, LockType, ILockTarget> getTargetFunc,
             Action<ILockTarget> releaseTargetAction,
             Camera camera,
@@ -47,24 +46,10 @@ namespace Tests.Behaviours.Arms.Weapons
             get => _mainObjChangedAction;
             set => _mainObjChangedAction = value;
         }
-        public Action<IGameObjTarget, IGameObjTarget> MainObjTargetChangedAction { get => _mainObjTargetChangedAction; set => _mainObjTargetChangedAction = value; }
 
         void WhenTargetChangedAction(ILockTarget oldTarget, ILockTarget newTarget)
         {
             _mainObjChangedAction?.Invoke(oldTarget?.Obj, newTarget?.Obj);
-
-            var ov = _currentObjTarget;
-
-            if (newTarget != null)
-                _currentObjTarget = GameObjTarget.GetInstance(newTarget.Obj);
-            else
-                _currentObjTarget = null;
-
-
-            _mainObjTargetChangedAction?.Invoke(ov, _currentObjTarget);
-
-            if (ov != null && oldTarget?.Obj == ov.Obj)
-                GameObjTarget.ReleaseInstance(ov);
         }
         public override void OnFixedUpdate()
         {
