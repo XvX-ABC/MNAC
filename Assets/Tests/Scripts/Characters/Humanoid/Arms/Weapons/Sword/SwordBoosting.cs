@@ -30,7 +30,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         public override void OnEnter()
         {
             base.OnEnter();
-            if (_extensionAction != null )
+            if (_extensionAction != null)
                 _extensionAction.Enabled = true;
             timeline.Restart();
         }
@@ -42,7 +42,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         public override void OnExit()
         {
             _helper.inBoosting = false;
-            _extensionAction.Enabled = false;
+            if (_extensionAction != null)
+                _extensionAction.Enabled = false;
             base.OnExit();
         }
     }
