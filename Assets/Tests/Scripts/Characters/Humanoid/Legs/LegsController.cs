@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Legs
 {
-    public class LegsCore : ComponentBase_MonoComponent
+    internal class LegsController : HumanoidComponent
     {
         [SerializeField]
-        LegCore _leftLeg;
+        LegController _leftLeg;
         [SerializeField]
-        LegCore _rightLeg;
+        LegController _rightLeg;
         public float Weight
         {
             get => _leftLeg.Weight;
@@ -25,6 +25,7 @@ namespace Tests.Characters.Humanoid.Legs
             base.Initialize(blackboard);
             Node.AddChild(_leftLeg.Node);
             Node.AddChild(_rightLeg.Node);
+            this.Weight = 1;
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Legs_Core, this);
         }
     }
