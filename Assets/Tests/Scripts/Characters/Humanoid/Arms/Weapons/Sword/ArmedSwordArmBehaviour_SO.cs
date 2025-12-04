@@ -1,13 +1,12 @@
-﻿using Cinemachine.Editor;
-using System;
+﻿using System;
 using Tests.Animations;
+using Tests.Behaviours;
 using Tests.Behaviours.Arms.Weapons.Sword.Animations;
 using Tests.Characters.Humanoid.Interaction.Input;
+using Tests.Characters.Interaction;
 using Tests.Characters.Interaction.Input;
 using Tests.Characters.MountPoints;
-using Tests.Characters.Weapons;
 using Tests.Interaction;
-using Tests.Interaction.Targets;
 using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.MountPoints;
@@ -34,7 +33,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         Behaviours.Arms.Weapons.Sword.ArmedSwordArmBehaviour _behaviour;
         ArmedSwordArmAnimator _animator;
 
-        TargetLocker _targetLocker;
+        ITargetLocker _targetLocker;
         SphericalObjsTrigger _targetsTrigger;
         LoadBase _load;
 
@@ -113,18 +112,18 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         {
             _behaviour.FixedUpdate();
         }
-        void UpdateTargetsCatcherFor(Blackboard blackboard)
-        {
-            if (Activated)
-                WriteTargetsCatcherTo(blackboard);
-            else
-                blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker);
-        }
-        void WriteTargetsCatcherTo(Blackboard blackboard)
-        {
-            if (!blackboard.TryWriteValue(CharacterBlackboardFields.TargetLocker, _targetsTrigger))
-                blackboard.TryRegisterField(CharacterBlackboardFields.TargetLocker, _targetsTrigger);
-        }
+        //void UpdateTargetsCatcherFor(Blackboard blackboard)
+        //{
+        //    if (Activated)
+        //        WriteTargetsCatcherTo(blackboard);
+        //    else
+        //        blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker);
+        //}
+        //void WriteTargetsCatcherTo(Blackboard blackboard)
+        //{
+        //    if (!blackboard.TryWriteValue(CharacterBlackboardFields.TargetLocker, _targetsTrigger))
+        //        blackboard.TryRegisterField(CharacterBlackboardFields.TargetLocker, _targetsTrigger);
+        //}
         void CreateSphereTriggerTargetsCatcher(GameObject armObj)
         {
             var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -358,7 +357,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 _ => throw new Exception(),
             };
             base.Dispose();
-            blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker);
+            //blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker);
             blackboard.TryGetMountPointOrThrowException(field, out var mountPoint);
 
             blackboard.TryReadValueOrThrowException<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler);
