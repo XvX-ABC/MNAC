@@ -12,18 +12,18 @@ using LCore = Tests.TPhysics.Locomotion.LocomotionCore;
 
 namespace Tests.Characters.Humanoid.Locomotion
 {
-    public class RotationLocomotion : ComponentBase
+    public class RotationByPlayerLocomotion : ComponentBase
     {
         LCore _core;
         Rigidbody _rb;
         RotationByMouseOrTargetLocomotion _locomotion;
 
         //Tests.Interaction.ITarget_Obsolete _target;
-        ITargetLocker<ILockTarget> _targetLocker;
+        IPlayerTargetLocker<ILockTarget> _targetLocker;
         IPositionTarget _target;
         IBaseInput _input;
 
-        public RotationLocomotion([NotNull] Camera camera, [NotNull] Rigidbody rigidbody, [NotNull] LCore core, IBaseInput input)
+        public RotationByPlayerLocomotion([NotNull] Camera camera, [NotNull] Rigidbody rigidbody, [NotNull] LCore core, IBaseInput input)
         {
             _core = core;
             _rb = rigidbody;
@@ -43,7 +43,7 @@ namespace Tests.Characters.Humanoid.Locomotion
                 _target = value;
             }
         }
-        internal ITargetLocker<ILockTarget> targetLocker
+        internal IPlayerTargetLocker<ILockTarget> targetLocker
         {
             get => _targetLocker;
             set
@@ -68,7 +68,7 @@ namespace Tests.Characters.Humanoid.Locomotion
             //blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Input_Main, out _input);
             if (blackboard.TryReadValue<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler) && !TryReadTargetsCatcher(blackboard))
             {
-                handler.RegisterAction<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.TargetLocker, UpdateTargetLocker);
+                handler.RegisterAction<IPlayerTargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, UpdateTargetLocker);
             }
             enabled = true;
         }
@@ -76,17 +76,17 @@ namespace Tests.Characters.Humanoid.Locomotion
         {
             if (blackboard.TryReadValue<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler))
             {
-                handler.UnregisterAction<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.TargetLocker, UpdateTargetLocker);
+                handler.UnregisterAction<IPlayerTargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, UpdateTargetLocker);
             }
             enabled = false;
         }
         bool TryReadTargetsCatcher(Blackboard blackboard)
         {
-            var r = blackboard.TryReadValue<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.TargetLocker, out var targetLocker);
+            var r = blackboard.TryReadValue<IPlayerTargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, out var targetLocker);
             this.targetLocker = targetLocker;
             return r;
         }
-        void UpdateTargetLocker(FieldEventType type, ITargetLocker<ILockTarget> oc, ITargetLocker<ILockTarget> nc)
+        void UpdateTargetLocker(FieldEventType type, IPlayerTargetLocker<ILockTarget> oc, IPlayerTargetLocker<ILockTarget> nc)
         {
             if (type == FieldEventType.Reading)
                 return;
@@ -104,7 +104,7 @@ namespace Tests.Characters.Humanoid.Locomotion
             _locomotion.Origin = bpos;
             _locomotion.MouseScreenPosition = _input.MousePosition;
         }
-        ~RotationLocomotion()
+        ~RotationByPlayerLocomotion()
         {
             _core.RemoveModule(_locomotion);
         }
