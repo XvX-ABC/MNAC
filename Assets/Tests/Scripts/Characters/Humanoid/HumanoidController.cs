@@ -1,14 +1,16 @@
 ﻿using System;
 using Tests.Characters.Humanoid.Animations;
 using Tests.Characters.Humanoid.Arms;
-using Tests.Characters.Humanoid.Arms.Weapons;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Humanoid.Legs;
 using Tests.Characters.Humanoid.Locomotion;
+using Tests.Characters.Interaction;
 using Tests.Characters.MountPoints;
 using Tests.Characters.UI;
+using Tests.Characters.Weapons;
 using Tests.Input;
 using Tests.Interaction.Influence;
+using Tests.Player;
 using Tests.States;
 using Tests.Utilities.Assets_New;
 using Tests.Utilities.Blackboards;
@@ -17,42 +19,65 @@ using Tests.Weapons;
 using Tests.Weapons_New;
 using UnityEngine;
 using Stun = Tests.Interaction.Influence.Stun;
+using WeaponsCore = Tests.Characters.Weapons.WeaponCore;
 
 namespace Tests.Characters.Humanoid
 {
-    public class HumanCore : ComponentBase_MonoComponent, IComponent
+    public class HumanoidController : ComponentBase_MonoComponent, IComponent
     {
-        [SerializeField]
-        Camera _camera;
-        [SerializeField]
-        CharacterMountPointManager _mountPointManager;
-        [SerializeField]
-        internal ArmCore leftArm;
-        [SerializeField]
-        internal ArmCore rightArm;
+        [Serializable]
+        internal class RequiredComponents
+        {
+            [SerializeField]
+            internal HumanInput_MonoComponent input;
+            [SerializeField]
+            internal UICore ui;
+            [SerializeField]
+            internal PlayerTargetLocker targetLocker;
+            [SerializeField]
+            internal EnvironmentCore environment;
+            [SerializeField]
+            internal LegsController legs;
+            [SerializeField]
+            internal LocomotionCore locomotion;
+            [SerializeField]
+            internal ArmController lefArm;
+            [SerializeField]
+            internal ArmController rightArm;
+            [SerializeField]
+            internal WeaponsCore weapons;
+            public CharacterComponent[] ToArray()
+            {
+                return new CharacterComponent[] { input, ui, targetLocker, environment, legs, locomotion, weapons, lefArm, rightArm };
+            }
+        }
+
 
         [SerializeField]
-        internal LegsCore _legsCore;
+        Camera _camera;
+
+
         [SerializeField]
-        WeaponCore _weaponCore;
-        [Obsolete]
-        CustomPlayerInput_Obsolete _input_obsolete;
+        RequiredComponents _requiredComponents;
+        CharacterComponent[] _components;
+        CharacterCollisionComponentsManager _collisionComponentsManager;
         [SerializeField]
-        HumanInput_MonoComponent _input_mc;
+        CharacterMountPointManager _mountPointManager;
+
+
+        internal ArmController leftArm;
+        internal ArmController rightArm;
+        internal LocomotionCore locomotionCore;
+
+
         [SerializeField]
-        ResourceLoader<TargetLocker> _targetLockerLoader;
-        HumanInput _input => _input_mc;
-        [SerializeField]
-        UICore _uiCore;
+        ResourceLoader<PlayerTargetLocker> _targetLockerLoader;
+
 
         ICharacterDefinitions _definitions;
 
 
         HumanAnimator _animator;
-
-        LocomotionCore _locomotionCore;
-        EnvironmentCore_MonoComponent _environmentCore;
-
         internal InfluenceCore influenceCore;
 
 
@@ -63,12 +88,27 @@ namespace Tests.Characters.Humanoid
         protected override void Awake()
         {
             base.Awake();
+
+
             _definitions = GetComponent<ICharacterDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(ICharacterDefinitions));
-            _environmentCore = GetComponent<EnvironmentCore_MonoComponent>() ?? throw new ComponentCantFindException(gameObject, typeof(EnvironmentCore_MonoComponent));
-            _locomotionCore = GetComponent<LocomotionCore>() ?? throw new ComponentCantFindException(gameObject, typeof(EnvironmentCore_MonoComponent));
+
+
+            _components = _requiredComponents.ToArray();
+
+            //leftArm = _requiredComponents.lefArm;
+            //rightArm = _requiredComponents.rightArm;
+            //locomotionCore = _requiredComponents.locomotion;
+
+
+            _collisionComponentsManager = new();
+
+
             InitializeInfluenceCore();
 
+
             Initialize(new Blackboard());
+
+
             if (leftArm != null)
                 leftArm.enabled = false;
             if (rightArm != null)
@@ -82,17 +122,18 @@ namespace Tests.Characters.Humanoid
         }
         void Start()
         {
-            InitializeUI();
 
-            InitializeEnvironmentCore();
+            //InitializeUI();
 
             InitializeAnimator();
 
-            InitializeLocomotionCore();
+            //InitializeTargetLocker();
 
-            InitializeTargetLocker();
+            InitializeComponents();
 
-            InitializeArmCore();
+
+
+            //InitializeArmController();
 
 
 
@@ -116,9 +157,37 @@ namespace Tests.Characters.Humanoid
         }
         void OnDestroy()
         {
-            if (_animator != null)
-                _animator.Dispose();
+            //if (_animator != null)
+            //    _animator.Dispose();
+            ComponentsDispose();
             Dispose();
+        }
+        void InitializeComponents()
+        {
+            foreach (var comp in _components)
+            {
+                if (comp == null)
+                    continue;
+                if (comp is HumanoidComponent hcomp)
+                    hcomp.owner = this;
+                else if (comp is CharacterCollisionComponent hccomp)
+                    _collisionComponentsManager.components.Add(hccomp);
+                this.Node.AddChild(comp.Node);
+            }
+        }
+        void ComponentsDispose()
+        {
+            _collisionComponentsManager.components.Clear();
+            foreach (var comp in _components)
+            {
+                if (comp == null)
+                    continue;
+                if (comp is HumanoidComponent hcomp)
+                {
+                    hcomp.owner = null;
+                }
+                this.Node.RemoveChild(comp.Node);
+            }
         }
         void InitializeAnimator()
         {
@@ -128,35 +197,18 @@ namespace Tests.Characters.Humanoid
             Node.AddChild(_animator.Node);
         }
 
-        void InitializeArmCore()
+        void InitializeArmController()
         {
             if (leftArm != null)
                 Node.AddChild(leftArm.Node);
             if (rightArm != null)
                 Node.AddChild(rightArm.Node);
         }
-        void InitializeEnvironmentCore()
-        {
-            Node.AddChild(_environmentCore.Node);
-        }
-        void InitializeLocomotionCore()
-        {
-            Node.AddChild(_legsCore.Node);
-            _legsCore.Weight = 1;
-
-            Node.AddChild(_locomotionCore.Node);
-
-
-        }
         void InitializeInfluenceCore()
         {
             var stun = new Stun();
             var health = new Health();
             influenceCore = new(stun, health);
-        }
-        void InitializeUI()
-        {
-            Node.AddChild(_uiCore.Node);
         }
         void InitializeTargetLocker()
         {
@@ -172,7 +224,7 @@ namespace Tests.Characters.Humanoid
             var health = influenceCore.FindInfluence<Health>();
 
             var stunningState = new StunningState(stun.Timeline);
-            var normalState = new NormalState(_locomotionCore, leftArm, rightArm);
+            var normalState = new NormalState(locomotionCore, leftArm, rightArm);
             diedState = new DiedState(gameObject, obj => { Destroy(obj); Debug.Log("Destory"); }, _definitions.DeathDurationTime);
             _context = new();
             _statemachine = new(_context, gameObject.name);
@@ -190,7 +242,7 @@ namespace Tests.Characters.Humanoid
 
             {
 
-                var s_l = new SubStatemachineTransition<object>(stunningState, normalState, _locomotionCore.movementStatemachine, () => !stun.Enabled, null, 0.5f, 0, 1);
+                var s_l = new SubStatemachineTransition<object>(stunningState, normalState, locomotionCore.movementStatemachine, () => !stun.Enabled, null, 0.5f, 0, 1);
                 var s_d = new BlendingTransition<object>(stunningState, diedState, () => !health.IsAlive, null, 0.25f);
                 _statemachine.AddTransitionFor(s_l);
             }
@@ -198,11 +250,7 @@ namespace Tests.Characters.Humanoid
 
         public override void Initialize(Blackboard blackboard)
         {
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Input_Main_Obsolete, _input_obsolete);
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Input_Main_Base, _input.BaseInput);
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Input_Main, _input);
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Weapon_Core, _weaponCore);
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Camera_Main, _camera);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Player_Camera_Main, _camera);
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Main, gameObject);
 
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Influence_Core, influenceCore);
@@ -216,5 +264,21 @@ namespace Tests.Characters.Humanoid
 
             this.blackboard = blackboard;
         }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            _collisionComponentsManager.OnCollisionEnterImpl(collision);
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+            _collisionComponentsManager.OnCollisionExitImpl(collision);
+        }
+
+        private void OnCollisionStay(Collision collision)
+        {
+            _collisionComponentsManager.OnCollisionStayImpl(collision);
+        }
+
     }
 }

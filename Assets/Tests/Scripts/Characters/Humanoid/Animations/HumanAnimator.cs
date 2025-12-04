@@ -69,7 +69,7 @@ namespace Tests.Characters.Humanoid.Animations
     internal partial class HumanAnimator : ComponentBase, IDisposable
     {
         IHumanAnimationDefinitions _definitions;
-        HumanCore _core;
+        HumanoidController _core;
         Animator _animator;
 
 
@@ -164,7 +164,7 @@ namespace Tests.Characters.Humanoid.Animations
 
         public override string Name => "character_animator";
 
-        public HumanAnimator(HumanCore core)
+        public HumanAnimator(HumanoidController core)
         {
             _definitions = core.GetComponent<IHumanAnimationDefinitions>() ?? throw new ComponentCantFindException(core.gameObject, typeof(IHumanAnimationDefinitions));
             _core = core ?? throw new ArgumentNullException(nameof(core));
@@ -274,8 +274,8 @@ namespace Tests.Characters.Humanoid.Animations
         }
         public override void Dispose()
         {
-            base.Dispose();
             graph.Destroy();
+            base.Dispose();
         }
     }
 }
