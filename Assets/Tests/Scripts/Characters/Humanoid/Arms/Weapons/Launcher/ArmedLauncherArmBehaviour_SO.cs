@@ -112,7 +112,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
 
             var weaponControlInput = armInput.WeaponControl;
-            blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.TargetLocker, out _targetLocker);
+            blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Component_TargetLocker, out _targetLocker);
             InitializeBehaviourAndAnimator(graph, aimIK, camera, input.BaseInput, rbody, world, groundDetector, locomotionCore, armInput.WeaponControl);
         }
         void InitializeBehaviourAndAnimator(

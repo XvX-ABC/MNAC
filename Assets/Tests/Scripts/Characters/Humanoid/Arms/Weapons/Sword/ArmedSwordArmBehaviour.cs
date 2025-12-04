@@ -68,12 +68,12 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             if (Activated)
                 WriteTargetsCatcherTo(blackboard);
             else
-                blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker);
+                blackboard.TryUnregisterField(CharacterBlackboardFields.Character_Component_TargetLocker);
         }
         void WriteTargetsCatcherTo(Blackboard blackboard)
         {
-            if (!blackboard.TryWriteValue(CharacterBlackboardFields.TargetLocker, _targetsCatcher))
-                blackboard.TryRegisterField(CharacterBlackboardFields.TargetLocker, _targetsCatcher);
+            if (!blackboard.TryWriteValue(CharacterBlackboardFields.Character_Component_TargetLocker, _targetsCatcher))
+                blackboard.TryRegisterField(CharacterBlackboardFields.Character_Component_TargetLocker, _targetsCatcher);
         }
         void CreateSphereTriggerTargetsCatcher()
         {
@@ -173,7 +173,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         public override void Dispose()
         {
             base.Dispose();
-            blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker);
+            blackboard.TryUnregisterField(CharacterBlackboardFields.Character_Component_TargetLocker);
             blackboard.TryGetMountPointOrThrowException(MountPointFields.Right_Chest_Trigger, out var mountPoint);
             mountPoint.Load = null;
         }

@@ -129,7 +129,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         public override void Dispose()
         {
             base.Dispose();
-            blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker, _targetsCatcher);
+            blackboard.TryUnregisterField(CharacterBlackboardFields.Character_Component_TargetLocker, _targetsCatcher);
         }
         //void UpdateTargetsCatcherFor(Blackboard blackboard)
         //{
