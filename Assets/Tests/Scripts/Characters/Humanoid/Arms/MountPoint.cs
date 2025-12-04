@@ -14,8 +14,8 @@ namespace Tests.Characters.Humanoid.Arms
             {
                 var s = place switch
                 {
-                    MountPointPlace.Left_Hand_Weapon => "_left",
-                    MountPointPlace.Right_Hand_Weapon => "_right",
+                    MountPointLocation.Left_Hand_Weapon => "_left",
+                    MountPointLocation.Right_Hand_Weapon => "_right",
                     _ => ""
                 };
                 if (value != null)
