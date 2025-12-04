@@ -18,7 +18,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         TargetLocker _targetLocker;
         IWeaponControlInput _winput;
         ILauncher _launcher;
-        internal IGameObjTarget target;
+        internal IGameObjTarget_New target;
 
 
         internal Idle idle;
@@ -93,7 +93,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
                 animator.Enabled = value;
             }
         }
-        void WhenTargetChanged(IGameObjTarget _, IGameObjTarget newTarget)
+        void WhenTargetChanged(IGameObjTarget_New _, IGameObjTarget_New newTarget)
         {
             animator.AimingTarget = newTarget;
             target = newTarget;

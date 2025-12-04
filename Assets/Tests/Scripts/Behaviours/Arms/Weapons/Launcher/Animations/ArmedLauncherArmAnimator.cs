@@ -118,7 +118,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
                  */
             }
         }
-        public IGameObjTarget AimingTarget { get => _aimingHelper.Target; set => _aimingHelper.Target = value; }
+        public IGameObjTarget_New AimingTarget { get => _aimingHelper.Target; set => _aimingHelper.Target = value; }
         public ILauncher Launcher
         {
             get => _launcher;
