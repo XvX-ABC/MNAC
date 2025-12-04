@@ -2,7 +2,7 @@
 
 namespace Tests.Characters.Weapons
 {
-    internal class TargetLockerPrefabResourceLoader : PrefabResourceSingletonLoader<TargetLocker>
+    internal class TargetLockerPrefabResourceLoader : PrefabResourceSingletonLoader<PlayerTargetLocker>
     {
 
     }
