@@ -7,15 +7,15 @@ using UnityEngine;
 
 namespace Tests.Interaction
 {
-    public class TargetLocker<T> : ITargetLocker<T> where T : class, ILockTarget
+    public class PlayerTargetLocker<T> : IPlayerTargetLocker<T> where T : class, ILockTarget
     {
         #region internal classes
         internal abstract class TargetLockerState : WithCallbackPlayableState
         {
             StateLifeCycleWatcher<object> _lifeWatcher;
-            protected TargetLocker<T> locker;
+            protected PlayerTargetLocker<T> locker;
             LifeCycleState _lifeCycle { get => _lifeWatcher.CurrentState; }
-            public TargetLockerState(TargetLocker<T> locker, string name, float duration = 0, bool enabled = true) : base(name, duration, enabled)
+            public TargetLockerState(PlayerTargetLocker<T> locker, string name, float duration = 0, bool enabled = true) : base(name, duration, enabled)
             {
                 this.locker = locker ?? throw new ArgumentNullException(nameof(locker));
                 _lifeWatcher = new(this);
@@ -30,7 +30,7 @@ namespace Tests.Interaction
         }
         internal class Unlock : TargetLockerState
         {
-            public Unlock(TargetLocker<T> locker, string name, float duration = 0, bool enabled = true) : base(locker, name, duration, enabled)
+            public Unlock(PlayerTargetLocker<T> locker, string name, float duration = 0, bool enabled = true) : base(locker, name, duration, enabled)
             {
             }
 
@@ -41,7 +41,7 @@ namespace Tests.Interaction
         }
         internal class Locked : TargetLockerState
         {
-            public Locked(TargetLocker<T> locker, string name, float duration = 0, bool enabled = true) : base(locker, name, duration, enabled)
+            public Locked(PlayerTargetLocker<T> locker, string name, float duration = 0, bool enabled = true) : base(locker, name, duration, enabled)
             {
             }
 
@@ -52,7 +52,7 @@ namespace Tests.Interaction
         }
         internal class FindClosestTargetByMainTarget : TargetLockerState
         {
-            public FindClosestTargetByMainTarget(TargetLocker<T> locker, string name, float duration = 0, bool enabled = true) : base(locker, name, duration, enabled)
+            public FindClosestTargetByMainTarget(PlayerTargetLocker<T> locker, string name, float duration = 0, bool enabled = true) : base(locker, name, duration, enabled)
             {
             }
 
@@ -65,7 +65,7 @@ namespace Tests.Interaction
         }
         internal class FindClosestTargetByOriginalPosition : TargetLockerState
         {
-            public FindClosestTargetByOriginalPosition(TargetLocker<T> locker, string name, float duration = 0, bool enabled = true) : base(locker, name, duration, enabled)
+            public FindClosestTargetByOriginalPosition(PlayerTargetLocker<T> locker, string name, float duration = 0, bool enabled = true) : base(locker, name, duration, enabled)
             {
             }
 
@@ -80,7 +80,7 @@ namespace Tests.Interaction
         internal class ReceiveCursorInput : TargetLockerState
         {
             List<Vector3> _posList;
-            public ReceiveCursorInput(TargetLocker<T> locker, string name, float duration = 0, bool enabled = true) : base(locker, name, duration, enabled)
+            public ReceiveCursorInput(PlayerTargetLocker<T> locker, string name, float duration = 0, bool enabled = true) : base(locker, name, duration, enabled)
             {
                 _posList = new();
             }
@@ -124,7 +124,7 @@ namespace Tests.Interaction
         Func<GameObject, LockType, T> _getTargetFunc;
         Action<T> _releaseTargetAction;
 
-        GameObjsInScreenCatcher_New _screenObjsCatcher;
+        GameObjsInScreenCatcher _screenObjsCatcher;
         Camera _camera;
         ObstacleDetector _obstacleDetector;
 
@@ -207,8 +207,8 @@ namespace Tests.Interaction
         public ObstacleDetector ObstacleDetector { get => _obstacleDetector; set => _obstacleDetector = value; }
         public Camera Camera { get => _camera; set => _camera = value; }
 
-        public TargetLocker(
-            GameObjsInScreenCatcher_New screenObjsCatcher,
+        public PlayerTargetLocker(
+            GameObjsInScreenCatcher screenObjsCatcher,
             Func<GameObject, LockType, T> getTargetFunc,
             Action<T> releaseTargetAction,
             Camera camera,

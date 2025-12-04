@@ -1,18 +1,13 @@
 ﻿using System;
-using UnityEngine;
 
 namespace Tests.Interaction
 {
     public interface ITargetLocker<T> where T : class, ILockTarget
     {
-        float CatchAngle { get; set; }
-        Vector3 CursorPosition { get; set; }
-        Vector3 CursorPositionDelta { get; set; }
         bool Enabled { get; set; }
         T MainLockTarget { get; set; }
-        public Action<T, T> MainTargetChangedAction { get; set; }
+        Action<T, T> MainTargetChangedAction { get; set; }
         ObstacleDetector ObstacleDetector { get; set; }
-        Vector3 OriginWorldPosition { get; set; }
 
         void OnFixedUpdate();
         void OnLateUpdate();
