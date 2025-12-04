@@ -15,7 +15,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         IArmedLauncherArmBehaviourDefinitions _definitions;
         [Obsolete]
         ITargetsCatcher _targetsCatcher;
-        TargetLocker _targetLocker;
+        ITargetLocker _targetLocker;
         IWeaponControlInput _winput;
         ILauncher _launcher;
         internal IGameObjTarget_New target;
@@ -69,15 +69,15 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
                 _winput = value;
             }
         }
-        public TargetLocker TargetLocker
+        public ITargetLocker TargetLocker
         {
             get => _targetLocker;
             set
             {
                 if (_targetLocker != null)
-                    _targetLocker.MainObjTargetChangedAction -= WhenTargetChanged;
+                    _targetLocker.MainTargetChangedAction -= WhenTargetChanged;
                 if (value != null)
-                    value.MainObjTargetChangedAction += WhenTargetChanged;
+                    value.MainTargetChangedAction += WhenTargetChanged;
                 _targetLocker = value;
             }
         }

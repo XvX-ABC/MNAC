@@ -1,7 +1,8 @@
 ﻿using System;
+using Tests.Behaviours;
 using Tests.Behaviours.Input;
+using Tests.Characters.Interaction;
 using Tests.Characters.Interaction.Input;
-using Tests.Characters.Weapons;
 using Tests.Input;
 using UnityEngine;
 using ISwordBoostingDefinitions = Tests.Behaviours.Arms.Weapons.Sword.IBoostingDefinitions;
@@ -13,7 +14,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         public BoostingHelper(
                 TPhysics.Locomotion.LocomotionCore locomotionCore,
                 Camera camera,
-                TargetLocker targetLocker,
+                ITargetLocker targetLocker,
                 IBaseInput baseInput,
                 IWeaponControlInput weaponControlInput,
                 ISwordBoostingDefinitions definitions) : base(

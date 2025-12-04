@@ -26,7 +26,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         RotationByScreen _rotationHelper;
         Camera _camera;
         ISphericalObjsTrigger _targetTrigger;
-        TargetLocker _targetLocker;
+        ITargetLocker _targetLocker;
         IBaseInput _baseInput;
 
         LifeCycle _life;
@@ -40,7 +40,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
                 UpdateTargetsCatcherState();
             }
         }
-        public TargetLocker TargetLocker
+        public ITargetLocker TargetLocker
         {
             get => _targetLocker;
             set
@@ -54,7 +54,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
                 _targetTrigger.Enabled = _life > LifeCycle.Ready && _life < LifeCycle.Exited;
         }
 
-        public Boosting(BoostingLocomotion locomotion, LocomotionCore locomotionCore, Camera camera, TargetLocker targetLocker, IBaseInput input, float duration) : base("boosting", 0)
+        public Boosting(BoostingLocomotion locomotion, LocomotionCore locomotionCore, Camera camera, ITargetLocker targetLocker, IBaseInput input, float duration) : base("boosting", 0)
         {
             _locomotion = locomotion ?? throw new ArgumentNullException(nameof(locomotion));
             _locomotionCore = locomotionCore ?? throw new ArgumentNullException(nameof(locomotionCore));

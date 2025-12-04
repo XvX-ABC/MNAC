@@ -1,5 +1,6 @@
 ﻿using RootMotion.FinalIK;
 using System;
+using Tests.Behaviours;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
 using Tests.Behaviours.Input;
@@ -30,7 +31,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         ArmedLauncherArmBehavioursDefinitions_SO _definitions;
         [SerializeField]
         ArmedLauncherArmAnimationDefinitions_SO _animationDefinitions;
-        TargetLocker _targetLocker;
+        ITargetLocker _targetLocker;
         IndicatorsManager _indicatorsManager;
         ArmCore _armCore;
         public override WeaponType Type => WeaponType.Launcher;
