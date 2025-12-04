@@ -16,7 +16,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         IArmedSwordArmBehaviourDefinitions _definitions;
         ISword _sword;
         [Obsolete]
-        TargetLocker _targetLocker;
+        PlayerTargetLocker _targetLocker;
         ISphericalObjsTrigger _targetsTrigger;
 
         [Obsolete]
