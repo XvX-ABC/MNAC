@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Tests.Interaction
 {
     [Serializable]
-    public class GameObjsInScreenCatcher
+    public class GameObjsInScreenCatcher_Obsolete
     {
         [SerializeField]
         ushort _handleAmountInCoroutine;
@@ -14,11 +14,11 @@ namespace Tests.Interaction
         Camera _camera;
         List<GameObject> _objsInScreen;
         bool _enabled;
-        private GameObjsInScreenCatcher()
+        private GameObjsInScreenCatcher_Obsolete()
         {
 
         }
-        public GameObjsInScreenCatcher(Camera camera, ushort filterCountOneFrame)
+        public GameObjsInScreenCatcher_Obsolete(Camera camera, ushort filterCountOneFrame)
         {
             _camera = camera ?? throw new ArgumentNullException(nameof(camera));
             HandleAmountInCoroutine = filterCountOneFrame;
