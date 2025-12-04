@@ -16,7 +16,7 @@ namespace Tests.Characters
             Character_Animation_Whole_Body_Animator = Guid.NewGuid();
             Character_Animation_Graph = Guid.NewGuid();
 
-            Character_Camera_Main = Guid.NewGuid();
+            Player_Camera_Main = Guid.NewGuid();
             Character_Arm_Core_Local = Guid.NewGuid();
             Character_Legs_Core = Guid.NewGuid();
             Character_Arm_Left_Core=Guid.NewGuid(); 
@@ -46,7 +46,7 @@ namespace Tests.Characters
         public static readonly Guid Character_Interaction_Main_Info;
         public static readonly Guid Character_Animation_Whole_Body_Animator;
         public static readonly Guid Character_Animation_Graph;
-        public static readonly Guid Character_Camera_Main;
+        public static readonly Guid Player_Camera_Main;
 
         public static readonly Guid Character_Arm_Core_Local;
         public static readonly Guid Character_Legs_Core;

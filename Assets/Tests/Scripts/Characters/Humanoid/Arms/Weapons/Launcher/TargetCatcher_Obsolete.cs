@@ -35,7 +35,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Character_Camera_Main, out var camera);
+            blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Player_Camera_Main, out var camera);
             blackboard.TryReadValueOrThrowException<IInput_Obsolete>(CharacterBlackboardFields.Character_Input_Main_Obsolete, out var input);
             blackboard.TryReadValueOrThrowException<LocomotionCore>(CharacterBlackboardFields.Character_Locomotion_Core, out var locomotion);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Main, out var obj);
