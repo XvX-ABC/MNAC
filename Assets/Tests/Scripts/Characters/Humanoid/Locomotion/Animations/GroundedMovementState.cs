@@ -6,8 +6,8 @@ namespace Tests.Characters.Humanoid.Locomotion.Animations
 {
     internal class GroundedMovementState : MovementState
     {
-        LegsCore _legs;
-        public GroundedMovementState(string name, float duration, LegsCore legs, MovementAnimator animator, bool enabled = true) : base(name == null ? "grounded" : $"grounded_{name}", duration, animator, enabled)
+        LegsController _legs;
+        public GroundedMovementState(string name, float duration, LegsController legs, MovementAnimator animator, bool enabled = true) : base(name == null ? "grounded" : $"grounded_{name}", duration, animator, enabled)
         {
             _legs = legs ?? throw new ArgumentNullException(nameof(legs));
         }

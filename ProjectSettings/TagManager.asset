@@ -12,10 +12,10 @@ TagManager:
   - Terrain
   - Water
   - UI
-  - Character_0
+  - Movement
   - Bullets
-  - 
-  - 
+  - Static
+  - Body
   - 
   - 
   - 

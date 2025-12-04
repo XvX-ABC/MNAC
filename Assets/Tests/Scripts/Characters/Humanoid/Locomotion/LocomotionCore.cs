@@ -3,7 +3,6 @@ using Tests.Behaviours.Input;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Humanoid.Locomotion.Animations;
 using Tests.Extensions;
-using Tests.Input;
 using Tests.States;
 using Tests.TPhysics;
 using Tests.TPhysics.Environment;
@@ -16,7 +15,7 @@ using LCore = Tests.TPhysics.Locomotion.LocomotionCore;
 namespace Tests.Characters.Humanoid.Locomotion
 {
 
-    public class LocomotionCore : ComponentBase_MonoComponent
+    internal class LocomotionCore : HumanoidComponent
     {
         internal ILocomotionDefinitions definitions;
 
@@ -32,7 +31,7 @@ namespace Tests.Characters.Humanoid.Locomotion
         internal QuickBoostingState quickBoosting;
         internal WalkingState walking;
         internal JumpLocomotionState jump;
-        internal RotationLocomotion rotation;
+        internal RotationByPlayerLocomotion rotation;
 
 
         internal LocomotionAnimator animator;
@@ -69,9 +68,9 @@ namespace Tests.Characters.Humanoid.Locomotion
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            //if (!blackboard.TryReadValue(CharacterBlackboardFields.Character_Input_Main_Obsolete, out _input_Obsolete))
-            //    throw new Exception();
-            if (!blackboard.TryReadValue<Camera>(CharacterBlackboardFields.Character_Camera_Main, out var camera))
+            owner.locomotionCore = this;
+
+            if (!blackboard.TryReadValue<Camera>(CharacterBlackboardFields.Player_Camera_Main, out var camera))
                 throw new Exception();
             if (!blackboard.TryReadValue<Rigidbody>(CharacterBlackboardFields.Rigidbody, out var rbody))
                 throw new Exception();
@@ -101,7 +100,7 @@ namespace Tests.Characters.Humanoid.Locomotion
 
         void InitializeLocomotionCore(Rigidbody rbody, IGroundDetector groundDetector, World world)
         {
-            _core = new LCore(world, rbody, groundDetector, new VerticalPostureEvaluator(definitions.PostureEvaluationFramesQuantity));
+            _core = new LCore(world, rbody, groundDetector, new VerticalPostureEvaluator(definitions.PostureEvaluationFramesAmount));
             _core.World = world;
         }
         void InitializeRotation(Camera camera, Rigidbody rigidbody, IBaseInput input)

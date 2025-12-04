@@ -19,15 +19,16 @@ namespace Tests.Characters
             Player_Camera_Main = Guid.NewGuid();
             Character_Arm_Core_Local = Guid.NewGuid();
             Character_Legs_Core = Guid.NewGuid();
-            Character_Arm_Left_Core=Guid.NewGuid(); 
-            Character_Arm_Right_Core=Guid.NewGuid(); 
+            Character_Arm_Left_Core = Guid.NewGuid();
+            Character_Arm_Right_Core = Guid.NewGuid();
 
             Character_Locomotion_Core = Guid.NewGuid();
 
             Character_Influence_Core = Guid.NewGuid();
 
             FieldChangeHandler = MiddlewareFields.FieldChangeHandler;
-            TargetLocker = Guid.NewGuid();
+            Player_ScreenCatcherr = Guid.NewGuid();
+            Character_Component_TargetLocker = Guid.NewGuid();
 
             Character_Input_Main_Obsolete = Guid.NewGuid();
             Character_Input_Main = Guid.NewGuid();
@@ -54,7 +55,9 @@ namespace Tests.Characters
         public static readonly Guid Character_Arm_Right_Core;
         public static readonly Guid Character_Influence_Core;
         public static readonly Guid FieldChangeHandler;
-        public static readonly Guid TargetLocker;
+        public static readonly Guid Character_Component_TargetLocker;
+        public static readonly Guid Player_ScreenCatcherr;
+
         public static readonly Guid Character_Input_Main_Obsolete;
         public static readonly Guid Character_Input_Main;
         public static readonly Guid Character_Input_Main_Base;

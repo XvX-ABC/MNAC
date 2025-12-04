@@ -55,12 +55,6 @@ namespace Tests.Weapons_New.Launcher
             _casePoolSource.Initialize();
             _casePool = _casePoolSource.Pool;
         }
-        protected override void OnEnable()
-        {
-        }
-        protected override void OnDisable()
-        {
-        }
         private void OnValidate()
         {
             Direction = _direction;

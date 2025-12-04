@@ -7,7 +7,6 @@ namespace Tests.Weapons_New.Launcher
 {
     internal abstract class LauncherEffector : LauncherEffectComponent
     {
-        protected ILauncher launcher;
         ITimeline _launchIntervalTimeline;
         IPointEvent _beforeLaunchEvent;
         [Range(0, 1)]
@@ -29,24 +28,24 @@ namespace Tests.Weapons_New.Launcher
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            blackboard.TryReadValueOrThrowException<ILauncher>(LauncherEffectComponent.OwnerLauncher, out launcher);
-            launcher.LaunchedCallback += WhenLaunch;
-            launcher.ReloadCallback += WhenReload;
-            _launchIntervalTimeline = launcher.LaunchingIntervalTimeline;
+            //blackboard.TryReadValueOrThrowException<ILauncher>(LauncherEffectComponent.OwnerLauncher, out launcher);
+            owner.LaunchedCallback += WhenLaunch;
+            owner.ReloadCallback += WhenReload;
+            _launchIntervalTimeline = owner.LaunchingIntervalTimeline;
             _beforeLaunchEvent = (IPointEvent)_launchIntervalTimeline.AddPointEvent(_launchBeforeProportion, WhenBeforeLaunch);
         }
         public override void Dispose()
         {
             base.Dispose();
-            launcher.LaunchedCallback -= WhenLaunch;
-            launcher.ReloadCallback -= WhenReload;
+            owner.LaunchedCallback -= WhenLaunch;
+            owner.ReloadCallback -= WhenReload;
             _launchIntervalTimeline.RemovePointEvent(_beforeLaunchEvent);
         }
         protected abstract void WhenLaunch(ILauncher launcher);
         protected abstract void WhenReload(ILauncher launcher);
         void WhenBeforeLaunch(TimelineContext ctx)
         {
-            WhenBeforeLaunch(launcher);
+            WhenBeforeLaunch(owner);
         }
         protected abstract void WhenBeforeLaunch(ILauncher launcher);
         public virtual float LaunchBeforeProportion

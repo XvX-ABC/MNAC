@@ -20,7 +20,7 @@ namespace Tests.Weapons_New.Launcher
             set
             {
                 _durationProportionOnLaunch = Mathf.Clamp01(value);
-                var duration =  DurationProportionOnLaunch* _launchInterval;
+                var duration = DurationProportionOnLaunch * _launchInterval;
                 foreach (var effect in _flashEffects)
                 {
                     if (effect == null)
@@ -44,12 +44,11 @@ namespace Tests.Weapons_New.Launcher
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            blackboard.TryReadValueOrThrowException<ILauncher>(LauncherEffectComponent.OwnerLauncher, out var launcher);
             foreach (var effect in _flashEffects)
             {
                 effect?.Initialize(blackboard);
             }
-            _launchInterval = launcher.Definitions.LaunchingIntervalTime;
+            _launchInterval = owner.Definitions.LaunchingIntervalTime;
             DurationProportionOnLaunch = DurationProportionOnLaunch;
 
         }

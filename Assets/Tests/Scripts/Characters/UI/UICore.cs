@@ -6,7 +6,7 @@ using Core = Tests.UI.UICore;
 namespace Tests.Characters.UI
 {
     [RequireComponent(typeof(Core))]
-    public class UICore : ComponentBase_MonoComponent
+    internal class UICore : CharacterComponent
     {
         class Input : Tests.UI.IInput
         {
@@ -29,7 +29,7 @@ namespace Tests.Characters.UI
         {
             base.Initialize(blackboard);
             blackboard.TryReadValueOrThrowException<IBaseInput>(CharacterBlackboardFields.Character_Input_Main_Base, out var binput);
-            blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Character_Camera_Main, out var camera);
+            blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Player_Camera_Main, out var camera);
 
             _core.Initialize(camera, new Input(binput));
 

@@ -30,8 +30,8 @@ namespace Tests.Characters.Weapons
         }
         public override void Dispose()
         {
-            base.Dispose();
             blackboard.TryUnregisterField(CharacterBlackboardFields.Character_Weapon_Core);
+            base.Dispose();
         }
     }
 }

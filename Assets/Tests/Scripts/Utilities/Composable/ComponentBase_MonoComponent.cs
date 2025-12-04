@@ -1,6 +1,6 @@
 ﻿using System;
+using Tests.Utilities.Attributes;
 using Tests.Utilities.Blackboards;
-using Tests.Utilities.MTrees;
 using UnityEngine;
 
 namespace Tests.Utilities.Composable
@@ -29,7 +29,7 @@ namespace Tests.Utilities.Composable
         public virtual bool Enabled { get => enabled; set => enabled = value; }
         protected virtual void Awake()
         {
-
+            AttributeProcessingCore.Process(this);
         }
 
         public virtual void Initialize(Blackboard blackboard)
@@ -38,6 +38,12 @@ namespace Tests.Utilities.Composable
         }
         public virtual void Dispose()
         {
+            if (node.Children.Count > 0)
+            {
+                foreach (var node in node.Children)
+                    ((IComponentNode)node).Value.Dispose();
+            }
+            this.node.Children.Clear();
             this.blackboard = null;
         }
     }

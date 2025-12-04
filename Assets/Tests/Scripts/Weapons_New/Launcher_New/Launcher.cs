@@ -73,19 +73,20 @@ namespace Tests.Weapons_New.Launcher
         }
         protected virtual void Start()
         {
-            _blackboard.TryRegisterField(LauncherComponent.OwnerLauncher, this);
             foreach (var comp in _subComponents)
+            {
+                comp.owner = this;
                 comp?.Initialize(_blackboard);
+            }
         }
         protected virtual void OnEnable()
         {
 
         }
-        protected virtual void OnDisable()
+        protected virtual void OnDestroy()
         {
             foreach (var comp in _subComponents)
                 comp?.Dispose();
-            _blackboard.TryUnregisterField(LauncherComponent.OwnerLauncher);
         }
         protected virtual void Update()
         {

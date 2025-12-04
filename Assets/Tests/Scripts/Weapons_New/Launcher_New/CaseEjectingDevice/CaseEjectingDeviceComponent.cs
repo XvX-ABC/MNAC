@@ -9,9 +9,8 @@ namespace Tests.Weapons_New.Launcher
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            blackboard.TryReadValueOrThrowException<ILauncher>(LauncherEffectComponent.OwnerLauncher, out var launcher);
             var device = GetComponent<CaseEjectingDevice>();
-            device.Launcher = launcher;
+            device.Launcher = owner;
         }
         public override void Dispose()
         {

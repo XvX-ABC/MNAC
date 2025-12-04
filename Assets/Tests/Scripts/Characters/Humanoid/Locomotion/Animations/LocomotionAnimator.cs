@@ -40,19 +40,18 @@ namespace Tests.Characters.Humanoid.Locomotion.Animations
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            //blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Input_Main_Obsolete, out _input_obsolete);
             blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Input_Main, out _input);
             blackboard.TryReadValueOrThrowException<ControllerPlayable>(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, out var controller);
             blackboard.TryReadValueOrThrowException<Rigidbody>(CharacterBlackboardFields.Rigidbody, out var rbody);
             blackboard.TryReadValueOrThrowException<World>(CharacterBlackboardFields.World, out var world);
             blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.GroundDetector, out groundDetector);
-            blackboard.TryReadValueOrThrowException<LegsCore>(CharacterBlackboardFields.Character_Legs_Core, out var legs);
+            blackboard.TryReadValueOrThrowException<LegsController>(CharacterBlackboardFields.Character_Legs_Core, out var legs);
 
 
             InitializeStates(legs, controller, world, rbody, groundDetector);
             InitializeStatemachine();
         }
-        void InitializeStates(LegsCore legs, ControllerPlayable controller, World world, Rigidbody rigidbody, IGroundDetector groundDetector)
+        void InitializeStates(LegsController legs, ControllerPlayable controller, World world, Rigidbody rigidbody, IGroundDetector groundDetector)
         {
             var d = _core.definitions;
             {

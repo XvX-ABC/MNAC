@@ -8,7 +8,7 @@ using Core = Tests.TPhysics.Environment.EnvironmentCore;
 namespace Tests.Characters
 {
     [RequireComponent(typeof(CapsuleCollider))]
-    internal class EnvironmentCore : HumanoidCollisionComponent
+    internal class EnvironmentCore : CharacterCollisionComponent
     {
         Rigidbody _rbody;
         Core _core;
@@ -83,9 +83,9 @@ namespace Tests.Characters
         }
         public override void Dispose()
         {
-            base.Dispose();
             blackboard.TryUnregisterField(CharacterBlackboardFields.World, world);
             blackboard.TryUnregisterField(CharacterBlackboardFields.GroundDetector, groundDetector);
+            base.Dispose();
         }
     }
 }

@@ -7,14 +7,14 @@ namespace Tests.Characters.Humanoid
 {
     internal class NormalState : WithCallbackPlayableStatemachine<object>
     {
-        ArmCore _leftArmCore;
+        ArmController _leftArmCore;
         PlayableStateMachine _leftArmStatemachine;
-        ArmCore _rightArmCore;
+        ArmController _rightArmCore;
         PlayableStateMachine _rightArmStatemachine;
         LocomotionCore _core;
         LocomotionStatemachine _lstatemachine;
 
-        public NormalState(LocomotionCore core, ArmCore leftArmCore, ArmCore rightArmCore, bool enabled = true) : base("locomotion", enabled)
+        public NormalState(LocomotionCore core, ArmController leftArmCore, ArmController rightArmCore, bool enabled = true) : base("locomotion", enabled)
         {
 
             _leftArmCore = leftArmCore;
