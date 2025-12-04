@@ -15,9 +15,9 @@ namespace Tests.Behaviours.Arms.Weapons
         [SerializeField]
         string _swordMountPointName;
         [SerializeField]
-        MountPointPlace _launcherMountPointPlace;
+        MountPointLocation _launcherMountPointPlace;
         [SerializeField]
-        MountPointPlace _swordMountPointPlace;
+        MountPointLocation _swordMountPointPlace;
         [SerializeField]
         float _switchingDurationTime;
         [SerializeField]
@@ -32,8 +32,8 @@ namespace Tests.Behaviours.Arms.Weapons
 
         public string SwordMountPointName => _swordMountPointName;
 
-        public MountPointPlace LauncherMountPointPlace => _launcherMountPointPlace;
+        public MountPointLocation LauncherMountPointPlace => _launcherMountPointPlace;
 
-        public MountPointPlace SwordMountPointPlace => _swordMountPointPlace;
+        public MountPointLocation SwordMountPointPlace => _swordMountPointPlace;
     }
 }

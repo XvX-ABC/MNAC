@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tests.Characters.MountPoints
 {
-    public enum MountPointPlace
+    public enum MountPointLocation
     {
         None,
         Blackboard_Main,
@@ -35,38 +35,38 @@ namespace Tests.Characters.MountPoints
         public static readonly Guid Left_Hand_Weapon;
         private static readonly Guid Left_LowerArm_Weapon;
         public static readonly Guid Left_Chest_Trigger;
-        public static MountPointPlace GetEnumType(Guid guid)
+        public static MountPointLocation GetEnumType(Guid guid)
         {
             if (guid == Guid.Empty)
-                return MountPointPlace.None;
+                return MountPointLocation.None;
             if (guid == Blackboard_Main)
-                return MountPointPlace.Blackboard_Main;
+                return MountPointLocation.Blackboard_Main;
             else if (guid == Left_Hand_Weapon)
-                return MountPointPlace.Left_Hand_Weapon;
+                return MountPointLocation.Left_Hand_Weapon;
             else if (guid == Right_Hand_Weapon)
-                return MountPointPlace.Right_Hand_Weapon;
+                return MountPointLocation.Right_Hand_Weapon;
             else if (guid == Left_LowerArm_Weapon)
-                return MountPointPlace.Left_LowerArm_Weapon;
+                return MountPointLocation.Left_LowerArm_Weapon;
             else if (guid == Right_LowerArm_Weapon)
-                return MountPointPlace.Right_LowerArm_Weapon;
+                return MountPointLocation.Right_LowerArm_Weapon;
             else if (guid == Right_Chest_Trigger)
-                return MountPointPlace.Right_Chest_Trigger;
+                return MountPointLocation.Right_Chest_Trigger;
             else if (guid == Left_Chest_Trigger)
-                return MountPointPlace.Left_Chest_Trigger;
+                return MountPointLocation.Left_Chest_Trigger;
             else
-                return MountPointPlace.None;
+                return MountPointLocation.None;
         }
-        public static Guid GetGuid(MountPointPlace enumType)
+        public static Guid GetGuid(MountPointLocation enumType)
         {
             return enumType switch
             {
-                MountPointPlace.Blackboard_Main => Blackboard_Main,
-                MountPointPlace.Left_Hand_Weapon => Left_Hand_Weapon,
-                MountPointPlace.Left_LowerArm_Weapon => Left_LowerArm_Weapon,
-                MountPointPlace.Right_Hand_Weapon => Right_Hand_Weapon,
-                MountPointPlace.Right_LowerArm_Weapon => Right_LowerArm_Weapon,
-                MountPointPlace.Right_Chest_Trigger => Right_Chest_Trigger,
-                MountPointPlace.Left_Chest_Trigger => Left_Chest_Trigger,
+                MountPointLocation.Blackboard_Main => Blackboard_Main,
+                MountPointLocation.Left_Hand_Weapon => Left_Hand_Weapon,
+                MountPointLocation.Left_LowerArm_Weapon => Left_LowerArm_Weapon,
+                MountPointLocation.Right_Hand_Weapon => Right_Hand_Weapon,
+                MountPointLocation.Right_LowerArm_Weapon => Right_LowerArm_Weapon,
+                MountPointLocation.Right_Chest_Trigger => Right_Chest_Trigger,
+                MountPointLocation.Left_Chest_Trigger => Left_Chest_Trigger,
                 _ => Guid.Empty,
             };
         }

@@ -27,7 +27,7 @@ namespace Tests.Characters.MountPoints
                 return subBlackboard.TryReadValue(key, out mountPoint);
             return false;
         }
-        public static bool TryGetMountPoint(this Blackboard blackboard, MountPointPlace fieldEnum, out MountPoint mountPoint)
+        public static bool TryGetMountPoint(this Blackboard blackboard, MountPointLocation fieldEnum, out MountPoint mountPoint)
         {
             return blackboard.TryGetMountPoint(MountPointFields.GetGuid(fieldEnum), out mountPoint);
         }
@@ -36,7 +36,7 @@ namespace Tests.Characters.MountPoints
             if (!blackboard.TryGetMountPoint(key, out mountPoint))
                 throw new Exception($"Key '{key}' not found in blackboard.");
         }
-        public static void TryGetMountPointOrThrowException(this Blackboard blackboard, MountPointPlace fieldEnum, out MountPoint mountPoint)
+        public static void TryGetMountPointOrThrowException(this Blackboard blackboard, MountPointLocation fieldEnum, out MountPoint mountPoint)
         {
             blackboard.TryGetMountPointOrThrowException(MountPointFields.GetGuid(fieldEnum), out mountPoint);
         }
@@ -48,7 +48,7 @@ namespace Tests.Characters.MountPoints
                 return subBlackboard.TryRegisterField(key, mountPoint);
             return true;
         }
-        public static bool TryRegisterMountPoint(this Blackboard blackboard, MountPointPlace fieldEnum, MountPoint mountPoint)
+        public static bool TryRegisterMountPoint(this Blackboard blackboard, MountPointLocation fieldEnum, MountPoint mountPoint)
         {
             return blackboard.TryRegisterMountPoint(MountPointFields.GetGuid(fieldEnum), mountPoint);
         }
@@ -57,7 +57,7 @@ namespace Tests.Characters.MountPoints
             if (!blackboard.TryRegisterMountPoint(key, mountPoint))
                 throw new Exception("The mount point is not register correctly");
         }
-        public static void TryRegisterMountPointOrThrowException(this Blackboard blackboard, MountPointPlace fieldEnum, MountPoint mountPoint)
+        public static void TryRegisterMountPointOrThrowException(this Blackboard blackboard, MountPointLocation fieldEnum, MountPoint mountPoint)
         {
             if (!blackboard.TryRegisterMountPoint(fieldEnum, mountPoint))
                 throw new Exception("The mount point is not register correctly");

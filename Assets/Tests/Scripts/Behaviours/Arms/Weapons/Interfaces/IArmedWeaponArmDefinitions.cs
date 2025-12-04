@@ -7,8 +7,8 @@ namespace Tests.Behaviours.Arms.Weapons
     public interface IArmedWeaponArmDefinitions
     {
         public WeaponDescription[] Origins { get; }
-        public MountPointPlace LauncherMountPointPlace { get; }
-        public MountPointPlace SwordMountPointPlace { get; }
+        public MountPointLocation LauncherMountPointPlace { get; }
+        public MountPointLocation SwordMountPointPlace { get; }
         public string LauncherMountPointName { get; }
         public string SwordMountPointName { get; }
         public float SwitchingDurationTime { get; }
