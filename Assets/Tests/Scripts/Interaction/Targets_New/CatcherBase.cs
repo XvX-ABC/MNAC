@@ -6,6 +6,11 @@ using UnityEngine;
 
 namespace Tests.Interaction
 {
+    public interface ICaughtItemFilter<T>
+    {
+        public bool CanCatch(T item);
+        public bool CanRelease(T item);
+    }
     public abstract class CatcherBase<T> : ICatcher<T>
     {
         protected internal List<T> caughtItems;
@@ -13,9 +18,12 @@ namespace Tests.Interaction
         protected internal Action<T> itemCatchAction;
         protected internal Action<T> itemReleaseAction;
         protected internal bool enabled;
+
+        List<ICaughtItemFilter<T>> _filters;
         public CatcherBase()
         {
             caughtItems = NewTargetsContainer() ?? throw new NullReferenceException(nameof(caughtItems));
+            _filters = new List<ICaughtItemFilter<T>>();
         }
         protected virtual List<T> NewTargetsContainer()
         {
@@ -34,15 +42,49 @@ namespace Tests.Interaction
                     CleanAll();
             }
         }
-
         public Action<T> ItemCaughtAction { get => itemCatchAction; set => itemCatchAction = value; }
         public Action<T> ItemReleaseAction { get => itemReleaseAction; set => itemReleaseAction = value; }
-
+        public void AddFilter(ICaughtItemFilter<T> filter)
+        {
+            if (filter == null)
+                throw new ArgumentNullException(nameof(filter));
+            _filters.Add(filter);
+        }
+        public void RemoveFilter(ICaughtItemFilter<T> filter)
+        {
+            if (filter == null)
+                throw new ArgumentNullException(nameof(filter));
+            _filters.Remove(filter);
+        }
+        public bool CanCatch(T item)
+        {
+            if (item == null || _filters.Count == 0)
+                return false;
+            foreach (var filter in _filters)
+            {
+                if (!filter.CanCatch(item))
+                    return false;
+            }
+            return true;
+        }
+        public bool CanRelease(T item)
+        {
+            if (item == null || _filters.Count == 0)
+                return false;
+            foreach (var filter in _filters)
+            {
+                if (!filter.CanRelease(item))
+                    return false;
+            }
+            return true;
+        }
         internal protected virtual void AddItemImpl(T target)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
             if (caughtItems.Contains(target))
+                return;
+            if (!CanCatch(target))
                 return;
             caughtItems.Add(target);
             itemCatchAction?.Invoke(target);
@@ -53,6 +95,8 @@ namespace Tests.Interaction
             //Debug.Log((target as GameObject).name);
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
+            if (!CanRelease(target))
+                return;
             if (caughtItems.Remove(target))
             {
                 itemReleaseAction?.Invoke(target);
