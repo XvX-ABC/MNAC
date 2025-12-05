@@ -4,7 +4,7 @@ using Tests.Interaction;
 using Tests.Player;
 using Tests.UI;
 using UnityEngine;
-using GameObjsInScreenCatcher = Tests.Characters.Weapons.GameObjsInScreenCatcher;
+using GameObjsInScreenCatcher = Tests.Interaction.GameObjsInScreenCatcher;
 using LockTarget = Tests.Characters.Weapons.LockTarget;
 namespace Tests.Behaviours.Arms.Weapons
 {
