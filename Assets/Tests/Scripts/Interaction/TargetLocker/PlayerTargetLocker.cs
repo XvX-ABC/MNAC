@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Tests.Interaction
 {
-    public class PlayerTargetLocker<T> : IPlayerTargetLocker<T> where T : class, ILockTarget
+    public class PlayerTargetLocker<T> : TargetLockerBase<T>, IPlayerTargetLocker<T> where T : class, ILockTarget
     {
         #region internal classes
         internal abstract class TargetLockerState : WithCallbackPlayableState
@@ -162,7 +162,7 @@ namespace Tests.Interaction
         ReceiveCursorInput _receiveState;
 
 
-        public bool Enabled
+        public override bool Enabled
         {
             get => _screenObjsCatcher.Enabled;
             set
@@ -187,7 +187,7 @@ namespace Tests.Interaction
                 _mainTargetChangedAction?.Invoke(ov, value);
             }
         }
-        public T MainLockTarget
+        public override T MainLockTarget
         {
             get => _mainLockTarget;
             set
@@ -203,8 +203,8 @@ namespace Tests.Interaction
             }
         }
         public float CatchAngle { get => _catchAngle * 2; set => _catchAngle = value / 2; }
-        public Action<T, T> MainTargetChangedAction { get => _mainLockTargetChangedAction; set => _mainLockTargetChangedAction = value; }
-        public ObstacleDetector ObstacleDetector { get => _obstacleDetector; set => _obstacleDetector = value; }
+        public override Action<T, T> MainTargetChangedAction { get => _mainLockTargetChangedAction; set => _mainLockTargetChangedAction = value; }
+        public override ObstacleDetector ObstacleDetector { get => _obstacleDetector; set => _obstacleDetector = value; }
         public Camera Camera { get => _camera; set => _camera = value; }
 
         public PlayerTargetLocker(
@@ -387,11 +387,11 @@ namespace Tests.Interaction
             else if (target != _mainLockTarget)
                 target.LockType = LockType.Lock_Unconfirm;
         }
-        public virtual void OnFixedUpdate()
+        public override void OnFixedUpdate()
         {
             statemachine.OnUpdate();
         }
-        public void OnLateUpdate()
+        public override void OnLateUpdate()
         {
             UpdateCursorReceiver();
         }

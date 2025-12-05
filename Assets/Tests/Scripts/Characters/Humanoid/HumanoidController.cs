@@ -18,6 +18,7 @@ using Tests.Utilities.Composable;
 using Tests.Weapons;
 using Tests.Weapons_New;
 using UnityEngine;
+using Health = Tests.Interaction.Influence.Health;
 using Stun = Tests.Interaction.Influence.Stun;
 using WeaponsCore = Tests.Characters.Weapons.WeaponCore;
 
@@ -33,7 +34,7 @@ namespace Tests.Characters.Humanoid
             [SerializeField]
             internal UICore ui;
             [SerializeField]
-            internal PlayerTargetLocker targetLocker;
+            internal TargetLocker targetLocker;
             [SerializeField]
             internal EnvironmentCore environment;
             [SerializeField]
@@ -71,7 +72,7 @@ namespace Tests.Characters.Humanoid
 
 
         [SerializeField]
-        ResourceLoader<PlayerTargetLocker> _targetLockerLoader;
+        ResourceLoader<TargetLocker> _targetLockerLoader;
 
 
         ICharacterDefinitions _definitions;

@@ -14,7 +14,7 @@ namespace Tests.Characters.Weapons
     [PlayerComponent(DontDestroyOnLoad = true)]
     internal class PlayerTargetLocker : CharacterComponent, IPlayerTargetLocker<ILockTarget>
     {
-        public static implicit operator Behaviours.Arms.Weapons.PlayerTargetLocker(PlayerTargetLocker obj) => obj._locker;
+        public static implicit operator Behaviours.PlayerTargetLocker(PlayerTargetLocker obj) => obj._locker;
         [SerializeField]
         ushort _processingAmountInCoroutine = 30;
         [SerializeField]
@@ -27,8 +27,8 @@ namespace Tests.Characters.Weapons
         float _receiveInputDuration = 0.05f;
 
 
-        Interaction.GameObjsInScreenCatcher _screenCatcher;
-        Behaviours.Arms.Weapons.PlayerTargetLocker _locker;
+        Tests.Interaction.GameObjsInScreenCatcher _screenCatcher;
+        Behaviours.PlayerTargetLocker _locker;
         IndicatorsManager _indicatorsManager;
 
         public float CatchAngle { get => _locker.CatchAngle; set => _catchAngle = _locker.CatchAngle = value; }

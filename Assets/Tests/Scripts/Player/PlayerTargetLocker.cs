@@ -11,10 +11,9 @@ using IndicatedTarget = Tests.Characters.UI.IndicatedTarget;
 
 namespace Tests.Player
 {
-    [PlayerComponent(DontDestroyOnLoad = true)]
-    internal class PlayerTargetLocker : CharacterComponent, IPlayerTargetLocker<ILockTarget>
+    internal class PlayerTargetLocker : PlayerComponent, IPlayerTargetLocker<ILockTarget>
     {
-        public static implicit operator Behaviours.Arms.Weapons.PlayerTargetLocker(PlayerTargetLocker obj) => obj._locker;
+        public static implicit operator Behaviours.PlayerTargetLocker(PlayerTargetLocker obj) => obj._locker;
         [SerializeField]
         ushort _processingAmountInCoroutine = 30;
         [SerializeField]
@@ -27,8 +26,8 @@ namespace Tests.Player
         float _receiveInputDuration = 0.05f;
 
 
-        Interaction.GameObjsInScreenCatcher _screenCatcher;
-        Behaviours.Arms.Weapons.PlayerTargetLocker _locker;
+        GameObjsInScreenCatcher _screenCatcher;
+        Behaviours.PlayerTargetLocker _locker;
         IndicatorsManager _indicatorsManager;
 
         public float CatchAngle { get => _locker.CatchAngle; set => _catchAngle = _locker.CatchAngle = value; }
@@ -38,10 +37,6 @@ namespace Tests.Player
         public Action<ILockTarget, ILockTarget> MainTargetChangedAction { get => _locker.MainTargetChangedAction; set => _locker.MainTargetChangedAction = value; }
         public ObstacleDetector ObstacleDetector { get => _locker.ObstacleDetector; set => _obstacleDetector = _locker.ObstacleDetector = value; }
         public Vector3 OriginWorldPosition { get => _locker.OriginWorldPosition; set => _locker.OriginWorldPosition = value; }
-        void Start()
-        {
-            StartCoroutine(_screenCatcher.UpdateWithCoroutine());
-        }
         void OnEnable()
         {
             if (_locker != null)
@@ -63,21 +58,20 @@ namespace Tests.Player
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Player_Camera_Main, out var camera);
-            blackboard.TryReadValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
-            blackboard.TryReadUIValueOrThrowException<ICursorIndicator>(CharacterUIBlackboardFields.Character_Actor_Cursor_Indicator, out var cursorIndicator);
-            blackboard.TryReadUIValueOrThrowException(CharacterUIBlackboardFields.Indicators_Manager, out _indicatorsManager);
+            blackboard.TryReadValueOrThrowException<Camera>(BlackboardFields.Camera_Main, out var camera);
+            blackboard.TryReadValueOrThrowException<IHumanInput>(BlackboardFields.Component_Input, out var input);
+            blackboard.TryReadValueOrThrowException(BlackboardFields.Component_ScreenCatcher, out _screenCatcher);
+            blackboard.TryReadUIValueOrThrowException<ICursorIndicator>(BlackboardFields.UI_Cursor_Indicator, out var cursorIndicator);
+            blackboard.TryReadUIValueOrThrowException(BlackboardFields.UI_Indicators_Manager, out _indicatorsManager);
 
-            _screenCatcher = new(camera, _processingAmountInCoroutine);
             _locker = new(input, _screenCatcher, CreateLockTarget, ReleaseLockTarget, camera, cursorIndicator, _obstacleDetector, _processingAmountInCoroutine, _catchAngle, _targetChangeDuration, _receiveInputDuration);
 
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Component_TargetLocker, this);
-            Debug.Log("target locker initialized");
+            blackboard.TryRegisterField(BlackboardFields.Component_TargetLocker, this);
         }
 
         public override void Dispose()
         {
-            blackboard.TryUnregisterField(CharacterBlackboardFields.Character_Component_TargetLocker);
+            blackboard.TryUnregisterField(BlackboardFields.Component_TargetLocker);
             base.Dispose();
         }
         LockTarget CreateLockTarget(GameObject obj, LockType lockType)

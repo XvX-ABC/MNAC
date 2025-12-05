@@ -1,19 +1,35 @@
-﻿using Tests.Characters;
-using Tests.Utilities.Attributes;
+﻿using Tests.Interaction;
 using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
 using UnityEngine;
 
 
 namespace Tests.Player
 {
-    internal class PlayerComponent : ComponentBase_MonoComponent
+    internal class GameObjsInScreenCatcher : PlayerComponent
     {
+        internal class Filter : ICaughtItemFilter<GameObject>
+        {
+            public bool CanCatch(GameObject item)
+            {
+                if (item.TryGetComponent<ITeamInfo>(out var teamInfo))
+                {
+                    var type = teamInfo.TeamType;
+                    return type == TeamType.Enemy;
+                }
+                else
+                    return false;
 
-    }
-    [PlayerComponent(DontDestroyOnLoad = true)]
-    internal class GameObjsInScreenCatcher : CharacterComponent
-    {
+            }
+
+            public bool CanRelease(GameObject item)
+            {
+                return true;
+            }
+        }
+        public static implicit operator Interaction.GameObjsInScreenCatcher(GameObjsInScreenCatcher catcher)
+        {
+            return catcher._catcher;
+        }
         Interaction.GameObjsInScreenCatcher _catcher;
 
         [SerializeField]
@@ -22,6 +38,7 @@ namespace Tests.Player
         Camera _camera;
         [SerializeField]
         bool useCoroutine;
+
 
         public ushort ProcessingAmountOfFrames { get => _catcher.ProcessingAmountOfFrames; set => _processingAmountOfFrames = _catcher.ProcessingAmountOfFrames = value; }
         public Camera Camera { get => _catcher.Camera; set => _camera = _catcher.Camera = value; }
@@ -45,8 +62,14 @@ namespace Tests.Player
             base.Initialize(blackboard);
             blackboard.TryReadValueOrThrowException<Camera>(BlackboardFields.Camera_Main, out var camera);
             _catcher = new(camera, _processingAmountOfFrames);
+            _catcher.AddFilter(new Filter());
 
-            blackboard.TryRegisterField(CharacterBlackboardFields.Player_ScreenCatcherr, this);
+            blackboard.TryRegisterField(BlackboardFields.Component_ScreenCatcher, this);
+        }
+        public override void Dispose()
+        {
+            blackboard.TryRegisterField(BlackboardFields.Component_ScreenCatcher);
+            base.Dispose();
         }
     }
 }
