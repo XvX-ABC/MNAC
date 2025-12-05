@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Tests.Utilities.Attributes
 {
-    internal class AttributeProcessingCore
+    public class AttributeProcessingCore
     {
         static AttributeProcessingCore s_instance;
         static AttributeProcessingCore()
