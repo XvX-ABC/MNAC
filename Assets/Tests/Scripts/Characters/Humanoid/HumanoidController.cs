@@ -95,11 +95,6 @@ namespace Tests.Characters.Humanoid
 
             _components = _requiredComponents.ToArray();
 
-            //leftArm = _requiredComponents.lefArm;
-            //rightArm = _requiredComponents.rightArm;
-            //locomotionCore = _requiredComponents.locomotion;
-
-
             _collisionComponentsManager = new();
 
 
@@ -157,8 +152,6 @@ namespace Tests.Characters.Humanoid
         }
         void OnDestroy()
         {
-            //if (_animator != null)
-            //    _animator.Dispose();
             ComponentsDispose();
             Dispose();
         }
@@ -197,25 +190,11 @@ namespace Tests.Characters.Humanoid
             Node.AddChild(_animator.Node);
         }
 
-        void InitializeArmController()
-        {
-            if (leftArm != null)
-                Node.AddChild(leftArm.Node);
-            if (rightArm != null)
-                Node.AddChild(rightArm.Node);
-        }
         void InitializeInfluenceCore()
         {
             var stun = new Stun();
             var health = new Health();
             influenceCore = new(stun, health);
-        }
-        void InitializeTargetLocker()
-        {
-            if (_targetLockerLoader.Load())
-            {
-                Node.AddChild(_targetLockerLoader.Resource.Node);
-            }
         }
 
         void InitializeStatemachine(InfluenceCore influenceCore)
