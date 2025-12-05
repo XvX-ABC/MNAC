@@ -5,7 +5,7 @@ using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons
+namespace Tests.Behaviours
 {
     internal class PlayerTargetLocker : PlayerTargetLocker<ILockTarget>, ITargetLocker
     {

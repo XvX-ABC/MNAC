@@ -4,6 +4,8 @@ using Tests.Interaction;
 using Tests.Player;
 using Tests.UI;
 using UnityEngine;
+using GameObjsInScreenCatcher = Tests.Characters.Weapons.GameObjsInScreenCatcher;
+using LockTarget = Tests.Characters.Weapons.LockTarget;
 namespace Tests.Behaviours.Arms.Weapons
 {
     internal class TargetLocker_Test : MonoBehaviour
@@ -21,7 +23,7 @@ namespace Tests.Behaviours.Arms.Weapons
         [SerializeField]
         ObstacleDetector _obstacleDetector;
 
-        GameObjsInScreenCatcher_Obsolete _screenObjsCatcher;
+        GameObjsInScreenCatcher _screenObjsCatcher;
         PlayerTargetLocker<LockTarget> _locker;
 
 
