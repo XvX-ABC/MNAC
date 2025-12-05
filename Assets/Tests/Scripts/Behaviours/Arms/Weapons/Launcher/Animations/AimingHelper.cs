@@ -12,7 +12,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
     internal class AimingHelper
     {
         AimIK _aimIK;
-        IGameObjTarget_New _currentTarget;
+        ILockTarget _currentTarget;
         IWeapon _controlledWeapon;
         Vector3 _preTargetPosition;
         ITimeline _targetChangeTimeline;
@@ -30,7 +30,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
             });
         }
 
-        public IGameObjTarget_New Target
+        public ILockTarget Target
         {
             get => _currentTarget;
             set

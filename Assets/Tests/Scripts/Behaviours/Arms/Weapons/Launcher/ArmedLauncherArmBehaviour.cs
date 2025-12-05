@@ -93,7 +93,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
                 animator.Enabled = value;
             }
         }
-        void WhenTargetChanged(IGameObjTarget_New _, IGameObjTarget_New newTarget)
+        void WhenTargetChanged(ILockTarget _, ILockTarget newTarget)
         {
             animator.AimingTarget = newTarget;
             target = newTarget;

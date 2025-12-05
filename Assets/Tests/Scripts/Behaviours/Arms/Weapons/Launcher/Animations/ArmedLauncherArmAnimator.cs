@@ -13,6 +13,7 @@ using Tests.Weapons.Launcher;
 using Tests.Weapons_New.Launcher;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SocialPlatforms;
 using World = Tests.TPhysics.World;
 
 namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
@@ -118,7 +119,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
                  */
             }
         }
-        public IGameObjTarget_New AimingTarget { get => _aimingHelper.Target; set => _aimingHelper.Target = value; }
+        public ILockTarget AimingTarget { get => _aimingHelper.Target; set => _aimingHelper.Target = value; }
         public ILauncher Launcher
         {
             get => _launcher;
