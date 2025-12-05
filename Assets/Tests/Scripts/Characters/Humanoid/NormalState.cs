@@ -1,4 +1,5 @@
-﻿using Tests.Characters.Humanoid.Arms;
+﻿using System;
+using Tests.Characters.Humanoid.Arms;
 using Tests.Characters.Humanoid.Locomotion;
 using Tests.States;
 using Tests.Utilities.Timeline;
@@ -13,7 +14,26 @@ namespace Tests.Characters.Humanoid
         PlayableStateMachine _rightArmStatemachine;
         LocomotionCore _core;
         LocomotionStatemachine _lstatemachine;
-
+        public SubStatemachineTransition<object> CreateEntryTransition(
+            WithCallbackPlayableState<object> sourceState,
+            Func<bool> triggerEvent,
+            Action<IPlayableState<object>, IPlayableState<object>, float> durationEvent,
+            float duration,
+            float offset = 0,
+            float fixedExitTime = SubStatemachineTransition<object>.FIXED_EXIT_TIME_INVALID_VALUE,
+            InterruptionSource interruptionSource = SubStatemachineTransition<object>.INTERRUPTION_SOURCE_DEFAULT)
+        {
+            return new SubStatemachineTransition<object>(
+                sourceState,
+                _lstatemachine,
+                _core.movementStatemachine,
+                triggerEvent,
+                durationEvent,
+                duration,
+                offset,
+                fixedExitTime,
+                interruptionSource);
+        }
         public NormalState(LocomotionCore core, ArmController leftArmCore, ArmController rightArmCore, bool enabled = true) : base("locomotion", enabled)
         {
 

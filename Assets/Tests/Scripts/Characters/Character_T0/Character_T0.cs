@@ -1,7 +1,9 @@
 ﻿using Minimalist.Bar;
 using Minimalist.Quantity;
+using Tests.Characters.Humanoid;
 using Tests.Interaction;
 using Tests.Interaction.Influence;
+using Tests.Utilities.Blackboards;
 using UnityEngine;
 using HealthInfluence = Tests.Interaction.Influence.Health;
 using StunInfluence = Tests.Interaction.Influence.Stun;
@@ -59,6 +61,21 @@ namespace Tests.Characters.Interaction
             _hp.ReceivePoint(-_hp.Point);
             _stun.EndEarly();
             _hp.enabled = false;
+        }
+
+        internal override InfluenceCore CreateInfluenceCore()
+        {
+            return default;
+        }
+
+        internal override NormalState InitializeController(Blackboard blackboard)
+        {
+            return default;
+        }
+
+        internal override CharacterBehavioursStatemachine CreateStatemachine(NormalState normalState, InfluenceCore influenceCore)
+        {
+            return default;
         }
     }
 }

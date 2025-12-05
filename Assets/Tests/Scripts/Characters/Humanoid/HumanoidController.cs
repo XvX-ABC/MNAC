@@ -84,6 +84,7 @@ namespace Tests.Characters.Humanoid
 
         CharacterBehavioursStatemachine _statemachine;
         CharacterBehavioursStateContext _context;
+        internal NormalState normalState;
         internal DiedState diedState;
 
         protected override void Awake()
@@ -99,10 +100,10 @@ namespace Tests.Characters.Humanoid
             _collisionComponentsManager = new();
 
 
-            InitializeInfluenceCore();
+            //InitializeInfluenceCore();
 
 
-            Initialize(new Blackboard());
+            //Initialize(new Blackboard());
 
 
             if (leftArm != null)
@@ -133,7 +134,7 @@ namespace Tests.Characters.Humanoid
 
 
 
-            InitializeStatemachine(influenceCore);
+            //InitializeStatemachine(influenceCore);
 
 
             _animator.InitializeArmsAnimation();
@@ -142,8 +143,8 @@ namespace Tests.Characters.Humanoid
         }
         void FixedUpdate()
         {
-            influenceCore.Update();
-            _statemachine.OnUpdate();
+            //influenceCore.Update();
+            //_statemachine.OnUpdate();
             _animator.Update();
         }
         void OnDisable()
