@@ -125,6 +125,8 @@ namespace Tests.TPhysics.Locomotion
         }
         public void AddModule(ILocomotionModule module, bool enabled = false)
         {
+            if (module == null)
+                throw new ArgumentNullException(nameof(module));
             var index = IndexOf(module);
             if (index > -1)
                 return;
@@ -137,6 +139,8 @@ namespace Tests.TPhysics.Locomotion
         }
         public void RemoveModule(ILocomotionModule module)
         {
+            if (module == null)
+                throw new ArgumentNullException(nameof(module));
             var index = IndexOf(module);
             if (index == -1)
                 return;
