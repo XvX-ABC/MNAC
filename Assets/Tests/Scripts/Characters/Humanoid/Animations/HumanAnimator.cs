@@ -14,9 +14,11 @@ using UnityEngine.Animations;
 using UnityEngine.Playables;
 namespace Tests.Characters.Humanoid.Animations
 {
-    internal class HumanAnimationStatemachine : WithCallbackPlayableStatemachine<object>
+
+
+    internal class HumanAnimationStatemachine : CharacterAnimationStateMachine
     {
-        public HumanAnimationStatemachine(bool enabled = true) : base("humanoid_statemachine", enabled)
+        public HumanAnimationStatemachine(bool enabled = true) : base("humanoid_statemachine", 0, enabled)
         {
         }
     }
@@ -70,25 +72,26 @@ namespace Tests.Characters.Humanoid.Animations
     {
         IHumanAnimationDefinitions _definitions;
         HumanoidController _core;
-        Animator _animator;
+        //Animator _animator;
 
 
         bool _enabled;
 
 
         internal PlayableGraph graph;
-        AnimationPlayablePartTree _appt;
-        ControllerPlayable _controller;
-        LayersMixerPlayable _layersMixer;
+        //AnimationPlayablePartTree _appt;
+        CharacterBaseControllerPlayable _controller;
+        internal LayersMixerPlayable layersMixer;
         LayerPlayable _baseLayer;
         LayerPlayable _leftArmLayer;
         LayerPlayable _rightArmLayer;
 
 
         HumanAnimationStatemachine _statemachine;
+        internal NormalState normalState;
 
 
-        class LayersMixerPlayable : AnimationPlayablePartBase
+        internal class LayersMixerPlayable : AnimationPlayablePartBase
         {
             IHumanAnimationDefinitions _definitions;
             public LayersMixerPlayable(PlayableGraph graph, IHumanAnimationDefinitions definitions) : base(graph)
@@ -124,7 +127,7 @@ namespace Tests.Characters.Humanoid.Animations
                 outputSetting.Parent = value;
             }
         }
-        class LayerPlayable : AnimationPlayablePartBase
+        internal class LayerPlayable : AnimationPlayablePartBase
         {
             int _num;
 
@@ -144,65 +147,86 @@ namespace Tests.Characters.Humanoid.Animations
                 p.SetLayerMaskFromAvatarMask((uint)_num, mask);
             }
         }
-        public new bool Enabled
-        {
-            get => _enabled;
-            set
-            {
-                _enabled = value;
-                if (_enabled)
-                {
+        //public new bool Enabled
+        //{
+        //    get => _enabled;
+        //    set
+        //    {
+        //        _enabled = value;
+        //        if (_enabled)
+        //        {
 
-                    graph.Play();
-                }
-                else
-                {
-                    graph.Stop();
-                }
-            }
-        }
+        //            graph.Play();
+        //        }
+        //        else
+        //        {
+        //            graph.Stop();
+        //        }
+        //    }
+        //}
 
         public override string Name => "character_animator";
 
-        public HumanAnimator(HumanoidController core)
+        public HumanAnimator(HumanoidController controller)
         {
-            _definitions = core.GetComponent<IHumanAnimationDefinitions>() ?? throw new ComponentCantFindException(core.gameObject, typeof(IHumanAnimationDefinitions));
-            _core = core ?? throw new ArgumentNullException(nameof(core));
-            _animator = core.GetComponent<Animator>();
-            InitializePlayableGraph();
+            _core = controller ?? throw new ArgumentNullException(nameof(controller));
+            _definitions = controller.GetComponent<IHumanAnimationDefinitions>() ?? throw new ComponentCantFindException(controller.gameObject, typeof(IHumanAnimationDefinitions));
+
         }
+        /*        public HumanAnimator(HumanoidController controller)
+                {
+                    _definitions = controller.GetComponent<IHumanAnimationDefinitions>() ?? throw new ComponentCantFindException(controller.gameObject, typeof(IHumanAnimationDefinitions));
+                    _core = controller ?? throw new ArgumentNullException(nameof(controller));
+                    _animator = controller.GetComponent<Animator>();
+                    InitializePlayableGraph();
+                }*/
 
-        void InitializePlayableGraph()
-        {
-            graph = PlayableGraph.Create(_core.name + "_animator");
-            _appt = new(graph);
-            var root = _appt.Root;
-            _controller = new ControllerPlayable(graph, _animator);
-            _layersMixer = new LayersMixerPlayable(graph, _definitions);
-            //_baseLayer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)_layersMixer.PlayablePart, 0);
-            //_leftArmLayer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)_layersMixer.PlayablePart, 1);
-            //_rightArmLayer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)_layersMixer.PlayablePart, 2);
-            _baseLayer = _layersMixer.CreateLayer();
-            _leftArmLayer = _layersMixer.CreateLayer();
-            _rightArmLayer = _layersMixer.CreateLayer();
+        /*        void InitializePlayableGraph()
+                {
+                    graph = PlayableGraph.Create(_core.name + "_animator");
+                    _appt = new(graph);
+                    var root = _appt.Root;
+                    _controller = new ControllerPlayable(graph, _animator);
+                    layersMixer = new LayersMixerPlayable(graph, _definitions);
+                    //_baseLayer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)_layersMixer.PlayablePart, 0);
+                    //_leftArmLayer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)_layersMixer.PlayablePart, 1);
+                    //_rightArmLayer = new LayerPlayable(graph, (AnimationLayerMixerPlayable)_layersMixer.PlayablePart, 2);
+                    _baseLayer = layersMixer.CreateLayer();
+                    _leftArmLayer = layersMixer.CreateLayer();
+                    _rightArmLayer = layersMixer.CreateLayer();
 
 
-            root.AddChild(_layersMixer.Node);
-            //_layersMixer.Node.AddChild(_controller.Node);
-            _baseLayer.Node.AddChild(_controller.Node);
+                    root.AddChild(layersMixer.Node);
+                    //_layersMixer.Node.AddChild(_controller.Node);
+                    _baseLayer.Node.AddChild(_controller.Node);
 
-            _controller.OutputSetting.Weight = 1;
+                    _controller.OutputSetting.Weight = 1;
 
 
-            var output = AnimationPlayableOutput.Create(graph, "animation", _animator);
-            output.SetSourcePlayable(_layersMixer.PlayablePart);
-        }
+                    var output = AnimationPlayableOutput.Create(graph, "animation", _animator);
+                    output.SetSourcePlayable(layersMixer.PlayablePart);
+                }*/
 
+        /*        public void Initialize_Obsolete(Blackboard blackboard)
+                {
+                    base.Initialize(blackboard);
+                    blackboard.TryRegisterField(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, _controller);
+                    blackboard.TryRegisterField(CharacterBlackboardFields.Character_Animation_Graph, graph);
+                }*/
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, _controller);
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Animation_Graph, graph);
+            blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Animation_Graph, out graph);
+            blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, out _controller);
+
+            layersMixer = new LayersMixerPlayable(graph, _definitions);
+            _baseLayer = layersMixer.CreateLayer();
+            _leftArmLayer = layersMixer.CreateLayer();
+            _rightArmLayer = layersMixer.CreateLayer();
+
+            _baseLayer.Node.AddChild(_controller.Node);
+
+            _controller.OutputSetting.Weight = 1;
         }
         public void InitializeArmsAnimation()
         {
@@ -229,7 +253,12 @@ namespace Tests.Characters.Humanoid.Animations
             }
 
         }
-        LocomotionAnimator lanimator;
+        public void InitializeNormalState()
+        {
+            blackboard.TryReadValueOrThrowException<LocomotionCore>(CharacterBlackboardFields.Character_Locomotion_Core, out var locomotionCore);
+            var animator = locomotionCore.animator;
+            normalState = new(animator.statemachine, animator.groundedMovement, "groundMovement");
+        }
         public void InitializeStatemachine()
         {
             if (!blackboard.TryReadValue<LocomotionCore>(CharacterBlackboardFields.Character_Locomotion_Core, out var locomotionCore))
@@ -242,7 +271,7 @@ namespace Tests.Characters.Humanoid.Animations
             var stunningState = new StunningState(stun.Timeline, _controller, _definitions.Stunning);
             var diedState = new DiedState(_core.diedState.Timeline, _controller, _definitions.Death);
 
-            lanimator = locomotionCore.animator;
+            var lanimator = locomotionCore.animator;
             var groundedMovement = new SubStatemachineState<object>(lanimator.statemachine, lanimator.groundedMovement, "groundMovement");
 
             _statemachine = new();
@@ -268,7 +297,7 @@ namespace Tests.Characters.Humanoid.Animations
         public void Update()
         {
 
-            _statemachine.OnUpdate();
+            //_statemachine.OnUpdate();
             //Debug.Log(lanimator.statemachine);
             //Debug.Log("character animator statemahcine: " + _statemachine);
         }

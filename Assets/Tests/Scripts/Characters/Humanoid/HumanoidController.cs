@@ -24,7 +24,7 @@ using WeaponsCore = Tests.Characters.Weapons.WeaponCore;
 
 namespace Tests.Characters.Humanoid
 {
-    public class HumanoidController : ComponentBase_MonoComponent, IComponent
+    internal class HumanoidController : CharacterComponent, IComponent
     {
         [Serializable]
         internal class RequiredComponents
@@ -54,8 +54,8 @@ namespace Tests.Characters.Humanoid
         }
 
 
-        [SerializeField]
-        Camera _camera;
+        //[SerializeField]
+        //Camera _camera;
 
 
         [SerializeField]
@@ -78,7 +78,7 @@ namespace Tests.Characters.Humanoid
         ICharacterDefinitions _definitions;
 
 
-        HumanAnimator _animator;
+        internal HumanAnimator animator;
         internal InfluenceCore influenceCore;
 
 
@@ -113,44 +113,45 @@ namespace Tests.Characters.Humanoid
         }
         void OnEnable()
         {
-            if (_animator != null)
-                _animator.Enabled = true;
+            if (animator != null)
+                animator.Enabled = true;
 
         }
         void Start()
         {
 
-            //InitializeUI();
+            ////InitializeUI();
 
-            InitializeAnimator();
+            //InitializeAnimator();
 
-            //InitializeTargetLocker();
+            ////InitializeTargetLocker();
 
-            InitializeComponents();
-
-
-
-            //InitializeArmController();
+            //InitializeComponents();
 
 
 
-            //InitializeStatemachine(influenceCore);
+            ////InitializeArmController();
 
 
-            _animator.InitializeArmsAnimation();
-            _animator.InitializeStatemachine();
+
+            ////InitializeStatemachine(influenceCore);
+
+
+            //_animator.InitializeArmsAnimation();
+            //_animator.InitializeStatemachine();
 
         }
         void FixedUpdate()
         {
             //influenceCore.Update();
             //_statemachine.OnUpdate();
-            _animator.Update();
+
+            animator.Update();
         }
         void OnDisable()
         {
-            if (_animator != null)
-                _animator.Enabled = false;
+            if (animator != null)
+                animator.Enabled = false;
         }
         void OnDestroy()
         {
@@ -187,9 +188,9 @@ namespace Tests.Characters.Humanoid
         void InitializeAnimator()
         {
 
-            _animator = new(this);
-            _animator.Enabled = enabled;
-            Node.AddChild(_animator.Node);
+            animator = new(this);
+            animator.Enabled = enabled;
+            Node.AddChild(animator.Node);
         }
 
         void InitializeInfluenceCore()
@@ -231,10 +232,13 @@ namespace Tests.Characters.Humanoid
 
         public override void Initialize(Blackboard blackboard)
         {
-            blackboard.TryRegisterField(CharacterBlackboardFields.Player_Camera_Main, _camera);
+
+            base.Initialize(blackboard);
+
+            //blackboard.TryRegisterField(CharacterBlackboardFields.Player_Camera_Main, _camera);
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Main, gameObject);
 
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Influence_Core, influenceCore);
+            //blackboard.TryRegisterField(CharacterBlackboardFields.Character_Influence_Core, influenceCore);
 
 
 
@@ -243,7 +247,33 @@ namespace Tests.Characters.Humanoid
 
             _mountPointManager.Initialize(blackboard);
 
-            this.blackboard = blackboard;
+
+            //InitializeUI();
+
+            InitializeAnimator();
+
+            //InitializeTargetLocker();
+
+            InitializeComponents();
+
+
+
+            //InitializeArmController();
+
+
+
+            //InitializeStatemachine(influenceCore);
+
+
+            animator.InitializeArmsAnimation();
+            animator.InitializeNormalState();
+            //animator.InitializeStatemachine();
+
+
+            normalState = new(locomotionCore, leftArm, rightArm);
+
+
+            //this.blackboard = blackboard;
         }
 
         private void OnCollisionEnter(Collision collision)

@@ -25,7 +25,7 @@ namespace Tests.Characters.Humanoid
         {
             return new SubStatemachineTransition<object>(
                 sourceState,
-                _lstatemachine,
+                this,
                 _core.movementStatemachine,
                 triggerEvent,
                 durationEvent,

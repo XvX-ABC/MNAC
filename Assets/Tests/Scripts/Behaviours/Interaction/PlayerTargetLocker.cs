@@ -7,8 +7,12 @@ using UnityEngine;
 
 namespace Tests.Behaviours
 {
-    internal class PlayerTargetLocker : PlayerTargetLocker<ILockTarget>, ITargetLocker
+    internal class PlayerTargetLocker : PlayerTargetLocker<ILockTarget>, IPlayerTargetLocker
     {
+        //public static implicit operator TargetLocker(PlayerTargetLocker locker)
+        //{
+        //    return locker;
+        //}
         IHumanInput _input;
         GameObjTarget _currentObjTarget;
         Action<GameObject, GameObject> _mainObjChangedAction;

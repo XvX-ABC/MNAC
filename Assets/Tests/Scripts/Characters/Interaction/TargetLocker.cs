@@ -8,11 +8,11 @@ namespace Tests.Characters
 {
     internal abstract class TargetLocker : CharacterComponent, ITargetLocker
     {
-        public Action<GameObject, GameObject> MainObjChangedAction { get => locker.MainObjChangedAction; set => locker.MainObjChangedAction = value; }
-        public ILockTarget MainLockTarget { get => locker.MainLockTarget; set => locker.MainLockTarget = value; }
-        public Action<ILockTarget, ILockTarget> MainTargetChangedAction { get => locker.MainTargetChangedAction; set => locker.MainTargetChangedAction = value; }
-        public ObstacleDetector ObstacleDetector { get => locker.ObstacleDetector; set => locker.ObstacleDetector = value; }
-        protected abstract Tests.Behaviours.TargetLocker locker { get; }
+        public abstract Action<GameObject, GameObject> MainObjChangedAction { get; set; }
+        public abstract ILockTarget MainLockTarget { get; set; }
+        public abstract Action<ILockTarget, ILockTarget> MainTargetChangedAction { get; set; }
+        public abstract ObstacleDetector ObstacleDetector { get; set; }
+
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
@@ -23,14 +23,12 @@ namespace Tests.Characters
             blackboard.TryUnregisterField(CharacterBlackboardFields.Character_Component_TargetLocker);
             base.Dispose();
         }
-        public void OnFixedUpdate()
+        public virtual void OnFixedUpdate()
         {
-            locker.OnFixedUpdate();
         }
 
-        public void OnLateUpdate()
+        public virtual void OnLateUpdate()
         {
-            locker.OnLateUpdate();
         }
     }
 

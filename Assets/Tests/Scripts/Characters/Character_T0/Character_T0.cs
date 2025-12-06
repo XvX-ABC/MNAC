@@ -1,5 +1,6 @@
 ﻿using Minimalist.Bar;
 using Minimalist.Quantity;
+using Tests.Animations;
 using Tests.Characters.Humanoid;
 using Tests.Interaction;
 using Tests.Interaction.Influence;
@@ -68,14 +69,29 @@ namespace Tests.Characters.Interaction
             return default;
         }
 
-        internal override NormalState InitializeController(Blackboard blackboard)
+        internal override CharacterComponent[] GetComponents()
         {
-            return default;
+            throw new System.NotImplementedException();
         }
 
-        internal override CharacterBehavioursStatemachine CreateStatemachine(NormalState normalState, InfluenceCore influenceCore)
+        internal override void InitializeComponents(Blackboard blackboard)
         {
-            return default;
+            throw new System.NotImplementedException();
+        }
+
+        internal override void ComponentsDispose()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        internal override CharacterBehavioursStatemachine CreateStatemachine()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        internal override AnimationPlayablePartBase GetMainAnimationPlayablePart()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

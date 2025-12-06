@@ -1,20 +1,75 @@
 ﻿using System;
 using System.Linq;
+using Tests.Animations;
 using Tests.Characters.Humanoid;
 using Tests.Interaction;
 using Tests.Interaction.Influence;
 using Tests.Utilities.Blackboards;
 using UnityEngine;
-
+using UnityEngine.Animations;
+using UnityEngine.Playables;
+using UnityEngine.Rendering;
 namespace Tests.Characters.Interaction
 {
+    using AnimationNormalState = Tests.Characters.Humanoid.Animations.NormalState;
+    [DefaultExecutionOrder(0)]
     public abstract class CharacterBase : MonoBehaviour, ICharacter
     {
+        internal class CharacterAnimator : IDisposable
+        {
+            internal PlayableGraph graph;
+            internal AnimationPlayablePartTree appt;
+            internal CharacterBaseControllerPlayable controller;
+            internal AnimationPlayableOutput _output;
+            Animator _animator;
+            Blackboard _blackboard;
+            public CharacterAnimator(GameObject obj, Animator animator, Blackboard blackboard)
+            {
+                _blackboard = blackboard ?? throw new ArgumentNullException(nameof(blackboard));
+                _animator = animator ?? throw new ArgumentNullException(nameof(animator));
+                graph = PlayableGraph.Create(obj.name + "_running_graph");
+                appt = new(graph);
+                controller = new(graph, animator);
+
+                blackboard.TryRegisterField(CharacterBlackboardFields.Character_Animation_Graph, graph);
+                blackboard.TryRegisterField(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, controller);
+            }
+            public void Dispose()
+            {
+                _blackboard.TryUnregisterField(CharacterBlackboardFields.Character_Animation_Graph, graph);
+                _blackboard.TryUnregisterField(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, controller);
+            }
+            public void InitializeOutput(AnimationPlayablePartBase p)
+            {
+                if (p == null)
+                    throw new ArgumentNullException(nameof(p));
+                Debug.Log("initalized animation output");
+                appt.Root.AddChild(p.Node);
+                _output = AnimationPlayableOutput.Create(graph, "animation", _animator);
+                _output.SetSourcePlayable(p.PlayablePart);
+            }
+            public void Play()
+            {
+                graph.Play();
+            }
+            public void Stop()
+            {
+                graph.Stop();
+            }
+            ~CharacterAnimator()
+            {
+                Dispose();
+            }
+        }
         Guid _id;
         InteractableItem _item;
-        Blackboard _blackboard;
-        InfluenceCore _influenceCore;
+        internal Blackboard blackboard;
+        internal InfluenceCore influenceCore;
+        internal CharacterComponent[] components;
         CharacterBehavioursStatemachine _statemachine;
+        CharacterAnimationStateMachine _animationStatemachine;
+        CharacterAnimator _animator;
+        internal bool allowAnimationInitialization { get => _animator != null; }
         public CharacterBase()
         {
             _id = Guid.NewGuid();
@@ -22,29 +77,53 @@ namespace Tests.Characters.Interaction
         }
         protected virtual void Awake()
         {
-            _blackboard = CreateBlackboard();
-            _influenceCore = CreateInfluenceCore();
+            influenceCore = CreateInfluenceCore();
+            blackboard = CreateBlackboard();
+            components = GetComponents();
+            if (TryGetComponent<Animator>(out var animator))
+            {
+                _animator = new(this.gameObject, animator, blackboard);
+            }
 
         }
         protected virtual void Start()
         {
-            var normalState = InitializeController(_blackboard);
-            _statemachine = CreateStatemachine(normalState, _influenceCore);
+            InitializeComponents(blackboard);
+            _statemachine = CreateStatemachine();
+            _animator?.InitializeOutput(GetMainAnimationPlayablePart());
+
+            if (allowAnimationInitialization)
+                _animationStatemachine = CreateAnimationStatemachine(_animator);
         }
 
         protected virtual void OnEnable()
         {
             TryRegisterToInteractionManager();
-            _statemachine.Enabled = true;
+            if (_statemachine != null)
+                _statemachine.Enabled = true;
+            if (_animationStatemachine != null)
+                _animationStatemachine.Enabled = true;
+            EnableComponents();
+            _animator?.Play();
         }
         protected virtual void OnDisable()
         {
-            _statemachine.Enabled = false;
+            _animator?.Stop();
+            if (_statemachine != null)
+                _statemachine.Enabled = false;
+            if (_animationStatemachine != null)
+                _animationStatemachine.Enabled = false;
             UnregisterFromInteractionManager();
+            DisableComponents();
         }
         protected virtual void Update()
         {
             _statemachine.OnUpdate();
+            _animationStatemachine?.OnUpdate();
+        }
+        protected virtual void OnDestroy()
+        {
+            ComponentsDispose();
         }
         void TryRegisterToInteractionManager()
         {
@@ -66,11 +145,33 @@ namespace Tests.Characters.Interaction
         internal virtual Blackboard CreateBlackboard()
         {
             var blackboard = new Blackboard();
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Influence_Core, _influenceCore);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Influence_Core, influenceCore);
             return blackboard;
         }
         internal abstract InfluenceCore CreateInfluenceCore();
-        internal abstract NormalState InitializeController(Blackboard blackboard);
-        internal abstract CharacterBehavioursStatemachine CreateStatemachine(NormalState normalState, InfluenceCore influenceCore);
+        internal abstract CharacterComponent[] GetComponents();
+        internal abstract void InitializeComponents(Blackboard blackboard);
+        internal abstract void ComponentsDispose();
+        internal virtual void EnableComponents()
+        {
+            foreach (var comp in components)
+            {
+                if (comp == null)
+                    continue;
+                comp.enabled = true;
+            }
+        }
+        internal virtual void DisableComponents()
+        {
+            foreach (var comp in components)
+            {
+                if (comp == null)
+                    continue;
+                comp.enabled = false;
+            }
+        }
+        internal abstract CharacterBehavioursStatemachine CreateStatemachine();
+        internal abstract AnimationPlayablePartBase GetMainAnimationPlayablePart();
+        internal virtual CharacterAnimationStateMachine CreateAnimationStatemachine(CharacterAnimator animator) { return null; }
     }
 }

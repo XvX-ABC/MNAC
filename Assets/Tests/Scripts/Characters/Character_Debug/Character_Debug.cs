@@ -1,4 +1,5 @@
-﻿using Tests.Characters.Humanoid;
+﻿using Tests.Animations;
+using Tests.Characters.Humanoid;
 using Tests.Characters.Interaction;
 using Tests.Interaction;
 using Tests.Interaction.Influence;
@@ -9,19 +10,34 @@ namespace Tests.Characters
     [Interactable]
     public class Character_Debug : CharacterBase
     {
+        internal override void ComponentsDispose()
+        {
+            throw new System.NotImplementedException();
+        }
+
         internal override InfluenceCore CreateInfluenceCore()
         {
             return default;
         }
 
-        internal override CharacterBehavioursStatemachine CreateStatemachine(NormalState normalState, InfluenceCore influenceCore)
+        internal override CharacterBehavioursStatemachine CreateStatemachine()
         {
-            return default;
+            throw new System.NotImplementedException();
         }
 
-        internal override NormalState InitializeController(Blackboard blackboard)
+        internal override CharacterComponent[] GetComponents()
         {
-            return default;
+            throw new System.NotImplementedException();
+        }
+
+        internal override AnimationPlayablePartBase GetMainAnimationPlayablePart()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        internal override void InitializeComponents(Blackboard blackboard)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

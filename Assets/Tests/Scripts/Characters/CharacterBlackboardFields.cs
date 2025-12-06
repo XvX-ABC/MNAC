@@ -15,6 +15,7 @@ namespace Tests.Characters
 
             Character_Animation_Whole_Body_Animator = Guid.NewGuid();
             Character_Animation_Graph = Guid.NewGuid();
+            Character_Animation_Tree = Guid.NewGuid();
 
             Player_Camera_Main = Guid.NewGuid();
             Character_Arm_Core_Local = Guid.NewGuid();
@@ -69,6 +70,7 @@ namespace Tests.Characters
         public static readonly Guid GroundDetector;
         public static readonly Guid World;
         public static readonly Guid Character_Locomotion_Core;
+        internal static readonly Guid Character_Animation_Tree;
     }
 
 }

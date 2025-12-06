@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Behaviours;
 using Tests.Characters;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.UI;
@@ -12,7 +13,7 @@ using IndicatedTarget = Tests.Characters.UI.IndicatedTarget;
 namespace Tests.Characters.Weapons
 {
     [PlayerComponent(DontDestroyOnLoad = true)]
-    internal class PlayerTargetLocker : CharacterComponent, IPlayerTargetLocker<ILockTarget>
+    internal class PlayerTargetLocker : TargetLocker, IPlayerTargetLocker
     {
         public static implicit operator Behaviours.PlayerTargetLocker(PlayerTargetLocker obj) => obj._locker;
         [SerializeField]
@@ -34,13 +35,20 @@ namespace Tests.Characters.Weapons
         public float CatchAngle { get => _locker.CatchAngle; set => _catchAngle = _locker.CatchAngle = value; }
         public Vector3 CursorPosition { get => _locker.CursorPosition; set => _locker.CursorPosition = value; }
         public Vector3 CursorPositionDelta { get => _locker.CursorPositionDelta; set => _locker.CursorPositionDelta = value; }
-        public ILockTarget MainLockTarget { get => _locker.MainLockTarget; set => _locker.MainLockTarget = value; }
-        public Action<ILockTarget, ILockTarget> MainTargetChangedAction { get => _locker.MainTargetChangedAction; set => _locker.MainTargetChangedAction = value; }
-        public ObstacleDetector ObstacleDetector { get => _locker.ObstacleDetector; set => _obstacleDetector = _locker.ObstacleDetector = value; }
+        public override ILockTarget MainLockTarget { get => _locker.MainLockTarget; set => _locker.MainLockTarget = value; }
+        public override Action<ILockTarget, ILockTarget> MainTargetChangedAction { get => _locker.MainTargetChangedAction; set => _locker.MainTargetChangedAction = value; }
+        public override ObstacleDetector ObstacleDetector { get => _locker.ObstacleDetector; set => _obstacleDetector = _locker.ObstacleDetector = value; }
         public Vector3 OriginWorldPosition { get => _locker.OriginWorldPosition; set => _locker.OriginWorldPosition = value; }
+        public override Action<GameObject, GameObject> MainObjChangedAction
+        {
+            get => _locker.MainObjChangedAction; set => _locker.MainObjChangedAction = value
+                ;
+        }
+
         void Start()
         {
-            StartCoroutine(_screenCatcher.UpdateWithCoroutine());
+            if (_screenCatcher != null)
+                StartCoroutine(_screenCatcher.UpdateWithCoroutine());
         }
         void OnEnable()
         {
@@ -69,6 +77,8 @@ namespace Tests.Characters.Weapons
             blackboard.TryReadUIValueOrThrowException(CharacterUIBlackboardFields.Indicators_Manager, out _indicatorsManager);
 
             _screenCatcher = new(camera, _processingAmountInCoroutine);
+            if (didStart)
+                StartCoroutine(_screenCatcher.UpdateWithCoroutine());
             _locker = new(input, _screenCatcher, CreateLockTarget, ReleaseLockTarget, camera, cursorIndicator, _obstacleDetector, _processingAmountInCoroutine, _catchAngle, _targetChangeDuration, _receiveInputDuration);
 
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Component_TargetLocker, this);
@@ -93,12 +103,12 @@ namespace Tests.Characters.Weapons
             LockTarget.ReleaseInstance(target as LockTarget);
         }
 
-        public void OnFixedUpdate()
+        public override void OnFixedUpdate()
         {
             throw new NotImplementedException();
         }
 
-        public void OnLateUpdate()
+        public override void OnLateUpdate()
         {
             throw new NotImplementedException();
         }
