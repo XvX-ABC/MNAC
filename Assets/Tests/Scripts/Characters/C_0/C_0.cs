@@ -43,6 +43,7 @@ namespace Tests.Characters.C_0
         {
             var blackboard = base.CreateBlackboard();
             blackboard.TryRegisterField(CharacterBlackboardFields.Player_Camera_Main, _camera);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Main, this.gameObject);
             return blackboard;
         }
         internal override InfluenceCore CreateInfluenceCore()

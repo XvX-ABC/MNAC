@@ -236,7 +236,7 @@ namespace Tests.Characters.Humanoid
             base.Initialize(blackboard);
 
             //blackboard.TryRegisterField(CharacterBlackboardFields.Player_Camera_Main, _camera);
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Main, gameObject);
+            //blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Main, gameObject);
 
             //blackboard.TryRegisterField(CharacterBlackboardFields.Character_Influence_Core, influenceCore);
 
