@@ -35,6 +35,10 @@ namespace Tests.Weapons_New.Launcher
             base.Awake();
             _animator = GetComponent<Animator>();
         }
+        private void OnEnable()
+        {
+            Duration = _duration;
+        }
         private void Start()
         {
             Duration = _duration;

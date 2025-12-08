@@ -58,8 +58,10 @@ namespace Tests.Interaction
         }
         public bool CanCatch(T item)
         {
-            if (item == null || _filters.Count == 0)
+            if (item == null)
                 return false;
+            if (_filters.Count == 0)
+                return true;
             foreach (var filter in _filters)
             {
                 if (!filter.CanCatch(item))
@@ -69,8 +71,10 @@ namespace Tests.Interaction
         }
         public bool CanRelease(T item)
         {
-            if (item == null || _filters.Count == 0)
+            if (item == null)
                 return false;
+            if (_filters.Count == 0)
+                return true;
             foreach (var filter in _filters)
             {
                 if (!filter.CanRelease(item))

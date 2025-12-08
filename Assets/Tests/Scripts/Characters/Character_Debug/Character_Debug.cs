@@ -1,18 +1,48 @@
-﻿using Tests.Animations;
-using Tests.Characters.Humanoid;
+﻿using System;
+using Tests.Animations;
 using Tests.Characters.Interaction;
 using Tests.Interaction;
 using Tests.Interaction.Influence;
 using Tests.Utilities.Blackboards;
+using UnityEngine;
+using Health = Tests.Interaction.Health;
 
 namespace Tests.Characters
 {
     [Interactable]
-    public class Character_Debug : CharacterBase
+    public class Character_Debug : CharacterBase, ITeamMember, IDamageable
     {
+        [SerializeField]
+        Health _health;
+        [SerializeField]
+        TeamMask _teamMask;
+        public IHealth HP => _health;
+
+        public TeamMask TeamMask { get => _teamMask; set => _teamMask = value; }
+
+        protected override void Awake()
+        {
+        }
+        protected override void Start()
+        {
+        }
+
+        protected override void OnEnable()
+        {
+            TryRegisterToInteractionManager();
+        }
+        protected override void OnDisable()
+        {
+            UnregisterFromInteractionManager();
+        }
+        protected override void Update()
+        {
+        }
+        protected override void OnDestroy()
+        {
+        }
         internal override void ComponentsDispose()
         {
-            throw new System.NotImplementedException();
         }
 
         internal override InfluenceCore CreateInfluenceCore()
@@ -22,22 +52,22 @@ namespace Tests.Characters
 
         internal override CharacterBehavioursStatemachine CreateStatemachine()
         {
-            throw new System.NotImplementedException();
+            return null;
         }
 
         internal override CharacterComponent[] GetComponents()
         {
-            throw new System.NotImplementedException();
+            return null;
         }
 
         internal override AnimationPlayablePartBase GetMainAnimationPlayablePart()
         {
-            throw new System.NotImplementedException();
+            return null;
         }
 
         internal override void InitializeComponents(Blackboard blackboard)
         {
-            throw new System.NotImplementedException();
+
         }
     }
 }

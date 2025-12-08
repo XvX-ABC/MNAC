@@ -1,4 +1,5 @@
 ﻿using Tests.Characters.Humanoid.Arms.Weapons.Launchers;
+using Tests.Interaction;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Launcher
@@ -19,5 +20,9 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         public float IdleAndAimTransitionLength => idleAndAimTransitionLength;
 
         public float AimAndReloadTransitionLength => aimAndReloadTransitionsLength;
+
+        public LayerMask LayerMaskToHit => throw new System.NotImplementedException();
+
+        public TeamMask TeamMask => throw new System.NotImplementedException();
     }
 }

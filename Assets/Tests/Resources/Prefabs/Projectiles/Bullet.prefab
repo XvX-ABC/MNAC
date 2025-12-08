@@ -153,10 +153,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   subComponents:
   - {fileID: 9019721679932367178}
-  _speed: 200
-  _layerMaskToHit:
+  layerMaskToHit:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 0
+  ownerTeamMask:
+    Value: 0
+  _speed: 200
+  _damagePoint: -1
 --- !u!1 &5165206940121295963
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,6 +3,8 @@ using Tests.Interaction;
 using StunInfluence = Tests.Interaction.Influence.Stun;
 namespace Tests.Characters.Interaction
 {
+    //TODO：Stun逻辑应该在Tests.Interaction中实现
+    [Obsolete]
     public class Stun : IStun
     {
         private StunInfluence influence;
@@ -13,7 +15,7 @@ namespace Tests.Characters.Interaction
         }
         public Stun()
         {
-            
+
         }
 
         public bool Enabled => influence?.Enabled ?? true;

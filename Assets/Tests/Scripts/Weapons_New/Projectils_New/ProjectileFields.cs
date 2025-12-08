@@ -11,7 +11,9 @@ namespace Tests.Weapons_New.Projectiles
         static ProjectileFields()
         {
             Hit_LayerMask = Guid.NewGuid();
+            TeamMask = Guid.NewGuid();
         }
         public readonly static Guid Hit_LayerMask;
+        internal static readonly Guid TeamMask;
     }
 }

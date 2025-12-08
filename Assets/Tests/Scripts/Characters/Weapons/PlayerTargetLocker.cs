@@ -5,6 +5,7 @@ using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.UI;
 using Tests.Interaction;
 using Tests.UI;
+using Tests.Utilities;
 using Tests.Utilities.Attributes;
 using Tests.Utilities.Blackboards;
 using UnityEngine;
@@ -82,7 +83,6 @@ namespace Tests.Characters.Weapons
             _locker = new(input, _screenCatcher, CreateLockTarget, ReleaseLockTarget, camera, cursorIndicator, _obstacleDetector, _processingAmountInCoroutine, _catchAngle, _targetChangeDuration, _receiveInputDuration);
 
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Component_TargetLocker, this);
-            Debug.Log("target locker initialized");
         }
 
         public override void Dispose()

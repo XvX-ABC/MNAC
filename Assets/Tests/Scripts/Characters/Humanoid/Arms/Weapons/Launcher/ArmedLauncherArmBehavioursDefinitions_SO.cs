@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Interaction;
 using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
@@ -22,5 +23,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         public float AimAndReloadTransitionLength => _definitions.AimAndReloadTransitionLength;
 
         public ITargetLockerDefinitions TargetLocker => _definitions.TargetLocker;
+
+        public LayerMask LayerMaskToHit => _definitions.LayerMaskToHit;
+
+        public TeamMask TeamMask => _definitions.TeamMask;
     }
 }

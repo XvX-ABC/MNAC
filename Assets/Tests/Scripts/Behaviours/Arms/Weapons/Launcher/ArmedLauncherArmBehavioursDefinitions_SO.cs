@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Tests.Interaction;
+using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Launcher
 {
@@ -14,5 +15,9 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         public float IdleAndAimTransitionLength => _definitions.IdleAndAimTransitionLength;
 
         public float AimAndReloadTransitionLength => _definitions.AimAndReloadTransitionLength;
+
+        public LayerMask LayerMaskToHit => _definitions.LayerMaskToHit;
+
+        public TeamMask TeamMask => _definitions.TeamMask;
     }
 }

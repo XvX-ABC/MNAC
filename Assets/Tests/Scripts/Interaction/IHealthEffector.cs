@@ -1,6 +1,6 @@
-﻿namespace Tests.Characters.Interaction
+﻿namespace Tests.Interaction
 {
-    public interface IHealthEffects
+    public interface IHealthEffector
     {
         public float MaxPoint { get; set; }
         public float MinPoint { get; set; }

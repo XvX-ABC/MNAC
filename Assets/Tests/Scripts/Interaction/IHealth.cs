@@ -2,5 +2,6 @@
 {
     public interface IHealth : INumerical
     {
+        public bool IsAlive { get; }
     }
 }

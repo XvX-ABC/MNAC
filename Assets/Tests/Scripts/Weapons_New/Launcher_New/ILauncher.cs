@@ -1,5 +1,7 @@
 ﻿using System;
+using Tests.Interaction;
 using Tests.Utilities.Timeline;
+using Tests.Weapons_New.Projectiles;
 using UnityEngine;
 
 namespace Tests.Weapons_New.Launcher
@@ -17,6 +19,8 @@ namespace Tests.Weapons_New.Launcher
         ITimeline ReloadTimeline { get; }
         Func<bool> ReloadTrigger { get; set; }
         ushort ReserveAmmoAmount { get; }
+        LayerMask LayerMaskToHit { get; set; }
+        TeamMask TeamMask { get; set; }
 
         void FillReserve(int amount);
     }

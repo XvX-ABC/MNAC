@@ -75,8 +75,6 @@ namespace Tests.Characters.Humanoid
         ResourceLoader<TargetLocker> _targetLockerLoader;
 
 
-        ICharacterDefinitions _definitions;
-
 
         internal HumanAnimator animator;
         internal InfluenceCore influenceCore;
@@ -91,8 +89,6 @@ namespace Tests.Characters.Humanoid
         {
             base.Awake();
 
-
-            _definitions = GetComponent<ICharacterDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(ICharacterDefinitions));
 
 
             _components = _requiredComponents.ToArray();
@@ -193,42 +189,6 @@ namespace Tests.Characters.Humanoid
             Node.AddChild(animator.Node);
         }
 
-        void InitializeInfluenceCore()
-        {
-            var stun = new Stun();
-            var health = new Health();
-            influenceCore = new(stun, health);
-        }
-
-        void InitializeStatemachine(InfluenceCore influenceCore)
-        {
-            var stun = influenceCore.FindInfluence<Stun>();
-            var health = influenceCore.FindInfluence<Health>();
-
-            var stunningState = new StunningState(stun.Timeline);
-            var normalState = new NormalState(locomotionCore, leftArm, rightArm);
-            diedState = new DiedState(gameObject, obj => { Destroy(obj); Debug.Log("Destory"); }, _definitions.DeathDurationTime);
-            _context = new();
-            _statemachine = new(_context, gameObject.name);
-            _statemachine.AddState(normalState);
-            _statemachine.AddState(stunningState);
-            _statemachine.AddState(diedState);
-
-
-            {
-                var l_s = new BlendingTransition<object>(normalState, stunningState, () => stun.Enabled, null, 0.5f);
-                var l_d = new BlendingTransition<object>(normalState, diedState, () => !health.IsAlive, null, 0.25f);
-                _statemachine.AddTransitionFor(l_s);
-                //_statemachine.AddTransitionFor(l_d);
-            }
-
-            {
-
-                var s_l = new SubStatemachineTransition<object>(stunningState, normalState, locomotionCore.movementStatemachine, () => !stun.Enabled, null, 0.5f, 0, 1);
-                var s_d = new BlendingTransition<object>(stunningState, diedState, () => !health.IsAlive, null, 0.25f);
-                _statemachine.AddTransitionFor(s_l);
-            }
-        }
 
         public override void Initialize(Blackboard blackboard)
         {
@@ -265,8 +225,8 @@ namespace Tests.Characters.Humanoid
             //InitializeStatemachine(influenceCore);
 
 
-            animator.InitializeArmsAnimation();
-            animator.InitializeNormalState();
+            //animator.InitializeArmsAnimation();
+            //animator.InitializeNormalState();
             //animator.InitializeStatemachine();
 
 

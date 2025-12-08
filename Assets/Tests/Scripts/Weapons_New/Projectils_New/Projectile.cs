@@ -1,36 +1,60 @@
 ﻿using System;
+using Tests.Interaction;
 using Tests.Utilities.Blackboards;
 using Tests.Weapons_New.Projectiles;
 using UnityEngine;
+using static Tests.Weapons_New.Projectiles.IProjectile;
 
-namespace Tests.Weapons.Projectiles_New
+namespace Tests.Weapons_New.Projectiles
 {
     public abstract class Projectile : MonoBehaviour, IProjectile
     {
+
         [SerializeField]
         internal ProjectileComponent[] subComponents;
         Action<IProjectile> _actionStartCallback;
         Action<IProjectile> _actionEndCallback;
         protected Blackboard blackboard;
+        [SerializeField]
+        protected LayerMask layerMaskToHit;
+        [SerializeField]
+        protected TeamMask ownerTeamMask;
 
         public GameObject Obj => this.gameObject;
 
         public Action<IProjectile> ActionStartCallback { get => _actionStartCallback; set => _actionStartCallback = value; }
         public Action<IProjectile> ActionEndCallback { get => _actionEndCallback; set => _actionEndCallback = value; }
-        public abstract Action<IProjectile, GameObject> HitAction { get; set; }
+        public LayerMask LayerMaskToHit
+        {
+            get => layerMaskToHit;
+            set
+            {
+                blackboard.TryRegisterFieldOrWriteValue(ProjectileFields.Hit_LayerMask, value);
+                layerMaskToHit = value;
+            }
+        }
+
+        public TeamMask TeamMask
+        {
+            get => ownerTeamMask;
+            set
+            {
+                blackboard.TryRegisterFieldOrWriteValue(ProjectileFields.TeamMask, value);
+                ownerTeamMask = value;
+            }
+        }
+
         protected virtual void Awake()
         {
             blackboard = new();
+            LayerMaskToHit = layerMaskToHit;
         }
         protected virtual void OnEnable()
         {
             foreach (var comp in subComponents)
                 comp.Initialize(blackboard);
         }
-        protected virtual void Start()
-        {
-
-        }
+        protected virtual void Start() { }
         protected virtual void OnDisable()
         {
             foreach (var comp in subComponents)

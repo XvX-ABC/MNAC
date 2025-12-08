@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tests.Weapons.Projectiles_New;
 using UnityEngine;
 
 namespace Tests.Weapons_New.Projectiles
@@ -19,7 +14,6 @@ namespace Tests.Weapons_New.Projectiles
         Rigidbody _rb;
         Action<Case> _survivalDurationEndAction;
         public Action<Case> SurvivalDurationEndAction { get => _survivalDurationEndAction; set => _survivalDurationEndAction = value; }
-        public override Action<IProjectile, GameObject> HitAction { get; set; }
         public Rigidbody Rbody { get => _rb; }
 
         protected override void Awake()
@@ -27,12 +21,14 @@ namespace Tests.Weapons_New.Projectiles
             base.Awake();
             _rb = GetComponent<Rigidbody>();
         }
+
+
         protected override void OnEnable()
         {
             base.OnEnable();
             _timer = 0;
         }
-        private void OnCollisionEnter(Collision collision)
+        protected void OnCollisionEnter(Collision collision)
         {
             _rb.velocity = Vector3.zero;
         }

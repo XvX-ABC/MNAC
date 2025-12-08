@@ -1,5 +1,4 @@
-﻿using Tests.Weapons.Projectiles_New;
-using Tests.Weapons_New.Projectiles;
+﻿using Tests.Weapons_New.Projectiles;
 using UnityEngine;
 
 namespace Tests.Weapons_New.Launcher

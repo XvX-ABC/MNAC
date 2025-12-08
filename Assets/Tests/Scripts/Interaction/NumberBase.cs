@@ -1,12 +1,21 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Tests.Interaction
 {
+    [Serializable]
     public class NumberBase : INumerical
     {
+        [SerializeField]
         protected float minPoint;
+        [SerializeField]
         protected float maxPoint;
+        [SerializeField]
         float _point;
+        protected NumberBase()
+        {
+
+        }
         public NumberBase(float maxPoint, float minPoint, float point)
         {
             this.maxPoint = maxPoint;

@@ -1,12 +1,15 @@
 ﻿using System;
 using Tests.Interaction;
+using UnityEngine;
 using HealthInfluence = Tests.Interaction.Influence.Health;
 namespace Tests.Characters.Interaction
 {
-    public class Health : NumberBase, IHealth
+    [SerializeField]
+    [Obsolete]
+    public class Health_Obsolete : NumberBase, IHealth
     {
         private HealthInfluence influence;
-        IHealthEffects _effects;
+        IHealthEffects_Obsolete _effects;
         bool _enabled;
         protected override float point
         {
@@ -48,7 +51,10 @@ namespace Tests.Characters.Interaction
                     influence.Enabled = value;
             }
         }
-        public Health(float maxPoint, float minPoint, float point, HealthInfluence influence, IHealthEffects effects) : base(maxPoint, minPoint, point)
+
+        public bool IsAlive => point > minPoint;
+
+        public Health_Obsolete(float maxPoint, float minPoint, float point, HealthInfluence influence, IHealthEffects_Obsolete effects) : base(maxPoint, minPoint, point)
         {
             this._effects = effects ?? throw new ArgumentNullException(nameof(effects));
 
@@ -56,11 +62,11 @@ namespace Tests.Characters.Interaction
             _effects.MinPoint = minPoint;
             Influence = influence;
         }
-        public Health(float maxPoint, float point, IHealthEffects effects) : this(maxPoint, INumerical.MINPOINT, point, null, effects)
+        public Health_Obsolete(float maxPoint, float point, IHealthEffects_Obsolete effects) : this(maxPoint, INumerical.MINPOINT, point, null, effects)
         {
 
         }
-        public Health(float maxPoint, IHealthEffects effects) : this(maxPoint, maxPoint, effects)
+        public Health_Obsolete(float maxPoint, IHealthEffects_Obsolete effects) : this(maxPoint, maxPoint, effects)
         {
 
         }

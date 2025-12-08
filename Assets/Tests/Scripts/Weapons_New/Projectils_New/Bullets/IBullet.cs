@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Tests.Weapons_New.Projectiles;
 using UnityEngine;
 
-namespace Tests.Weapons.Projectiles_New
+namespace Tests.Weapons_New.Projectiles
 {
     public interface IBullet : IProjectile
     {

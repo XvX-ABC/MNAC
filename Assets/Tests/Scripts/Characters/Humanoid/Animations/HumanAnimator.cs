@@ -228,7 +228,7 @@ namespace Tests.Characters.Humanoid.Animations
 
             _controller.OutputSetting.Weight = 1;
         }
-        public void InitializeArmsAnimation()
+        public void InitializeArmsAnimation(AvatarMask leftArmMask, AvatarMask rightArmMask)
         {
             var leftArm = _core.leftArm;
             if (leftArm != null)

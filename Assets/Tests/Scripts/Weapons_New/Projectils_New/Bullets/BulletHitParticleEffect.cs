@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Weapons.Projectiles_New
+namespace Tests.Weapons_New.Projectiles
 {
     internal class BulletHitParticleEffect : BulletParticleEffect
     {

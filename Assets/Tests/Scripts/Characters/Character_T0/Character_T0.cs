@@ -16,7 +16,7 @@ namespace Tests.Characters.Interaction
         [SerializeField]
         QuantityBhv _healthQuantitySetter;
         Stun _stun;
-        Health _hp;
+        Health_Obsolete _hp;
 
 
 

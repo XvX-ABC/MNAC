@@ -1,45 +1,38 @@
 ﻿using System;
+using Tests.Interaction;
 using Tests.Weapons_New.Projectiles;
 using UnityEngine;
 
-namespace Tests.Weapons.Projectiles_New
+namespace Tests.Weapons_New.Projectiles
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Collider))]
-    internal class Bullet : Projectile, IBullet
+    public class Bullet : Projectile, IBullet
     {
+        public delegate void HitActionDelegate(IProjectile projectile, GameObject obj);
         [SerializeField]
         float _speed;
         [SerializeField]
-        LayerMask _layerMaskToHit;
+        float _damagePoint;
         Ray _shootingRay;
-        Action<IProjectile, GameObject> _hitAction;
         Rigidbody _rbody;
         Action<IProjectile> _startMoveAction;
+        HitActionDelegate _hitAction;
         public Ray ShootingRay { get => _shootingRay; set => _shootingRay = value; }
 
-        public override Action<IProjectile, GameObject> HitAction { get => _hitAction; set => _hitAction = value; }
         public Action<IProjectile> StartMoveAction { get => _startMoveAction; set => _startMoveAction = value; }
-        public LayerMask LayerMaskToHit
-        {
-            get => _layerMaskToHit;
-            set
-            {
-                _layerMaskToHit = value;
-                blackboard.TryRegisterFieldOrWriteValue<LayerMask>(ProjectileFields.Hit_LayerMask, _layerMaskToHit);
-            }
-        }
+        internal HitActionDelegate HitAction { get => _hitAction; set => _hitAction = value; }
 
         protected override void Awake()
         {
             base.Awake();
             _rbody = GetComponent<Rigidbody>();
             blackboard.TryRegisterField(BulletComponent.OwnerBullet, this);
-            LayerMaskToHit = _layerMaskToHit;
         }
-        private void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
-            HitAction?.Invoke(this, other.gameObject);
+            _hitAction?.Invoke(this, other.gameObject);
+            Damage(other.gameObject);
             EndAction();
         }
         protected override void OnEnable()
@@ -56,5 +49,15 @@ namespace Tests.Weapons.Projectiles_New
         {
             _rbody.MovePosition(_rbody.position + transform.forward * _speed * Time.fixedDeltaTime);
         }
+        void Damage(GameObject obj)
+        {
+            if (!obj.TryGetComponent<ITeamMember>(out var tmemeber) || tmemeber.TeamMask == ownerTeamMask)
+                return;
+            if (!obj.TryGetComponent<IDamageable>(out var d) || !d.HP.IsAlive)
+                return;
+
+            d.HP.ReceivePoint(_damagePoint);
+        }
+
     }
 }

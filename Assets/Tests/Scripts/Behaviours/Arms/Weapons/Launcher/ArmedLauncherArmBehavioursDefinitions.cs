@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Interaction;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Launcher
@@ -6,6 +7,10 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
     [Serializable]
     public class ArmedLauncherArmBehavioursDefinitions : IArmedLauncherArmBehaviourDefinitions
     {
+        [SerializeField]
+        LayerMask _layerMaskToHit;
+        [SerializeField]
+        TeamMask _teamMask;
         //[SerializeField]
         protected AnimationClip aimingClip;
         //[SerializeField]
@@ -22,5 +27,8 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         public float IdleAndAimTransitionLength => idleAndAimTransitionLength;
 
         public float AimAndReloadTransitionLength => aimAndReloadTransitionsLength;
+
+        public LayerMask LayerMaskToHit { get => _layerMaskToHit; set => _layerMaskToHit = value; }
+        public TeamMask TeamMask { get => _teamMask; set => _teamMask = value; }
     }
 }

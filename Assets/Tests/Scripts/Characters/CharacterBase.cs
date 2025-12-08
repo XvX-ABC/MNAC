@@ -125,7 +125,7 @@ namespace Tests.Characters.Interaction
         {
             ComponentsDispose();
         }
-        void TryRegisterToInteractionManager()
+        protected void TryRegisterToInteractionManager()
         {
             var attrs = this.GetType().GetCustomAttributes(true);
             var a = attrs.FirstOrDefault(a => a is InteractableAttribute);
@@ -135,7 +135,7 @@ namespace Tests.Characters.Interaction
                 InteractionManager.AddItem(_item);
             }
         }
-        void UnregisterFromInteractionManager()
+        protected void UnregisterFromInteractionManager()
         {
             InteractionManager.RemoveItem(_item);
         }

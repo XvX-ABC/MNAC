@@ -3,7 +3,7 @@ using System;
 using Tests.Interaction;
 namespace Tests.Characters.Interaction
 {
-    public class MinimalistHealthEffects : IHealthEffects
+    public class MinimalistHealthEffects : IHealthEffects_Obsolete
     {
         QuantityBhv _bhv;
         public bool Enabled

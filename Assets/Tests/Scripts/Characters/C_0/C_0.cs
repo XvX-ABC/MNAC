@@ -34,16 +34,18 @@ namespace Tests.Characters.C_0
 
         protected override void Awake()
         {
-            base.Awake();
             _humanoidController = GetComponentInChildren<HumanoidController>() ?? throw new ComponentCantFindException(this.gameObject, typeof(HumanoidComponent));
             _definitions = GetComponentInChildren<ICharacterDefinitions_C_0>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ICharacterDefinitions_C_0));
             _animationDefinitions = GetComponentInChildren<ICharacterAnimationDefinitions_C_0>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ICharacterAnimationDefinitions_C_0));
+            base.Awake();
         }
         internal override Blackboard CreateBlackboard()
         {
             var blackboard = base.CreateBlackboard();
             blackboard.TryRegisterField(CharacterBlackboardFields.Player_Camera_Main, _camera);
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Main, this.gameObject);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Weapon_Projectile_LayerMaskToHit, _definitions.LayerMaskToHit);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_TeamMask, _definitions.TeamMask);
             return blackboard;
         }
         internal override InfluenceCore CreateInfluenceCore()
@@ -60,6 +62,11 @@ namespace Tests.Characters.C_0
         internal override void InitializeComponents(Blackboard blackboard)
         {
             _humanoidController.Initialize(blackboard);
+            _humanoidController.animator.InitializeArmsAnimation(
+                _animationDefinitions.HumanoidDefinitions.LeftArmDefinitions.Mask,
+                _animationDefinitions.HumanoidDefinitions.RightArmDefinitions.Mask);
+            _humanoidController.animator.InitializeNormalState();
+
             _normalState = _humanoidController.normalState;
             _animationNormalState = _humanoidController.animator.normalState;
         }

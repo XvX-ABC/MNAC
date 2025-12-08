@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Interaction;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons
@@ -11,5 +12,8 @@ namespace Tests.Behaviours.Arms.Weapons
         public AnimationClip ReloadClip { get; }
         public float IdleAndAimTransitionLength { get; }
         public float AimAndReloadTransitionLength { get; }
+
+        LayerMask LayerMaskToHit { get; }
+        TeamMask TeamMask { get; }
     }
 }

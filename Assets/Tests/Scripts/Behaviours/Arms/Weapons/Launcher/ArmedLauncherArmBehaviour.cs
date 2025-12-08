@@ -5,6 +5,7 @@ using Tests.Interaction;
 using Tests.States;
 using Tests.Weapons_New;
 using Tests.Weapons_New.Launcher;
+using Tests.Weapons_New.Projectiles;
 using UnityEngine;
 using WeaponType = Tests.Weapons_New.WeaponType;
 
@@ -29,10 +30,16 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
 
         internal ArmedLauncherArmAnimator animator;
 
+        internal LayerMask layerMaskToHit;
+        internal TeamMask teamMask;
+
+
         public ArmedLauncherArmBehaviour(IArmedLauncherArmBehaviourDefinitions definitions, ArmedLauncherArmAnimator animator)
         {
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
             this.animator = animator ?? throw new ArgumentNullException(nameof(animator));
+            TeamMask = _definitions.TeamMask;
+            LayerMaskToHit = _definitions.LayerMaskToHit;
             InitializeStatemachine();
         }
 
@@ -46,9 +53,12 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
                 if (value is ILauncher launcher)
                 {
                     _launcher = launcher;
+                    _launcher.TeamMask = teamMask;
+                    _launcher.LayerMaskToHit = layerMaskToHit;
                     ammoLoad.TargetLauncher = launcher;
                     animator.Launcher = launcher;
                     aiming.ControlledWeapon = launcher;
+
                 }
                 else
                     throw new Exception("Weapon");
@@ -93,6 +103,28 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
                 animator.Enabled = value;
             }
         }
+
+        public LayerMask LayerMaskToHit
+        {
+            get => layerMaskToHit;
+            set
+            {
+                if (_launcher != null)
+                    _launcher.LayerMaskToHit = value;
+                layerMaskToHit = value;
+            }
+        }
+        public TeamMask TeamMask
+        {
+            get => teamMask;
+            set
+            {
+                if (_launcher != null)
+                    _launcher.TeamMask = value;
+                teamMask = value;
+            }
+        }
+
         void WhenTargetChanged(ILockTarget _, ILockTarget newTarget)
         {
             animator.AimingTarget = newTarget;

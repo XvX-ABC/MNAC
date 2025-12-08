@@ -7,25 +7,25 @@ namespace Tests.Player
 {
     internal class GameObjsInScreenCatcher : PlayerComponent
     {
-        internal class Filter : ICaughtItemFilter<GameObject>
-        {
-            public bool CanCatch(GameObject item)
-            {
-                if (item.TryGetComponent<ITeamInfo>(out var teamInfo))
-                {
-                    var type = teamInfo.TeamType;
-                    return type == TeamType.Enemy;
-                }
-                else
-                    return false;
+        //internal class Filter : ICaughtItemFilter<GameObject>
+        //{
+        //    public bool CanCatch(GameObject item)
+        //    {
+        //        if (item.TryGetComponent<ITeamMember>(out var tmember))
+        //        {
+        //            var type = tmember.TeamMask;
+        //            return ;
+        //        }
+        //        else
+        //            return false;
 
-            }
+        //    }
 
-            public bool CanRelease(GameObject item)
-            {
-                return true;
-            }
-        }
+        //    public bool CanRelease(GameObject item)
+        //    {
+        //        return true;
+        //    }
+        //}
         public static implicit operator Interaction.GameObjsInScreenCatcher(GameObjsInScreenCatcher catcher)
         {
             return catcher._catcher;
@@ -62,7 +62,7 @@ namespace Tests.Player
             base.Initialize(blackboard);
             blackboard.TryReadValueOrThrowException<Camera>(BlackboardFields.Camera_Main, out var camera);
             _catcher = new(camera, _processingAmountOfFrames);
-            _catcher.AddFilter(new Filter());
+            //_catcher.AddFilter(new Filter());
 
             blackboard.TryRegisterField(BlackboardFields.Component_ScreenCatcher, this);
         }

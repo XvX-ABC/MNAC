@@ -42,6 +42,8 @@ namespace Tests.Characters
             AnimationPB = Guid.NewGuid();
             Rigidbody = Guid.NewGuid();
             GroundDetector = Guid.NewGuid();
+            Character_Weapon_Projectile_LayerMaskToHit = Guid.NewGuid();
+            Character_TeamMask = Guid.NewGuid();
         }
         public static readonly Guid Character_Obj_Main;
         public static readonly Guid Character_Obj_Arm_Local;
@@ -71,6 +73,8 @@ namespace Tests.Characters
         public static readonly Guid World;
         public static readonly Guid Character_Locomotion_Core;
         internal static readonly Guid Character_Animation_Tree;
+        internal static readonly Guid Character_Weapon_Projectile_LayerMaskToHit;
+        internal static readonly Guid Character_TeamMask;
     }
 
 }

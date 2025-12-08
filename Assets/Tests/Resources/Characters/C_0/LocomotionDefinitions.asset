@@ -17,6 +17,8 @@ MonoBehaviour:
     _walking:
       _maxSpeed: 10
       _acceleratedSpeed: 2
+      _dragTransitionalDuration: 1
+      _dragTransitionalRange: {x: 0, y: 10}
     _boosting:
       _speedPower: 2
       _acceleratedSpeedPower: 0

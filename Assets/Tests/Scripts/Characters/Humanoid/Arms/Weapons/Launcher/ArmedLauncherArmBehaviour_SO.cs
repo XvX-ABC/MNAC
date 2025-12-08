@@ -8,6 +8,7 @@ using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Humanoid.Locomotion;
 using Tests.Characters.Interaction.Input;
 using Tests.Characters.UI;
+using Tests.Interaction;
 using Tests.TPhysics;
 using Tests.TPhysics.Environment;
 using Tests.UI;
@@ -112,7 +113,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
             var weaponControlInput = armInput.WeaponControl;
             blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Component_TargetLocker, out _targetLocker);
-            InitializeBehaviourAndAnimator(graph, aimIK,  input.BaseInput, rbody, world, groundDetector, locomotionCore, armInput.WeaponControl);
+            InitializeBehaviourAndAnimator(graph, aimIK, input.BaseInput, rbody, world, groundDetector, locomotionCore, armInput.WeaponControl);
         }
         void InitializeBehaviourAndAnimator(
             PlayableGraph graph,
@@ -126,6 +127,18 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         {
             _animator = new(graph, aimIK, rbody, world, groundDetector, locomotionCore, _definitions.TargetLocker.TargetChangedDuration, _definitions, _animationDefinitions, weaponControlInput);
             _behaviour = new(_definitions, _animator);
+
+            if (blackboard.TryReadValue<LayerMask>(CharacterBlackboardFields.Character_Weapon_Projectile_LayerMaskToHit, out var layerMask))
+            {
+                Debug.Log("setted layermask to hit");
+                _behaviour.layerMaskToHit = layerMask;
+            }
+            if (blackboard.TryReadValue<TeamMask>(CharacterBlackboardFields.Character_TeamMask, out var teamMask))
+            {
+                Debug.Log("setted team mask");
+                _behaviour.teamMask = teamMask;
+            }
+
             _behaviour.Input = weaponControlInput;
             _behaviour.TargetLocker = _targetLocker;
         }

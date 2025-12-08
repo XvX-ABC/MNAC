@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Interaction;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Timeline;
 using UnityEngine;
@@ -9,10 +10,16 @@ namespace Tests.Weapons_New.Launcher
     //DONE: 使用状态机重写发射器逻辑
     internal abstract class Launcher : Weapon, ILauncher
     {
+
         protected struct Ammo
         {
             public int MagazineAmount;
             public int ReserveAmount;
+        }
+        protected struct Projectiles
+        {
+            public LayerMask LayerMaskToHit;
+            public TeamMask TeamMask;
         }
         protected ILauncherDefinitions definitions;
         [SerializeField]
@@ -36,6 +43,7 @@ namespace Tests.Weapons_New.Launcher
         protected Func<bool> reloadTrigger;
 
         protected Ammo ammo;
+        protected Projectiles projetiles;
 
         protected Action<ILauncher> _launchedCallback;
         protected Action<ILauncher> _reloadCallback;
@@ -56,6 +64,8 @@ namespace Tests.Weapons_New.Launcher
         public virtual Func<bool> ReloadTrigger { get => reloadTrigger; set => reloadTrigger = value; }
         public Transform MuzzleTrans { get => _muzzleTrans; }
 
+        public LayerMask LayerMaskToHit { get => projetiles.LayerMaskToHit; set => projetiles.LayerMaskToHit = value; }
+        public TeamMask TeamMask { get => projetiles.TeamMask; set => projetiles.TeamMask = value; }
 
         //public GameObject Obj => this.gameObject;
 
@@ -149,6 +159,9 @@ namespace Tests.Weapons_New.Launcher
         protected internal virtual IProjectile Launch()
         {
             var projectile = GetProjectile();
+            projectile.TeamMask = projectile.TeamMask;
+            projectile.LayerMaskToHit = projetiles.LayerMaskToHit;
+
             var obj = projectile.Obj;
             WeaponsHelper.SynchronizeWorldTransform(obj.transform, _muzzleTrans);
             projectile.StartAction();
@@ -169,6 +182,7 @@ namespace Tests.Weapons_New.Launcher
             ammo.ReserveAmount = Mathf.Clamp(result, 0, definitions.AmmoTotalAmount - definitions.AmmoInMagazineAmount);
         }
         protected abstract IProjectile GetProjectile();
+        [Obsolete]
         protected abstract void ReleaseProjectile(IProjectile projectile);
     }
 }

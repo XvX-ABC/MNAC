@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tests.Weapons_New.Projectiles;
 
-namespace Tests.Weapons.Projectiles_New
+namespace Tests.Weapons_New.Projectiles
 {
     internal class BulletPool_MonoComponent : ProjectilePool_MonoComponent<Bullet>
     {

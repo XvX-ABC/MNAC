@@ -1,7 +1,7 @@
 ﻿using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
 
-namespace Tests.Weapons.Projectiles_New
+namespace Tests.Weapons_New.Projectiles
 {
     [RequireComponent(typeof(ParticleSystem))]
     internal class BulletParticleEffect : BulletEffect
