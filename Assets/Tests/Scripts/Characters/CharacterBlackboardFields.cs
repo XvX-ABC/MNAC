@@ -36,13 +36,14 @@ namespace Tests.Characters
             Character_Input_Main_Base = Guid.NewGuid();
 
             Character_Weapon_Core = Guid.NewGuid();
+            Character_Weapon_Backpack = Guid.NewGuid();
             Character_Weapon_LeftArm_Armed = Guid.NewGuid();
             Character_Weapon_RightArm_Armed = Guid.NewGuid();
+            Character_Weapon_Projectile_LayerMaskToHit = Guid.NewGuid();
 
             AnimationPB = Guid.NewGuid();
             Rigidbody = Guid.NewGuid();
             GroundDetector = Guid.NewGuid();
-            Character_Weapon_Projectile_LayerMaskToHit = Guid.NewGuid();
             Character_TeamMask = Guid.NewGuid();
         }
         public static readonly Guid Character_Obj_Main;
@@ -75,6 +76,7 @@ namespace Tests.Characters
         internal static readonly Guid Character_Animation_Tree;
         internal static readonly Guid Character_Weapon_Projectile_LayerMaskToHit;
         internal static readonly Guid Character_TeamMask;
+        internal static readonly Guid Character_Weapon_Backpack;
     }
 
 }

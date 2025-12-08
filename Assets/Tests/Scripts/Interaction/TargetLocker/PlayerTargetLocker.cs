@@ -206,6 +206,7 @@ namespace Tests.Interaction
         public override Action<T, T> MainTargetChangedAction { get => _mainLockTargetChangedAction; set => _mainLockTargetChangedAction = value; }
         public override ObstacleDetector ObstacleDetector { get => _obstacleDetector; set => _obstacleDetector = value; }
         public Camera Camera { get => _camera; set => _camera = value; }
+        public float TargetChangDuration { get => _targetChangDuration; set => _targetChangDuration = value; }
 
         public PlayerTargetLocker(
             GameObjsInScreenCatcher screenObjsCatcher,

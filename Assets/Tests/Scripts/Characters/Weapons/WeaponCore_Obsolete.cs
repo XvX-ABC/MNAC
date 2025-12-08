@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tests.Characters.Humanoid;
 using Tests.Utilities.Blackboards;
 using Tests.Weapons_New;
@@ -10,9 +6,10 @@ using UnityEngine;
 
 namespace Tests.Characters.Weapons
 {
-    internal class WeaponCore : HumanoidComponent
+    [Obsolete]
+    internal class WeaponCore_Obsolete : HumanoidComponent
     {
-        public static explicit operator Weapons_New.WeaponCore(WeaponCore weaponCore)
+        public static explicit operator Weapons_New.WeaponCore(WeaponCore_Obsolete weaponCore)
         {
             return weaponCore._core;
         }
@@ -21,7 +18,7 @@ namespace Tests.Characters.Weapons
         protected override void Awake()
         {
             base.Awake();
-            _core = new(GetComponentsInChildren<IWeaponSource>());
+            //_core = new(GetComponentsInChildren<IWeaponResource>());
         }
         public override void Initialize(Blackboard blackboard)
         {

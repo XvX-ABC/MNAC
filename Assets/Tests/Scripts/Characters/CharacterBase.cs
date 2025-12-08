@@ -43,7 +43,6 @@ namespace Tests.Characters.Interaction
             {
                 if (p == null)
                     throw new ArgumentNullException(nameof(p));
-                Debug.Log("initalized animation output");
                 appt.Root.AddChild(p.Node);
                 _output = AnimationPlayableOutput.Create(graph, "animation", _animator);
                 _output.SetSourcePlayable(p.PlayablePart);

@@ -134,7 +134,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         public void Update()
         {
             //statemachine.OnUpdate();
-            Debug.Log(statemachine);
+            //Debug.Log(statemachine);
             //var p = (AnimatorControllerPlayable)_wholeBody.controller.PlayablePart;
             //var state = p.GetCurrentAnimatorStateInfo(0);
             //var t = p.GetAnimatorTransitionInfo(0);

@@ -5,7 +5,7 @@ namespace Tests.Behaviours.Arms.Weapons
 {
     internal class DefaultWeaponSelector
     {
-        ushort _index;
+        int _index = -1;
         public string Select(WeaponDescription[] originDefinitions)
         {
             if (originDefinitions == null)

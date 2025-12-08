@@ -1,31 +1,27 @@
-﻿using Codice.CM.Common.Tree.Partial;
-using NUnit.Framework;
-using NUnit.Framework.Constraints;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor.Graphs;
 using UnityEngine;
 
 namespace Tests.Weapons_New
 {
     [Serializable]
+    [Obsolete]
     public class WeaponCore : IDisposable
     {
-        IWeaponSource[] _sources;
+        protected IWeaponLoader[] sources;
 #if UNITY_EDITOR
         [SerializeField]
         List<string> _weaponNames;
 #endif
-        private WeaponCore()
+        protected WeaponCore()
         {
 
         }
-        public WeaponCore(IWeaponSource[] sources)
+        public WeaponCore(IWeaponLoader[] sources)
         {
-            _sources = sources ?? throw new ArgumentNullException(nameof(sources));
-            foreach (var s in _sources)
-                s.Initialize();
+            this.sources = sources ?? throw new ArgumentNullException(nameof(sources));
+            foreach (var s in this.sources)
+                s.Load();
 #if UNITY_EDIOR
             _weaponNames = new();
             foreach (var s in _sources)
@@ -40,9 +36,9 @@ namespace Tests.Weapons_New
         {
             if (weaponName.Length == 0)
                 return -1;
-            for (int i = 0; i < _sources.Length; i++)
+            for (int i = 0; i < sources.Length; i++)
             {
-                var s = _sources[i];
+                var s = sources[i];
                 if (s == null)
                     continue;
                 if (s.Name == weaponName)
@@ -59,7 +55,7 @@ namespace Tests.Weapons_New
             var idx = FindIndex(weaponName);
             if (idx < 0)
                 return null;
-            return _sources[idx].Weapon;
+            return sources[idx].Resource;
         }
         public bool TryGetWeapon(string weaponName, out IWeapon weapon)
         {
@@ -69,7 +65,7 @@ namespace Tests.Weapons_New
 
         public void Dispose()
         {
-            foreach (var s in _sources)
+            foreach (var s in sources)
                 s.Dispose();
         }
 

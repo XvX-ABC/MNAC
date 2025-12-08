@@ -6,6 +6,7 @@ using Tests.Behaviours.Arms.Weapons.Animations;
 using Tests.Characters.Humanoid.Arms.Weapons;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.MountPoints;
+using Tests.Characters.Weapons;
 using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
@@ -47,8 +48,9 @@ namespace Tests.Characters.Humanoid.Arms
         {
             return core.stateMachine;
         }
-
+        [Obsolete]
         WeaponCore _weaponCore;
+        WeaponBackpack _weaponBackpack;
         IArmInput _armInput;
         [SerializeField]
         MountPoint[] _mountPoints;
@@ -142,6 +144,7 @@ namespace Tests.Characters.Humanoid.Arms
             base.Initialize(blackboard);
             Blackboard = blackboard;
 
+            blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Weapon_Backpack, out _weaponBackpack);
             if (!blackboard.TryReadValue<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph))
                 throw new Exception();
 
@@ -202,17 +205,24 @@ namespace Tests.Characters.Humanoid.Arms
 
             InitializeChildNodes();
 
-            SetDefaultWeapon(launcherMountPoint, weaponDefinitions.Origins[0].Name, _weaponCore);
+            //SetDefaultWeapon_Obsolete(launcherMountPoint, weaponDefinitions.Origins[0].Name, _weaponCore);
+            SetDefaultWeapon(launcherMountPoint, weaponDefinitions.Origins[0].Name, _weaponBackpack);
 
+        }
+        [Obsolete]
+        void InitializeSwitchingBehaviour_Obsolete(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint)
+        {
+            weaponSwitching = new(definitions, launcherMountPoint, swordMountPoint, _weaponCore);
         }
         void InitializeSwitchingBehaviour(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint)
         {
-            weaponSwitching = new(definitions, launcherMountPoint, swordMountPoint, _weaponCore);
+            weaponSwitching = new(definitions, launcherMountPoint, swordMountPoint, (Weapons_New.WeaponBackpack)_weaponBackpack);
         }
         void InitializeArmedWeaponBehaviours(IArmedWeaponArmDefinitions definitions)
         {
             var behaviours = _definitions.Weapon.ArmedWeaponBehaviours;
-            _armedWeaponController = new(_weaponCore, _definitions.Weapon, behaviours);
+            //_armedWeaponController = new(_weaponCore, _definitions.Weapon, behaviours);
+            _armedWeaponController = new(_definitions.Weapon, behaviours);
             armedWeaponControllerState = new(_armedWeaponController, _part);
 
 
@@ -278,12 +288,18 @@ namespace Tests.Characters.Humanoid.Arms
         }
 
 
-        void SetDefaultWeapon(MountPoint weaponMountPoint, string weaponName, WeaponCore weaponCore)
+        void SetDefaultWeapon_Obsolete(MountPoint weaponMountPoint, string weaponName, WeaponCore weaponCore)
         {
             if (!weaponCore.TryGetWeapon(weaponName, out var weapon))
                 throw new Exception();
             weaponMountPoint.LoadObj = weapon.Obj;
 
+        }
+        void SetDefaultWeapon(MountPoint weaponMountPoint, string weaponName, WeaponBackpack backpack)
+        {
+            //var w = backpack.GetWeapon(weaponName);
+            //weaponMountPoint.LoadObj = w.Obj;
+            weaponSwitching.SetDefaultWeapon();
         }
         //public override void OnUpdate()
         //{

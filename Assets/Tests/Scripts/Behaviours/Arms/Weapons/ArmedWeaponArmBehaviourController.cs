@@ -34,10 +34,39 @@ namespace Tests.Behaviours.Arms.Weapons
 
         IReadOnlyDictionary<string, T> IArmedWeaponArmBehavioursController<T>.Behaviours => weaponBehavioursMapping;
 
+        [Obsolete]
         public ArmedWeaponArmBehaviourController(WeaponCore weaponCore, IArmedWeaponArmDefinitions definitions, params T[] behaviours)
         {
             if (weaponCore == null)
                 throw new ArgumentNullException(nameof(weaponCore));
+            behaviours = behaviours.Where(b => b != null).ToArray();
+            this.behavioursCache = behaviours;
+            foreach (var b in behavioursCache)
+                b.Activated = false;
+            //weaponBehavioursMapping = new();
+
+            //foreach (var od in definitions.Origins)
+            //{
+            //    var name = od.Name;
+            //    if (!weaponCore.TryGetWeaponDescription(name, out var description))
+            //    {
+            //        Debug.LogWarning(new WeaponNotContainsException(weaponCore, name));
+            //        continue;
+            //    }
+            //    var type = description.Type;
+            //    var b = behaviours.FirstOrDefault(b => b.Type == type);
+            //    if (b == null)
+            //        continue;
+            //    b.Activated = false;
+            //    if (weaponBehavioursMapping.ContainsKey(name))
+            //        weaponBehavioursMapping[name] = b;
+            //    else
+            //        weaponBehavioursMapping.Add(name, b);
+            //}
+        }
+
+        public ArmedWeaponArmBehaviourController(IArmedWeaponArmDefinitions definitions, params T[] behaviours)
+        {
             behaviours = behaviours.Where(b => b != null).ToArray();
             this.behavioursCache = behaviours;
             foreach (var b in behavioursCache)

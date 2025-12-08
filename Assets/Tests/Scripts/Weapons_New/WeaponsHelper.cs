@@ -5,6 +5,7 @@ namespace Tests.Weapons_New
 {
     internal class WeaponsHelper
     {
+        [Obsolete("应该使用'transform.PutInParent'扩展方法")]
         public static void PutInParent(Transform trans, Transform parent)
         {
             if (trans == null)
@@ -16,6 +17,7 @@ namespace Tests.Weapons_New
                 trans.localRotation = Quaternion.identity;
             }
         }
+        [Obsolete("应该使用'gameobject.PutInParent'扩展方法")]
         public static void PutInParent(GameObject obj, Transform parent)
         {
             PutInParent(obj?.transform, parent);

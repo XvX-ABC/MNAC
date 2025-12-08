@@ -4,23 +4,14 @@ using Tests.Characters.Humanoid.Arms;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Humanoid.Legs;
 using Tests.Characters.Humanoid.Locomotion;
-using Tests.Characters.Interaction;
 using Tests.Characters.MountPoints;
 using Tests.Characters.UI;
-using Tests.Characters.Weapons;
-using Tests.Input;
 using Tests.Interaction.Influence;
-using Tests.Player;
-using Tests.States;
 using Tests.Utilities.Assets_New;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
-using Tests.Weapons;
-using Tests.Weapons_New;
 using UnityEngine;
-using Health = Tests.Interaction.Influence.Health;
-using Stun = Tests.Interaction.Influence.Stun;
-using WeaponsCore = Tests.Characters.Weapons.WeaponCore;
+using WeaponBackpack = Tests.Characters.Weapons.WeaponBackpack;
 
 namespace Tests.Characters.Humanoid
 {
@@ -45,11 +36,13 @@ namespace Tests.Characters.Humanoid
             internal ArmController lefArm;
             [SerializeField]
             internal ArmController rightArm;
+            //[SerializeField]
+            //internal WeaponsCore weapons;
             [SerializeField]
-            internal WeaponsCore weapons;
+            internal WeaponBackpack weaponBackpack;
             public CharacterComponent[] ToArray()
             {
-                return new CharacterComponent[] { input, ui, targetLocker, environment, legs, locomotion, weapons, lefArm, rightArm };
+                return new CharacterComponent[] { input, ui, targetLocker, environment, legs, locomotion, weaponBackpack, lefArm, rightArm };
             }
         }
 

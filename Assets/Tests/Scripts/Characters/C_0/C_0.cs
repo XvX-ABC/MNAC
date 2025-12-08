@@ -50,7 +50,6 @@ namespace Tests.Characters.C_0
         }
         internal override InfluenceCore CreateInfluenceCore()
         {
-            Debug.Log("influence core initialized: ");
             var stun = new Stun();
             var health = new Health();
             return new(stun, health);

@@ -25,11 +25,13 @@ namespace Tests.Characters.Humanoid.Arms
             timeline = switching.timeline;
             _switching = switching;
         }
-
+        [Obsolete]
         public WeaponSwitchingState(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, WeaponCore weaponCore, Func<WeaponDescription[], string> selectionFunc = null) : this(new(definitions, launcherMountPoint, swordMountPoint, weaponCore, selectionFunc))
         {
         }
-
+        public WeaponSwitchingState(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, WeaponBackpack weaponBackpack, Func<WeaponDescription[], string> selectionFunc = null) : this(new(definitions, launcherMountPoint, swordMountPoint, weaponBackpack, selectionFunc))
+        {
+        }
 
         public Func<IWeapon, IWeapon, IWeapon> SwitchingEvent
         {
@@ -80,6 +82,10 @@ namespace Tests.Characters.Humanoid.Arms
                 var t = currentTransition.Timeline.NormalizedTime;
                 animationCore.SwitchingWeight = 1 - t;
             }
+        }
+        public void SetDefaultWeapon()
+        {
+            _switching.SetDefaultWeapon();
         }
     }
 }
