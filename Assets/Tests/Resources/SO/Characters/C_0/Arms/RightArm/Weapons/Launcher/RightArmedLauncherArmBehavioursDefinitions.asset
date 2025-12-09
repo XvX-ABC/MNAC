@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: RightArmedLauncherArmBehavioursDefinitions
   m_EditorClassIdentifier: 
   _definitions:
+    _layerMaskToHit:
+      serializedVersion: 2
+      m_Bits: 0
+    _teamMask:
+      Value: 0
     idleAndAimTransitionLength: 0
     aimAndReloadTransitionsLength: 0
     _targetLocker: {fileID: 11400000, guid: 8e5d341e187da164b8dd152a6d71620e, type: 2}

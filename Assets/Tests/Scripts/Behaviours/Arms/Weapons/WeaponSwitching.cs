@@ -17,7 +17,7 @@ namespace Tests.Behaviours.Arms.Weapons
         MountPoint _swordMountPoint;
         WeaponBackpack _weaponBackpack;
         [Obsolete]
-        WeaponCore _weaponCore;
+        Weapons_New.WeaponCore_Obsolete _weaponCore;
         Func<WeaponDescription[], string> _selectionFunc;
 
         internal ITimeline timeline;
@@ -73,7 +73,7 @@ namespace Tests.Behaviours.Arms.Weapons
         }
 
         [Obsolete]
-        protected internal WeaponSwitching(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, WeaponCore weaponCore, Func<WeaponDescription[], string> selectionFunc = null)
+        protected internal WeaponSwitching(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, Weapons_New.WeaponCore_Obsolete weaponCore, Func<WeaponDescription[], string> selectionFunc = null)
         {
             this.definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
             _launcherMountPoint = launcherMountPoint ?? throw new ArgumentNullException(nameof(launcherMountPoint));

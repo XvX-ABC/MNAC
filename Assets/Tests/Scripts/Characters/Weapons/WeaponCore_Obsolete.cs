@@ -9,12 +9,12 @@ namespace Tests.Characters.Weapons
     [Obsolete]
     internal class WeaponCore_Obsolete : HumanoidComponent
     {
-        public static explicit operator Weapons_New.WeaponCore(WeaponCore_Obsolete weaponCore)
+        public static explicit operator Weapons_New.WeaponCore_Obsolete(WeaponCore_Obsolete weaponCore)
         {
             return weaponCore._core;
         }
         [SerializeField]
-        Weapons_New.WeaponCore _core;
+        Weapons_New.WeaponCore_Obsolete _core;
         protected override void Awake()
         {
             base.Awake();

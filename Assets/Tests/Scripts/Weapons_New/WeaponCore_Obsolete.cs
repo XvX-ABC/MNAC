@@ -6,18 +6,18 @@ namespace Tests.Weapons_New
 {
     [Serializable]
     [Obsolete]
-    public class WeaponCore : IDisposable
+    public class WeaponCore_Obsolete : IDisposable
     {
         protected IWeaponLoader[] sources;
 #if UNITY_EDITOR
         [SerializeField]
         List<string> _weaponNames;
 #endif
-        protected WeaponCore()
+        protected WeaponCore_Obsolete()
         {
 
         }
-        public WeaponCore(IWeaponLoader[] sources)
+        public WeaponCore_Obsolete(IWeaponLoader[] sources)
         {
             this.sources = sources ?? throw new ArgumentNullException(nameof(sources));
             foreach (var s in this.sources)
@@ -28,7 +28,7 @@ namespace Tests.Weapons_New
                 _weaponNames.Add(s.Name); 
 #endif
         }
-        ~WeaponCore()
+        ~WeaponCore_Obsolete()
         {
             Dispose();
         }

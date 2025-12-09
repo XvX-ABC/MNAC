@@ -26,7 +26,7 @@ namespace Tests.Characters.Humanoid.Arms
             _switching = switching;
         }
         [Obsolete]
-        public WeaponSwitchingState(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, WeaponCore weaponCore, Func<WeaponDescription[], string> selectionFunc = null) : this(new(definitions, launcherMountPoint, swordMountPoint, weaponCore, selectionFunc))
+        public WeaponSwitchingState(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, Weapons_New.WeaponCore_Obsolete weaponCore, Func<WeaponDescription[], string> selectionFunc = null) : this(new(definitions, launcherMountPoint, swordMountPoint, weaponCore, selectionFunc))
         {
         }
         public WeaponSwitchingState(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, WeaponBackpack weaponBackpack, Func<WeaponDescription[], string> selectionFunc = null) : this(new(definitions, launcherMountPoint, swordMountPoint, weaponBackpack, selectionFunc))

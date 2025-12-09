@@ -8,6 +8,7 @@ namespace Tests.Interaction
         public abstract T MainLockTarget { get; set; }
         public abstract Action<T, T> MainTargetChangedAction { get; set; }
         public abstract ObstacleDetector ObstacleDetector { get; set; }
+        public abstract float TargetChangeDuration { get; set; }
 
         public abstract void OnFixedUpdate();
         public abstract void OnLateUpdate();

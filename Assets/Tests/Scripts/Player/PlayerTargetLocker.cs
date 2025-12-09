@@ -37,6 +37,8 @@ namespace Tests.Player
         public Action<ILockTarget, ILockTarget> MainTargetChangedAction { get => _locker.MainTargetChangedAction; set => _locker.MainTargetChangedAction = value; }
         public ObstacleDetector ObstacleDetector { get => _locker.ObstacleDetector; set => _obstacleDetector = _locker.ObstacleDetector = value; }
         public Vector3 OriginWorldPosition { get => _locker.OriginWorldPosition; set => _locker.OriginWorldPosition = value; }
+        public float TargetChangeDuration { get => _locker.TargetChangeDuration; set => _locker.TargetChangeDuration = value; }
+
         void OnEnable()
         {
             if (_locker != null)

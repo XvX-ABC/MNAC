@@ -12,6 +12,7 @@ namespace Tests.Characters
         public abstract ILockTarget MainLockTarget { get; set; }
         public abstract Action<ILockTarget, ILockTarget> MainTargetChangedAction { get; set; }
         public abstract ObstacleDetector ObstacleDetector { get; set; }
+        public abstract float TargetChangeDuration { get; set; }
 
         public override void Initialize(Blackboard blackboard)
         {

@@ -35,7 +35,7 @@ namespace Tests.Behaviours.Arms.Weapons
         IReadOnlyDictionary<string, T> IArmedWeaponArmBehavioursController<T>.Behaviours => weaponBehavioursMapping;
 
         [Obsolete]
-        public ArmedWeaponArmBehaviourController(WeaponCore weaponCore, IArmedWeaponArmDefinitions definitions, params T[] behaviours)
+        public ArmedWeaponArmBehaviourController(Weapons_New.WeaponCore_Obsolete weaponCore, IArmedWeaponArmDefinitions definitions, params T[] behaviours)
         {
             if (weaponCore == null)
                 throw new ArgumentNullException(nameof(weaponCore));

@@ -147,7 +147,7 @@ namespace Tests.Interaction
         Vector3 _cursorPositionDelta;
         float _catchAngle;
         internal Vector3 cursorPositionDeltaCache;
-        float _targetChangDuration;
+        float _targetChangeDuration;
         Tween _targetChangeTween;
 
         [Obsolete]
@@ -196,7 +196,7 @@ namespace Tests.Interaction
                 if (value != null)
                 {
                     value.LockType = LockType.Lock_Confirmed;
-                    _targetChangeTween = DOTween.To(() => _cursorController.CursorPosition, pos => _cursorController.CursorPosition = pos, _camera.WorldToScreenPoint(value.Obj.transform.position), _targetChangDuration);
+                    _targetChangeTween = DOTween.To(() => _cursorController.CursorPosition, pos => _cursorController.CursorPosition = pos, _camera.WorldToScreenPoint(value.Obj.transform.position), _targetChangeDuration);
                 }
                 _mainLockTarget = value;
                 _mainLockTargetChangedAction?.Invoke(ov, _mainLockTarget);
@@ -206,7 +206,7 @@ namespace Tests.Interaction
         public override Action<T, T> MainTargetChangedAction { get => _mainLockTargetChangedAction; set => _mainLockTargetChangedAction = value; }
         public override ObstacleDetector ObstacleDetector { get => _obstacleDetector; set => _obstacleDetector = value; }
         public Camera Camera { get => _camera; set => _camera = value; }
-        public float TargetChangDuration { get => _targetChangDuration; set => _targetChangDuration = value; }
+        public override float TargetChangeDuration { get => _targetChangeDuration; set => _targetChangeDuration = value; }
 
         public PlayerTargetLocker(
             GameObjsInScreenCatcher screenObjsCatcher,
@@ -235,7 +235,7 @@ namespace Tests.Interaction
             _screenObjsCatcher.ItemReleaseAction += WhenReleaseItem;
             _screenObjsCatcher.CatchCompletedAction += WhenCatchCompleted;
 
-            _targetChangDuration = Mathf.Max(0, targetChangedDuration);
+            _targetChangeDuration = Mathf.Max(0, targetChangedDuration);
 
             Enabled = enabled;
 

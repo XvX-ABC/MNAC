@@ -14,7 +14,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using IArmedWeaponArmBehaviour = Tests.Characters.Humanoid.Arms.Weapons.IArmedWeaponArmBehaviour;
 using IArmedWeaponArmDefinitions = Tests.Characters.Humanoid.Arms.Weapons.IArmedWeaponArmDefinitions;
-using WeaponCore = Tests.Weapons_New.WeaponCore;
+using WeaponCore_Obsolete = Tests.Weapons_New.WeaponCore_Obsolete;
 
 namespace Tests.Characters.Humanoid.Arms
 {
@@ -49,7 +49,7 @@ namespace Tests.Characters.Humanoid.Arms
             return core.stateMachine;
         }
         [Obsolete]
-        WeaponCore _weaponCore;
+        WeaponCore_Obsolete _weaponCore;
         WeaponBackpack _weaponBackpack;
         IArmInput _armInput;
         [SerializeField]
@@ -288,7 +288,7 @@ namespace Tests.Characters.Humanoid.Arms
         }
 
 
-        void SetDefaultWeapon_Obsolete(MountPoint weaponMountPoint, string weaponName, WeaponCore weaponCore)
+        void SetDefaultWeapon_Obsolete(MountPoint weaponMountPoint, string weaponName, WeaponCore_Obsolete weaponCore)
         {
             if (!weaponCore.TryGetWeapon(weaponName, out var weapon))
                 throw new Exception();

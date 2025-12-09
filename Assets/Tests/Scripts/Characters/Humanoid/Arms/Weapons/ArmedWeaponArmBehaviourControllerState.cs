@@ -26,10 +26,10 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
             InitializeBehaviours(this.controller.behavioursCache, part);
         }
         [Obsolete]
-        public ArmedWeaponArmBehaviourControllerState(WeaponCore_Obsolete weaponCore, IArmedWeaponArmDefinitions definitions, params IArmedWeaponArmBehaviour[] behaviours) : this(new((Weapons_New.WeaponCore)weaponCore, definitions, behaviours))
+        public ArmedWeaponArmBehaviourControllerState(WeaponCore_Obsolete weaponCore, IArmedWeaponArmDefinitions definitions, params IArmedWeaponArmBehaviour[] behaviours) : this(new((Weapons_New.WeaponCore_Obsolete)weaponCore, definitions, behaviours))
         {
         }
-        public ArmedWeaponArmBehaviourControllerState(WeaponCore_Obsolete weaponCore, IArmedWeaponArmDefinitions definitions, HumanPart part, params IArmedWeaponArmBehaviour[] behaviours) : this(new((Weapons_New.WeaponCore)weaponCore, definitions, behaviours), part)
+        public ArmedWeaponArmBehaviourControllerState(WeaponCore_Obsolete weaponCore, IArmedWeaponArmDefinitions definitions, HumanPart part, params IArmedWeaponArmBehaviour[] behaviours) : this(new((Weapons_New.WeaponCore_Obsolete)weaponCore, definitions, behaviours), part)
         {
         }
         public Action<IWeapon, IArmedWeaponArmBehaviour> ActivatedAction { get => controller.ActivatedAction; set => controller.ActivatedAction = value; }

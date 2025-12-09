@@ -8,7 +8,7 @@ namespace Tests.Interaction
         T MainLockTarget { get; set; }
         Action<T, T> MainTargetChangedAction { get; set; }
         ObstacleDetector ObstacleDetector { get; set; }
-        float TargetChangDuration { get; set; }
+        float TargetChangeDuration { get; set; }
 
         void OnFixedUpdate();
         void OnLateUpdate();

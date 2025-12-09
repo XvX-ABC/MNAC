@@ -1,11 +1,9 @@
 ﻿using System;
 using Tests.Behaviours;
-using Tests.Characters;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.UI;
 using Tests.Interaction;
 using Tests.UI;
-using Tests.Utilities;
 using Tests.Utilities.Attributes;
 using Tests.Utilities.Blackboards;
 using UnityEngine;
@@ -45,6 +43,7 @@ namespace Tests.Characters.Weapons
             get => _locker.MainObjChangedAction; set => _locker.MainObjChangedAction = value
                 ;
         }
+        public override float TargetChangeDuration { get => _locker.TargetChangeDuration; set => _locker.TargetChangeDuration = value; }
 
         void Start()
         {
