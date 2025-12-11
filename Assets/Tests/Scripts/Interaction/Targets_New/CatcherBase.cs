@@ -6,11 +6,6 @@ using UnityEngine;
 
 namespace Tests.Interaction
 {
-    public interface ICaughtItemFilter<T>
-    {
-        public bool CanCatch(T item);
-        public bool CanRelease(T item);
-    }
     public abstract class CatcherBase<T> : ICatcher<T>
     {
         protected internal List<T> caughtItems;
