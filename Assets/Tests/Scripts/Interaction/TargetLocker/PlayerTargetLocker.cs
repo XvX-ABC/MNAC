@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using System;
 using System.Collections.Generic;
+using Tests.Extensions;
 using Tests.States;
 using Tests.Utilities.Timeline;
 using UnityEngine;
@@ -117,10 +118,47 @@ namespace Tests.Interaction
                 throw new NotImplementedException();
             }
         }
+
+        internal class FilterCollection
+        {
+            ICaughtItemFilter<GameObject>[] _filters;
+            public void AddFilter(ICaughtItemFilter<GameObject> filter)
+            {
+                if (filter == null)
+                    throw new ArgumentNullException(nameof(filter));
+                if (_filters == null)
+                    _filters = new ICaughtItemFilter<GameObject>[] { filter };
+                else
+                    _filters = _filters.Append(filter);
+            }
+            public void RemoveFilter(ICaughtItemFilter<GameObject> filter)
+            {
+                if (filter == null)
+                    throw new ArgumentNullException(nameof(filter));
+                if (_filters.Length == 1)
+                    _filters = null;
+                else
+                    _filters = _filters.Remove(filter);
+            }
+            public bool CanCatch(GameObject obj)
+            {
+                if (_filters == null)
+                    return true;
+                foreach (var filter in _filters)
+                {
+                    if (!filter.CanCatch(obj))
+                        return false;
+                }
+                return true;
+            }
+        }
+
         #endregion
 
 
         List<T> _targets;
+        List<GameObject> _targetObjs;
+        FilterCollection _filters;
         Func<GameObject, LockType, T> _getTargetFunc;
         Action<T> _releaseTargetAction;
 
@@ -222,6 +260,8 @@ namespace Tests.Interaction
             bool enabled = true)
         {
             _targets = new();
+            _targetObjs = new();
+            _filters = new();
             _getTargetFunc = getTargetFunc ?? throw new ArgumentNullException(nameof(getTargetFunc));
             _releaseTargetAction = releaseTargetAction ?? throw new ArgumentNullException(nameof(releaseTargetAction));
             _camera = camera ?? throw new ArgumentNullException(nameof(camera));
@@ -270,9 +310,20 @@ namespace Tests.Interaction
 
 
         }
+        public void AddFilter(ICaughtItemFilter<GameObject> filter)
+        {
+            _filters.AddFilter(filter);
+        }
+        public void RemoveFilter(ICaughtItemFilter<GameObject> filter)
+        {
+            _filters.RemoveFilter(filter);
+        }
         void WhenCaughtItem(GameObject obj)
         {
+            if (!_filters.CanCatch(obj))
+                return;
             AddTargetBy(obj, LockType.Lock_Unconfirm);
+            _targetObjs.Add(obj);
         }
         void WhenReleaseItem(GameObject obj)
         {
@@ -280,26 +331,27 @@ namespace Tests.Interaction
             {
                 MainTargetObj = null;
             }
-            if (obj == _mainLockTarget?.Obj)
-                MainLockTarget = null;
             RemoveTargetBy(obj);
+            _targetObjs.Remove(obj);
 
         }
         void AddTargetBy(GameObject obj, LockType type)
         {
             _targets.Add(_getTargetFunc(obj, type));
         }
-        bool RemoveTargetBy(GameObject obj)
+        T RemoveTargetBy(GameObject obj)
         {
             var idx = _targets.FindIndex(t => t.Obj == obj);
             if (idx > -1)
             {
+                if (obj == _mainLockTarget?.Obj)
+                    MainLockTarget = null;
                 var t = _targets[idx];
                 _targets.RemoveAt(idx);
                 _releaseTargetAction(t);
-                return true;
+                return t;
             }
-            return false;
+            return null;
         }
         void WhenCatchCompleted(List<GameObject> caughtObjs)
         {
@@ -307,8 +359,8 @@ namespace Tests.Interaction
             UpdateTargetsLockType();
             if (_mainLockTarget != null && _mainLockTarget.LockType == LockType.CantLock)
                 MainLockTarget = null;
-            _findClosestTargetState_OP.Execute(caughtObjs);
-            _findClosestTargetState_MT.Execute(caughtObjs);
+            _findClosestTargetState_OP.Execute(_targetObjs);
+            _findClosestTargetState_MT.Execute(_targetObjs);
         }
         internal T FindClosestObj(List<GameObject> objs)
         {
