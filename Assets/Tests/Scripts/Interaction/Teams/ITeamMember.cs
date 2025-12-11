@@ -8,6 +8,10 @@ namespace Tests.Interaction
 {
     public interface ITeamMember
     {
+        public bool CheckFriendlyBy(TeamMask mask)
+        {
+            return TeamMask.Contains(mask.Value);
+        }
         TeamMask TeamMask { get; set; }
     }
 }

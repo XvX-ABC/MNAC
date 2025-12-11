@@ -10,6 +10,7 @@ namespace Tests.Interaction
     {
         GameObjsTrigger _trigger;
         SphereCollider _collider;
+        TeamMask _teamMask;
         public float Radius
         {
             get => _collider.radius;
@@ -20,6 +21,7 @@ namespace Tests.Interaction
             get => enabled;
             set => enabled = _trigger.Enabled = value;
         }
+
 
         public IReadOnlyList<GameObject> CaughtItems => _trigger.CaughtItems;
 
@@ -40,6 +42,7 @@ namespace Tests.Interaction
         }
         public LayerMask ExcludeLayerMask { get => _trigger.ExcludeLayerMask; set => _trigger.ExcludeLayerMask = value; }
         public LayerMask IncludeLayerMask { get => _trigger.IncludeLayerMask; set => _trigger.IncludeLayerMask = value; }
+        public TeamMask TeamMask { get => _teamMask; set => _teamMask = value; }
 
         public void AddItem(GameObject target)
         {
@@ -55,16 +58,30 @@ namespace Tests.Interaction
             _collider = GetComponent<SphereCollider>();
             _trigger = new GameObjsTrigger(_collider);
         }
+        bool CheckTeamBy(GameObject obj)
+        {
+            if (obj.TryGetComponent<ITeamMember>(out var member))
+                return member.CheckFriendlyBy(_teamMask);
+            else
+                return false;
+        }
         protected void OnTriggerEnter(Collider other)
         {
+            var obj = other.gameObject;
+            if (CheckTeamBy(obj))
+                return;
             _trigger.OnTriggerEnter(other);
         }
         protected void OnTriggerStay(Collider other)
         {
+            if (CheckTeamBy(other.gameObject))
+                return;
             _trigger.OnTriggerEnter(other);
         }
         protected void OnTriggerExit(Collider other)
         {
+            if (CheckTeamBy(other.gameObject))
+                return;
             _trigger.OnTriggerExit(other);
         }
 

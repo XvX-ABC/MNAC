@@ -48,7 +48,14 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
         ArmOccupation _armOccupation;
         public override WeaponType Type => WeaponType.Sword;
-
+        internal TeamMask teamMask
+        {
+            get => _targetsTrigger.TeamMask;
+            set
+            {
+                _targetsTrigger.TeamMask = value;
+            }
+        }
         protected override Behaviours.Arms.IArmedWeaponArmBehaviour behaviour
         {
             get
@@ -134,6 +141,14 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             blackboard.TryReadValueOrThrowException<ControllerPlayable>(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, out var controller);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Arm_Local, out var armObj);
             blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Component_TargetLocker, out _targetLocker);
+            if (blackboard.TryReadValue<TeamMask>(CharacterBlackboardFields.Character_TeamMask, out var teamMask))
+            {
+                this.teamMask = teamMask;
+            }
+            else
+            {
+                throw new BlackboardKeyNotFoundException(CharacterBlackboardFields.Character_TeamMask);
+            }
 
             CreateSphereTriggerTargetsCatcher(armObj);
             _load = new(_targetsTrigger.gameObject);
