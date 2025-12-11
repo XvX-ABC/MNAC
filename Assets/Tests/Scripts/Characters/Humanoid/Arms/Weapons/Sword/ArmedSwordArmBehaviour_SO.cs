@@ -140,15 +140,10 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         {
             base.Initialize(blackboard);
 
-            //if (blackboard.Contains(CharacterBlackboardFields.TargetsCatcher))
-            //    blackboard.TryWriteValue(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
-            //else
-            //    blackboard.TryRegisterField(CharacterBlackboardFields.TargetsCatcher, _targetsCatcher);
 
             blackboard.TryReadValueOrThrowException<LocomotionCore>(CharacterBlackboardFields.Character_Locomotion_Core, out var locomotionCore);
             //blackboard.TryReadValueOrThrowException<IInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
             blackboard.TryReadValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
-            blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Player_Camera_Main, out var camera);
             blackboard.TryReadValueOrThrowException<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph);
             blackboard.TryReadValueOrThrowException<ControllerPlayable>(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, out var controller);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Arm_Local, out var armObj);
@@ -169,7 +164,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 winput = input.LArm?.WeaponControl;
             else if (Part == HumanPart.RightArm)
                 winput = input.RArm?.WeaponControl;
-            _boostingHelper = new BoostingHelper(locomotionCore.core, camera, _targetLocker, input.BaseInput, winput, _definitions.Boosting);
+            _boostingHelper = new BoostingHelper(locomotionCore.core, _targetLocker, input.BaseInput, winput, _definitions.Boosting);
             _slashHelper = new SlashHelper(locomotionCore.core, rotationLocker, _definitions.Slash.Duration, _definitions.Slash.RecoveryDuration);
             var mixer = InitializeMixer(graph, controller);
             _animator = new(

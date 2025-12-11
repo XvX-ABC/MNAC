@@ -13,13 +13,11 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         internal bool inBoosting;
         public BoostingHelper(
                 TPhysics.Locomotion.LocomotionCore locomotionCore,
-                Camera camera,
                 ITargetLocker targetLocker,
                 IBaseInput baseInput,
                 IWeaponControlInput weaponControlInput,
                 ISwordBoostingDefinitions definitions) : base(
                      locomotionCore,
-                     camera,
                      targetLocker,
                      baseInput,
                      weaponControlInput,

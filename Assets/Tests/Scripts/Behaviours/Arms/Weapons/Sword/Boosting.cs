@@ -23,11 +23,8 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         }
         LocomotionCore _locomotionCore;
         BoostingLocomotion _locomotion;
-        RotationByScreen _rotationHelper;
-        Camera _camera;
         ISphericalObjsTrigger _targetTrigger;
         ITargetLocker _targetLocker;
-        IBaseInput _baseInput;
 
         LifeCycle _life;
 
@@ -54,16 +51,12 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
                 _targetTrigger.Enabled = _life > LifeCycle.Ready && _life < LifeCycle.Exited;
         }
 
-        public Boosting(BoostingLocomotion locomotion, LocomotionCore locomotionCore, Camera camera, ITargetLocker targetLocker, IBaseInput input, float duration) : base("boosting", 0)
+        public Boosting(BoostingLocomotion locomotion, LocomotionCore locomotionCore, ITargetLocker targetLocker, IBaseInput input, float duration) : base("boosting", 0)
         {
             _locomotion = locomotion ?? throw new ArgumentNullException(nameof(locomotion));
             _locomotionCore = locomotionCore ?? throw new ArgumentNullException(nameof(locomotionCore));
             TargetLocker = targetLocker;
             timeline = new Timeline_V1(duration);
-            _rotationHelper = new();
-            _rotationHelper.Camera = camera;
-            _baseInput = input ?? throw new ArgumentNullException(nameof(input));
-            _camera = camera ?? throw new ArgumentNullException(nameof(camera));
 
             locomotionCore.AddModule(locomotion);
 
@@ -92,10 +85,8 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         public override void OnUpdate()
         {
             base.OnUpdate();
-            var pos = _locomotionCore.Context.CurrentPosition;
-            _rotationHelper.OriginalPos = _rotationHelper.Camera.WorldToScreenPoint(pos);
-            _rotationHelper.TargetPos = _targetLocker.MainLockTarget == null ? _baseInput.MousePosition : _camera.WorldToScreenPoint(_targetLocker.MainLockTarget.Position);
-            _locomotion.DirectionVector = _targetTrigger.CaughtItems.Count <= 0 ? _locomotionCore.Context.CurrentRotation * Vector3.forward : Vector3.zero;
+            var f = _locomotionCore.Context.Forward;
+            _locomotion.DirectionVector = f;
             timeline.OnUpdate(Time.deltaTime);
 
 
