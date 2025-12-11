@@ -89,14 +89,13 @@ namespace Tests.Characters.Humanoid.Locomotion
 
 
 
-            //quickBoostingHelper.Input_Obsolete = _input_Obsolete;
             quickBoostingHelper.Input = _input;
             InitializeLocomotionCore(rbody, groundDetector, world);
             InitializeRotation(camera, rbody, _input.BaseInput);
             InitializeMovementStatemachine();
             InitializeMainStatemachine(camera, rbody, world, groundDetector);
 
-            _core.EvaluationModules = ArrayExtensions.Append_D(_core.EvaluationModules, statemachine);
+            _core.EvaluationModules = ArrayExtensions.Append(_core.EvaluationModules, statemachine);
 
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Locomotion_Core, this);
 

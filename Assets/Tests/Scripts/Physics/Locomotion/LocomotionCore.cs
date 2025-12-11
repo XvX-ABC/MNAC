@@ -136,6 +136,7 @@ namespace Tests.TPhysics.Locomotion
                 _moduleWrappers = new Wrapper[] { w };
             else
                 ArrayExtensions.Append(ref _moduleWrappers, w);
+            //_moduleWrappers.Append(w);
         }
         public void RemoveModule(ILocomotionModule module)
         {

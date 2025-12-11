@@ -10,39 +10,35 @@ namespace Tests.Extensions
 {
     public static class ArrayExtensions
     {
+        [Obsolete]
         public static void Append<T>(ref T[] array, T elem)
         {
             Array.Resize(ref array, array.Length + 1);
             array[^1] = elem;
         }
-        public static T[] Append_D<T>(T[] array, T elem)
+        public static T[] Append<T>(this T[] array, T elem)
         {
             Array.Resize(ref array, array.Length + 1);
             array[^1] = elem;
             return array;
         }
-
-        [Obsolete]
-        public static void Append<T>(this T[] array, T elem)
+        public static T[] Remove<T>(this T[] array, T elem)
         {
-            Array.Resize(ref array, array.Length + 1);
-            array[^1] = elem;
-        }
-        public static bool Remove<T>(this T[] array, T elem)
-        {
-            var length = array.Length;
-            var index = Array.IndexOf(array, elem);
+            var index = Array.FindIndex(array, e => e.Equals(elem));
+            if (index == -1)
+                return array;
             return Remove(array, index);
+
         }
-        public static bool Remove<T>(this T[] array, int index)
+        public static T[] Remove<T>(this T[] array, int index)
         {
             var length = array.Length;
             if (index == -1 || index >= length)
-                return false;
+                throw new IndexOutOfRangeException($"The index '{index}' is out of range '{0} , {array.Length - 1}'");
             if (index != length - 1)
                 Array.Copy(array, index + 1, array, index, length - index - 1);
             Array.Resize(ref array, length - 1);
-            return true;
+            return array;
         }
     }
 }
