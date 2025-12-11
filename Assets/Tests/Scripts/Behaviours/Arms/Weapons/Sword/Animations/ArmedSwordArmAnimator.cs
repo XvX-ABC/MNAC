@@ -8,7 +8,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
-using Transition = Tests.Behaviours.Arms.Weapons.Sword.IArmedSwordArmAnimationDefinitions.Transition;
+using Transition = Tests.Behaviours.Arms.Weapons.Sword.Animations.IArmedSwordArmAnimationDefinitions.Transition;
 
 namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
 {
@@ -60,12 +60,12 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
             {
                 controller = new(
                     graph,
-                    _animationDefinitions.BoostingSwitchName,
-                    _animationDefinitions.BoostingSpeedMultiplierName,
-                    _animationDefinitions.BoostingClipLength,
-                    _animationDefinitions.SlashSwitchName,
-                    _animationDefinitions.SlashSpeedMultiplierName,
-                    _animationDefinitions.SlashClipLength,
+                    _animationDefinitions.Boost.SwitchName,
+                    _animationDefinitions.Boost.MultiplierName,
+                    _animationDefinitions.Boost.ClipLength,
+                    _animationDefinitions.Slash.SwitchName,
+                    _animationDefinitions.Slash.MultiplierName,
+                    _animationDefinitions.Slash.ClipLength,
                     _animationDefinitions.WholeBodyController),
             };
 
@@ -134,7 +134,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         public void Update()
         {
             //statemachine.OnUpdate();
-            //Debug.Log(statemachine);
+            Debug.Log(statemachine);
             //var p = (AnimatorControllerPlayable)_wholeBody.controller.PlayablePart;
             //var state = p.GetCurrentAnimatorStateInfo(0);
             //var t = p.GetAnimatorTransitionInfo(0);

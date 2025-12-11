@@ -15,7 +15,7 @@ namespace Tests.Characters.C_0
     internal class C_0AnimationDefinitions : ICharacterAnimationDefinitions_C_0
     {
         [SerializeField]
-        HumanAnimationDefinitions _humanoidDefinitions;
+        HumanoidAnimationDefinitions _humanoidDefinitions;
         [SerializeField]
         StunningAnimationDefinitions _stunning;
         [SerializeField]

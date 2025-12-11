@@ -19,14 +19,13 @@ MonoBehaviour:
         Type: 1
       - Name: MachineGun
         Type: 0
-      _launcherMountPointName: 
-      _swordMountPointName: 
-      _launcherMountPointPlace: 4
-      _swordMountPointPlace: 5
-      _switchingDurationTime: 3
-      _switchingMountedProportion: 0.5
-      _switchingToBehavioursDurationTime: 3
-      _armedBehaviours:
+      _switching:
+        DurationTime: 3
+        MountedProportion: 0.5
+      _mountPoints:
+        Launcher: 4
+        Sword: 5
+      _weaponBehaviours:
       - {fileID: 11400000, guid: ec0bc909616b5ac47b85ee89915d37a7, type: 2}
       - {fileID: 11400000, guid: b4559db2b902b72488082f0433a3c154, type: 2}
     _animation:

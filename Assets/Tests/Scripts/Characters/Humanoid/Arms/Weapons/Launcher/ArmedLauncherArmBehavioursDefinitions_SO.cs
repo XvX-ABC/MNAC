@@ -9,20 +9,20 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
     {
         [SerializeField]
         ArmedLauncherArmBehavioursDefinitions _definitions;
-        public ITargetsCatcherDefinitions TargetsCatcher => _definitions.TargetsCatcher;
+        //public ITargetsCatcherDefinitions TargetsCatcher => _definitions.TargetsCatcher;
 
-        [Obsolete]
-        public ICircleOnScreenTargetsCatcherDefinitions CircleOnScreenTargetsCatcher => _definitions.CircleOnScreenTargetsCatcher;
+        //[Obsolete]
+        //public ICircleOnScreenTargetsCatcherDefinitions CircleOnScreenTargetsCatcher => _definitions.CircleOnScreenTargetsCatcher;
 
-        public AnimationClip AimingClip => _definitions.AimingClip;
+        //public AnimationClip AimingClip => _definitions.AimingClip;
 
-        public AnimationClip ReloadClip => _definitions.ReloadClip;
+        //public AnimationClip ReloadClip => _definitions.ReloadClip;
 
-        public float IdleAndAimTransitionLength => _definitions.IdleAndAimTransitionLength;
+        //public float IdleAndAimTransitionLength => _definitions.IdleAndAimTransitionLength;
 
-        public float AimAndReloadTransitionLength => _definitions.AimAndReloadTransitionLength;
+        //public float AimAndReloadTransitionLength => _definitions.AimAndReloadTransitionLength;
 
-        public ITargetLockerDefinitions TargetLocker => _definitions.TargetLocker;
+        //public ITargetLockerDefinitions TargetLocker => _definitions.TargetLocker;
 
         public LayerMask LayerMaskToHit => _definitions.LayerMaskToHit;
 

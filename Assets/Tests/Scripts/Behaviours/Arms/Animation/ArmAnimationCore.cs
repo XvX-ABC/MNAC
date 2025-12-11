@@ -213,7 +213,7 @@ namespace Tests.Behaviours.Arms.Animations
                 var clip = _animationDefinitions.Switching.Clip ?? throw new NullReferenceException("definitions.Switching.Clip");
                 var length = clip.length;
                 var c = AnimationClipPlayable.Create(graph, clip);
-                var speed = _definitions.SwitchingDurationTime > 0 ? length / _definitions.SwitchingDurationTime : 1;
+                var speed = _definitions.Switching.DurationTime > 0 ? length / _definitions.Switching.DurationTime : 1;
                 c.SetSpeed(speed);
                 playablePart = c;
             }

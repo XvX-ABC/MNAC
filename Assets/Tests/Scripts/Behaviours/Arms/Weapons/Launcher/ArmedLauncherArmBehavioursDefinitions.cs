@@ -12,21 +12,21 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         [SerializeField]
         TeamMask _teamMask;
         //[SerializeField]
-        protected AnimationClip aimingClip;
+        //protected AnimationClip aimingClip;
+        ////[SerializeField]
+        //protected AnimationClip reloadClip;
         //[SerializeField]
-        protected AnimationClip reloadClip;
-        [SerializeField]
-        protected float idleAndAimTransitionLength;
-        [SerializeField]
-        protected float aimAndReloadTransitionsLength;
-        [Obsolete]
-        public AnimationClip AimingClip => aimingClip;
-        [Obsolete]
-        public AnimationClip ReloadClip => reloadClip;
+        //protected float idleAndAimTransitionLength;
+        //[SerializeField]
+        //protected float aimAndReloadTransitionsLength;
+        ////[Obsolete]
+        //public AnimationClip AimingClip => aimingClip;
+        //[Obsolete]
+        //public AnimationClip ReloadClip => reloadClip;
 
-        public float IdleAndAimTransitionLength => idleAndAimTransitionLength;
+        //public float IdleAndAimTransitionLength => idleAndAimTransitionLength;
 
-        public float AimAndReloadTransitionLength => aimAndReloadTransitionsLength;
+        //public float AimAndReloadTransitionLength => aimAndReloadTransitionsLength;
 
         public LayerMask LayerMaskToHit { get => _layerMaskToHit; set => _layerMaskToHit = value; }
         public TeamMask TeamMask { get => _teamMask; set => _teamMask = value; }

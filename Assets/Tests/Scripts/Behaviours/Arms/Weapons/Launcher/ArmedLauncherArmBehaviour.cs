@@ -141,7 +141,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             statemachine.AddState(aiming);
             statemachine.AddState(ammoLoad);
 
-            var length = _definitions.AimAndReloadTransitionLength;
+            var length = 0;
 
             statemachine.AddTransitionFor(idle, aiming, length, () => target != null, null);
             statemachine.AddTransitionFor(idle, ammoLoad, 0, ReloadTriggered, null, InterruptionSource.None);

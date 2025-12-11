@@ -16,17 +16,9 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         [SerializeField]
         string _velocityName_X;
         [SerializeField]
-        string _boostingSwitchName;
+        ActionDefinitions _boost;
         [SerializeField]
-        string _boostingSpeedMultiplierName;
-        [SerializeField]
-        float _boostingClipLength;
-        [SerializeField]
-        string _slashSwitchName;
-        [SerializeField]
-        string _slashSpeedMultiplierName;
-        [SerializeField]
-        float _slashClipLength;
+        ActionDefinitions _slash;
         [SerializeField]
         StateTransitionOptions[] _transitionOptions;
         public ArmedSwordArmAnimationDefinitions()
@@ -34,29 +26,6 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
 
         }
 
-        public ArmedSwordArmAnimationDefinitions(
-            RuntimeAnimatorController wholeBodyController,
-            RuntimeAnimatorController armController,
-            string velocityName_Y,
-            string velocityName_X,
-            string boostingSwitchName,
-            string boostingSpeedMultiplierName,
-            float boostingClipLength,
-            string slashSwitchName,
-            string slashSpeedMultiplierName,
-            float slashClipLength)
-        {
-            _wholeBodyController = wholeBodyController ?? throw new ArgumentNullException(nameof(wholeBodyController));
-            _armController = armController ?? throw new ArgumentNullException(nameof(armController));
-            _velocityName_Y = velocityName_Y ?? throw new ArgumentNullException(nameof(velocityName_Y));
-            _velocityName_X = velocityName_X ?? throw new ArgumentNullException(nameof(velocityName_X));
-            _boostingSwitchName = boostingSwitchName ?? throw new ArgumentNullException(nameof(boostingSwitchName));
-            _slashSwitchName = slashSwitchName ?? throw new ArgumentNullException(nameof(slashSwitchName));
-            _boostingSpeedMultiplierName = boostingSpeedMultiplierName ?? throw new ArgumentNullException(nameof(boostingSpeedMultiplierName));
-            _boostingClipLength = Mathf.Max(0, boostingClipLength);
-            _slashSpeedMultiplierName = slashSpeedMultiplierName ?? throw new ArgumentNullException(nameof(slashSpeedMultiplierName));
-            _slashClipLength = Mathf.Max(0, slashClipLength);
-        }
 
         public RuntimeAnimatorController WholeBodyController => _wholeBodyController;
 
@@ -66,12 +35,10 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
 
         public string VelocityName_X => _velocityName_X;
 
-        public string BoostingSwitchName => _boostingSwitchName;
-        public string BoostingSpeedMultiplierName => _boostingSpeedMultiplierName;
-        public float BoostingClipLength => _boostingClipLength;
-        public string SlashSwitchName => _slashSwitchName;
-        public string SlashSpeedMultiplierName => _slashSpeedMultiplierName;
-        public float SlashClipLength => _slashClipLength;
+
+        public ActionDefinitions Boost => _boost;
+
+        public ActionDefinitions Slash => _slash;
 
         public StateTransitionOptions GetTransitionOptions(IArmedSwordArmAnimationDefinitions.Transition transition)
         {

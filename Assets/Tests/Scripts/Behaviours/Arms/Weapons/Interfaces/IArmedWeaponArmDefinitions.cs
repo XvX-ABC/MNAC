@@ -1,4 +1,5 @@
-﻿using Tests.Characters.MountPoints;
+﻿using System;
+using Tests.Characters.MountPoints;
 using Tests.Weapons;
 
 namespace Tests.Behaviours.Arms.Weapons
@@ -6,13 +7,8 @@ namespace Tests.Behaviours.Arms.Weapons
 
     public interface IArmedWeaponArmDefinitions
     {
-        public WeaponDescription[] Origins { get; }
-        public MountPointLocation LauncherMountPointPlace { get; }
-        public MountPointLocation SwordMountPointPlace { get; }
-        public string LauncherMountPointName { get; }
-        public string SwordMountPointName { get; }
-        public float SwitchingDurationTime { get; }
-        public float SwitchingMountedProportion { get; }
-        public float SwitchingToBehavioursDurationTime { get; }
+        WeaponDescription[] Origins { get; }
+        SwitchingDefinitions Switching { get; }
+        MountPointsDefinitions MountPoints { get; }
     }
 }

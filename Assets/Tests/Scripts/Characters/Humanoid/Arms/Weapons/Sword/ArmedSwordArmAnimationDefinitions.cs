@@ -1,6 +1,7 @@
 ﻿using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
-using Tests.Behaviours.Arms.Weapons.Sword;
+using Tests.Behaviours.Arms.Weapons.Sword.Animations;
 using UnityEngine;
+using StateTransitionOptions = Tests.Behaviours.Arms.Weapons.Sword.StateTransitionOptions;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
@@ -17,17 +18,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
         public string VelocityName_X => _definitions.VelocityName_X;
 
-        public string BoostingSwitchName => _definitions.BoostingSwitchName;
+        public ActionDefinitions Boost => _definitions.Boost;
 
-
-        public string BoostingSpeedMultiplierName => _definitions.BoostingSpeedMultiplierName;
-
-        public float BoostingClipLength => _definitions.BoostingClipLength;
-        public string SlashSwitchName => _definitions.SlashSwitchName;
-
-        public string SlashSpeedMultiplierName => _definitions.SlashSpeedMultiplierName;
-
-        public float SlashClipLength => _definitions.SlashClipLength;
+        public ActionDefinitions Slash => _definitions.Slash;
 
         public StateTransitionOptions GetTransitionOptions(IArmedSwordArmAnimationDefinitions.Transition transition)
         {

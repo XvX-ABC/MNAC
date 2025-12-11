@@ -78,8 +78,8 @@ namespace Tests.Behaviours.Arms.Weapons
             this.definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
             _launcherMountPoint = launcherMountPoint ?? throw new ArgumentNullException(nameof(launcherMountPoint));
             _swordMountPoint = swordMountPoint ?? throw new ArgumentNullException(nameof(swordMountPoint));
-            timeline = new Timeline_V1(this.definitions.SwitchingDurationTime);
-            timeline.AddPointEvent(this.definitions.SwitchingMountedProportion, ChangeWeapon);
+            timeline = new Timeline_V1(this.definitions.Switching.DurationTime);
+            timeline.AddPointEvent(this.definitions.Switching.MountedProportion, ChangeWeapon);
 
 
             _weaponCore = weaponCore ?? throw new NullReferenceException(nameof(weaponCore));
@@ -106,8 +106,8 @@ namespace Tests.Behaviours.Arms.Weapons
             this.definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
             _launcherMountPoint = launcherMountPoint ?? throw new ArgumentNullException(nameof(launcherMountPoint));
             _swordMountPoint = swordMountPoint ?? throw new ArgumentNullException(nameof(swordMountPoint));
-            timeline = new Timeline_V1(this.definitions.SwitchingDurationTime);
-            timeline.AddPointEvent(this.definitions.SwitchingMountedProportion, ChangeWeapon);
+            timeline = new Timeline_V1(this.definitions.Switching.DurationTime);
+            timeline.AddPointEvent(this.definitions.Switching.MountedProportion, ChangeWeapon);
 
 
             _weaponBackpack = weaponBackpack ?? throw new NullReferenceException(nameof(weaponBackpack));

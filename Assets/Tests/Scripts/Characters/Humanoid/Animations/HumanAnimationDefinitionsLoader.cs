@@ -11,7 +11,7 @@ namespace Tests.Characters.Humanoid.Animations
     internal class HumanAnimationDefinitionsLoader : MonoBehaviour, IHumanAnimationDefinitions
     {
         [SerializeField]
-        HumanAnimationDefinitions_SO _definitions;
+        HumanoidAnimationDefinitions_SO _definitions;
 
         public IHumanArmAnimationDefinitions LeftArmDefinitions => _definitions.LeftArmDefinitions;
 

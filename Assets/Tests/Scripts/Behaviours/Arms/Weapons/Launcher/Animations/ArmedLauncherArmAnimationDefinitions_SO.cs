@@ -21,5 +21,10 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         public string ReloadTrigger => _definitions.ReloadTrigger;
 
         public string ReloadMultiplier => _definitions.ReloadMultiplier;
+
+        public StateTransitionOptions GetStateTransitionOption(IArmedLauncherArmAnimationDefinitions.Transition transition)
+        {
+            return _definitions.GetStateTransitionOption(transition);
+        }
     }
 }

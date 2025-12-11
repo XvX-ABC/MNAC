@@ -24,6 +24,14 @@ MonoBehaviour:
     _slashSwitchName: Slash_Switch
     _slashSpeedMultiplierName: Slash_Speed_Multiplier
     _slashClipLength: 2.458
+    _boost:
+      SwitchName: Boosting_Switch
+      MultiplierName: Boosting_Speed_Multiplier
+      ClipLength: 2.458
+    _slash:
+      SwitchName: Slash_Switch
+      MultiplierName: Slash_Speed_Multiplier
+      ClipLength: 2.458
     _transitionOptions:
     - _duration: 0.25
       _offset: 0

@@ -19,9 +19,10 @@ MonoBehaviour:
     _boostingDuration: 3
     _slashDuration: 0.3
     _slashedRecoverDuration: 1
-    _includableLayers:
-      serializedVersion: 2
-      m_Bits: 0
-    _excludeLayers:
-      serializedVersion: 2
-      m_Bits: 254
+    _trigger:
+      ExcludeLayerMask:
+        serializedVersion: 2
+        m_Bits: 8
+      IncludeLayerMask:
+        serializedVersion: 2
+        m_Bits: 0

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
@@ -20,6 +21,8 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         string _reloadTrigger;
         [SerializeField]
         string _reloadMultiplier;
+        [SerializeField]
+        StateTransitionOptions[] _transitionOptions;
         public RuntimeAnimatorController Animator => _animator;
 
         public string Velocity_X => _velocity_x;
@@ -33,5 +36,10 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         public string ReloadTrigger => _reloadTrigger;
 
         public string ReloadMultiplier => _reloadMultiplier;
+
+        public StateTransitionOptions GetStateTransitionOption(IArmedLauncherArmAnimationDefinitions.Transition transition)
+        {
+            return _transitionOptions.FirstOrDefault(t => t.Transition == transition);
+        }
     }
 }

@@ -18,17 +18,14 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         [SerializeField]
         float _slashedRecoverDuration;
         [SerializeField]
-        LayerMask _includableLayers;
-        [SerializeField]
-        LayerMask _excludeLayers;
+        TriggerDefinitions _trigger;
         SwordBoostingDefinitioins _sboosting;
         SwordSlashDefinitions _slash;
         public Behaviours.Arms.Weapons.Sword.IBoostingDefinitions Boosting => _sboosting;
 
         public Behaviours.Arms.Weapons.Sword.ISlashDefinitions Slash => _slash;
-        public LayerMask IncludeLayerMask => _includableLayers;
-        public LayerMask ExcludeLayerMask => _excludeLayers;
 
+        public TriggerDefinitions Trigger => _trigger;
 
         public void InitializeBy(ILocomotionDefinitions locomotionDefinitions)
         {

@@ -19,15 +19,22 @@ MonoBehaviour:
         Type: 0
       - Name: Sword
         Type: 0
-      _mountPointName: MP_Hand_L
+      _launcherMountPointPlace: 0
+      _swordMountPointPlace: 0
+      _switching:
+        DurationTime: 0
+        MountedProportion: 0
+      _mountPoint:
+        Launcher: 0
+        Sword: 0
       _switchingDurationTime: 5
       _switchingMountedProportion: 0.5
       _switchingToBehavioursDurationTime: 5
-      _armedBehaviours:
+      _weaponBehaviours:
       - {fileID: 11400000, guid: 2cd503afcbe7bef4fbd7860e368b948d, type: 2}
       - {fileID: 11400000, guid: 060b647282dcdc94b8d603ca633c4959, type: 2}
     _animation:
       _weapon:
         _switching:
           _clip: {fileID: 7400000, guid: e059c50a44e295f40bf7395175d346f2, type: 2}
-    _part: 2
+    _part: 1

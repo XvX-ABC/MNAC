@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Tests.Characters.Humanoid.Animations
 {
     [Serializable]
-    public class HumanAnimationDefinitions : IHumanAnimationDefinitions
+    public class HumanoidAnimationDefinitions : IHumanAnimationDefinitions
     {
         [SerializeField]
         HumanArmAnimationDefinitions _leftArm;

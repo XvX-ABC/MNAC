@@ -105,12 +105,6 @@ namespace Tests.Characters.Humanoid.Arms
                 throw new Exception("The part of definitions must is left arm or right arm.");
         }
 
-        private void Start()
-        {
-            var mp = FindMountPoint(_definitions.Weapon.LauncherMountPointName);
-            var n = _definitions.Weapon.Origins[0].Name;
-
-        }
         internal MountPoint FindMountPoint(string name)
         {
             foreach (var m in _mountPoints)
@@ -158,8 +152,8 @@ namespace Tests.Characters.Humanoid.Arms
 
 
             var weaponDefinitions = _definitions.Weapon;
-            var launcherMountPoint = FindMountPoint(weaponDefinitions.LauncherMountPointPlace) ?? throw new NullReferenceException("launcherMountPoint");
-            var swordMountPoint = FindMountPoint(weaponDefinitions.SwordMountPointPlace) ?? throw new NullReferenceException("swordMountPoint");
+            var launcherMountPoint = FindMountPoint(weaponDefinitions.MountPoints.Launcher) ?? throw new NullReferenceException("launcherMountPoint");
+            var swordMountPoint = FindMountPoint(weaponDefinitions.MountPoints.Sword) ?? throw new NullReferenceException("swordMountPoint");
             var location = _part switch
             {
                 HumanPart.LeftArm => MountPointLocation.Left_Hand_Weapon,

@@ -8,13 +8,13 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         [SerializeField]
         ArmedLauncherArmBehavioursDefinitions _definitions;
 
-        public AnimationClip AimingClip => _definitions.AimingClip;
+        //public AnimationClip AimingClip => _definitions.AimingClip;
 
-        public AnimationClip ReloadClip => _definitions.ReloadClip;
+        //public AnimationClip ReloadClip => _definitions.ReloadClip;
 
-        public float IdleAndAimTransitionLength => _definitions.IdleAndAimTransitionLength;
+        //public float IdleAndAimTransitionLength => _definitions.IdleAndAimTransitionLength;
 
-        public float AimAndReloadTransitionLength => _definitions.AimAndReloadTransitionLength;
+        //public float AimAndReloadTransitionLength => _definitions.AimAndReloadTransitionLength;
 
         public LayerMask LayerMaskToHit => _definitions.LayerMaskToHit;
 
