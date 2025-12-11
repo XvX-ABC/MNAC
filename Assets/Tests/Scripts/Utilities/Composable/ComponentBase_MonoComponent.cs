@@ -10,11 +10,11 @@ namespace Tests.Utilities.Composable
         Guid _id;
         protected Blackboard blackboard;
         internal ComponentNode node;
-        protected ComponentBase_MonoComponent()
-        {
-            _id = Guid.NewGuid();
-            node = new(this);
-        }
+        //protected ComponentBase_MonoComponent()
+        //{
+        //    _id = Guid.NewGuid();
+        //    node = new(this);
+        //}
         public Guid ID { get => _id; }
         public IComponentNode Node { get => node; }
         public virtual Blackboard Blackboard

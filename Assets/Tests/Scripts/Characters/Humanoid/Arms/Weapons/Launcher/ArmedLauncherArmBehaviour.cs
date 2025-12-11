@@ -82,7 +82,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             _animationDefinitions = GetComponent<IArmedLauncherArmAnimationDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmedLauncherArmAnimationDefinitions));
             _aimIK = GetComponent<AimIK>();
             //_targetsCatcher = new(_definitions.TargetsCatcher);
-            _targetsCatcher = new(_definitions.CircleOnScreenTargetsCatcher);
+            //_targetsCatcher = new(_definitions.CircleOnScreenTargetsCatcher);
         }
 
         public override void Initialize(Blackboard blackboard)

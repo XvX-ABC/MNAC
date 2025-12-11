@@ -105,25 +105,12 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         public override void Update()
         {
             _behaviour?.Update();
-            //Debug.Log(Part + ", " + _behaviour.statemachine);
-            //Debug.Log(Part + ", " + _behaviour.animator.statemachine);
         }
         public override void FixedUpdate()
         {
             _behaviour.FixedUpdate();
         }
         //void UpdateTargetsCatcherFor(Blackboard blackboard)
-        //{
-        //    if (Activated)
-        //        WriteTargetsCatcherTo(blackboard);
-        //    else
-        //        blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker);
-        //}
-        //void WriteTargetsCatcherTo(Blackboard blackboard)
-        //{
-        //    if (!blackboard.TryWriteValue(CharacterBlackboardFields.TargetLocker, _targetsTrigger))
-        //        blackboard.TryRegisterField(CharacterBlackboardFields.TargetLocker, _targetsTrigger);
-        //}
         void CreateSphereTriggerTargetsCatcher(GameObject armObj)
         {
             var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -131,7 +118,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             obj.transform.SetParent(armObj.transform, false);
             obj.transform.localPosition = Vector3.zero;
             obj.transform.localRotation = Quaternion.identity;
-            //_targetsCatcher = obj.AddComponent<SphereTriggerTargetsCatcher_Obsolete>();
             _targetsTrigger = obj.AddComponent<SphericalObjsTrigger>();
             _targetsTrigger.IncludeLayerMask = _definitions.IncludeLayerMask;
             _targetsTrigger.ExcludeLayerMask = _definitions.ExcludeLayerMask;
