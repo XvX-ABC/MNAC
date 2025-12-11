@@ -14,6 +14,7 @@ using Tests.Weapons_New.Launcher;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SocialPlatforms;
+using static Tests.Behaviours.Arms.Weapons.Launcher.Animations.IArmedLauncherArmAnimationDefinitions;
 using World = Tests.TPhysics.World;
 
 namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
@@ -140,7 +141,38 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         {
 
 
-            var length = _definitions.AimAndReloadTransitionLength;
+
+            statemachine = new("armed_launcher_statemachine");
+            statemachine.AddState(idle);
+            statemachine.AddState(aiming);
+            statemachine.AddState(reload);
+
+
+            var length_i_a = _animationDefinitions.GetStateTransitionOption(Transition.Idle_Aiming).Duration;
+
+            statemachine.AddTransitionFor(idle, aiming, length_i_a, () => AimingTarget != null, null);
+            statemachine.AddTransitionFor(idle, reload, 0, TriggeredReload, null, InterruptionSource.None);
+
+            var a_r = new BlendingTransition<object>(aiming, reload, TriggeredReload, null, _animationDefinitions.GetStateTransitionOption(Transition.Aiming_Reload));
+            statemachine.AddTransitionFor(aiming, idle, length_i_a, () => AimingTarget == null, null);
+            statemachine.AddTransitionFor(a_r);
+
+            var r_i = new BlendingTransition<object>(reload, idle, () => AimingTarget == null, null, 0, 0, 1);
+            var r_a = new BlendingTransition<object>(reload, aiming, () => AimingTarget != null, null, _animationDefinitions.GetStateTransitionOption(Transition.Reload_Aiming));
+
+            statemachine.AddTransitionFor(r_i);
+            statemachine.AddTransitionFor(r_a);
+
+            state = new(this);
+
+            bool TriggeredReload() => _input == null ? false : _input.Reload && _launcher.Definitions.AmmoInMagazineAmount > _launcher.MagazineAmmoAmount && _launcher.ReserveAmmoAmount > 0;
+        }
+        [Obsolete]
+        void InitializeStatemacine_Obsolete(AimIK aimIK)
+        {
+
+
+            var length = 1;
 
 
             statemachine = new("armed_launcher_statemachine");
