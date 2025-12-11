@@ -29,6 +29,8 @@ namespace Tests.Utilities.Composable
         public virtual bool Enabled { get => enabled; set => enabled = value; }
         protected virtual void Awake()
         {
+            _id = Guid.NewGuid();
+            node = new(this);
             AttributeProcessingCore.Process(this);
         }
 

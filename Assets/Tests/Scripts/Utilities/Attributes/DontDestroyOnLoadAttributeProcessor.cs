@@ -8,6 +8,7 @@ namespace Tests.Utilities.Attributes
     {
         public Type AttributeType => typeof(DontDestroyOnLoadAttribute);
 
+
         public void Process(object obj, object attr)
         {
             if (obj is not MonoBehaviour mcomp)

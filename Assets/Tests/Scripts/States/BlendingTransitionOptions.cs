@@ -15,7 +15,7 @@ namespace Tests.States
         [SerializeField]
         float _fixedExitTime;
         [SerializeField]
-        InterruptionSource _interruptionSource;
+        InterruptionSource _interruptionSource = BlendingTransition<object>.INTERRUPTION_SOURCE_DEFAULT;
 
         public float Duration { get => _duration; set => _duration = value; }
         public float Offset { get => _offset; set => _offset = value; }

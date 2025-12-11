@@ -14,6 +14,7 @@ namespace Tests.TPhysics.Locomotion
         internal World world;
         Plane _worldPlane;
         Plane _groundPlane;
+        Vector3 _forward;
         public Context(TPhysics.Context physicsContext, [NotNull] IGroundDetector groundDetector)
         {
             world = World.Default;
@@ -22,6 +23,7 @@ namespace Tests.TPhysics.Locomotion
             _physicsContext = physicsContext;
             _groundDetector = groundDetector;
             verticalPosture = VerticalPosture.Holding;
+            _forward = Vector3.forward;
         }
         public Context(World world, TPhysics.Context physicsContext, [NotNull] IGroundDetector groundDetector)
         {
@@ -31,6 +33,7 @@ namespace Tests.TPhysics.Locomotion
             verticalPosture = VerticalPosture.Holding;
             _groundPlane = default;
             _worldPlane = default;
+            _forward = Vector3.forward;
 
         }
 
@@ -52,11 +55,13 @@ namespace Tests.TPhysics.Locomotion
         public Plane GroundPlane { get => _groundPlane; }
         public Plane WorldPlane { get => _worldPlane; }
         public World World { get => world; }
+        public Vector3 Forward { get => _forward; }
 
         internal void UpdatePlanes()
         {
             _groundPlane = new Plane(groundNormal, CurrentPosition);
             _worldPlane = new Plane(world.Up, CurrentPosition);
+            _forward = CurrentRotation * Vector3.forward;
         }
         public void Synchronise()
         {

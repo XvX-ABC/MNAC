@@ -7,11 +7,7 @@ namespace Tests.Characters.Humanoid
 {
     internal class CharacterCollisionComponentsManager : CharacterCollisionComponent
     {
-        internal List<CharacterCollisionComponent> components;
-        public CharacterCollisionComponentsManager()
-        {
-            components = new();
-        }
+        internal List<CharacterCollisionComponent> components = new();
         protected internal override void OnCollisionEnterImpl(Collision collision)
         {
             base.OnCollisionEnterImpl(collision);

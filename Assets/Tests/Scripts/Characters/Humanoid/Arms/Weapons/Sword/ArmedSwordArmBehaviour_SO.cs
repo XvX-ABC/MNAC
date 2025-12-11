@@ -15,7 +15,7 @@ using Tests.Weapons_New.Sword;
 using UnityEngine;
 using UnityEngine.Playables;
 using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
-using Transition = Tests.Behaviours.Arms.Weapons.Sword.IArmedSwordArmAnimationDefinitions.Transition;
+using Transition = Tests.Behaviours.Arms.Weapons.Sword.Animations.IArmedSwordArmAnimationDefinitions.Transition;
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
 
@@ -123,11 +123,12 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             obj.GetComponent<MeshRenderer>().enabled = false;
             obj.transform.SetParent(armObj.transform, false);
+            obj.layer = LayerMask.NameToLayer("Movement");
             obj.transform.localPosition = Vector3.zero;
             obj.transform.localRotation = Quaternion.identity;
             _targetsTrigger = obj.AddComponent<SphericalObjsTrigger>();
-            _targetsTrigger.IncludeLayerMask = _definitions.IncludeLayerMask;
-            _targetsTrigger.ExcludeLayerMask = _definitions.ExcludeLayerMask;
+            _targetsTrigger.IncludeLayerMask = _definitions.Trigger.IncludeLayerMask;
+            _targetsTrigger.ExcludeLayerMask = _definitions.Trigger.ExcludeLayerMask;
         }
         public override void Initialize(Blackboard blackboard)
         {
@@ -135,7 +136,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
 
             blackboard.TryReadValueOrThrowException<LocomotionCore>(CharacterBlackboardFields.Character_Locomotion_Core, out var locomotionCore);
-            //blackboard.TryReadValueOrThrowException<IInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
             blackboard.TryReadValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
             blackboard.TryReadValueOrThrowException<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph);
             blackboard.TryReadValueOrThrowException<ControllerPlayable>(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, out var controller);

@@ -187,7 +187,7 @@ namespace Tests.Utilities.Blackboards
         public void TryReadValueOrThrowException<T>(object key, out T value)
         {
             if (!TryReadValue<T>(key, out value))
-                throw new Exception($"Key '{key}' not found in blackboard.");
+                throw new BlackboardKeyNotFoundException(key);
         }
         public void TryRegisterFieldOrWriteValue<T>(object key, T value)
         {
@@ -195,5 +195,19 @@ namespace Tests.Utilities.Blackboards
                 TryWriteValue(key, value);
         }
 
+    }
+    public class BlackboardException : Exception
+    {
+        public BlackboardException(string message) : base(message)
+        {
+
+        }
+    }
+    public class BlackboardKeyNotFoundException : BlackboardException
+    {
+        public BlackboardKeyNotFoundException(object key) : base($"Key '{key}' not found in blackboard.")
+        {
+
+        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using Tests.Animations;
-using Tests.Behaviours.Arms.Weapons.Sword;
 using Tests.Behaviours.Arms.Weapons.Sword.Animations;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Interaction.Input;
@@ -82,7 +81,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             obj.transform.localPosition = Vector3.zero;
             obj.transform.localRotation = Quaternion.identity;
             _targetsCatcher = obj.AddComponent<SphereTriggerTargetsCatcher_Obsolete>();
-            _targetsCatcher.ExcludeLayers = _definitions.ExcludeLayerMask;
+            _targetsCatcher.ExcludeLayers = _definitions.Trigger.ExcludeLayerMask;
         }
         public override void Initialize(Blackboard blackboard)
         {
@@ -96,7 +95,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             blackboard.TryReadValueOrThrowException<LocomotionCore>(CharacterBlackboardFields.Character_Locomotion_Core, out var locomotionCore);
             //blackboard.TryReadValueOrThrowException<IInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
             blackboard.TryReadValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
-            blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Player_Camera_Main, out var camera);
+            //blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Player_Camera_Main, out var camera);
             blackboard.TryReadValueOrThrowException<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph);
             blackboard.TryReadValueOrThrowException<ControllerPlayable>(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, out var controller);
 
