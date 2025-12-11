@@ -1,17 +1,12 @@
-﻿using Tests.Characters;
-using Tests.Player;
+﻿using Tests.Player;
 using Tests.Utilities.Attributes;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
 
 
-namespace Tests.Characters.Weapons
+namespace Tests.Characters.Interaction
 {
-    internal class PlayerComponent : ComponentBase_MonoComponent
-    {
-
-    }
     [PlayerComponent(DontDestroyOnLoad = true)]
     internal class GameObjsInScreenCatcher : CharacterComponent
     {

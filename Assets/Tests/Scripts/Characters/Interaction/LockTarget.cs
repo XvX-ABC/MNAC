@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Pool;
 using IndicatedTarget = Tests.Characters.UI.IndicatedTarget;
 using ULockType = Tests.UI.BoxIndicator.LockType;
-namespace Tests.Characters.Weapons
+namespace Tests.Characters.Interaction
 {
     internal class LockTarget : ILockTarget
     {

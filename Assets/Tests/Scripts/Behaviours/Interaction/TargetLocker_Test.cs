@@ -1,11 +1,10 @@
 ﻿using Mono.Cecil.Cil;
-using Tests.Characters.Weapons;
 using Tests.Interaction;
 using Tests.Player;
 using Tests.UI;
 using UnityEngine;
 using GameObjsInScreenCatcher = Tests.Interaction.GameObjsInScreenCatcher;
-using LockTarget = Tests.Characters.Weapons.LockTarget;
+using LockTarget = Tests.Characters.Interaction.LockTarget;
 namespace Tests.Behaviours.Arms.Weapons
 {
     internal class TargetLocker_Test : MonoBehaviour

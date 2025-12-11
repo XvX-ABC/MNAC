@@ -4,6 +4,7 @@ using Tests.Characters.Humanoid.Arms;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Humanoid.Legs;
 using Tests.Characters.Humanoid.Locomotion;
+using Tests.Characters.Interaction;
 using Tests.Characters.MountPoints;
 using Tests.Characters.UI;
 using Tests.Interaction.Influence;

@@ -2,6 +2,7 @@
 using Tests.Behaviours;
 using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.UI;
+using Tests.Characters.Weapons;
 using Tests.Interaction;
 using Tests.UI;
 using Tests.Utilities.Attributes;
@@ -9,11 +10,37 @@ using Tests.Utilities.Blackboards;
 using UnityEngine;
 using IndicatedTarget = Tests.Characters.UI.IndicatedTarget;
 
-namespace Tests.Characters.Weapons
+namespace Tests.Characters.Interaction
 {
     [PlayerComponent(DontDestroyOnLoad = true)]
     internal class PlayerTargetLocker : TargetLocker, IPlayerTargetLocker
     {
+
+        internal class EnemyFilter : ICaughtItemFilter<GameObject>
+        {
+            TeamMask _teamMask;
+
+            public EnemyFilter(TeamMask teamMask)
+            {
+                _teamMask = teamMask;
+            }
+
+            public TeamMask TeamMask { get => _teamMask; set => _teamMask = value; }
+
+            public bool CanCatch(GameObject item)
+            {
+                if (item.TryGetComponent<ITeamMember>(out var member))
+                {
+                    return !member.CheckFriendlyBy(_teamMask);
+                }
+                return false;
+            }
+
+            public bool CanRelease(GameObject item)
+            {
+                throw new NotImplementedException();
+            }
+        }
         public static implicit operator Behaviours.PlayerTargetLocker(PlayerTargetLocker obj) => obj._locker;
         [SerializeField]
         ushort _processingAmountInCoroutine = 30;
@@ -75,12 +102,24 @@ namespace Tests.Characters.Weapons
             blackboard.TryReadValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
             blackboard.TryReadUIValueOrThrowException<ICursorIndicator>(CharacterUIBlackboardFields.Character_Actor_Cursor_Indicator, out var cursorIndicator);
             blackboard.TryReadUIValueOrThrowException(CharacterUIBlackboardFields.Indicators_Manager, out _indicatorsManager);
+            blackboard.TryReadValueOrThrowException<TeamMask>(CharacterBlackboardFields.Character_TeamMask, out var teamMask);
 
             _screenCatcher = new(camera, _processingAmountInCoroutine);
             if (didStart)
                 StartCoroutine(_screenCatcher.UpdateWithCoroutine());
-            _locker = new(input, _screenCatcher, CreateLockTarget, ReleaseLockTarget, camera, cursorIndicator, _obstacleDetector, _processingAmountInCoroutine, _catchAngle, _targetChangeDuration, _receiveInputDuration);
-
+            _locker = new(
+                input,
+                _screenCatcher,
+                CreateLockTarget,
+                ReleaseLockTarget,
+                camera,
+                cursorIndicator,
+                _obstacleDetector,
+                _processingAmountInCoroutine,
+                _catchAngle,
+                _targetChangeDuration,
+                _receiveInputDuration);
+            _locker.AddFilter(new EnemyFilter(teamMask));
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Component_TargetLocker, this);
         }
 

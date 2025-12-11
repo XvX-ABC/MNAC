@@ -4,7 +4,7 @@ using Tests.Interaction;
 using Tests.Utilities.Blackboards;
 using UnityEngine;
 
-namespace Tests.Characters
+namespace Tests.Characters.Interaction
 {
     internal abstract class TargetLocker : CharacterComponent, ITargetLocker
     {
