@@ -22,8 +22,6 @@ namespace Tests.TPhysics.Locomotion
             get => _camera;
             set
             {
-                if (value == null)
-                    throw new NullReferenceException(nameof(Camera));
                 _camera = value;
             }
         }
@@ -45,7 +43,17 @@ namespace Tests.TPhysics.Locomotion
         {
             var p = context.WorldPlane;
             var origin = context.CurrentPosition;
-            var tpos = _target == null ? CalculateMousePositionOn(p) : _target.Position;
+            var tpos = Vector3.zero;
+            if (_target == null)
+            {
+                if (_camera == null)
+                    return context;
+                else
+                    tpos = CalculateMousePositionOn(p);
+            }
+            else
+                tpos = _target.Position;
+            //var tpos = _target == null ? CalculateMousePositionOn(p) : _target.Position;
             _b.Origin = Vector3.ProjectOnPlane(origin, p.normal);
             _b.TargetPos = Vector3.ProjectOnPlane(tpos, p.normal);
             return _b.OnUpdate(context);

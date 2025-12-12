@@ -93,7 +93,7 @@ namespace Tests.Characters.Humanoid.Locomotion
             InitializeLocomotionCore(rbody, groundDetector, world);
             InitializeRotation(camera, rbody, _input.BaseInput);
             InitializeMovementStatemachine();
-            InitializeMainStatemachine(camera, rbody, world, groundDetector);
+            InitializeMainStatemachine(rbody, world, groundDetector);
 
             _core.EvaluationModules = ArrayExtensions.Append(_core.EvaluationModules, statemachine);
 
@@ -114,18 +114,16 @@ namespace Tests.Characters.Humanoid.Locomotion
         }
         void InitializeMovementStatemachine()
         {
-            //context = new LocomotionStateContext(_core, _input_Obsolete);
             context = new LocomotionStateContext(_core, _input);
 
             movementStatemachine = new("movement", context);
             movementStatemachine.AddState(walking);
             movementStatemachine.AddState(boosting);
 
-            //movementStatemachine.AddTransitionFor(boosting, walking, () => _input_Obsolete.HorizontalVector == Vector3.zero);
             movementStatemachine.AddTransitionFor(boosting, walking, () => _input.HorizontalVector == Vector3.zero);
 
         }
-        void InitializeMainStatemachine(Camera camera, Rigidbody rigidbody, World world, IGroundDetector groundDetector)
+        void InitializeMainStatemachine( Rigidbody rigidbody, World world, IGroundDetector groundDetector)
         {
 
             statemachine = new("main", context);
@@ -134,7 +132,6 @@ namespace Tests.Characters.Humanoid.Locomotion
             statemachine.AddState(quickBoosting);
 
             statemachine.AddTransitionFor(movementStatemachine, quickBoosting, () => quickBoostingHelper.TriggerEvent);
-            //statemachine.AddTransitionFor(movementStatemachine, jump, () => groundDetector.Grounds.Count > 0 && _input_Obsolete.Jump);
             statemachine.AddTransitionFor(movementStatemachine, jump, () => groundDetector.Grounds.Count > 0 && _input.Jump);
 
             var j_m = new BlendingTransition<object>(jump, movementStatemachine, () => _core.Context.VerticalPosture == VerticalPosture.Descending, null, 0, 0, 1);
@@ -145,10 +142,6 @@ namespace Tests.Characters.Humanoid.Locomotion
 
             var qb_b = new SubStatemachineTransition<object>(quickBoosting, movementStatemachine, boosting, null, null, 0, 0, 1, InterruptionSource.None);
             statemachine.AddTransitionFor(qb_b);
-
-
-
-            //_core.EvaluationModules = ArrayExtensions.Append_D(_core.EvaluationModules, statemachine);
 
 
         }
