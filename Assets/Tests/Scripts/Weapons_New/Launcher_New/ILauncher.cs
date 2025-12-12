@@ -21,6 +21,8 @@ namespace Tests.Weapons_New.Launcher
         ushort ReserveAmmoAmount { get; }
         LayerMask LayerMaskToHit { get; set; }
         TeamMask TeamMask { get; set; }
+        Action<int, int> MagazineAmountChangeAction { get; set; }
+        Action<int, int> ReserveAmountChangeAction { get; set; }
 
         void FillReserve(int amount);
     }

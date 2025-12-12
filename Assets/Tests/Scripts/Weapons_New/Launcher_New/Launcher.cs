@@ -2,6 +2,7 @@
 using Tests.Interaction;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Timeline;
+using Unity.VisualScripting.YamlDotNet.Serialization.NodeTypeResolvers;
 using UnityEngine;
 using IProjectile = Tests.Weapons_New.Projectiles.IProjectile;
 
@@ -13,8 +14,31 @@ namespace Tests.Weapons_New.Launcher
 
         protected struct Ammo
         {
-            public int MagazineAmount;
-            public int ReserveAmount;
+            int _magazineAmount;
+            int _reserveAmount;
+            Action<int, int> _magazineAmountChangeAction;
+            Action<int, int> _reserveAmountChangeAction;
+            public int MagazineAmount
+            {
+                get => _magazineAmount;
+                set
+                {
+                    _magazineAmountChangeAction?.Invoke(_magazineAmount, value);
+                    _magazineAmount = value;
+                }
+            }
+            public int ReserveAmount
+            {
+                get => _reserveAmount;
+                set
+                {
+                    _reserveAmountChangeAction?.Invoke(_reserveAmount, value);
+                    _reserveAmount = value;
+                }
+            }
+
+            public Action<int, int> MagazineAmountChangeAction { get => _magazineAmountChangeAction; set => _magazineAmountChangeAction = value; }
+            public Action<int, int> ReserveAmountChangeAction { get => _reserveAmountChangeAction; set => _reserveAmountChangeAction = value; }
         }
         protected struct Projectiles
         {
@@ -66,6 +90,8 @@ namespace Tests.Weapons_New.Launcher
 
         public LayerMask LayerMaskToHit { get => projetiles.LayerMaskToHit; set => projetiles.LayerMaskToHit = value; }
         public TeamMask TeamMask { get => projetiles.TeamMask; set => projetiles.TeamMask = value; }
+        public Action<int, int> MagazineAmountChangeAction { get => ammo.MagazineAmountChangeAction; set => ammo.MagazineAmountChangeAction = value; }
+        public Action<int, int> ReserveAmountChangeAction { get => ammo.ReserveAmountChangeAction; set => ammo.ReserveAmountChangeAction = value; }
 
         //public GameObject Obj => this.gameObject;
 
