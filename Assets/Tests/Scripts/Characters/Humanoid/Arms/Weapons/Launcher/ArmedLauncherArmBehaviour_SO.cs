@@ -17,7 +17,7 @@ using Tests.Weapons.Launcher;
 using Tests.Weapons_New;
 using UnityEngine;
 using UnityEngine.Playables;
-using PlayerTargetLocker = Tests.Characters.Interaction.PlayerTargetLocker;
+using PlayerTargetLocker = Tests.Characters.Weapons.PlayerTargetLocker;
 using WeaponType = Tests.Weapons_New.WeaponType;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers

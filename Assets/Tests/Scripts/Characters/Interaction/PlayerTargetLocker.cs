@@ -1,16 +1,17 @@
 ﻿using System;
 using Tests.Behaviours;
 using Tests.Characters.Humanoid.Interaction.Input;
+using Tests.Characters.Interaction;
 using Tests.Characters.UI;
-using Tests.Characters.Weapons;
 using Tests.Interaction;
 using Tests.UI;
 using Tests.Utilities.Attributes;
 using Tests.Utilities.Blackboards;
 using UnityEngine;
 using IndicatedTarget = Tests.Characters.UI.IndicatedTarget;
+using TargetLocker = Tests.Characters.Interaction.TargetLocker;
 
-namespace Tests.Characters.Interaction
+namespace Tests.Characters.Weapons
 {
     [PlayerComponent(DontDestroyOnLoad = true)]
     internal class PlayerTargetLocker : TargetLocker, IPlayerTargetLocker

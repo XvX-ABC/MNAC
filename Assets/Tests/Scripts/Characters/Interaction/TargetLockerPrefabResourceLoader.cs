@@ -1,4 +1,5 @@
-﻿using Tests.Utilities.Assets_New;
+﻿using Tests.Characters.Weapons;
+using Tests.Utilities.Assets_New;
 
 namespace Tests.Characters.Interaction
 {

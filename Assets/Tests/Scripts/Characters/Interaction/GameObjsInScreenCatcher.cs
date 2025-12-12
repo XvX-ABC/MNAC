@@ -1,7 +1,5 @@
-﻿using Tests.Player;
-using Tests.Utilities.Attributes;
+﻿using Tests.Utilities.Attributes;
 using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
 using UnityEngine;
 
 
@@ -39,7 +37,7 @@ namespace Tests.Characters.Interaction
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            blackboard.TryReadValueOrThrowException<Camera>(BlackboardFields.Camera_Main, out var camera);
+            blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Player_Camera_Main, out var camera);
             _catcher = new(camera, _processingAmountOfFrames);
 
             blackboard.TryRegisterField(CharacterBlackboardFields.Player_ScreenCatcherr, this);
