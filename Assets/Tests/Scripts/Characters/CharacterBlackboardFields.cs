@@ -75,6 +75,7 @@ namespace Tests.Characters
         public static readonly Guid Character_Locomotion_Core;
         internal static readonly Guid Character_Animation_Tree;
         internal static readonly Guid Character_Weapon_Projectile_LayerMaskToHit;
+        internal static readonly Guid Character_Weapon_Sword_LayerMaskToHit;
         internal static readonly Guid Character_TeamMask;
         internal static readonly Guid Character_Weapon_Backpack;
     }

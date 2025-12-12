@@ -10,18 +10,23 @@ namespace Tests.Characters.C_0
 {
     internal interface ICharacterDefinitions_C_0
     {
-        public LayerMask LayerMaskToHit { get; }
+        public LayerMask ProjectilesLayerMaskToHit { get; }
+        public LayerMask SwordLayerMaskToHit { get; }
         public TeamMask TeamMask { get; }
     }
     internal class C_0Definitions : ICharacterDefinitions_C_0
     {
         [SerializeField]
-        LayerMask _layerMask;
+        LayerMask _projectilesLayerMaskToHit;
+        [SerializeField]
+        LayerMask _swordLayerMaskToHit;
         [SerializeField]
         TeamMask _teamMask;
 
-        public LayerMask LayerMaskToHit => _layerMask;
+        public LayerMask ProjectilesLayerMaskToHit => _projectilesLayerMaskToHit;
 
         public TeamMask TeamMask => _teamMask;
+
+        public LayerMask SwordLayerMaskToHit => _swordLayerMaskToHit;
     }
 }

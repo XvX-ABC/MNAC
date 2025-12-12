@@ -16,9 +16,6 @@ namespace Tests.Weapons_New.Sword
         [SerializeField]
         internal float length;
         [SerializeField]
-        internal LayerMask collisionLayerMask;
-        [SerializeField]
-        internal LayerMask damageLayerMask;
         internal Vector3 worldUp = Vector3.up;
 
         internal Dictionary<SwordActionType, SwordAction> actions;
@@ -32,21 +29,10 @@ namespace Tests.Weapons_New.Sword
         public Action<GameObject> HitAction { get => tipTrigger.EntryAction; set => tipTrigger.EntryAction = value; }
         public GameObject OwnerObj { get => ownerObj; set => ownerObj = value; }
         public Vector3 WorldUp { get => worldUp; set => worldUp = value; }
-
+        public LayerMask LayerMaskToHit { get => tipTrigger.IncludedLayerMask; set => tipTrigger.IncludedLayerMask = value; }
         public override WeaponType Type => WeaponType.Sword;
 
         public float Length { get => length; }
-        public LayerMask CollisionLayerMask
-        {
-            get => collisionLayerMask;
-            set => collisionLayerMask = value;
-        }
-        public LayerMask DamageLayerMask
-        {
-            get => damageLayerMask;
-            set => damageLayerMask = value;
-        }
-
 
         protected void Awake()
         {

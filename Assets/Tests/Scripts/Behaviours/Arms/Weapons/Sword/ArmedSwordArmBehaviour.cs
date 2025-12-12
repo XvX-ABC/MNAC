@@ -18,6 +18,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         [Obsolete]
         PlayerTargetLocker _targetLocker;
         ISphericalObjsTrigger _targetsTrigger;
+        LayerMask _layerMaskToHit;
 
         [Obsolete]
         Interaction.ITarget_Obsolete _target;
@@ -45,6 +46,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
                     _sword = sword;
                     if (_targetsTrigger != null)
                         _targetsTrigger.Radius = _sword.Length;
+                    _sword.LayerMaskToHit = _layerMaskToHit;
 
                     slash.Sword = _sword;
                 }
@@ -90,6 +92,18 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
                 animator.Enabled = true;
             }
         }
+
+        public LayerMask LayerMaskToHit
+        {
+            get => _layerMaskToHit;
+            set
+            {
+                if (_sword != null)
+                    _sword.LayerMaskToHit = value;
+                _layerMaskToHit = value;
+            }
+        }
+
         public ArmedSwordArmBehaviour(IArmedSwordArmBehaviourDefinitions definitions, BoostingHelper boostingHelper, SlashHelper slashHelper, ArmedSwordArmAnimator animator)
         {
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));

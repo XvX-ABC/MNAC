@@ -47,6 +47,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         ISword _sword;
 
         ArmOccupation _armOccupation;
+
         public override WeaponType Type => WeaponType.Sword;
         internal TeamMask teamMask
         {
@@ -75,7 +76,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 {
                     //UpdateTargetsCatcherFor(blackboard);
                     _behaviour.Activated = value;
-                    _targetLocker.Enabled = value;
+                    //_targetLocker.Enabled = value;
                 }
                 Cursor.visible = !value;
                 Cursor.lockState = value ? CursorLockMode.Confined : CursorLockMode.None;
@@ -123,7 +124,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             obj.GetComponent<MeshRenderer>().enabled = false;
             obj.transform.SetParent(armObj.transform, false);
-            obj.layer = LayerMask.NameToLayer("Movement");
             obj.transform.localPosition = Vector3.zero;
             obj.transform.localRotation = Quaternion.identity;
             _targetsTrigger = obj.AddComponent<SphericalObjsTrigger>();
@@ -149,6 +149,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             {
                 throw new BlackboardKeyNotFoundException(CharacterBlackboardFields.Character_TeamMask);
             }
+
 
             CreateSphereTriggerTargetsCatcher(armObj);
             _load = new(_targetsTrigger.gameObject);
@@ -182,6 +183,14 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
             _behaviour = new(_definitions, _boostingHelper, _slashHelper, _animator);
             _behaviour.TargetsTrigger = _targetsTrigger;
+
+            if (blackboard.TryReadValue<LayerMask>(CharacterBlackboardFields.Character_Weapon_Sword_LayerMaskToHit, out var layerMask))
+            {
+                _behaviour.LayerMaskToHit = layerMask;
+                _targetsTrigger.IncludeLayerMask |= layerMask;
+            }
+            else
+                throw new BlackboardKeyNotFoundException(CharacterBlackboardFields.Character_Weapon_Sword_LayerMaskToHit);
 
 
             _swordBoostingState = new SwordBoosting(_boostingHelper);

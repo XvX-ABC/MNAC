@@ -9,6 +9,7 @@ namespace Tests.Weapons_New.Sword
         GameObject OwnerObj { get; set; }
         Vector3 WorldUp { get; set; }
         float Length { get; }
+        LayerMask LayerMaskToHit { get; set; }
 
         SwordAction GetSwordAction(SwordActionType type);
     }

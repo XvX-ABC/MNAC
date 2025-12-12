@@ -44,7 +44,8 @@ namespace Tests.Characters.C_0
             var blackboard = base.CreateBlackboard();
             blackboard.TryRegisterField(CharacterBlackboardFields.Player_Camera_Main, _camera);
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Main, this.gameObject);
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Weapon_Projectile_LayerMaskToHit, _definitions.LayerMaskToHit);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Weapon_Projectile_LayerMaskToHit, _definitions.ProjectilesLayerMaskToHit);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Weapon_Sword_LayerMaskToHit, _definitions.SwordLayerMaskToHit);
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_TeamMask, _definitions.TeamMask);
             return blackboard;
         }
