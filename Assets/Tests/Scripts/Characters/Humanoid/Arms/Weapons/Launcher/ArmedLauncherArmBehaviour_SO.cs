@@ -72,7 +72,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                 if (_behaviour != null)
                 {
                     _behaviour.Activated = value;
-                    _targetLocker.Enabled = value;
+                    //_targetLocker.Enabled = value;
                 }
                 Cursor.visible = !value;
                 Cursor.lockState = value ? CursorLockMode.Locked : CursorLockMode.None;
