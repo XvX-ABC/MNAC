@@ -199,7 +199,16 @@ namespace Tests.Interaction
         FindClosestTargetByMainTarget _findClosestTargetState_MT;
         ReceiveCursorInput _receiveState;
 
-
+        public override bool ObjsCatchEnable
+        {
+            get => _screenObjsCatcher.enabled;
+            set => _screenObjsCatcher.enabled = value;
+        }
+        public override bool CursorEnable
+        {
+            get => _cursorController.Enabled;
+            set => _cursorController.Enabled = value;
+        }
         public override bool Enabled
         {
             get => _screenObjsCatcher.Enabled;
