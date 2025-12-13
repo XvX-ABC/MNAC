@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Tests.Animations;
 using Tests.Characters.Interaction;
 using Tests.Interaction;
@@ -16,12 +17,15 @@ namespace Tests.Characters
         Health _health;
         [SerializeField]
         TeamMask _teamMask;
+        List<CharacterAccessor_Debug> _accessors;
         public IHealth HP => _health;
 
         public TeamMask TeamMask { get => _teamMask; set => _teamMask = value; }
 
         protected override void Awake()
         {
+            _accessors = new();
+            SetAccessors();
         }
         protected override void Start()
         {
@@ -40,6 +44,7 @@ namespace Tests.Characters
         }
         protected override void OnDestroy()
         {
+            DestroyAccessors();
         }
         internal override void ComponentsDispose()
         {
@@ -68,6 +73,27 @@ namespace Tests.Characters
         internal override void InitializeComponents(Blackboard blackboard)
         {
 
+        }
+        void SetAccessors()
+        {
+            var colliders = GetComponentsInChildren<Collider>();
+            foreach (var c in colliders)
+            {
+                var obj = c.gameObject;
+                if (obj == this)
+                    continue;
+                var accessor = obj.AddComponent<CharacterAccessor_Debug>(); ;
+                accessor.character = this;
+                _accessors.Add(accessor);
+            }
+        }
+        void DestroyAccessors()
+        {
+            foreach (var a in _accessors)
+            {
+                Destroy(a);
+            }
+            _accessors.Clear();
         }
     }
 }
