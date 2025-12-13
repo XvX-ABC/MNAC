@@ -86,7 +86,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         {
             base.OnUpdate();
             var f = _locomotionCore.Context.Forward;
-            _locomotion.DirectionVector = f;
+            _locomotion.DirectionVector = _targetTrigger.CaughtItems.Count <= 0 ? f : Vector3.zero;
             timeline.OnUpdate(Time.deltaTime);
 
 
