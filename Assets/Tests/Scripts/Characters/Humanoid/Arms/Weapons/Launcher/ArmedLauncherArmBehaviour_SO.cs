@@ -13,11 +13,14 @@ using Tests.TPhysics;
 using Tests.TPhysics.Environment;
 using Tests.UI;
 using Tests.Utilities.Blackboards;
-using Tests.Weapons.Launcher;
+using Tests.Utilities.Timeline;
+using Tests.Utilities.Timeline.Events;
+using Tests.Utilities.Timeline.Events.Range;
 using Tests.Weapons_New;
+using Tests.Weapons_New.Launcher;
 using UnityEngine;
 using UnityEngine.Playables;
-using PlayerTargetLocker = Tests.Characters.Weapons.PlayerTargetLocker;
+using PlayerCursorIndicator = Tests.UI.PlayerCursorIndicator;
 using WeaponType = Tests.Weapons_New.WeaponType;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
@@ -25,6 +28,151 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
     [CreateAssetMenu(fileName = "ArmedLauncherArmBehaviour", menuName = "Tests/Behaviours/Characters/Humanoid/Arms/Weapons/Launchers/ArmedLauncherArmBehaviour")]
     public class ArmedLauncherArmBehaviour_SO : ArmedWeaponArmBehaviourBase_SO
     {
+        #region internal classes
+        class UIControl : IDisposable
+        {
+            const string SLIDER_MODE_RELOAD = "filling";
+            const string SLIDER_MODE_NORMALLY = "normal";
+            ILauncher _launcher;
+            float _maximumMagazineAmount;
+            float _maximumReserveAmount;
+
+            ITimeline _reloadTimeline;
+            ITimelineEvent _reloadingEvent;
+
+            PlayerCursorIndicator _indicator;
+            ProgressSlider _slider;
+            HumanPart _part;
+
+            public UIControl(HumanPart part)
+            {
+                _part = part;
+            }
+            internal ITimeline reloadTimeline
+            {
+                set
+                {
+                    if (value != null)
+                    {
+                        value.StartAction += WhenReloadStart;
+                        _reloadingEvent = value.AddRangeEvent(0, 1, WhenReloading);
+                        value.EndAction += WhenReloadEnd;
+                    }
+                    TimelineDispose();
+                    _reloadTimeline = value;
+                }
+            }
+            internal ILauncher launcher
+            {
+                get => _launcher;
+                set
+                {
+                    if (value != null)
+                    {
+                        value.MagazineAmountChangeAction += WhenMagazineAmountChange;
+                        value.ReserveAmountChangeAction += WhenReserveAmountChange;
+                        _maximumMagazineAmount = value.Definitions.AmmoInMagazineAmount;
+                        _maximumReserveAmount = value.Definitions.AmmoReserveAmount;
+
+                        reloadTimeline = value.ReloadTimeline;
+                    }
+
+                    LauncherDispose();
+                    _launcher = value;
+                }
+            }
+
+            internal PlayerCursorIndicator cursorIndicator
+            {
+                get => _indicator;
+                set
+                {
+                    _indicator = value;
+                    if (_indicator != null)
+                    {
+
+                        _slider = _part switch
+                        {
+                            HumanPart.LeftArm => _indicator.Slider_lb,
+                            HumanPart.RightArm => _indicator.Slider_rb,
+                            _ => null
+                        };
+                        _slider.ChangeMode(SLIDER_MODE_NORMALLY);
+                    }
+                    else
+                        _slider = null;
+                }
+            }
+            void LauncherDispose()
+            {
+                if (_launcher != null)
+                {
+                    _launcher.MagazineAmountChangeAction -= WhenMagazineAmountChange;
+                    _launcher.ReserveAmountChangeAction -= WhenReserveAmountChange;
+                }
+            }
+            void TimelineDispose()
+            {
+                if (_reloadTimeline != null)
+                {
+                    _reloadTimeline.StartAction -= WhenReloadStart;
+                    _reloadTimeline.RemoveRangeEvent(_reloadingEvent);
+                    _reloadTimeline.EndAction -= WhenReloadEnd;
+                }
+            }
+            public void Load()
+            {
+                if (_launcher == null)
+                    return;
+                _slider.Value = _launcher.MagazineAmmoAmount / _maximumMagazineAmount;
+            }
+            public void Reset()
+            {
+                _slider.Value = 1;
+            }
+            public void Dispose()
+            {
+                LauncherDispose();
+                TimelineDispose();
+
+            }
+
+            void WhenMagazineAmountChange(int ov, int nv)
+            {
+                if (_slider == null)
+                {
+                    return;
+                }
+                var t = 0f;
+                if (nv > 0)
+                    t = (float)nv / _maximumMagazineAmount;
+                _slider.Value = t;
+            }
+            void WhenReserveAmountChange(int ov, int nv)
+            {
+            }
+            void WhenReloadStart(TimelineContext _)
+            {
+                _slider?.ChangeMode(SLIDER_MODE_RELOAD);
+            }
+            void WhenReloading(TimelineContext ctx)
+            {
+                if (_slider != null)
+                    _slider.Value = ctx.NormalizedTime;
+            }
+            void WhenReloadEnd(TimelineContext _)
+            {
+                _slider?.ChangeMode(SLIDER_MODE_NORMALLY);
+            }
+            ~UIControl()
+            {
+                Dispose();
+            }
+        }
+
+        #endregion
+
+
         ArmedLauncherArmAnimator _animator;
         Behaviours.Arms.Weapons.Launcher.ArmedLauncherArmBehaviour _behaviour;
         [SerializeField]
@@ -32,8 +180,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         [SerializeField]
         ArmedLauncherArmAnimationDefinitions_SO _animationDefinitions;
         ITargetLocker _targetLocker;
-        IndicatorsManager _indicatorsManager;
-        ArmController _armCore;
+        UIControl _uiControl;
         public override WeaponType Type => WeaponType.Launcher;
 
         public override IWeapon Weapon
@@ -42,9 +189,10 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             set
             {
                 _behaviour.Weapon = value;
-                if (value is ILauncher_Obsolete launcher)
+                if (value is ILauncher launcher)
                 {
-                    var definitions = launcher.Definitions;
+                    if (_uiControl != null)
+                        _uiControl.launcher = launcher;
                 }
             }
         }
@@ -73,12 +221,21 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                 {
                     _behaviour.Activated = value;
                     //_targetLocker.Enabled = value;
+
+                }
+                if (_uiControl != null)
+                {
+                    if (value)
+                        _uiControl.Load();
+                    else
+                        _uiControl.Reset();
                 }
                 Cursor.visible = !value;
                 Cursor.lockState = value ? CursorLockMode.Locked : CursorLockMode.None;
                 enabled = value;
             }
         }
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -94,13 +251,11 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             blackboard.TryReadValueOrThrowException<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Main, out var actorObj);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Arm_Local, out var armObj);
-            blackboard.TryReadValueOrThrowException<ArmController>(CharacterBlackboardFields.Character_Arm_Core_Local, out _armCore);
 
             blackboard.TryReadValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
 
 
-            blackboard.TryReadUIValueOrThrowException<ICursorIndicator>(CharacterUIBlackboardFields.Character_Actor_Cursor_Indicator, out var cursorIndicator);
-            blackboard.TryReadUIValueOrThrowException<IndicatorsManager>(CharacterUIBlackboardFields.Indicators_Manager, out _indicatorsManager);
+
             var aimIK = armObj.GetComponent<AimIK>();
 
             var armInput = Part switch
@@ -114,6 +269,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             var weaponControlInput = armInput.WeaponControl;
             blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Component_TargetLocker, out _targetLocker);
             InitializeBehaviourAndAnimator(graph, aimIK, input.BaseInput, rbody, world, groundDetector, _targetLocker, locomotionCore, armInput.WeaponControl);
+
+
         }
         void InitializeBehaviourAndAnimator(
             PlayableGraph graph,
@@ -129,6 +286,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             _animator = new(graph, aimIK, rbody, world, groundDetector, locomotionCore, targetLocker.TargetChangeDuration, _definitions, _animationDefinitions, weaponControlInput);
             _behaviour = new(_definitions, _animator);
 
+
+
             if (blackboard.TryReadValue<LayerMask>(CharacterBlackboardFields.Character_Weapon_Projectile_LayerMaskToHit, out var layerMask))
             {
                 _behaviour.layerMaskToHit = layerMask;
@@ -137,9 +296,21 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             {
                 _behaviour.teamMask = teamMask;
             }
+            if (blackboard.TryReadUIValue<PlayerCursorIndicator>(CharacterUIBlackboardFields.Player_Cursor_Indicator, out var indicator))
+            {
+                _uiControl = new(Part);
+                _uiControl.cursorIndicator = indicator;
+            }
+
+
 
             _behaviour.Input = weaponControlInput;
             _behaviour.TargetLocker = _targetLocker;
+        }
+        public override void Dispose()
+        {
+            _uiControl?.Dispose();
+            base.Dispose();
         }
         public override void Update()
         {
