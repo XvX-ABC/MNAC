@@ -9,6 +9,7 @@ using Tests.Utilities.Attributes;
 using Tests.Utilities.Blackboards;
 using UnityEngine;
 using IndicatedTarget = Tests.Characters.UI.IndicatedTarget;
+using PlayerCursorIndicator = Tests.Characters.UI.PlayerCursorIndicator;
 using TargetLocker = Tests.Characters.Interaction.TargetLocker;
 
 namespace Tests.Characters.Weapons
@@ -57,6 +58,7 @@ namespace Tests.Characters.Weapons
 
         Tests.Interaction.GameObjsInScreenCatcher _screenCatcher;
         Behaviours.PlayerTargetLocker _locker;
+        PlayerCursorIndicator _cursorIndicator;
         IndicatorsManager _indicatorsManager;
 
         public float CatchAngle { get => _locker.CatchAngle; set => _catchAngle = _locker.CatchAngle = value; }
@@ -101,7 +103,7 @@ namespace Tests.Characters.Weapons
             base.Initialize(blackboard);
             blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Player_Camera_Main, out var camera);
             blackboard.TryReadValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
-            blackboard.TryReadUIValueOrThrowException<ICursorIndicator>(CharacterUIBlackboardFields.Character_Actor_Cursor_Indicator, out var cursorIndicator);
+            blackboard.TryReadUIValueOrThrowException<PlayerCursorIndicator>(CharacterUIBlackboardFields.Player_Cursor_Indicator, out _cursorIndicator);
             blackboard.TryReadUIValueOrThrowException(CharacterUIBlackboardFields.Indicators_Manager, out _indicatorsManager);
             blackboard.TryReadValueOrThrowException<TeamMask>(CharacterBlackboardFields.Character_TeamMask, out var teamMask);
 
@@ -114,20 +116,26 @@ namespace Tests.Characters.Weapons
                 CreateLockTarget,
                 ReleaseLockTarget,
                 camera,
-                cursorIndicator,
+                _cursorIndicator,
                 _obstacleDetector,
                 _processingAmountInCoroutine,
                 _catchAngle,
                 _targetChangeDuration,
                 _receiveInputDuration);
             _locker.AddFilter(new EnemyFilter(teamMask));
+            _locker.MainTargetChangedAction += WhenLockTargetChange;
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Component_TargetLocker, this);
         }
 
         public override void Dispose()
         {
+            _locker.MainTargetChangedAction -= WhenLockTargetChange;
             blackboard.TryUnregisterField(CharacterBlackboardFields.Character_Component_TargetLocker);
             base.Dispose();
+        }
+        void WhenLockTargetChange(ILockTarget oldTarget, ILockTarget newTarget)
+        {
+            _cursorIndicator.LockTarget = newTarget;
         }
         LockTarget CreateLockTarget(GameObject obj, LockType lockType)
         {

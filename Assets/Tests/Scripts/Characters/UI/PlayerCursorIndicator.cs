@@ -1,0 +1,43 @@
+﻿using Tests.Interaction;
+using UnityEngine;
+
+namespace Tests.Characters.UI
+{
+    internal class PlayerCursorIndicator : Tests.UI.PlayerCursorIndicator
+    {
+        ILockTarget _lockTarget;
+        IDamageable _damageable;
+        public ILockTarget LockTarget
+        {
+            get => _lockTarget;
+            set
+            {
+                var obj = value?.Obj;
+                _damageable = obj?.GetComponent<IDamageable>();
+                _lockTarget = value;
+            }
+        }
+
+        void Update()
+        {
+            var slider = Slider_lm;
+            if (_damageable != null)
+            {
+                if (!slider.enabled)
+                {
+                    Debug.Log("enable slider");
+                    slider.enabled = true;
+                }
+                var hp = _damageable.HP;
+                slider.Value = hp.Point / hp.MaxPoint;
+            }
+            else
+            {
+                slider.Value = 1;
+                slider.enabled = false;
+                Debug.Log("disable slider");
+            }
+
+        }
+    }
+}

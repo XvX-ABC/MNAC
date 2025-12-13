@@ -1,0 +1,39 @@
+﻿using Minimalist.Bar;
+using Minimalist.Quantity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Tests.UI;
+using UnityEngine;
+
+namespace Tests.Characters.UI
+{
+    [RequireComponent(typeof(QuantityBhv))]
+    public class ProgressSlider_QuantityBhv : ProgressSlider
+    {
+        [SerializeField]
+        BarBhv _barBhv;
+        QuantityBhv _bhv;
+        public override Color Color { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override float Value { get => _bhv.FillAmount; set => _bhv.FillAmount = value; }
+        protected override void Awake()
+        {
+            _bhv = GetComponent<QuantityBhv>();
+        }
+
+        protected override void ApplyMode(ProgressSliderMode mode)
+        {
+            throw new NotImplementedException();
+        }
+        private void OnEnable()
+        {
+            _barBhv.gameObject.SetActive(true);
+        }
+        private void OnDisable()
+        {
+            _barBhv.gameObject.SetActive(false);
+        }
+    }
+}
