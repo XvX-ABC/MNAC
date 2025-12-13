@@ -31,6 +31,8 @@ namespace Tests.Weapons_New.Projectiles
         }
         protected virtual void OnTriggerEnter(Collider other)
         {
+
+
             _hitAction?.Invoke(this, other.gameObject);
             Damage(other.gameObject);
             EndAction();
@@ -51,7 +53,7 @@ namespace Tests.Weapons_New.Projectiles
         }
         void Damage(GameObject obj)
         {
-            if (!obj.TryGetComponent<ITeamMember>(out var tmemeber) || tmemeber.TeamMask == ownerTeamMask)
+            if (InteractionHelper.CheckFriendly(ownerTeamMask, obj))
                 return;
             if (!obj.TryGetComponent<IDamageable>(out var d) || !d.HP.IsAlive)
                 return;
