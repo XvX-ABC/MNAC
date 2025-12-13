@@ -1,28 +1,39 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System;
+using UnityEngine;
+using static Tests.UI.ProgressSlider_Slider;
 
 namespace Tests.UI
 {
-    [RequireComponent(typeof(Slider))]
-    public class ProgressSlider : UIComponent
+    
+    public abstract class ProgressSlider : UIComponent
     {
         [SerializeField]
-        MultiplyImageController _imagesController;
-        Slider _slider;
-        public Color Color
+        protected ProgressSliderMode[] modes;
+        protected ProgressSliderMode currentMode;
+        public abstract Color Color { get; set; }
+        public abstract float Value { get; set; }
+
+        public void ChangeMode(string name)
         {
-            get => _imagesController.Color;
-            set => _imagesController.Color = value;
+            var idx = FindModeIndex(name);
+            if (idx == -1)
+                throw new ProgressSliderModeNotFoundException(name);
+            var mode = modes[idx];
+            ApplyMode(mode);
+
         }
-        public float Value
+        protected abstract void ApplyMode(ProgressSliderMode mode);
+        protected int FindModeIndex(string name)
         {
-            get => _slider.value;
-            set => _slider.value = value;
+            return Array.FindIndex(modes, e => e.name == name);
         }
-        protected override void Awake()
+        public bool ContainsMode(string name)
         {
-            base.Awake();
-            _slider = GetComponent<Slider>();
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+            if (modes.Length == 0)
+                return false;
+            return FindModeIndex(name) > -1;
         }
     }
 }
