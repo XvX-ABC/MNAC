@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace Tests.UI
 {
-    [ExecuteAlways]
     [RequireComponent(typeof(RectTransform))]
     /*
      * TODO: CursorIndicator的位置最好由组件自行更新，而不是由外部脚本控制
