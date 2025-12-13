@@ -94,7 +94,7 @@ namespace Tests.Utilities.Timeline.Events.Range
             }
             if (index == -1)
                 return false;
-            Array.Copy(_events, index + 1, _events, index, _events.Length - index + 1);
+            Array.Copy(_events, index + 1, _events, index, _events.Length - index - 1);
             Array.Resize(ref _events, _events.Length - 1);
             return true;
         }
