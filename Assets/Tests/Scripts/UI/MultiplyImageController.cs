@@ -17,7 +17,7 @@ namespace Tests.UI
             {
                 foreach (var image in _images)
                 {
-                    image.color = Color;
+                    image.color = value;
                 }
                 _color = value;
             }
