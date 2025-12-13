@@ -185,7 +185,7 @@ namespace Tests.Weapons_New.Launcher
         protected internal virtual IProjectile Launch()
         {
             var projectile = GetProjectile();
-            projectile.TeamMask = projectile.TeamMask;
+            projectile.TeamMask = TeamMask;
             projectile.LayerMaskToHit = projetiles.LayerMaskToHit;
 
             var obj = projectile.Obj;
