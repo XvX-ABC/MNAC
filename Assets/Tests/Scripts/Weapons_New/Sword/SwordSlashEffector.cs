@@ -30,6 +30,30 @@ namespace Tests.Weapons_New.Sword
 
         protected override void WhenTargetExit(GameObject obj)
         {
+            //Debug.Log("exit: " + obj.name);
+            //var pos = sword.transform.position;
+            //if (sword.OwnerObj != null)
+            //    pos = sword.OwnerObj.transform.position;
+
+            //var tpos = obj.transform.position;
+
+            //var direction = Vector3.ProjectOnPlane(tpos - pos, sword.worldUp);
+            //var ray = new Ray(pos, direction);
+            //if (Physics.Raycast(ray, out var hitInfo))
+            //{
+            //    var point = hitInfo.point;
+            //    Debug.DrawLine(pos, point, Color.red, 10);
+
+            //    _hitEffect.transform.position = point;
+            //    _hitEffect.transform.SetParent(null);
+            //    _hitEffect.Play();
+            //}
+
+
+        }
+        protected override void WhenHitTarget(GameObject obj)
+        {
+
             Debug.Log("exit: " + obj.name);
             var pos = sword.transform.position;
             if (sword.OwnerObj != null)
@@ -48,8 +72,6 @@ namespace Tests.Weapons_New.Sword
                 _hitEffect.transform.SetParent(null);
                 _hitEffect.Play();
             }
-
-
         }
     }
 }

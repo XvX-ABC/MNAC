@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Interaction;
 using UnityEngine;
 
 namespace Tests.Weapons_New.Sword
@@ -10,6 +11,7 @@ namespace Tests.Weapons_New.Sword
         Vector3 WorldUp { get; set; }
         float Length { get; }
         LayerMask LayerMaskToHit { get; set; }
+        TeamMask TeamMask { get; set; }
 
         SwordAction GetSwordAction(SwordActionType type);
     }

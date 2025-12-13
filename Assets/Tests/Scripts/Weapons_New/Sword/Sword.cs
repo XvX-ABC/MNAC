@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Tests.Interaction;
 using Tests.Utilities.Blackboards;
 using UnityEditor;
+using UnityEditor.Build.Content;
 using UnityEngine;
 
 namespace Tests.Weapons_New.Sword
@@ -17,6 +19,11 @@ namespace Tests.Weapons_New.Sword
         internal float length;
         [SerializeField]
         internal Vector3 worldUp = Vector3.up;
+        [SerializeField]
+        internal TeamMask teamMask;
+
+        internal Action<GameObject> _hitAction;
+
 
         internal Dictionary<SwordActionType, SwordAction> actions;
         internal SwordAction currentAction;
@@ -26,13 +33,14 @@ namespace Tests.Weapons_New.Sword
         SwordComponent[] _subComponents;
         Blackboard _blackboard;
 
-        public Action<GameObject> HitAction { get => tipTrigger.EntryAction; set => tipTrigger.EntryAction = value; }
+        public Action<GameObject> HitAction { get => _hitAction; set => _hitAction = value; }
         public GameObject OwnerObj { get => ownerObj; set => ownerObj = value; }
         public Vector3 WorldUp { get => worldUp; set => worldUp = value; }
         public LayerMask LayerMaskToHit { get => tipTrigger.IncludedLayerMask; set => tipTrigger.IncludedLayerMask = value; }
         public override WeaponType Type => WeaponType.Sword;
 
         public float Length { get => length; }
+        public TeamMask TeamMask { get => teamMask; set => teamMask = value; }
 
         protected void Awake()
         {
@@ -49,25 +57,17 @@ namespace Tests.Weapons_New.Sword
             }
             //Debug.Log(sb.ToString());
         }
-        protected virtual void InitializeActions()
-        {
-            actions = new();
-            var arr = Enum.GetValues(typeof(SwordActionType));
-            for (int i = 0; i < arr.Length; i++)
-            {
-                var v = arr.GetValue(i);
-                var t = (SwordActionType)v;
-                actions.Add(t, new SwordAction(this, t));
-            }
-        }
+   
         protected virtual void Start()
         {
+            tipTrigger.EntryAction += WhenHitEnemy;
             _blackboard.TryRegisterField(SwordComponent.OwnerSword, this);
             foreach (var comp in _subComponents)
                 comp?.Initialize(_blackboard);
         }
         protected virtual void OnDestroy()
         {
+            tipTrigger.EntryAction -= WhenHitEnemy;
             foreach (var comp in _subComponents)
                 comp?.Dispose();
             _blackboard.TryUnregisterField(SwordComponent.OwnerSword);
@@ -78,6 +78,23 @@ namespace Tests.Weapons_New.Sword
             var forward = this.transform.forward;
             Gizmos.color = Color.yellow;
             Gizmos.DrawLine(pos, forward * length);
+        }
+        void WhenHitEnemy(GameObject obj)
+        {
+            if (_hitAction == null || InteractionHelper.CheckFriendly(teamMask, obj))
+                return;
+            _hitAction(obj);
+        }
+        protected virtual void InitializeActions()
+        {
+            actions = new();
+            var arr = Enum.GetValues(typeof(SwordActionType));
+            for (int i = 0; i < arr.Length; i++)
+            {
+                var v = arr.GetValue(i);
+                var t = (SwordActionType)v;
+                actions.Add(t, new SwordAction(this, t));
+            }
         }
         public SwordAction GetSwordAction(SwordActionType type)
         {

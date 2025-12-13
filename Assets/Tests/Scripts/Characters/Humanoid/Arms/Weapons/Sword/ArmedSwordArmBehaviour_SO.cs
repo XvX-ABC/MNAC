@@ -46,6 +46,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
         ISword _sword;
 
+        TeamMask _teamMask;
+
         ArmOccupation _armOccupation;
 
         public override WeaponType Type => WeaponType.Sword;
@@ -54,6 +56,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             get => _targetsTrigger.TeamMask;
             set
             {
+                if (_sword != null)
+                    _sword.TeamMask = value;
                 _targetsTrigger.TeamMask = value;
             }
         }
@@ -101,10 +105,13 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                         _swordSlashState.ExtensionAction = extensionAction;
                         _swordSlashState.SlashAction = slashAction;
                     }
+                    sword.TeamMask = _teamMask;
                     _sword = sword;
                 }
             }
         }
+
+
         protected override void OnEnable()
         {
             base.OnEnable();

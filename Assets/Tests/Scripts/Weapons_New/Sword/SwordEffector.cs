@@ -1,4 +1,5 @@
-﻿using Tests.Utilities.Blackboards;
+﻿using System;
+using Tests.Utilities.Blackboards;
 using UnityEngine;
 
 namespace Tests.Weapons_New.Sword
@@ -11,6 +12,7 @@ namespace Tests.Weapons_New.Sword
             base.Initialize(blackboard);
             sword.tipTrigger.EntryAction += WhenTargetEnter;
             sword.tipTrigger.ExitAction += WhenTargetExit;
+            sword.HitAction += WhenHitTarget;
         }
         public override void Dispose()
         {
@@ -19,9 +21,13 @@ namespace Tests.Weapons_New.Sword
 
             sword.tipTrigger.EntryAction -= WhenTargetEnter;
             sword.tipTrigger.ExitAction -= WhenTargetExit;
+            sword.HitAction -= WhenHitTarget;
             base.Dispose();
         }
+        [Obsolete]
         protected abstract void WhenTargetEnter(GameObject ob);
+        [Obsolete]
         protected abstract void WhenTargetExit(GameObject obj);
+        protected virtual void WhenHitTarget(GameObject obj) { }
     }
 }
