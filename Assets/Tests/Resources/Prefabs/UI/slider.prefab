@@ -454,6 +454,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5242c695e834f6d49858597a93a655e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modes:
+  - name: normal
+    color: {r: 0.8666667, g: 0.8666667, b: 0.8666667, a: 0.3137255}
+  - name: filling
+    color: {r: 1, g: 0.653165, b: 0, a: 0.3137255}
   _imagesController:
     _images:
     - {fileID: 5335926831549926189}
