@@ -14,7 +14,7 @@ namespace Tests.Characters.Interaction
     using AnimationNormalState = Tests.Characters.Humanoid.Animations.NormalState;
     [DefaultExecutionOrder(0)]
     public abstract class CharacterBase : MonoBehaviour, ICharacter
-    {
+    {   
         internal class CharacterAnimator : IDisposable
         {
             internal PlayableGraph graph;

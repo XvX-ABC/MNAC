@@ -1,6 +1,4 @@
-﻿using Mono.Cecil.Cil;
-using Tests.Interaction;
-using Tests.Player;
+﻿using Tests.Interaction;
 using Tests.UI;
 using UnityEngine;
 using GameObjsInScreenCatcher = Tests.Interaction.GameObjsInScreenCatcher;

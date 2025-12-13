@@ -15,10 +15,10 @@ MonoBehaviour:
   _definitions:
     _weapon:
       _origins:
-      - Name: Sword
-        Type: 1
       - Name: MachineGun
         Type: 0
+      - Name: Sword
+        Type: 1
       _switching:
         DurationTime: 3
         MountedProportion: 0.5

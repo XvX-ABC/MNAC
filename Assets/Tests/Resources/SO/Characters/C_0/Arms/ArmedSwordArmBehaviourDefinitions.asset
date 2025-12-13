@@ -17,7 +17,7 @@ MonoBehaviour:
       _speedPower: 3
       _acceleratedSpeedPower: 0
     _boostingDuration: 3
-    _slashDuration: 0.3
+    _slashDuration: 0.1
     _slashedRecoverDuration: 1
     _trigger:
       ExcludeLayerMask:
