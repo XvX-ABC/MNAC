@@ -33,15 +33,15 @@ namespace Tests.Utilities.Timeline.Events.Range
                 throw new NotSupportedEventTypeException($"Doesn't exist a events executor is support the 'IPointEvent' event type in the timeline.");
             return evt;
         }
-        public static bool RemoveRangeEvent(this Timeline timeline, ITimelineEvent evt)
+        public static bool RemoveRangeEvent(this ITimeline timeline, ITimelineEvent evt)
         {
             if (evt == null)
                 throw new ArgumentNullException(nameof(evt));
-            if (timeline.isRunning)
+            if (timeline.IsRunning)
                 throw new InvalidOperationException($"Can't to add the event, because the timeline is running now.");
-            var executor = timeline.executors.FirstOrDefault(executor => executor is PointEventsExecutor);
-            if (executor == null)
-                throw new NotSupportedEventTypeException($"Doesn't exist a events executor is support the 'IPointEvent' event type in the timeline.");
+            //var executor = timeline.executors.FirstOrDefault(executor => executor is PointEventsExecutor);
+            //if (executor == null)
+            //    throw new NotSupportedEventTypeException($"Doesn't exist a events executor is support the 'IPointEvent' event type in the timeline.");
             return timeline.RemoveEvent(evt);
         }
     }
