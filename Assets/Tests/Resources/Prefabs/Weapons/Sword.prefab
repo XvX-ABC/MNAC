@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b439fa7704f373349b36430a6dfaa8bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _damagePoint: -10
 --- !u!1 &4034102015193791052
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,13 +470,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tipTrigger: {fileID: 4067666868927023470}
   ownerObj: {fileID: 0}
-  length: 10
-  collisionLayerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  damageLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
+  length: 5
+  worldUp: {x: 0, y: 1, z: 0}
+  teamMask:
+    Value: 0
   _subComponents:
   - {fileID: 3934036442846841672}
   - {fileID: 4940065253491257568}
