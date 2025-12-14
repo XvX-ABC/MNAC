@@ -27,10 +27,10 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
             _w0 = baseWeight;
             _w1 = wholeBodyWeight;
         }
-        void UpdateWeights(ushort exceptedValue, float t)
+        void UpdateWeights(ushort exceptedWeight, float t)
         {
-            baseWeight = Mathf.Lerp(_w0, 1 - exceptedValue, t);
-            wholeBodyWeight = Mathf.Lerp(_w1, exceptedValue, t);
+            baseWeight = Mathf.Lerp(_w0, 1 - exceptedWeight, t);
+            wholeBodyWeight = Mathf.Lerp(_w1, exceptedWeight, t);
         }
         public override void OnEnter()
         {

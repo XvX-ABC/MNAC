@@ -62,6 +62,14 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         {
             SetFloat(_slashParams.multiplierName, CalculateMultiplier(_slashParams.clipLength, duration));
         }
+        public bool GetBoostingSwitch()
+        {
+            return GetBool(_boostingParams.switchName);
+        }
+        public bool GetSlashSwitch()
+        {
+            return GetBool(_slashParams.switchName);
+        }
         public void SetBoostingSwitch(bool value)
         {
             SetBool(_boostingParams.switchName, value);

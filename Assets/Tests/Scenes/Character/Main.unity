@@ -1644,6 +1644,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1184881259 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7860438799936813942, guid: fb7110c94038f05409f6fb1f09541b12,
+    type: 3}
+  m_PrefabInstance: {fileID: 1602301319}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1c7464033223d54ab22f7a2de34b0aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1268012423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1941,6 +1953,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1437314517648527269, guid: fb7110c94038f05409f6fb1f09541b12,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542852592156924948, guid: fb7110c94038f05409f6fb1f09541b12,
+        type: 3}
+      propertyPath: m_text
+      value: ' 69/100'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542852592396863216, guid: fb7110c94038f05409f6fb1f09541b12,
+        type: 3}
+      propertyPath: m_text
+      value: ' 69/100'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542852592515688105, guid: fb7110c94038f05409f6fb1f09541b12,
+        type: 3}
+      propertyPath: m_text
+      value: ' 69/100'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542852593184270246, guid: fb7110c94038f05409f6fb1f09541b12,
+        type: 3}
+      propertyPath: m_text
+      value: ' 69/100'
+      objectReference: {fileID: 0}
     - target: {fileID: 2245998083834554860, guid: fb7110c94038f05409f6fb1f09541b12,
         type: 3}
       propertyPath: _fillAmount
@@ -1996,6 +2033,11 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4152946446515264094, guid: fb7110c94038f05409f6fb1f09541b12,
+        type: 3}
+      propertyPath: _barBhv
+      value: 
+      objectReference: {fileID: 1184881259}
     - target: {fileID: 4543622028929150401, guid: fb7110c94038f05409f6fb1f09541b12,
         type: 3}
       propertyPath: m_AnchorMax.x

@@ -1,12 +1,8 @@
 ﻿using System;
 using Tests.Animations;
 using Tests.States;
-using Tests.TPhysics;
-using Tests.TPhysics.Environment;
 using Tests.TPhysics.Locomotion;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.Playables;
 using Transition = Tests.Behaviours.Arms.Weapons.Sword.Animations.IArmedSwordArmAnimationDefinitions.Transition;
 
@@ -75,7 +71,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
             InitializeWholeBodyAnimation(graph, baseController, mixer ?? throw new ArgumentNullException(nameof(mixer)), wholeBodyController);
 
 
-            idle = new(armController, locomotionCore, maxSpeed, accelerationSpeed);
+            idle = new(armController, baseWholeBodyController, wholeBodyController, locomotionCore, maxSpeed, accelerationSpeed);
             boosting = new(baseWholeBodyController, wholeBodyController, armController, definitions.Boosting.MaxDuration);
             slash = new(baseWholeBodyController, wholeBodyController, armController, definitions.Slash.Duration, definitions.Slash.RecoveryDuration);
 
@@ -102,6 +98,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
             statemachine.AddTransitionFor(b_s);
             statemachine.AddTransitionFor(b_i);
 
+            //BUG：slash到idle的过渡会偶尔不工作，直接跳转到idle状态
             var s_i = new BlendingTransition<object>(slash, idle, () => _slashHelper.ExitEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Slash_Idle));
             statemachine.AddTransitionFor(s_i);
 
@@ -135,6 +132,9 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         {
             //statemachine.OnUpdate();
             Debug.Log(statemachine);
+
+            //Debug.Log($"s: {_wholeBody.controller.GetSlashSwitch()}, b: {_wholeBody.controller.GetBoostingSwitch()}");
+
             //var p = (AnimatorControllerPlayable)_wholeBody.controller.PlayablePart;
             //var state = p.GetCurrentAnimatorStateInfo(0);
             //var t = p.GetAnimatorTransitionInfo(0);
