@@ -15,6 +15,7 @@ using Tests.Weapons_New.Sword;
 using UnityEngine;
 using UnityEngine.Playables;
 using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
+using SphericalObjsTrigger = Tests.Characters.Interaction.SphericalObjsTrigger;
 using Transition = Tests.Behaviours.Arms.Weapons.Sword.Animations.IArmedSwordArmAnimationDefinitions.Transition;
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
@@ -126,7 +127,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             _behaviour.FixedUpdate();
         }
         //void UpdateTargetsCatcherFor(Blackboard blackboard)
-        void CreateSphereTriggerTargetsCatcher(GameObject armObj)
+        void CreateSphereTriggerTargetsCatcher(LocomotionCore locomotionCore, GameObject armObj)
         {
             var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             obj.GetComponent<MeshRenderer>().enabled = false;
@@ -134,6 +135,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             obj.transform.localPosition = Vector3.zero;
             obj.transform.localRotation = Quaternion.identity;
             _targetsTrigger = obj.AddComponent<SphericalObjsTrigger>();
+            _targetsTrigger.Initialize(locomotionCore.core, 45);
             _targetsTrigger.IncludeLayerMask = _definitions.Trigger.IncludeLayerMask;
             _targetsTrigger.ExcludeLayerMask = _definitions.Trigger.ExcludeLayerMask;
         }
@@ -148,6 +150,12 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             blackboard.TryReadValueOrThrowException<ControllerPlayable>(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, out var controller);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Arm_Local, out var armObj);
             blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Component_TargetLocker, out _targetLocker);
+          
+
+
+            CreateSphereTriggerTargetsCatcher(locomotionCore, armObj);
+            _load = new(_targetsTrigger.gameObject);
+
             if (blackboard.TryReadValue<TeamMask>(CharacterBlackboardFields.Character_TeamMask, out var teamMask))
             {
                 this.teamMask = teamMask;
@@ -158,8 +166,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             }
 
 
-            CreateSphereTriggerTargetsCatcher(armObj);
-            _load = new(_targetsTrigger.gameObject);
 
             InitializeTargetsCatcher(blackboard);
 

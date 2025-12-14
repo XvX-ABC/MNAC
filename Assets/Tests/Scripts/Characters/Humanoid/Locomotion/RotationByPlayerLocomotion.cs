@@ -32,7 +32,18 @@ namespace Tests.Characters.Humanoid.Locomotion
             _input = input ?? throw new ArgumentNullException(nameof(input));
             enabled = false;
         }
-
+        public override bool Enabled
+        {
+            get => base.Enabled;
+            set
+            {
+                base.Enabled = value;
+                if (value)
+                    _core.EnableModule(_locomotion);
+                else
+                    _core.DisableModule(_locomotion);
+            }
+        }
         public override string Name => "character_rotation";
         internal IPositionTarget target
         {

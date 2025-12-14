@@ -1,6 +1,7 @@
 ﻿using System;
 using Tests.Behaviours.Arms.Weapons.Sword;
 using Tests.Characters.Humanoid.Locomotion;
+using UnityEngine;
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     internal class RotationLocomotionLocker : IRotationLocker

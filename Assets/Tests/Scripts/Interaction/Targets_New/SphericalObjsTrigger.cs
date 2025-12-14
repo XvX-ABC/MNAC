@@ -8,6 +8,7 @@ namespace Tests.Interaction
     [RequireComponent(typeof(SphereCollider))]
     public class SphericalObjsTrigger : MonoBehaviour, ISphericalObjsTrigger
     {
+
         GameObjsTrigger _trigger;
         SphereCollider _collider;
         TeamMask _teamMask;
@@ -65,20 +66,20 @@ namespace Tests.Interaction
             else
                 return false;
         }
-        protected void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
             var obj = other.gameObject;
             if (CheckTeamBy(obj))
                 return;
             _trigger.OnTriggerEnter(other);
         }
-        protected void OnTriggerStay(Collider other)
+        protected virtual void OnTriggerStay(Collider other)
         {
             if (CheckTeamBy(other.gameObject))
                 return;
             _trigger.OnTriggerEnter(other);
         }
-        protected void OnTriggerExit(Collider other)
+        protected virtual void OnTriggerExit(Collider other)
         {
             if (CheckTeamBy(other.gameObject))
                 return;
