@@ -74,7 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea064193fbe449145bfc369343392ce8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ammoReserveAmount: 100
+  _ammoReserveAmount: 20
   _ammoInMagazineAmount: 20
   _launchingIntervalTime: 0.2
   _reloadDurationTime: 3

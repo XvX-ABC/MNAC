@@ -36,7 +36,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             ILauncher _launcher;
             float _maximumMagazineAmount;
             float _maximumReserveAmount;
-
+            float _nextReloadAmount;
             ITimeline _reloadTimeline;
             ITimelineEvent _reloadingEvent;
 
@@ -187,11 +187,15 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             void WhenReloadStart(TimelineContext _)
             {
                 _slider?.ChangeMode(SLIDER_MODE_RELOAD);
+                _nextReloadAmount = Mathf.Min(_launcher.ReserveAmmoAmount, _maximumMagazineAmount);
             }
             void WhenReloading(TimelineContext ctx)
             {
                 if (_slider != null)
-                    _slider.Value = ctx.NormalizedTime;
+                {
+                    var v = _nextReloadAmount / _maximumMagazineAmount;
+                    _slider.Value = Mathf.Lerp(0, v, ctx.NormalizedTime);
+                }
             }
             void WhenReloadEnd(TimelineContext _)
             {
