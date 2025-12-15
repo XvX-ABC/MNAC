@@ -41,6 +41,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             ITimelineEvent _reloadingEvent;
 
             PlayerCursorIndicator _indicator;
+            TextGrid _textGrid;
+            TextBox _textBox;
             ProgressSlider _slider;
             HumanPart _part;
 
@@ -103,6 +105,27 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                         _slider = null;
                 }
             }
+
+            internal TextGrid textGrid
+            {
+                get => _textGrid;
+                set
+                {
+                    TextBoxDispose();
+                    if (value != null)
+                    {
+                        _textBox = _part switch
+                        {
+                            HumanPart.LeftArm => value.TextBox_2,
+                            HumanPart.RightArm => value.TextBox_3,
+                            _ => null
+                        };
+                        _textBox.Text = _maximumMagazineAmount.ToString();
+                    }
+                    _textGrid = value;
+                }
+            }
+
             void LauncherDispose()
             {
                 if (_launcher != null)
@@ -120,21 +143,30 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                     _reloadTimeline.EndAction -= WhenReloadEnd;
                 }
             }
+            void TextBoxDispose()
+            {
+                if (_textBox != null)
+                {
+                    _textBox.Text = "";
+                }
+            }
             public void Load()
             {
                 if (_launcher == null)
                     return;
                 _slider.Value = _launcher.MagazineAmmoAmount / _maximumMagazineAmount;
+                _textBox.Text = _maximumReserveAmount.ToString();
             }
             public void Reset()
             {
                 _slider.Value = 1;
+                _textBox.Text = "";
             }
             public void Dispose()
             {
                 LauncherDispose();
                 TimelineDispose();
-
+                TextBoxDispose();
             }
 
             void WhenMagazineAmountChange(int ov, int nv)
@@ -150,6 +182,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             }
             void WhenReserveAmountChange(int ov, int nv)
             {
+                _textBox.Text = nv.ToString();
             }
             void WhenReloadStart(TimelineContext _)
             {
@@ -296,10 +329,12 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             {
                 _behaviour.teamMask = teamMask;
             }
-            if (blackboard.TryReadUIValue<PlayerCursorIndicator>(CharacterUIBlackboardFields.Player_Cursor_Indicator, out var indicator))
+            if (blackboard.TryReadUIValue<PlayerCursorIndicator>(CharacterUIBlackboardFields.Player_Cursor_Indicator, out var indicator)
+                && blackboard.TryReadUIValue<TextGrid>(CharacterUIBlackboardFields.Weapons_Text_Grid, out var textGrid))
             {
                 _uiControl = new(Part);
                 _uiControl.cursorIndicator = indicator;
+                _uiControl.textGrid = textGrid;
             }
 
 
