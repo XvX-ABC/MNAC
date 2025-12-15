@@ -14,7 +14,7 @@ namespace Tests.Characters.UI
             Catcher_Ring = UIBlackboardFields.Catcher_Ring;
             Blackboard_Main = Guid.NewGuid();
             Targets_Display = UIBlackboardFields.Targets_Display;
-            Player_Cursor_Indicator = UIBlackboardFields.Character_Actor_Cursor_Indicator;
+            Player_Cursor_Indicator = UIBlackboardFields.Cursor_Indicator;
             Indicators_Manager = UIBlackboardFields.Indicators_Manager;
             Weapons_Text_Grid = UIBlackboardFields.Weapons_Text_Grid;
         }
