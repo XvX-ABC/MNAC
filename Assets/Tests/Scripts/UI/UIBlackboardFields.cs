@@ -13,6 +13,7 @@ namespace Tests.UI
             Targets_Display = Guid.NewGuid();
             Indicators_Manager = Guid.NewGuid();
             Character_Actor_Cursor_Indicator = Guid.NewGuid();
+            Weapons_Text_Grid = Guid.NewGuid();
         }
         public static readonly Guid Input;
         public static readonly Guid Camera_Main;
@@ -20,5 +21,6 @@ namespace Tests.UI
         public static readonly Guid Targets_Display;
         public static readonly Guid Indicators_Manager;
         public static readonly Guid Character_Actor_Cursor_Indicator;
+        public static readonly Guid Weapons_Text_Grid;
     }
 }
