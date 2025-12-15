@@ -6,24 +6,160 @@ using Tests.Characters.Humanoid.Interaction.Input;
 using Tests.Characters.Interaction;
 using Tests.Characters.Interaction.Input;
 using Tests.Characters.MountPoints;
+using Tests.Characters.UI;
 using Tests.Interaction;
 using Tests.States;
+using Tests.UI;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.MountPoints;
+using Tests.Utilities.Timeline;
+using Tests.Utilities.Timeline.Events;
+using Tests.Utilities.Timeline.Events.Range;
 using Tests.Weapons_New;
+using Tests.Weapons_New.Launcher;
 using Tests.Weapons_New.Sword;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.WSA;
+using Cursor = UnityEngine.Cursor;
 using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
+using PlayerCursorIndicator = Tests.Characters.UI.PlayerCursorIndicator;
 using SphericalObjsTrigger = Tests.Characters.Interaction.SphericalObjsTrigger;
 using Transition = Tests.Behaviours.Arms.Weapons.Sword.Animations.IArmedSwordArmAnimationDefinitions.Transition;
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
-
-
     [CreateAssetMenu(fileName = "ArmedSwordArmBehaviour", menuName = "Tests/Behaviours/Characters/Humanoid/Arms/Weapons/Sword/ArmedSwordArmBehaviour")]
     public class ArmedSwordArmBehaviour_SO : ArmedWeaponArmBehaviourBase_SO
     {
+        #region internal classes
+        class UIControl
+        {
+            const string SLIDER_MODE_RELOAD = "filling";
+            const string SLIDER_MODE_NORMALLY = "normal";
+            ITimeline _reloadTimeline;
+            ITimelineEvent _reloadingEvent;
+
+            PlayerCursorIndicator _indicator;
+            TextGrid _textGrid;
+            TextBox _textBox;
+            ProgressSlider _slider;
+            HumanPart _part;
+
+            public UIControl(HumanPart part, ITimeline cdTimeline)
+            {
+                _part = part;
+                reloadTimeline = cdTimeline ?? throw new ArgumentNullException(nameof(cdTimeline));
+            }
+            internal PlayerCursorIndicator cursorIndicator
+            {
+                get => _indicator;
+                set
+                {
+                    _indicator = value;
+                    if (_indicator != null)
+                    {
+
+                        _slider = _part switch
+                        {
+                            HumanPart.LeftArm => _indicator.Slider_lb,
+                            HumanPart.RightArm => _indicator.Slider_rb,
+                            _ => null
+                        };
+                        _slider.ChangeMode(SLIDER_MODE_NORMALLY);
+                    }
+                    else
+                        _slider = null;
+                }
+            }
+
+            internal TextGrid textGrid
+            {
+                get => _textGrid;
+                set
+                {
+                    TextBoxDispose();
+                    if (value != null)
+                    {
+                        _textBox = _part switch
+                        {
+                            HumanPart.LeftArm => value.TextBox_2,
+                            HumanPart.RightArm => value.TextBox_3,
+                            _ => null
+                        };
+                    }
+                    _textGrid = value;
+                }
+            }
+
+            internal ITimeline reloadTimeline
+            {
+                get => _reloadTimeline;
+                set
+                {
+                    if (value != null)
+                    {
+                        value.StartAction += WhenReloadStart;
+                        _reloadingEvent = value.AddRangeEvent(0, 1, WhenReloading);
+                        value.EndAction += WhenReloadEnd;
+                    }
+                    TimelineDispose();
+                    _reloadTimeline = value;
+                }
+            }
+
+
+            public void Load()
+            {
+                _slider.Value = reloadTimeline.NormalizedTime;
+            }
+            public void Reset()
+            {
+                _slider.Value = 1;
+                _textBox.Text = "";
+            }
+            public void Dispose()
+            {
+                TimelineDispose();
+                TextBoxDispose();
+            }
+            void TimelineDispose()
+            {
+                if (_reloadTimeline != null)
+                {
+                    _reloadTimeline.StartAction -= WhenReloadStart;
+                    if (_reloadingEvent != null)
+                        _reloadTimeline.RemoveRangeEvent(_reloadingEvent);
+                    _reloadTimeline.EndAction -= WhenReloadEnd;
+                }
+            }
+            void TextBoxDispose()
+            {
+                if (_textBox != null)
+                {
+                    _textBox.Text = "";
+                }
+            }
+            void WhenReloadStart(TimelineContext _)
+            {
+                _slider?.ChangeMode(SLIDER_MODE_RELOAD);
+            }
+            void WhenReloading(TimelineContext ctx)
+            {
+                if (_slider != null)
+                {
+                    _slider.Value = ctx.NormalizedTime;
+                }
+            }
+            void WhenReloadEnd(TimelineContext _)
+            {
+                _slider?.ChangeMode(SLIDER_MODE_NORMALLY);
+            }
+            ~UIControl()
+            {
+                Dispose();
+            }
+        }
+        #endregion
         //IArmedSwordArmBehaviourDefinitions _definitions;
         //IArmedSwordArmAnimationDefinitions _animationDefinitions;
         [SerializeField]
@@ -51,6 +187,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
         ArmOccupation _armOccupation;
 
+
+        UIControl _uiControl;
         public override WeaponType Type => WeaponType.Sword;
         internal TeamMask teamMask
         {
@@ -150,7 +288,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             blackboard.TryReadValueOrThrowException<ControllerPlayable>(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, out var controller);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Arm_Local, out var armObj);
             blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Component_TargetLocker, out _targetLocker);
-          
+
 
 
             CreateSphereTriggerTargetsCatcher(locomotionCore, armObj);
@@ -263,6 +401,14 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             }
 
 
+            if (blackboard.TryReadUIValue<PlayerCursorIndicator>(CharacterUIBlackboardFields.Player_Cursor_Indicator, out var indicator)
+                && blackboard.TryReadUIValue<TextGrid>(CharacterUIBlackboardFields.Weapons_Text_Grid, out var textGrid))
+            {
+                _uiControl = new(Part, _boostingHelper.cdTimeline);
+                _uiControl.cursorIndicator = indicator;
+                _uiControl.textGrid = textGrid;
+            }
+
             this.Activated = this.Activated;
 
         }
@@ -374,6 +520,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 HumanPart.RightArm => MountPointFields.Right_Chest_Trigger,
                 _ => throw new Exception(),
             };
+            _uiControl.Dispose();
             base.Dispose();
             //blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker);
             blackboard.TryGetMountPointOrThrowException(field, out var mountPoint);
