@@ -12,8 +12,9 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
     {
         internal Boosting state;
         internal BoostingLocomotion locomotion;
-        ITimeline _cdTimeline;
+       internal ITimeline cdTimeline;
         IWeaponControlInput _input;
+
         public BoostingHelper(LocomotionCore locomotionCore, ITargetLocker targetLocker, IBaseInput baseInput, IWeaponControlInput weaponControlInput, IBoostingDefinitions definitions)
         {
             locomotion = new BoostingLocomotion(definitions.MaxSpeed, 0);
@@ -22,14 +23,14 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
             var cd = definitions.ColdDownDuration;
             if (cd > 0)
             {
-                _cdTimeline = new Timeline_V1(definitions.ColdDownDuration);
-                state.ExitAction += () => _cdTimeline.Restart();
-                _cdTimeline.SetNormalizedTime(1);
+                cdTimeline = new Timeline_V1(definitions.ColdDownDuration);
+                state.ExitAction += () => cdTimeline.Restart();
+                cdTimeline.SetNormalizedTime(1);
             }
         }
         public bool IsColdDowned
         {
-            get => _cdTimeline == null ? true : _cdTimeline.NormalizedTime >= 1;
+            get => cdTimeline == null ? true : cdTimeline.NormalizedTime >= 1;
         }
         public virtual bool EntryEvent
         {
@@ -40,7 +41,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         public IWeaponControlInput Input { get => _input; set => _input = value; }
         public virtual void Update()
         {
-            _cdTimeline?.OnUpdate(Time.deltaTime);
+            cdTimeline?.OnUpdate(Time.deltaTime);
         }
     }
 }

@@ -14,6 +14,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         [SerializeField]
         float _boostingDuration;
         [SerializeField]
+        float _boostingCD;
+        [SerializeField]
         float _slashDuration;
         [SerializeField]
         float _slashedRecoverDuration;
@@ -32,7 +34,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             if (locomotionDefinitions == null || locomotionDefinitions.Walking == null)
                 throw new ArgumentNullException(nameof(locomotionDefinitions));
             var b = locomotionDefinitions.Walking;
-            _sboosting = new SwordBoostingDefinitioins(_boosting.MaxSpeedPower * b.MaxSpeed, _boostingDuration);
+            _sboosting = new SwordBoostingDefinitioins(_boosting.MaxSpeedPower * b.MaxSpeed, _boostingDuration, _boostingCD);
             _slash = new SwordSlashDefinitions(_slashDuration, _slashedRecoverDuration);
         }
     }

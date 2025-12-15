@@ -19,10 +19,11 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         //    _maxDuration = Mathf.Max(0, maxDuration);
         //}
 
-        public BoostingDefinitions(float maxSpeed, float maxDuration)
+        public BoostingDefinitions(float maxSpeed, float maxDuration, float cd)
         {
             _maxSpeed = Mathf.Max(0, maxSpeed);
             _maxDuration = Mathf.Max(0, maxDuration);
+            _cdDuration = Mathf.Max(0, cd);
         }
         public float MaxSpeed { get => _maxSpeed; }
 
