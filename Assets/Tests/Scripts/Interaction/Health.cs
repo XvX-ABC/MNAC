@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tests.Interaction.Influence;
 
 namespace Tests.Interaction
 {
@@ -10,24 +11,22 @@ namespace Tests.Interaction
     public class Health : NumberBase, IHealth, IInfluence
     {
         bool _enabled;
-        Influence.Health _healthInfluence;
         IHealthEffector _healthEffector;
 
-        public Health(float maxPoint, Influence.Health healthInfluence = null, IHealthEffector healthEffector = null) : base(maxPoint)
+        public Health(float maxPoint, IHealthEffector healthEffector = null) : base(maxPoint)
         {
-            this.healthInfluence = healthInfluence;
             this.healthEffector = healthEffector;
         }
 
-        public Health(float maxPoint, float point, Influence.Health healthInfluence = null, IHealthEffector healthEffector = null) : base(maxPoint, point)
+        public Health(float maxPoint, float point, IHealthEffector healthEffector = null) : base(maxPoint, point)
         {
-            this.healthInfluence = healthInfluence;
+
             this.healthEffector = healthEffector;
         }
 
-        public Health(float maxPoint, float minPoint, float point, Influence.Health healthInfluence = null, IHealthEffector healthEffector = null) : base(maxPoint, minPoint, point)
+        public Health(float maxPoint, float minPoint, float point, IHealthEffector healthEffector = null) : base(maxPoint, minPoint, point)
         {
-            this.healthInfluence = healthInfluence;
+
             this.healthEffector = healthEffector;
         }
 
@@ -38,28 +37,12 @@ namespace Tests.Interaction
             get => _enabled;
             set
             {
-                if (_healthInfluence != null)
-                    _healthInfluence.Enabled = value;
-                if (_healthEffector != null)
-                    _healthEffector.Enabled = value;
                 _enabled = value;
             }
         }
 
-        internal Influence.Health healthInfluence
-        {
-            get => _healthInfluence;
-            set
-            {
-                _healthInfluence = value;
-                if (_healthInfluence != null)
-                {
-                    _healthInfluence.MinPoint = minPoint;
-                    _healthInfluence.MaxPoint = maxPoint;
-                    _healthInfluence.Point = point;
-                }
-            }
-        }
+        public string Name => "Health";
+
         internal IHealthEffector healthEffector
         {
             get => _healthEffector;
@@ -73,6 +56,10 @@ namespace Tests.Interaction
                     _healthEffector.Point = point;
                 }
             }
+        }
+
+        public void Update()
+        {
         }
     }
 }
