@@ -1,7 +1,7 @@
 ﻿using System;
 using Tests.Interaction;
 using UnityEngine;
-using HealthInfluence = Tests.Interaction.Influence.Health;
+using HealthInfluence = Tests.Interaction.Influence.Health_Obsolete;
 namespace Tests.Characters.Interaction
 {
     [SerializeField]

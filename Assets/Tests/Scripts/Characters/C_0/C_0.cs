@@ -11,7 +11,7 @@ using UnityEngine.Animations;
 using UnityEngine.Playables;
 using AnimationNormalState = Tests.Characters.Humanoid.Animations.NormalState;
 using Health = Tests.Interaction.Health;
-using HealthInfluense = Tests.Interaction.Influence.Health;
+using HealthInfluense = Tests.Interaction.Influence.Health_Obsolete;
 using NormalState = Tests.Characters.Humanoid.NormalState;
 using Stun = Tests.Interaction.Influence.Stun;
 

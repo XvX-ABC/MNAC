@@ -6,7 +6,7 @@ using Tests.Interaction;
 using Tests.Interaction.Influence;
 using Tests.Utilities.Blackboards;
 using UnityEngine;
-using HealthInfluence = Tests.Interaction.Influence.Health;
+using HealthInfluence = Tests.Interaction.Influence.Health_Obsolete;
 using StunInfluence = Tests.Interaction.Influence.Stun;
 namespace Tests.Characters.Interaction
 {

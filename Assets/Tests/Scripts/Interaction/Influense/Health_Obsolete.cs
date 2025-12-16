@@ -1,6 +1,9 @@
-﻿namespace Tests.Interaction.Influence
+﻿using System;
+
+namespace Tests.Interaction.Influence
 {
-    public class Health : InfluenceBase
+    [Obsolete]
+    public class Health_Obsolete : InfluenceBase
     {
         float _minPoint;
         float _point;
