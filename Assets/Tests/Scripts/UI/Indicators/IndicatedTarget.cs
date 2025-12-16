@@ -10,52 +10,52 @@ namespace Tests.UI
         protected IndicatorType indicatorType;
         protected Indicator indicator;
         [SerializeField]
-        IndicatorsManager _lockManager;
+        IndicatorsManager _indicatorsManager;
 
         public bool IsValid { get => this.enabled; }
         public IndicatorType IndicatorType { get => indicatorType; }
         public virtual Indicator Indicator { get => indicator; set => indicator = value; }
         public IndicatorsManager Manager
         {
-            get => _lockManager;
+            get => _indicatorsManager;
             set
             {
-                if (_lockManager)
+                if (_indicatorsManager)
                 {
-                    _lockManager.RemoveTarget(this);
+                    _indicatorsManager.RemoveTarget(this);
                 }
                 if (value)
                 {
                     value.AddTarget(this);
                 }
 
-                _lockManager = value;
+                _indicatorsManager = value;
             }
         }
 
         protected virtual void OnEnable()
         {
             //TargetsLockManager.RegisterLocker(this);
-            _lockManager?.AddTarget(this);
+            _indicatorsManager?.AddTarget(this);
         }
 
         protected virtual void OnDisable()
         {
             //TargetsLockManager.UnregisterLocker(this);
-            _lockManager?.RemoveTarget(this);
+            _indicatorsManager?.RemoveTarget(this);
         }
 
         private void OnDestroy()
         {
-            _lockManager?.RemoveTarget(this);
+            _indicatorsManager?.RemoveTarget(this);
         }
 
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            blackboard.TryReadValueOrThrowException<IndicatorsManager>(UIBlackboardFields.Indicators_Manager, out _lockManager);
+            blackboard.TryReadValueOrThrowException<IndicatorsManager>(UIBlackboardFields.Indicators_Manager, out _indicatorsManager);
 
-            Manager = _lockManager;
+            Manager = _indicatorsManager;
 
         }
 
