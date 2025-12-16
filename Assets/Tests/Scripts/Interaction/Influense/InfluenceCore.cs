@@ -6,8 +6,8 @@ namespace Tests.Interaction.Influence
 {
     public class InfluenceCore
     {
-        Dictionary<Type, Influence> _influences;
-        public InfluenceCore(params Influence[] influences)
+        Dictionary<Type, IInfluence> _influences;
+        public InfluenceCore(params IInfluence[] influences)
         {
             this._influences = new();
             foreach (var i in influences)
@@ -15,7 +15,7 @@ namespace Tests.Interaction.Influence
                 AddInfluence(i);
             }
         }
-        public void AddInfluence(Influence influence)
+        public void AddInfluence(IInfluence influence)
         {
             if (influence == null)
                 throw new ArgumentNullException(nameof(influence));
@@ -25,18 +25,18 @@ namespace Tests.Interaction.Influence
             else
                 _influences.Add(type, influence);
         }
-        public bool RemoveInfluence(Influence influence)
+        public bool RemoveInfluence(IInfluence influence)
         {
             if (influence == null)
                 throw new ArgumentNullException(nameof(influence));
             var type = influence.GetType();
             return _influences.Remove(type);
         }
-        public bool Contains<T>() where T : Influence
+        public bool Contains<T>() where T : IInfluence
         {
             return _influences.ContainsKey(typeof(T));
         }
-        public T FindInfluence<T>() where T : Influence
+        public T FindInfluence<T>() where T : IInfluence
         {
             var type = typeof(T);
             return _influences.ContainsKey(type) ? (T)_influences[type] : default;

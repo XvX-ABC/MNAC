@@ -2,7 +2,7 @@
 
 namespace Tests.Interaction.Influence
 {
-    public interface Influence
+    public interface IInfluence
     {
         public bool Enabled { get; }
         public string Name { get; }

@@ -1,6 +1,6 @@
 ﻿namespace Tests.Interaction.Influence
 {
-    public abstract class InfluenceBase : Influence
+    public abstract class InfluenceBase : IInfluence
     {
         protected bool enabled;
 

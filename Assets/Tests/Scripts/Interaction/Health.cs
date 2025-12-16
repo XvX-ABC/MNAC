@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Tests.Interaction
 {
     [Serializable]
-    public class Health : NumberBase, IHealth
+    public class Health : NumberBase, IHealth, IInfluence
     {
         bool _enabled;
         Influence.Health _healthInfluence;

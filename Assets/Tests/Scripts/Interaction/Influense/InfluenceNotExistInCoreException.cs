@@ -2,7 +2,7 @@
 
 namespace Tests.Interaction.Influence
 {
-    public class InfluenceNotExistInCoreException<T> : Exception where T : Influence
+    public class InfluenceNotExistInCoreException<T> : Exception where T : IInfluence
     {
         public InfluenceNotExistInCoreException()
         {
