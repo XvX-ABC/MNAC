@@ -25,7 +25,6 @@ namespace Tests.Characters.UI
             {
                 if (!slider.enabled)
                 {
-                    Debug.Log("enable slider");
                     slider.enabled = true;
                 }
                 var hp = _damageable.HP;
@@ -35,7 +34,6 @@ namespace Tests.Characters.UI
             {
                 slider.Value = 1;
                 slider.enabled = false;
-                Debug.Log("disable slider");
             }
 
         }

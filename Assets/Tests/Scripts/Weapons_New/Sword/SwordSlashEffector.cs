@@ -54,7 +54,6 @@ namespace Tests.Weapons_New.Sword
         protected override void WhenHitTarget(GameObject obj)
         {
 
-            Debug.Log("exit: " + obj.name);
             var pos = sword.transform.position;
             if (sword.OwnerObj != null)
                 pos = sword.OwnerObj.transform.position;

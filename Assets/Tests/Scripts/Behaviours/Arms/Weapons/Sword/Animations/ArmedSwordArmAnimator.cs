@@ -131,7 +131,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         public void Update()
         {
             //statemachine.OnUpdate();
-            Debug.Log(statemachine);
+            //Debug.Log(statemachine);
 
             //Debug.Log($"s: {_wholeBody.controller.GetSlashSwitch()}, b: {_wholeBody.controller.GetBoostingSwitch()}");
 
