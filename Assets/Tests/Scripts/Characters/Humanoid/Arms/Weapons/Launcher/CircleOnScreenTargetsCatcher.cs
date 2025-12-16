@@ -140,8 +140,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         }
         void WhenTargetRelease(IGameObjTarget_New target)
         {
-            var obj = target.Obj;
-            _indicatorsManager.RemoveTargetFor<IndicatedTarget>(obj);
+            //var obj = target.Obj;
+            //_indicatorsManager.RemoveTargetFor<IndicatedTarget>(obj);
         }
         public void LateUpdate()
         {
