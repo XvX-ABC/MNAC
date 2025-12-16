@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8839696285477312062}
   - component: {fileID: 759229357997803988}
   - component: {fileID: 538094373793157581}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Case
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,6 +100,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01896fd3d2801bf4b8e4615e3f3ff2bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  subComponents: []
+  layerMaskToHit:
+    serializedVersion: 2
+    m_Bits: 0
+  ownerTeamMask:
+    Value: 0
   _survivalDuration: 1
 --- !u!54 &759229357997803988
 Rigidbody:
