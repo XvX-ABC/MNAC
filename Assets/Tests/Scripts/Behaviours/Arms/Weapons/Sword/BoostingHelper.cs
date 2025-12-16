@@ -21,9 +21,10 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
             state = new(locomotion, locomotionCore, targetLocker, baseInput, definitions.MaxDuration);
             _input = weaponControlInput;
             var cd = definitions.ColdDownDuration;
+            cdTimeline = new Timeline_V1(definitions.ColdDownDuration);
             if (cd > 0)
             {
-                cdTimeline = new Timeline_V1(definitions.ColdDownDuration);
+
                 state.ExitAction += () => cdTimeline.Restart();
                 cdTimeline.SetNormalizedTime(1);
             }
