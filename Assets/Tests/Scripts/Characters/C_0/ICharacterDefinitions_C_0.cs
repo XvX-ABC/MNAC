@@ -8,14 +8,23 @@ using UnityEngine;
 
 namespace Tests.Characters.C_0
 {
+    [Serializable]
+    public struct HealthDefinitions
+    {
+        [SerializeField]
+        public float MaxPoint;
+    }
     internal interface ICharacterDefinitions_C_0
     {
+        public HealthDefinitions Health { get; }
         public LayerMask ProjectilesLayerMaskToHit { get; }
         public LayerMask SwordLayerMaskToHit { get; }
         public TeamMask TeamMask { get; }
     }
     internal class C_0Definitions : ICharacterDefinitions_C_0
     {
+        [SerializeField]
+        HealthDefinitions _health;
         [SerializeField]
         LayerMask _projectilesLayerMaskToHit;
         [SerializeField]
@@ -28,5 +37,7 @@ namespace Tests.Characters.C_0
         public TeamMask TeamMask => _teamMask;
 
         public LayerMask SwordLayerMaskToHit => _swordLayerMaskToHit;
+
+        public HealthDefinitions Health => _health;
     }
 }
