@@ -10,7 +10,8 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 using AnimationNormalState = Tests.Characters.Humanoid.Animations.NormalState;
-using Health = Tests.Interaction.Influence.Health;
+using Health = Tests.Interaction.Health;
+using HealthInfluense = Tests.Interaction.Influence.Health;
 using NormalState = Tests.Characters.Humanoid.NormalState;
 using Stun = Tests.Interaction.Influence.Stun;
 
@@ -21,7 +22,7 @@ namespace Tests.Characters.C_0
 
     }
     [Interactable]
-    internal class C_0 : CharacterBase
+    internal class C_0 : CharacterBase, IHealth, ITeamMember
     {
 
         [SerializeField]
@@ -31,6 +32,18 @@ namespace Tests.Characters.C_0
         AnimationNormalState _animationNormalState;
         ICharacterDefinitions_C_0 _definitions;
         ICharacterAnimationDefinitions_C_0 _animationDefinitions;
+        Health _health;
+        TeamMask _teamMask;
+
+        public TeamMask TeamMask { get => _teamMask; set => _teamMask = value; }
+
+        public bool IsAlive => _health.IsAlive;
+
+        public float MaxPoint => _health.MaxPoint;
+
+        public float MinPoint => _health.MinPoint;
+
+        public float Point => _health.Point;
 
         protected override void Awake()
         {
@@ -52,8 +65,8 @@ namespace Tests.Characters.C_0
         internal override InfluenceCore CreateInfluenceCore()
         {
             var stun = new Stun();
-            var health = new Health();
-            return new(stun, health);
+            _health = new(_definitions.Health.MaxPoint);
+            return new(stun, _health);
         }
         internal override CharacterComponent[] GetComponents()
         {
@@ -127,6 +140,11 @@ namespace Tests.Characters.C_0
             }
 
             return statemachine;
+        }
+
+        public void ReceivePoint(float point)
+        {
+            throw new NotImplementedException();
         }
     }
 }
