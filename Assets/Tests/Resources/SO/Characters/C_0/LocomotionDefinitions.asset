@@ -16,12 +16,12 @@ MonoBehaviour:
     _postureEvaluationFramesAmount: 3
     _walking:
       _maxSpeed: 10
-      _acceleratedSpeed: 2
+      _acceleratedSpeed: 5
       _dragTransitionalDuration: 1
       _dragTransitionalRange: {x: 0, y: 10}
     _boosting:
-      _speedPower: 2
-      _acceleratedSpeedPower: 0
+      _speedPower: 1
+      _acceleratedSpeedPower: 1
     _quickBoosting:
       _speedPower: 10
       _acceleratedSpeedPower: 0
