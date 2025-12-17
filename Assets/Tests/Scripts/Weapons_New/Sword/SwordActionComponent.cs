@@ -18,7 +18,7 @@ namespace Tests.Weapons_New.Sword
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            blackboard.TryReadValueOrThrowException(SwordActionComponent.OwnerSword, out sword);
+            blackboard.TryReadValueOrThrowException(SwordActionComponent.OwnerSword, out sword); //TODO：没必要从黑板中读取，在Sword中初始化组件时可以直接传入
             _ownerAction = sword.actions[actionType];
             _ownerAction.AddComponent(this);
         }
