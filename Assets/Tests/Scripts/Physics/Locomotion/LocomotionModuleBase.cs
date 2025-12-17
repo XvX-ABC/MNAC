@@ -10,7 +10,7 @@ namespace Tests.TPhysics.Locomotion
         protected bool enabled;
         [Obsolete]
         protected World world;
-        public bool Enabled { get => enabled; set => enabled = value; }
+        public virtual bool Enabled { get => enabled; set => enabled = value; }
         protected EvaluationModuleBase()
         {
             world = World.Default;
