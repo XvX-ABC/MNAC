@@ -175,6 +175,7 @@ namespace Tests.Interaction
             get => _cursorController.Enabled;
             set => _cursorController.Enabled = value;
         }
+        //TODO：激活逻辑不应该与捕获器耦合
         public override bool Enabled
         {
             get => _screenObjsCatcher.Enabled;
