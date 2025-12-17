@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Codice.CM.Common.Checkin.Partial;
+using System;
 using UnityEngine;
 
 namespace Tests.Utilities.Timeline
@@ -25,7 +26,7 @@ namespace Tests.Utilities.Timeline
             base.Reset();
             time = 0;
         }
-        public override bool UpdateLength(float newLength)
+        public override bool UpdateLength(float newLength, bool runningCheck = true)
         {
             return true;
         }
@@ -52,7 +53,7 @@ namespace Tests.Utilities.Timeline
             base.Reset();
             time = 0;
         }
-        public override bool UpdateLength(float newLength)
+        public override bool UpdateLength(float newLength, bool runningCheck = true)
         {
             throw new NotImplementedException();
         }

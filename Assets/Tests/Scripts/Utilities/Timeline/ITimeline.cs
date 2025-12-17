@@ -23,9 +23,9 @@ namespace Tests.Utilities.Timeline
         void EndEarly();
         bool AddEvent(ITimelineEvent evt);
         bool RemoveEvent(ITimelineEvent evt);
-        bool UpdateLength(float newLength);
-        bool SetNormalizedTime(float normalizedTime);
-        bool SetTime(float time);
+        bool UpdateLength(float newLength, bool runningCheck = true);
+        bool SetNormalizedTime(float normalizedTime, bool runningCheck = true);
+        bool SetTime(float time, bool runningCheck = true);
         void End();
         void Reset();
     }

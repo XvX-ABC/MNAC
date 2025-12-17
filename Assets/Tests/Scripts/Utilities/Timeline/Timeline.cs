@@ -231,9 +231,9 @@ namespace Tests.Utilities.Timeline
                     return true;
             return false;
         }
-        public virtual bool UpdateLength(float newLength)
+        public virtual bool UpdateLength(float newLength, bool runningCheck = true)
         {
-            if (isRunning)
+            if (runningCheck && isRunning)
             {
                 Debug.LogWarning("This timeline can't update length. because it's running right now.");
                 return false;
@@ -243,9 +243,9 @@ namespace Tests.Utilities.Timeline
             length = newLength;
             return true;
         }
-        public bool SetTime(float time)
+        public bool SetTime(float time, bool runningCheck = true)
         {
-            if (isRunning)
+            if (runningCheck && isRunning)
             {
                 Debug.LogWarning("This timeline can't set time. because it's running right now.");
                 return false;
@@ -254,9 +254,9 @@ namespace Tests.Utilities.Timeline
             this.time = time;
             return true;
         }
-        public bool SetNormalizedTime(float normalizedTime)
+        public bool SetNormalizedTime(float normalizedTime, bool runningCheck = true)
         {
-            if (isRunning)
+            if (runningCheck && isRunning)
             {
                 Debug.LogWarning("This timeline can't set normalized time. because it's running right now.");
                 return false;
