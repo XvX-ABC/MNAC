@@ -1,9 +1,11 @@
-﻿using Tests.Characters.Humanoid.Animations;
+﻿using System;
+using Tests.Characters.Humanoid.Animations;
 using Tests.Interaction.Influence;
 using Tests.Utilities.Blackboards;
 using UnityEngine;
 namespace Tests.Characters.Interaction
 {
+    [Obsolete]
     [DefaultExecutionOrder(1)]
     public abstract class CharacterAnimatorBase : MonoBehaviour
     {

@@ -7,22 +7,19 @@ using Tests.Interaction.Influence;
 using Tests.States;
 using Tests.Utilities.Blackboards;
 using UnityEngine;
-using UnityEngine.Animations;
-using UnityEngine.Playables;
 using AnimationNormalState = Tests.Characters.Humanoid.Animations.NormalState;
 using Health = Tests.Interaction.Health;
-using HealthInfluense = Tests.Interaction.Influence.Health_Obsolete;
 using NormalState = Tests.Characters.Humanoid.NormalState;
 using Stun = Tests.Interaction.Influence.Stun;
 
 namespace Tests.Characters.C_0
 {
-    public interface IC_0 : ICharacter
+    public interface IC_0 : ICharacter, IHealth, ITeamMember
     {
 
     }
     [Interactable]
-    internal class C_0 : CharacterBase, IHealth, ITeamMember
+    internal class C_0 : CharacterBase
     {
 
         [SerializeField]
@@ -74,7 +71,7 @@ namespace Tests.Characters.C_0
         }
         internal override void InitializeComponents(Blackboard blackboard)
         {
-            _humanoidController.Initialize(blackboard);
+            base.InitializeComponents(blackboard);
             _humanoidController.animator.InitializeArmsAnimation(
                 _animationDefinitions.HumanoidDefinitions.LeftArmDefinitions.Mask,
                 _animationDefinitions.HumanoidDefinitions.RightArmDefinitions.Mask);
@@ -112,7 +109,7 @@ namespace Tests.Characters.C_0
         {
             return _humanoidController.animator.layersMixer;
         }
-        internal override CharacterAnimationStateMachine CreateAnimationStatemachine(CharacterAnimator animator)
+        internal override CharacterAnimationStateMachine CreateAnimationStatemachine(CAnimator animator)
         {
 
             var stun = influenceCore.FindInfluence<Stun>() ?? throw new ArgumentNullException("stun");

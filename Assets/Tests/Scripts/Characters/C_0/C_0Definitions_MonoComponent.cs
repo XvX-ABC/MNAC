@@ -11,10 +11,14 @@ namespace Tests.Characters.C_0
         LayerMask _swordLayerMaskToHit;
         [SerializeField]
         TeamMask _teamMask;
+        [SerializeField]
+        HealthDefinitions _health;
         public LayerMask ProjectilesLayerMaskToHit => _projectilesLayerMaskToHit;
 
         public TeamMask TeamMask => _teamMask;
 
         public LayerMask SwordLayerMaskToHit => _swordLayerMaskToHit;
+
+        public HealthDefinitions Health => _health;
     }
 }

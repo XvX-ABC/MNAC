@@ -4,7 +4,7 @@ using Tests.Behaviours.Arms.Animations;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.Behaviours.Arms.Weapons.Animations;
 using Tests.Characters.Humanoid.Arms.Weapons;
-using Tests.Characters.Humanoid.Interaction.Input;
+using Tests.Characters.Humanoid.Input;
 using Tests.Characters.MountPoints;
 using Tests.Characters.Weapons;
 using Tests.States;
@@ -82,7 +82,7 @@ namespace Tests.Characters.Humanoid.Arms
             {
                 if (value != null)
                 {
-                    value.TryReadValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
+                    value.TryReadValueOrThrowException<IHumanoidInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
                     _armInput = _part == HumanPart.LeftArm ? input.LArm : input.RArm;
                     value.TryReadValue(CharacterBlackboardFields.Character_Weapon_Core, out _weaponCore);
                 }

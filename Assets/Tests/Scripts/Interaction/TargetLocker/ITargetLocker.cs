@@ -10,6 +10,8 @@ namespace Tests.Interaction
         ObstacleDetector ObstacleDetector { get; set; }
         float TargetChangeDuration { get; set; }
 
+        //float TargetChangeDuration { get; set; }
+
         void OnFixedUpdate();
         void OnLateUpdate();
     }

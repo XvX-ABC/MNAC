@@ -19,5 +19,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         public LayerMask LayerMaskToHit => _definitions.LayerMaskToHit;
 
         public TeamMask TeamMask => _definitions.TeamMask;
+
+        public TargetInteraction TargetInteraction =>_definitions.TargetInteraction;
     }
 }

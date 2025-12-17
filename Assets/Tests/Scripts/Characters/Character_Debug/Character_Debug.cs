@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Tests.Animations;
-using Tests.Characters.Interaction;
 using Tests.Interaction;
 using Tests.Interaction.Influence;
 using Tests.Utilities.Blackboards;

@@ -40,6 +40,8 @@ namespace Tests.Characters
             Character_Weapon_LeftArm_Armed = Guid.NewGuid();
             Character_Weapon_RightArm_Armed = Guid.NewGuid();
             Character_Weapon_Projectile_LayerMaskToHit = Guid.NewGuid();
+            Character_Weapon_Sword_LayerMaskToHit = Guid.NewGuid();
+
 
             AnimationPB = Guid.NewGuid();
             Rigidbody = Guid.NewGuid();

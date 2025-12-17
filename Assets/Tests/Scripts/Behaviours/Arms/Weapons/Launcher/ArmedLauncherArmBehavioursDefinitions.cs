@@ -8,6 +8,8 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
     public class ArmedLauncherArmBehavioursDefinitions : IArmedLauncherArmBehaviourDefinitions
     {
         [SerializeField]
+        TargetInteraction _targetInteraction;
+        [SerializeField]
         LayerMask _layerMaskToHit;
         [SerializeField]
         TeamMask _teamMask;
@@ -30,5 +32,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
 
         public LayerMask LayerMaskToHit { get => _layerMaskToHit; set => _layerMaskToHit = value; }
         public TeamMask TeamMask { get => _teamMask; set => _teamMask = value; }
+
+        public TargetInteraction TargetInteraction => _targetInteraction;
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using Tests.Characters.Humanoid.Interaction.Input;
+using Tests.Characters.Humanoid.Input;
 using Tests.Interaction;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
@@ -13,11 +13,11 @@ namespace Tests.Behaviours
         //{
         //    return locker;
         //}
-        IHumanInput _input;
+        IHumanoidInput _input;
         GameObjTarget _currentObjTarget;
         Action<GameObject, GameObject> _mainObjChangedAction;
         public PlayerTargetLocker(
-            IHumanInput input,
+            IHumanoidInput input,
             GameObjsInScreenCatcher screenObjsCatcher,
             Func<GameObject, LockType, ILockTarget> getTargetFunc,
             Action<ILockTarget> releaseTargetAction,

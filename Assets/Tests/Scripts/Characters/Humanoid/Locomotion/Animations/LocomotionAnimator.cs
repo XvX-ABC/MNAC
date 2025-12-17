@@ -1,6 +1,6 @@
 ﻿using System;
 using Tests.Animations;
-using Tests.Characters.Humanoid.Interaction.Input;
+using Tests.Characters.Humanoid.Input;
 using Tests.Characters.Humanoid.Legs;
 using Tests.Input;
 using Tests.States;
@@ -18,7 +18,7 @@ namespace Tests.Characters.Humanoid.Locomotion.Animations
     {
         ILocomotionAnimatorDefinitions _definitions;
         IGroundDetector groundDetector;
-        IHumanInput _input;
+        IHumanoidInput _input;
         LocomotionCore _core;
 
         LocomotionAnimationStateContext _context;

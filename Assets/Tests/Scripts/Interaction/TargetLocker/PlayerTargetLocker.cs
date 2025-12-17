@@ -1,14 +1,13 @@
 ﻿using DG.Tweening;
 using System;
 using System.Collections.Generic;
-using Tests.Extensions;
 using Tests.States;
 using Tests.Utilities.Timeline;
 using UnityEngine;
 
 namespace Tests.Interaction
 {
-    public class PlayerTargetLocker<T> : TargetLockerBase<T>, IPlayerTargetLocker<T> where T : class, ILockTarget
+    public partial class PlayerTargetLocker<T> : PlayerTargetLockerBase<T>, IPlayerTargetLocker<T> where T : class, ILockTarget
     {
         #region internal classes
         internal abstract class TargetLockerState : WithCallbackPlayableState
@@ -186,9 +185,9 @@ namespace Tests.Interaction
             }
         }
 
-        public Vector3 OriginWorldPosition { get => _originWorldPosition; set => _originWorldPosition = value; }
-        public Vector3 CursorPosition { get => _cursorPosition; set => _cursorPosition = value; }
-        public Vector3 CursorPositionDelta { get => _cursorPositionDelta; set => _cursorPositionDelta = value; }
+        public override Vector3 OriginWorldPosition { get => _originWorldPosition; set => _originWorldPosition = value; }
+        public override Vector3 CursorPosition { get => _cursorPosition; set => _cursorPosition = value; }
+        public override Vector3 CursorPositionDelta { get => _cursorPositionDelta; set => _cursorPositionDelta = value; }
         [Obsolete]
         public GameObject MainTargetObj
         {
@@ -216,7 +215,7 @@ namespace Tests.Interaction
                 _mainLockTargetChangedAction?.Invoke(ov, _mainLockTarget);
             }
         }
-        public float CatchAngle { get => _catchAngle * 2; set => _catchAngle = value / 2; }
+        public override float CatchAngle { get => _catchAngle * 2; set => _catchAngle = value / 2; }
         public override Action<T, T> MainTargetChangedAction { get => _mainLockTargetChangedAction; set => _mainLockTargetChangedAction = value; }
         public override ObstacleDetector ObstacleDetector { get => _obstacleDetector; set => _obstacleDetector = value; }
         public Camera Camera { get => _camera; set => _camera = value; }
@@ -229,7 +228,7 @@ namespace Tests.Interaction
             Camera camera,
             ICursorController cursorController,
             ObstacleDetector obstacleDetector = null,
-            ushort handleAmountInCoroutine = 30,
+            ushort handleAmountInCoroutine = 30,//TODO：冗余参数
             float catchAngle = 60,
             float targetChangedDuration = 0.2f,
             float receiveInputDuration = 0.05f,

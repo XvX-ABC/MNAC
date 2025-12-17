@@ -4,7 +4,7 @@ using Tests.Behaviours;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
 using Tests.Behaviours.Input;
-using Tests.Characters.Humanoid.Interaction.Input;
+using Tests.Characters.Humanoid.Input;
 using Tests.Characters.Humanoid.Locomotion;
 using Tests.Characters.Interaction.Input;
 using Tests.Characters.UI;
@@ -289,7 +289,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Main, out var actorObj);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Arm_Local, out var armObj);
 
-            blackboard.TryReadValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
+            blackboard.TryReadValueOrThrowException<IHumanoidInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
 
 
 
@@ -320,7 +320,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             LocomotionCore locomotionCore,
             IWeaponControlInput weaponControlInput)
         {
-            _animator = new(graph, aimIK, rbody, world, groundDetector, locomotionCore, targetLocker.TargetChangeDuration, _definitions, _animationDefinitions, weaponControlInput);
+            var targetChangeDuration = _definitions.TargetInteraction.SwitchDuration;
+            targetLocker.TargetChangeDuration = targetChangeDuration;
+            _animator = new(graph, aimIK, rbody, world, groundDetector, locomotionCore, targetChangeDuration, _definitions, _animationDefinitions, weaponControlInput);
             _behaviour = new(_definitions, _animator);
 
 

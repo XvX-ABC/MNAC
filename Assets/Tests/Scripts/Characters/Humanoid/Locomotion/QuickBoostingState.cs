@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Tests.Behaviours.Input;
-using Tests.Characters.Humanoid.Interaction.Input;
+using Tests.Characters.Humanoid.Input;
 using Tests.Input;
 using Tests.States;
 using Tests.TPhysics.Locomotion;
@@ -15,7 +15,7 @@ namespace Tests.Characters.Humanoid.Locomotion
     {
         QuickBoostingState _state;
         ITimeline _cdTimeline;
-        IHumanInput _hinput;
+        IHumanoidInput _hinput;
         public QuickBoostingHelper([NotNull] IMovementDefinitions movementDefinitions, [NotNull] IQuickBoostingDefinitions definitions, bool enabled = true)
         {
             //_state = new QuickBoostingState(movementDefinitions, definitions, enabled);
@@ -31,7 +31,7 @@ namespace Tests.Characters.Humanoid.Locomotion
         {
             get => _cdTimeline.NormalizedTime >= 1;
         }
-        public IHumanInput Input
+        public IHumanoidInput Input
         {
             get => _hinput;
             set

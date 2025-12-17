@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Tests.Characters.Humanoid.Interaction.Input;
+using Tests.Characters.Humanoid.Input;
 using Tests.Input;
 using Tests.States;
 using Tests.TPhysics.Environment;
@@ -93,7 +93,7 @@ namespace Tests.Characters.Humanoid.Locomotion
             _lcore.DisableModule(mutativeDrag);
             base.OnExit();
         }
-        void UpdateHorizontalVector(IHumanInput input)
+        void UpdateHorizontalVector(IHumanoidInput input)
         {
             if (locomotion.Enabled)
             {

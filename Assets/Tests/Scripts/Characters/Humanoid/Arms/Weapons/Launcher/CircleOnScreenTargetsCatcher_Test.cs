@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tests.Characters.Humanoid.Interaction.Input;
+using Tests.Player;
 using Tests.UI;
 using UnityEngine;
 
@@ -22,7 +22,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         [SerializeField]
         IndicatorsManager _targetsLockManager;
         [SerializeField]
-        BaseInput _input;
+        PlayerBaseInput _input;
 
 
         CircleOnScreenTargetsCatcher _catcher;

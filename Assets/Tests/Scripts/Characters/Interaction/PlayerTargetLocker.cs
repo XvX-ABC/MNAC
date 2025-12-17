@@ -1,6 +1,6 @@
 ﻿using System;
 using Tests.Behaviours;
-using Tests.Characters.Humanoid.Interaction.Input;
+using Tests.Characters.Humanoid.Input;
 using Tests.Characters.Interaction;
 using Tests.Characters.UI;
 using Tests.Interaction;
@@ -10,12 +10,11 @@ using Tests.Utilities.Blackboards;
 using UnityEngine;
 using IndicatedTarget = Tests.Characters.UI.IndicatedTarget;
 using PlayerCursorIndicator = Tests.Characters.UI.PlayerCursorIndicator;
-using TargetLocker = Tests.Characters.Interaction.TargetLocker;
 
 namespace Tests.Characters.Weapons
 {
     [PlayerComponent(DontDestroyOnLoad = true)]
-    internal class PlayerTargetLocker : TargetLocker, IPlayerTargetLocker
+    internal class PlayerTargetLocker : TargetLockerBase, IPlayerTargetLocker
     {
 
         internal class EnemyFilter : ICaughtItemFilter<GameObject>
@@ -68,12 +67,10 @@ namespace Tests.Characters.Weapons
         public override Action<ILockTarget, ILockTarget> MainTargetChangedAction { get => _locker.MainTargetChangedAction; set => _locker.MainTargetChangedAction = value; }
         public override ObstacleDetector ObstacleDetector { get => _locker.ObstacleDetector; set => _obstacleDetector = _locker.ObstacleDetector = value; }
         public Vector3 OriginWorldPosition { get => _locker.OriginWorldPosition; set => _locker.OriginWorldPosition = value; }
-        public override Action<GameObject, GameObject> MainObjChangedAction
-        {
-            get => _locker.MainObjChangedAction; set => _locker.MainObjChangedAction = value
-                ;
-        }
         public override float TargetChangeDuration { get => _locker.TargetChangeDuration; set => _locker.TargetChangeDuration = value; }
+        public bool ObjsCatchEnable { get => _locker.ObjsCatchEnable; set => _locker.ObjsCatchEnable = value; }
+        public bool CursorEnable { get => _locker.CursorEnable; set => _locker.CursorEnable = value; }
+        public override Action<GameObject, GameObject> MainObjChangedAction { get => _locker.MainObjChangedAction; set => _locker.MainObjChangedAction = value; }
 
         void Start()
         {
@@ -102,7 +99,7 @@ namespace Tests.Characters.Weapons
         {
             base.Initialize(blackboard);
             blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Player_Camera_Main, out var camera);
-            blackboard.TryReadValueOrThrowException<IHumanInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
+            blackboard.TryReadValueOrThrowException<IHumanoidInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
             blackboard.TryReadUIValueOrThrowException<PlayerCursorIndicator>(CharacterUIBlackboardFields.Player_Cursor_Indicator, out _cursorIndicator);
             blackboard.TryReadUIValueOrThrowException(CharacterUIBlackboardFields.Indicators_Manager, out _indicatorsManager);
             blackboard.TryReadValueOrThrowException<TeamMask>(CharacterBlackboardFields.Character_TeamMask, out var teamMask);

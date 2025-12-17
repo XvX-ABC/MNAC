@@ -1,10 +1,12 @@
-﻿using Tests.Characters.Humanoid.Arms.Weapons.Launchers;
+﻿using System;
+using Tests.Characters.Humanoid.Arms.Weapons.Launchers;
 using Tests.Interaction;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Launcher
 {
-    public class ArmedLauncherArmBehavioursDefinitions_MonoComponent : MonoBehaviour, IArmedLauncherArmBehaviourDefinitions
+    [Obsolete]
+    public class ArmedLauncherArmBehavioursDefinitions_MonoComponent_Obsolete : MonoBehaviour, IArmedLauncherArmBehaviourDefinitions
     {
         [SerializeField]
         protected AnimationClip aimingClip;
@@ -24,5 +26,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         public LayerMask LayerMaskToHit => throw new System.NotImplementedException();
 
         public TeamMask TeamMask => throw new System.NotImplementedException();
+
+        public TargetInteraction TargetInteraction => throw new System.NotImplementedException();
     }
 }

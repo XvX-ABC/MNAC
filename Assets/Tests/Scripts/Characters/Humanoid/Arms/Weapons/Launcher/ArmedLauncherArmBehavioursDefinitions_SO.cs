@@ -27,5 +27,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         public LayerMask LayerMaskToHit => _definitions.LayerMaskToHit;
 
         public TeamMask TeamMask => _definitions.TeamMask;
+
+        public Behaviours.Arms.Weapons.Launcher.TargetInteraction TargetInteraction => _definitions.TargetInteraction;
     }
 }

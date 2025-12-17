@@ -1,6 +1,6 @@
 ﻿using System;
 using Tests.Behaviours.Input;
-using Tests.Characters.Humanoid.Interaction.Input;
+using Tests.Characters.Humanoid.Input;
 using Tests.Characters.Humanoid.Locomotion.Animations;
 using Tests.Extensions;
 using Tests.States;
@@ -19,7 +19,7 @@ namespace Tests.Characters.Humanoid.Locomotion
     {
         internal ILocomotionDefinitions definitions;
 
-        IHumanInput _input;
+        IHumanoidInput _input;
         LCore _core;
         internal LocomotionStatemachine movementStatemachine;
         internal LocomotionStatemachine statemachine;

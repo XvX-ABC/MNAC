@@ -1,7 +1,7 @@
 ﻿using System;
 using Tests.Characters.Humanoid.Animations;
 using Tests.Characters.Humanoid.Arms;
-using Tests.Characters.Humanoid.Interaction.Input;
+using Tests.Characters.Humanoid.Input;
 using Tests.Characters.Humanoid.Legs;
 using Tests.Characters.Humanoid.Locomotion;
 using Tests.Characters.Interaction;
@@ -22,11 +22,11 @@ namespace Tests.Characters.Humanoid
         internal class RequiredComponents
         {
             [SerializeField]
-            internal HumanInput_MonoComponent input;
+            internal HumanoidInputComponent input;
             [SerializeField]
             internal UICore ui;
             [SerializeField]
-            internal TargetLocker targetLocker;
+            internal TargetLockerBase targetLocker;
             [SerializeField]
             internal EnvironmentCore environment;
             [SerializeField]
@@ -66,7 +66,7 @@ namespace Tests.Characters.Humanoid
 
 
         [SerializeField]
-        ResourceLoader<TargetLocker> _targetLockerLoader;
+        ResourceLoader<TargetLockerBase> _targetLockerLoader;
 
 
 
@@ -79,21 +79,10 @@ namespace Tests.Characters.Humanoid
         internal NormalState normalState;
         internal DiedState diedState;
 
+
         protected override void Awake()
         {
             base.Awake();
-
-
-
-            _components = _requiredComponents.ToArray();
-
-            _collisionComponentsManager = new();
-
-
-            //InitializeInfluenceCore();
-
-
-            //Initialize(new Blackboard());
 
 
             if (leftArm != null)
@@ -110,32 +99,9 @@ namespace Tests.Characters.Humanoid
         void Start()
         {
 
-            ////InitializeUI();
-
-            //InitializeAnimator();
-
-            ////InitializeTargetLocker();
-
-            //InitializeComponents();
-
-
-
-            ////InitializeArmController();
-
-
-
-            ////InitializeStatemachine(influenceCore);
-
-
-            //_animator.InitializeArmsAnimation();
-            //_animator.InitializeStatemachine();
-
         }
         void FixedUpdate()
         {
-            //influenceCore.Update();
-            //_statemachine.OnUpdate();
-
             animator.Update();
         }
         void OnDisable()
@@ -189,6 +155,9 @@ namespace Tests.Characters.Humanoid
 
             base.Initialize(blackboard);
 
+            _components = _requiredComponents.ToArray();
+
+            _collisionComponentsManager = new();
             //blackboard.TryRegisterField(CharacterBlackboardFields.Player_Camera_Main, _camera);
             //blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Main, gameObject);
 

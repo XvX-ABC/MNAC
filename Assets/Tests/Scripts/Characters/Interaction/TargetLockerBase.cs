@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Tests.Characters.Interaction
 {
-    internal abstract class TargetLocker : CharacterComponent, ITargetLocker
+    internal abstract class TargetLockerBase : CharacterComponent, ITargetLocker
     {
         public abstract Action<GameObject, GameObject> MainObjChangedAction { get; set; }
         public abstract ILockTarget MainLockTarget { get; set; }

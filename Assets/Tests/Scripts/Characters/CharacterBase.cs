@@ -2,6 +2,7 @@
 using System.Linq;
 using Tests.Animations;
 using Tests.Characters.Humanoid;
+using Tests.Characters.Interaction;
 using Tests.Interaction;
 using Tests.Interaction.Influence;
 using Tests.Utilities.Blackboards;
@@ -9,13 +10,13 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 using UnityEngine.Rendering;
-namespace Tests.Characters.Interaction
+namespace Tests.Characters
 {
-    using AnimationNormalState = Tests.Characters.Humanoid.Animations.NormalState;
+    using AnimationNormalState = Humanoid.Animations.NormalState;
     [DefaultExecutionOrder(0)]
     public abstract class CharacterBase : MonoBehaviour, ICharacter
-    {   
-        internal class CharacterAnimator : IDisposable
+    {
+        internal class CAnimator : IDisposable
         {
             internal PlayableGraph graph;
             internal AnimationPlayablePartTree appt;
@@ -23,7 +24,7 @@ namespace Tests.Characters.Interaction
             internal AnimationPlayableOutput _output;
             Animator _animator;
             Blackboard _blackboard;
-            public CharacterAnimator(GameObject obj, Animator animator, Blackboard blackboard)
+            public CAnimator(GameObject obj, Animator animator, Blackboard blackboard)
             {
                 _blackboard = blackboard ?? throw new ArgumentNullException(nameof(blackboard));
                 _animator = animator ?? throw new ArgumentNullException(nameof(animator));
@@ -55,7 +56,7 @@ namespace Tests.Characters.Interaction
             {
                 graph.Stop();
             }
-            ~CharacterAnimator()
+            ~CAnimator()
             {
                 Dispose();
             }
@@ -67,7 +68,7 @@ namespace Tests.Characters.Interaction
         internal CharacterComponent[] components;
         CharacterBehavioursStatemachine _statemachine;
         CharacterAnimationStateMachine _animationStatemachine;
-        CharacterAnimator _animator;
+        CAnimator _animator;
         internal bool allowAnimationInitialization { get => _animator != null; }
         public CharacterBase()
         {
@@ -81,7 +82,7 @@ namespace Tests.Characters.Interaction
             components = GetComponents();
             if (TryGetComponent<Animator>(out var animator))
             {
-                _animator = new(this.gameObject, animator, blackboard);
+                _animator = new(gameObject, animator, blackboard);
             }
 
         }
@@ -126,11 +127,11 @@ namespace Tests.Characters.Interaction
         }
         protected void TryRegisterToInteractionManager()
         {
-            var attrs = this.GetType().GetCustomAttributes(true);
+            var attrs = GetType().GetCustomAttributes(true);
             var a = attrs.FirstOrDefault(a => a is InteractableAttribute);
             if (a != null)
             {
-                _item = new InteractableItem(this.ID, this.gameObject);
+                _item = new InteractableItem(ID, gameObject);
                 InteractionManager.AddItem(_item);
             }
         }
@@ -140,7 +141,7 @@ namespace Tests.Characters.Interaction
         }
         public Guid ID => _id;
 
-        public string Name => this.name;
+        public string Name => name;
         internal virtual Blackboard CreateBlackboard()
         {
             var blackboard = new Blackboard();
@@ -149,8 +150,16 @@ namespace Tests.Characters.Interaction
         }
         internal abstract InfluenceCore CreateInfluenceCore();
         internal abstract CharacterComponent[] GetComponents();
-        internal abstract void InitializeComponents(Blackboard blackboard);
-        internal abstract void ComponentsDispose();
+        internal virtual void InitializeComponents(Blackboard blackboard)
+        {
+            foreach (var c in components)
+                c.Initialize(blackboard);
+        }
+        internal virtual void ComponentsDispose()
+        {
+            foreach (var c in components)
+                c.Dispose();
+        }
         internal virtual void EnableComponents()
         {
             foreach (var comp in components)
@@ -171,6 +180,6 @@ namespace Tests.Characters.Interaction
         }
         internal abstract CharacterBehavioursStatemachine CreateStatemachine();
         internal abstract AnimationPlayablePartBase GetMainAnimationPlayablePart();
-        internal virtual CharacterAnimationStateMachine CreateAnimationStatemachine(CharacterAnimator animator) { return null; }
+        internal virtual CharacterAnimationStateMachine CreateAnimationStatemachine(CAnimator animator) { return null; }
     }
 }

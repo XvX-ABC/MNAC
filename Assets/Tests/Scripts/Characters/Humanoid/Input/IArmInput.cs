@@ -1,6 +1,6 @@
 ﻿using Tests.Characters.Interaction.Input;
 
-namespace Tests.Characters.Humanoid.Interaction.Input
+namespace Tests.Characters.Humanoid.Input
 {
     public interface IArmInput
     {

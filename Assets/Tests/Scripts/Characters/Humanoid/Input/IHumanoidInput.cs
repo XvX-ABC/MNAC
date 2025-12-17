@@ -1,9 +1,9 @@
 ﻿using Tests.Behaviours.Input;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Interaction.Input
+namespace Tests.Characters.Humanoid.Input
 {
-    public interface IHumanInput
+    public interface IHumanoidInput
     {
         public IBaseInput BaseInput { get; }
         public Vector2 MousePosition { get => BaseInput?.MousePosition ?? Vector3.positiveInfinity; }
