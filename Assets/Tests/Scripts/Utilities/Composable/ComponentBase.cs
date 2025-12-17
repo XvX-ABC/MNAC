@@ -1,9 +1,46 @@
 ﻿using System;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.MTrees;
+using UnityEditor.Experimental.GraphView;
+using Blackboard = Tests.Utilities.Blackboards.Blackboard;
 
 namespace Tests.Utilities.Composable
 {
+    public abstract class ComponentBase<T> : IComponent<T>
+    {
+        protected T context;
+        internal ComponentNode<T> node;
+        protected bool enabled;
+        Guid _id;
+        public Guid ID { get => _id; }
+        public virtual T Context
+        {
+            get => context;
+            set
+            {
+                context = value;
+            }
+        }
+        public IComponentNode<T> Node { get => node; }
+        public abstract string Name { get; }
+        public virtual bool Enabled { get => enabled; set => enabled = value; }
+
+        protected ComponentBase()
+        {
+            _id = Guid.NewGuid();
+            node = new(this);
+        }
+
+        public virtual void Initialize(T blackboard)
+        {
+            this.context = blackboard;
+        }
+        public virtual void Dispose()
+        {
+            this.context = default;
+        }
+    }
+
     public abstract class ComponentBase : IComponent
     {
         protected Blackboard blackboard;
