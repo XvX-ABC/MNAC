@@ -18,7 +18,7 @@ namespace Tests.Interaction
         {
             _processingAmountOfFrames = processingAmountInCoroutine;
             _camera = camera ?? throw new ArgumentNullException(nameof(camera));
-            InteractionManager.itemRemovedAction += item => RemoveItemImpl(item.Obj);
+            InteractionManager.itemRemovedAction += item => RemoveItemImpl(item.Obj); //TODO: ???
         }
         public Camera Camera { get => _camera; set => _camera = value ?? throw new NullReferenceException(nameof(_camera)); }
         public ushort ProcessingAmountOfFrames { get => _processingAmountOfFrames; set => _processingAmountOfFrames = value; }
