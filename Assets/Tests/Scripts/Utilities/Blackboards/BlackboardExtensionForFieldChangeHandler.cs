@@ -12,6 +12,7 @@ namespace Tests.Utilities.Blackboards
             blackboard.TryReadValueOrThrowException<FieldChangeHandler>(MiddlewareFields.FieldChangeHandler, out var handler);
             handler.RegisterAction(key, action);
         }
+        //TODO：没必要使用泛型
         public static void UnregisterFieldChangeAction<T>(this Blackboard blackboard, object key, Action<FieldEventType, T, T> action)
         {
             if (action == null)
