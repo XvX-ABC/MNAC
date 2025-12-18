@@ -5,14 +5,12 @@ using Tests.Behaviours.Input;
 using Tests.Interaction;
 using Tests.TPhysics.Locomotion;
 using Tests.Utilities;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
 using UnityEngine;
 using LCore = Tests.TPhysics.Locomotion.LocomotionCore;
 
 namespace Tests.Characters.Humanoid.Locomotion
 {
-    public class RotationByPlayerLocomotion : ComponentBase
+    public class RotationByPlayerLocomotion : RotationLocomotionBase
     {
         LCore _core;
         Rigidbody _rb;
@@ -23,7 +21,7 @@ namespace Tests.Characters.Humanoid.Locomotion
         IPositionTarget _target;
         IBaseInput _input;
 
-        public RotationByPlayerLocomotion([NotNull] Camera camera, [NotNull] Rigidbody rigidbody, [NotNull] LCore core, IBaseInput input)
+        public RotationByPlayerLocomotion([NotNull] Camera camera, [NotNull] Rigidbody rigidbody, [NotNull] LCore core, IBaseInput input) : base(core)
         {
             _core = core;
             _rb = rigidbody;
@@ -32,92 +30,94 @@ namespace Tests.Characters.Humanoid.Locomotion
             _input = input ?? throw new ArgumentNullException(nameof(input));
             enabled = false;
         }
-        public override bool Enabled
-        {
-            get => base.Enabled;
-            set
-            {
-                base.Enabled = value;
-                if (value)
-                    _core.EnableModule(_locomotion);
-                else
-                    _core.DisableModule(_locomotion);
-            }
-        }
+        //public override bool Enabled
+        //{
+        //    get => base.Enabled;
+        //    set
+        //    {
+        //        base.Enabled = value;
+        //        if (value)
+        //            _core.EnableModule(_locomotion);
+        //        else
+        //            _core.DisableModule(_locomotion);
+        //    }
+        //}
         public override string Name => "character_rotation";
-        internal IPositionTarget target
+        internal override IPositionTarget target
         {
-            get => _target;
+            get => base.target;
             set
             {
+                base.target = value;
                 _locomotion.Target = value;
-                _target = value;
             }
         }
-        internal IPlayerTargetLocker<ILockTarget> targetLocker
-        {
-            get => _targetLocker;
-            set
-            {
-                if (_targetLocker != null)
-                    _targetLocker.MainTargetChangedAction -= WhenTargetChange;
-                if (value != null)
-                {
-                    value.MainTargetChangedAction += WhenTargetChange;
-                    target = value.MainLockTarget;
-                }
+        //internal IPlayerTargetLocker<ILockTarget> targetLocker
+        //{
+        //    get => _targetLocker;
+        //    set
+        //    {
+        //        if (_targetLocker != null)
+        //            _targetLocker.MainTargetChangedAction -= WhenTargetChange;
+        //        if (value != null)
+        //        {
+        //            value.MainTargetChangedAction += WhenTargetChange;
+        //            target = value.MainLockTarget;
+        //        }
 
-                _targetLocker = value;
-            }
-        }
+        //        _targetLocker = value;
+        //    }
+        //}
 
-        public override void Initialize(Blackboard blackboard)
-        {
-            base.Initialize(blackboard);
-            //if (!blackboard.TryReadValue(CharacterBlackboardFields.Character_Input_Main_Obsolete, out _input_obsolete))
-            //    throw new Exception();
-            //blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Input_Main, out _input);
-            if (blackboard.TryReadValue<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler) && !TryReadTargetsCatcher(blackboard))
-            {
-                handler.RegisterAction<IPlayerTargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, UpdateTargetLocker);
-            }
-            enabled = true;
-        }
-        public override void Dispose()
-        {
-            if (blackboard.TryReadValue<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler))
-            {
-                handler.UnregisterAction<IPlayerTargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, UpdateTargetLocker);
-            }
-            enabled = false;
-        }
-        bool TryReadTargetsCatcher(Blackboard blackboard)
-        {
-            var r = blackboard.TryReadValue<IPlayerTargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, out var targetLocker);
-            this.targetLocker = targetLocker;
-            return r;
-        }
-        void UpdateTargetLocker(FieldEventType type, IPlayerTargetLocker<ILockTarget> oc, IPlayerTargetLocker<ILockTarget> nc)
-        {
-            if (type == FieldEventType.Reading)
-                return;
-            targetLocker = nc;
-        }
-        void WhenTargetChange(ILockTarget _, ILockTarget target)
-        {
-            this.target = target;
-        }
-        public void OnUpdate()
+        protected override LocomotionModuleBase rotationLocomotionModule => _locomotion;
+
+        //public override void Initialize(Blackboard blackboard)
+        //{
+        //    base.Initialize(blackboard);
+        //    //if (!blackboard.TryReadValue(CharacterBlackboardFields.Character_Input_Main_Obsolete, out _input_obsolete))
+        //    //    throw new Exception();
+        //    //blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Input_Main, out _input);
+        //    if (blackboard.TryReadValue<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler) && !TryReadTargetsCatcher(blackboard))
+        //    {
+        //        handler.RegisterAction<IPlayerTargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, UpdateTargetLocker);
+        //    }
+        //    enabled = true;
+        //}
+        //public override void Dispose()
+        //{
+        //    if (blackboard.TryReadValue<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler))
+        //    {
+        //        handler.UnregisterAction<IPlayerTargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, UpdateTargetLocker);
+        //    }
+        //    enabled = false;
+        //}
+        //bool TryReadTargetsCatcher(Blackboard blackboard)
+        //{
+        //    var r = blackboard.TryReadValue<IPlayerTargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, out var targetLocker);
+        //    this.targetLocker = targetLocker;
+        //    return r;
+        //}
+        //void UpdateTargetLocker(FieldEventType type, IPlayerTargetLocker<ILockTarget> oc, IPlayerTargetLocker<ILockTarget> nc)
+        //{
+        //    if (type == FieldEventType.Reading)
+        //        return;
+        //    targetLocker = nc;
+        //}
+        //void WhenTargetChange(ILockTarget _, ILockTarget target)
+        //{
+        //    this.target = target;
+        //}
+        public override void OnUpdate()
         {
             if (!enabled)
                 return;
             var bpos = _rb.position;
-            _locomotion.Origin = bpos;
             _locomotion.MouseScreenPosition = _input.MousePosition;
         }
-        ~RotationByPlayerLocomotion()
-        {
-            _core.RemoveModule(_locomotion);
-        }
+        //~RotationByPlayerLocomotion()
+        //{
+        //    //Dispose();
+        //    _core.RemoveModule(_locomotion);
+        //}
     }
 }
