@@ -6,9 +6,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     internal class RotationLocomotionLocker : IRotationLocker
     {
-        RotationByPlayerLocomotion _rotation;
+        RotationLocomotionBase _rotation;
 
-        public RotationLocomotionLocker(RotationByPlayerLocomotion rotation)
+        public RotationLocomotionLocker(RotationLocomotionBase rotation)
         {
             _rotation = rotation ?? throw new ArgumentNullException(nameof(rotation));
         }

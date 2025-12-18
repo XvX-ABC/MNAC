@@ -32,13 +32,29 @@ namespace Tests.Characters.Humanoid.Locomotion
         internal QuickBoostingState quickBoosting;
         internal WalkingState walking;
         internal JumpLocomotionState jump;
-        internal RotationByPlayerLocomotion rotation;
-
+        RotationLocomotionBase _rotation;
 
         internal LocomotionAnimator animator;
 
         internal LCore core => _core;
         internal LContext locomotionContext => _core.Context;
+
+        internal RotationLocomotionBase rotation
+        {
+            get => _rotation;
+            set
+            {
+                if (_rotation != null)
+                    this.Node.RemoveChild(_rotation.Node);
+                if (value != null)
+                {
+                    this.Node.AddChild(value.Node);
+                }
+                else
+                    throw new NullReferenceException(nameof(_rotation));
+                _rotation = value;
+            }
+        }
 
         protected override void Awake()
         {
@@ -109,8 +125,7 @@ namespace Tests.Characters.Humanoid.Locomotion
         }
         void InitializeRotation(Camera camera, Rigidbody rigidbody, IBaseInput input)
         {
-            rotation = new(camera, rigidbody, _core, input);
-            Node.AddChild(rotation.Node);
+            rotation = new RotationByPlayerLocomotion(camera, rigidbody, _core, input);
         }
         void InitializeMovementStatemachine()
         {
@@ -123,7 +138,7 @@ namespace Tests.Characters.Humanoid.Locomotion
             movementStatemachine.AddTransitionFor(boosting, walking, () => _input.HorizontalVector == Vector3.zero);
 
         }
-        void InitializeMainStatemachine( Rigidbody rigidbody, World world, IGroundDetector groundDetector)
+        void InitializeMainStatemachine(Rigidbody rigidbody, World world, IGroundDetector groundDetector)
         {
 
             statemachine = new("main", context);
@@ -147,7 +162,7 @@ namespace Tests.Characters.Humanoid.Locomotion
         }
         private void LateUpdate()
         {
-            rotation.OnUpdate();
+            _rotation.OnUpdate();
         }
         public void FixedUpdate()
         {
