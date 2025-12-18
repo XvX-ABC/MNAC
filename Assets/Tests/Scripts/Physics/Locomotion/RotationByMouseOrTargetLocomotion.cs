@@ -10,7 +10,6 @@ namespace Tests.TPhysics.Locomotion
         RotationLocomotion _b;
         Camera _camera;
         Vector3 _mouseScreenPosition;
-        Vector3 _origin;
         IPositionTarget _target;
         public RotationByMouseOrTargetLocomotion(Camera camera)
         {
@@ -25,7 +24,6 @@ namespace Tests.TPhysics.Locomotion
                 _camera = value;
             }
         }
-        public Vector3 Origin { get => _origin; set => _origin = value; }
         public Vector3 MouseScreenPosition { get => _mouseScreenPosition; set => _mouseScreenPosition = value; }
         public IPositionTarget Target { get => _target; set => _target = value; }
 
