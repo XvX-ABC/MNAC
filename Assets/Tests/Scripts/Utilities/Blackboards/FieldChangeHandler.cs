@@ -1,22 +1,33 @@
-﻿using System;
+﻿using Codice.Client.Common.FsNodeReaders;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Tests.Utilities.Blackboards
 {
     public class FieldChangeHandler<K, A> : IMiddleware<K, A>
     {
+        internal class GeneratedDelegatesManager
+        {
+            internal Dictionary<int, Delegate> mapping;
+            public GeneratedDelegatesManager()
+            {
+                mapping = new();
+            }
+        }
         K _key;
         protected bool _enabled;
         protected IReadOnlyDictionary<K, object> _values;
         protected Dictionary<K, Action<FieldEventType, object, object>> _mappingAction;
         protected Action<FieldEventType, object, object> _globalAction;
+        GeneratedDelegatesManager _gdm;
         public bool Enabled { get => _enabled; set => _enabled = value; }
-
         public FieldChangeHandler(K key)
         {
             _key = key;
             _mappingAction = new();
+            _gdm = new();
         }
         public bool Contains(K key)
         {
@@ -38,12 +49,64 @@ namespace Tests.Utilities.Blackboards
             if (_mappingAction.TryGetValue(key, out var a))
             {
                 a += action;
+                _mappingAction[key] = a;
             }
             else
             {
-                _mappingAction[key] = action;
+                _mappingAction.Add(key, action);
             }
         }
+        public void RegisterAction_New<T>(K key, Action<FieldEventType, T, T> action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+            Action<FieldEventType, object, object> generatedAction = (e, o, n) =>
+            {
+                if ((o != null && o is not T) || (n != null && n is not T))
+                {
+                    Debug.LogWarning($"The values type '{o?.GetType()?.ToString() ?? "null"}, {n?.GetType()?.ToString() ?? "null"}' has one is not the expected type  '{typeof(T)}'.");
+                    return;
+                }
+                action(e, (T)o, (T)n);
+            };
+            RegisterAction(key, generatedAction);
+            _gdm.mapping.Add(action.GetHashCode(), generatedAction);
+        }
+        public void UnregisterAction_New<T>(K key, Action<FieldEventType, T, T> action)
+        {
+            if (_mappingAction.TryGetValue(key, out var dele))
+            {
+
+                var hashCode = action.GetHashCode();
+                if (!_gdm.mapping.TryGetValue(hashCode, out var d))
+                    return;
+                dele -= (Action<FieldEventType, object, object>)d;
+                if (dele == null)
+                    _mappingAction.Remove(key);
+                else
+                    _mappingAction[key] = dele;
+
+                _gdm.mapping.Remove(hashCode);
+            }
+            else
+                return;
+            //if (!_mappingAction.ContainsKey(key))
+            //    return;
+            //var a = _mappingAction[key];
+            //if (a == null)
+            //    _mappingAction.Remove(key);
+            //else
+            //{
+            //    var dd = _mappingAction[key];
+            //    var list = dd.GetInvocationList();
+            //    Debug.Log("invocation list amount: " + list.Count());
+
+            //    if (!_gdm.mapping.TryGetValue(action.GetHashCode(), out var d))
+            //        throw new Exception();
+            //    _mappingAction[key] -= (Action<FieldEventType, object, object>)d;
+            //}
+        }
+        [Obsolete]
         public void RegisterAction<T>(K key, Action<FieldEventType, T, T> action)
         {
             if (action == null)
@@ -69,6 +132,7 @@ namespace Tests.Utilities.Blackboards
                 //}
             });
         }
+        [Obsolete]
         public void UnregisterAction<T>(K key, Action<FieldEventType, T, T> action)
         {
             if (!_mappingAction.ContainsKey(key))
