@@ -3,6 +3,7 @@ using Tests.Interaction;
 using Tests.TPhysics.Locomotion;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
+using UnityEngine;
 using LCore = Tests.TPhysics.Locomotion.LocomotionCore;
 
 namespace Tests.Characters.Humanoid.Locomotion
@@ -52,27 +53,27 @@ namespace Tests.Characters.Humanoid.Locomotion
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            _lcore.AddModule(rotationLocomotionModule);
+            _lcore.AddModule(rotationLocomotionModule, true);
             if (!TryReadTargetLocker(blackboard))
                 blackboard.RegisterFieldChangeAction<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, WhenTargetLockerChange);
-            enabled = true;
+            Enabled = true;
         }
         public override void Dispose()
         {
-            enabled = false;
+            Enabled = false;
             blackboard.UnregisterFieldChangeAction<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, WhenTargetLockerChange);
             _lcore.RemoveModule(rotationLocomotionModule);
             base.Dispose();
         }
-        void WhenTargetLockerChange(FieldEventType type, ITargetLocker<ILockTarget> oc, ITargetLocker<ILockTarget> nc)
+        protected void WhenTargetLockerChange(FieldEventType type, ITargetLocker<ILockTarget> oc, ITargetLocker<ILockTarget> nc)
         {
             if (type == FieldEventType.Reading)
                 return;
             targetLocker = nc;
         }
-        bool TryReadTargetLocker(Blackboard blackboard)
+        protected bool TryReadTargetLocker(Blackboard blackboard)
         {
-            var r = blackboard.TryReadValue<IPlayerTargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, out var targetLocker);
+            var r = blackboard.TryReadValue<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, out var targetLocker);
             this.targetLocker = targetLocker;
             return r;
         }

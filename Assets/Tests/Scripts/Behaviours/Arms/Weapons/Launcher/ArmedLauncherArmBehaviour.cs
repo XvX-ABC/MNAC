@@ -87,7 +87,10 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
                 if (_targetLocker != null)
                     _targetLocker.MainTargetChangedAction -= WhenTargetChanged;
                 if (value != null)
+                {
                     value.MainTargetChangedAction += WhenTargetChanged;
+                    UpdateTarget(value.MainLockTarget);
+                }
                 _targetLocker = value;
             }
         }
@@ -127,8 +130,9 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
 
         void WhenTargetChanged(ILockTarget _, ILockTarget newTarget)
         {
-            animator.AimingTarget = newTarget;
-            target = newTarget;
+            //animator.AimingTarget = newTarget;
+            //target = newTarget;
+            UpdateTarget(newTarget);
         }
         void InitializeStatemachine()
         {
@@ -165,6 +169,12 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             {
                 return _winput == null ? false : _winput.Reload && WeaponCanToReload();
             }
+
+        }
+        void UpdateTarget(ILockTarget newTarget)
+        {
+            animator.AimingTarget = newTarget;
+            target = newTarget;
         }
         public override void Update()
         {

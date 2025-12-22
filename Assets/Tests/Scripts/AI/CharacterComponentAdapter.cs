@@ -6,7 +6,7 @@ namespace Tests.AI
     internal class CharacterComponentAdapter : CharacterComponent
     {
         [SerializeField]
-        AIComponent _component;
+        AIComponent_Mono _component;
     }
     //internal class AIHumanoidInputComponent : AIComponent
     //{

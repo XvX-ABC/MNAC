@@ -1,28 +1,29 @@
 ﻿using System;
-using Tests.Extensions;
-using Tests.Interaction;
 using Tests.Utilities.Blackboards;
 using UnityEngine;
 using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
 namespace Tests.AI
 {
-    [Serializable]
-    internal class AINavigation : AIComponent
+    internal class AIRotationControl : AIComponent
     {
-        [SerializeField]
-        float _sampleInterval;
+        AINavigation _navigation;
         LocomotionCore _locomotionCore;
-        internal NavigationModule module;
+        AIRotationLocomotion _locomotion;
+
         internal LocomotionCore locomotionCore
         {
             get => _locomotionCore;
             set
             {
-                if (_locomotionCore != null)
-                    _locomotionCore.core.EvaluationModules = _locomotionCore.core.EvaluationModules.Remove(module);
                 if (value != null)
                 {
-                    value.core.EvaluationModules = value.core.EvaluationModules.Append(module);
+                    if (_locomotion == null)
+                    {
+                        Debug.Log("created locomotion");
+                        _locomotion = new(value.core);
+                        _locomotion.Enabled = this.Enabled;
+                    }
+                    value.rotationModule = _locomotion;
                 }
                 _locomotionCore = value;
             }
@@ -33,24 +34,21 @@ namespace Tests.AI
             set
             {
                 base.Enabled = value;
-                if (module != null)
-                {
-                    module.Enabled = value;
-                }
+                if (_locomotion != null)
+                    _locomotion.Enabled = value;
             }
         }
-        public override string Name => "ai_navigation";
-
-        public IPositionTarget SteeringTarget => module.steeringTarget;
-        public IPositionTarget Destination { get => module.destination; set => module.destination = value; }
-        public bool IsMoving { get => module.IsMoving; }
+        public override string Name => "ai_rotation";
+        internal void Update()
+        {
+            if (_locomotion == null)
+                return;
+            var target = _navigation?.SteeringTarget;
+            _locomotion.steeringTarget = target;
+        }
         public override void Initialize(AIComponentContext context)
         {
             base.Initialize(context);
-
-            module = new(context, _sampleInterval);
-            module.Enabled = this.Enabled;
-
 
             var characterBlackboard = context.characterBlackboard;
             if (characterBlackboard.TryReadValue<LocomotionCore>(AIBlackboardFields.Character_LocomotionCore, out var lcore))
@@ -61,15 +59,15 @@ namespace Tests.AI
             {
                 characterBlackboard.RegisterFieldChangeAction<LocomotionCore>(AIBlackboardFields.Character_LocomotionCore, WhenLocomotionCoreChange);
             }
-            //module.destination = context.target;
-            context.navigation = this;
+            _navigation = context.navigation ?? throw new NullReferenceException(nameof(context.navigation));
+            locomotionCore = _navigation.locomotionCore;
         }
         public override void Dispose()
         {
             locomotionCore = null;
             var characterBlackboard = context.characterBlackboard;
             characterBlackboard.UnregisterFieldChangeAction<LocomotionCore>(AIBlackboardFields.Character_LocomotionCore, WhenLocomotionCoreChange);
-            context.navigation = null;
+            _navigation = null;
             base.Dispose();
         }
         void WhenLocomotionCoreChange(FieldEventType type, LocomotionCore ov, LocomotionCore nv)

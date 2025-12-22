@@ -33,6 +33,10 @@ namespace Tests.AI
         {
             internal bool weaponSwitch;
             internal WInput weaponInput;
+            public AInput()
+            {
+                weaponInput = new();
+            }
             public bool WeaponSwitch => weaponSwitch;
 
             public IWeaponControlInput WeaponControl => weaponInput;

@@ -14,6 +14,10 @@ namespace Tests.Interaction
         {
             return mask.Value;
         }
+        public static explicit operator TeamMask(uint value)
+        {
+            return new TeamMask { Value = value };
+        }
         [SerializeField]
         public uint Value;
         public bool Contains(uint num)

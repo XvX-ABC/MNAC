@@ -5,7 +5,12 @@ namespace Tests.AI
 {
     internal class Target : ITarget
     {
+        [SerializeField]
         GameObject _obj;
+        private Target()
+        {
+
+        }
         public Target(GameObject obj)
         {
             _obj = obj ?? throw new ArgumentNullException(nameof(obj));

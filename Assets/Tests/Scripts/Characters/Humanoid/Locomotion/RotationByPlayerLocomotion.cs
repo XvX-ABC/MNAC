@@ -26,7 +26,7 @@ namespace Tests.Characters.Humanoid.Locomotion
             _core = core;
             _rb = rigidbody;
             _locomotion = new(camera);
-            _core.AddModule(_locomotion, true);
+            //_core.AddModule(_locomotion, true);
             _input = input ?? throw new ArgumentNullException(nameof(input));
             enabled = false;
         }

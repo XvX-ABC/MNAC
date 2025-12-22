@@ -309,7 +309,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
             _definitions.InitializeBy(locomotionCore.definitions);
 
-            var rotationLocker = new RotationLocomotionLocker(locomotionCore.rotation);
+            var rotationLocker = new RotationLocomotionLocker(locomotionCore.rotationModule);
 
             //var boostingHelper = new BoostingHelper(locomotionCore.core, camera, input, _definitions.Boosting);
             var winput = default(IWeaponControlInput);

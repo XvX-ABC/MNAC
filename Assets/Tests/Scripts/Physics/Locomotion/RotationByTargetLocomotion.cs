@@ -7,8 +7,18 @@ namespace Tests.TPhysics.Locomotion
     {
         RotationLocomotion _b;
         IPositionTarget _target;
-
-        public IPositionTarget Target { get => _target; set => _target = value; }
+        public RotationByTargetLocomotion()
+        {
+            _b = new();
+        }
+        public IPositionTarget Target
+        {
+            get => _target;
+            set
+            {
+                    _target = value;
+            }
+        }
 
         public override Context OnEnd(Context context)
         {
@@ -29,6 +39,7 @@ namespace Tests.TPhysics.Locomotion
             var tpos = _target.Position;
             _b.Origin = Vector3.ProjectOnPlane(origin, p.normal);
             _b.TargetPos = Vector3.ProjectOnPlane(tpos, p.normal);
+            Debug.DrawLine(_b.TargetPos, _b.TargetPos + Vector3.up * 10, Color.blue);
             return _b.OnUpdate(context);
         }
     }

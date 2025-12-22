@@ -1,4 +1,5 @@
 ﻿using Tests.Characters.Humanoid.Input;
+using Tests.Utilities.Blackboards;
 using UnityEngine;
 
 namespace Tests.AI
@@ -9,5 +10,10 @@ namespace Tests.AI
         AIHumanoidInputComponent _component;
 
         protected override IHumanoidInput humanInput => _component.input;
+        public override void Initialize(Blackboard blackboard)
+        {
+            base.Initialize(blackboard);
+            Debug.Log("input initialized");
+        }
     }
 }

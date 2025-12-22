@@ -13,7 +13,7 @@ using UnityEngine.Rendering;
 namespace Tests.Characters
 {
     using AnimationNormalState = Humanoid.Animations.NormalState;
-    [DefaultExecutionOrder(0)]
+    [DefaultExecutionOrder(1)]
     public abstract class CharacterBase : MonoBehaviour, ICharacter
     {
         internal class CAnimator : IDisposable

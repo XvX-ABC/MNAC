@@ -9,10 +9,15 @@ namespace Tests.AI
         static AIBlackboardFields()
         {
             Component_NavAgent = Guid.NewGuid();
-            LocomotionCore = CharacterBlackboardFields.Character_Locomotion_Core;
+            Character_LocomotionCore = CharacterBlackboardFields.Character_Locomotion_Core;
+            Character_Obj_Main = CharacterBlackboardFields.Character_Obj_Main;
+            Character_Blackboard = Guid.NewGuid();
+            Character_TeamMask = CharacterBlackboardFields.Character_TeamMask;
         }
         public static readonly Guid Component_NavAgent;
-        public static readonly Guid LocomotionCore;
-        internal static object Character_Blackboard;
+        public static readonly Guid Character_LocomotionCore;
+        public static readonly Guid Character_Obj_Main;
+        public static readonly Guid Character_Blackboard;
+        public static readonly Guid Character_TeamMask;
     }
 }

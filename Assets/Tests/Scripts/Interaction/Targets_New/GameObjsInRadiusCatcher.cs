@@ -1,21 +1,26 @@
-﻿using System;
+﻿using Codice.CM.Client.Differences.Graphic;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Tests.Interaction
 {
-    [SerializeField]
+    [Serializable]
     public class GameObjsInRadiusCatcher : CatcherBase<GameObject>
     {
         [SerializeField]
-        ushort _processingAmountOfFrames;
+        ushort _processingAmountOfFrames = 30;
         Action<List<GameObject>> _catchCompletedAction;
         [SerializeField]
         Vector3 _origin;
         [SerializeField]
-        float _radius;
-        float _sqrRadius;
+        float _radius = 1;
+        float _sqrRadius => Mathf.Pow(_radius, 2);
+        private GameObjsInRadiusCatcher()
+        {
+
+        }
         public GameObjsInRadiusCatcher(Vector3 origin, float radius, ushort processingAmountInCoroutine = 30)
         {
             Origin = origin;
@@ -31,8 +36,7 @@ namespace Tests.Interaction
             get => _radius;
             set
             {
-                _radius = Mathf.Max(0, _radius);
-                _sqrRadius = Mathf.Pow(_radius, 2);
+                _radius = Mathf.Max(0, value);
             }
         }
 
@@ -53,7 +57,10 @@ namespace Tests.Interaction
                 InteractionManager.SynchronizeChanges();
                 foreach (var item in InteractionManager.items)
                 {
+                    if (!enabled)
+                        break;
                     var obj = item.Obj;
+                    Debug.Log("enable: " + this.enabled);
                     var index = caughtItems.FindIndex(o => o == obj);
                     if (obj == null)
                         continue;

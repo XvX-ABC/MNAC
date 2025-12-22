@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.AI;
 using Tests.Behaviours.Input;
 using Tests.Characters.Humanoid.Input;
 using Tests.Characters.Humanoid.Locomotion.Animations;
@@ -9,6 +10,7 @@ using Tests.TPhysics.Environment;
 using Tests.TPhysics.Locomotion;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
+using Unity.VisualScripting;
 using UnityEngine;
 using LContext = Tests.TPhysics.Locomotion.Context;
 using LCore = Tests.TPhysics.Locomotion.LocomotionCore;
@@ -32,27 +34,27 @@ namespace Tests.Characters.Humanoid.Locomotion
         internal QuickBoostingState quickBoosting;
         internal WalkingState walking;
         internal JumpLocomotionState jump;
-        RotationLocomotionBase _rotation;
+        RotationLocomotionBase _rotationModule;
 
         internal LocomotionAnimator animator;
 
         internal LCore core => _core;
         internal LContext locomotionContext => _core.Context;
 
-        internal RotationLocomotionBase rotation
+        internal RotationLocomotionBase rotationModule
         {
-            get => _rotation;
+            get => _rotationModule;
             set
             {
-                if (_rotation != null)
-                    this.Node.RemoveChild(_rotation.Node);
+                if (_rotationModule != null)
+                    this.Node.RemoveChild(_rotationModule.Node);
                 if (value != null)
                 {
                     this.Node.AddChild(value.Node);
                 }
                 else
-                    throw new NullReferenceException(nameof(_rotation));
-                _rotation = value;
+                    throw new NullReferenceException(nameof(_rotationModule));
+                _rotationModule = value;
             }
         }
 
@@ -114,7 +116,6 @@ namespace Tests.Characters.Humanoid.Locomotion
             _core.EvaluationModules = ArrayExtensions.Append(_core.EvaluationModules, statemachine);
 
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Locomotion_Core, this);
-
             Node.AddChild(animator.Node);
         }
 
@@ -125,7 +126,7 @@ namespace Tests.Characters.Humanoid.Locomotion
         }
         void InitializeRotation(Camera camera, Rigidbody rigidbody, IBaseInput input)
         {
-            rotation = new RotationByPlayerLocomotion(camera, rigidbody, _core, input);
+            rotationModule = new RotationByPlayerLocomotion(camera, rigidbody, _core, input);
         }
         void InitializeMovementStatemachine()
         {
@@ -162,7 +163,7 @@ namespace Tests.Characters.Humanoid.Locomotion
         }
         private void LateUpdate()
         {
-            _rotation.OnUpdate();
+
         }
         public void FixedUpdate()
         {
@@ -170,6 +171,7 @@ namespace Tests.Characters.Humanoid.Locomotion
             quickBoostingHelper.Update();
             _core.Update();
             var pos = _core.Context.CurrentPosition;
+            _rotationModule.OnUpdate();
             Debug.DrawLine(pos, pos + _core.Context.CurrentVelocity, Color.magenta);
             //animator.Update();
             //Debug.Log(statemachine);
@@ -182,7 +184,7 @@ namespace Tests.Characters.Humanoid.Locomotion
             var fpos = pos + transform.forward * 500;
 
             Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(pos, fpos);
+            //Gizmos.DrawLine(pos, fpos);
         }
 
     }
