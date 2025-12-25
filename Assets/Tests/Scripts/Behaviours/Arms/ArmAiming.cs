@@ -2,6 +2,7 @@
 using Tests.Behaviours.Arm.Weapons;
 using Tests.Characters.Interaction.Input;
 using Tests.Input;
+using Tests.States;
 using Tests.Weapons.Launcher;
 using Tests.Weapons_New.Launcher;
 using UnityEngine;
@@ -12,8 +13,10 @@ namespace Tests.Behaviours.Arms
     {
         IWeaponControlInput _input;
         ILauncher _controlledWeapon;
+        StateLifeCycleWatcher<object> _lifeWatcher;
         public ArmAiming() : base("aiming", 0)
         {
+            _lifeWatcher = new(this);
         }
 
         public IWeaponControlInput Input { get => _input; set => _input = value; }
@@ -32,7 +35,7 @@ namespace Tests.Behaviours.Arms
         }
         bool FireTrigger()
         {
-            return _input != null && _input.Fire;
+            return _input != null && _lifeWatcher.CurrentState == LifeCycleState.Update && _input.Fire;
         }
         //public override void OnUpdate()
         //{

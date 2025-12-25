@@ -24,7 +24,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         ControllerPlayable _controller;
         RuntimeAnimatorController _animatorController;
         IArmedLauncherArmBehaviourDefinitions _definitions;
-        IArmedLauncherArmAnimationDefinitions _animationDefinitions;
+        internal IArmedLauncherArmAnimationDefinitions animationDefinitions;
         AimIK _aimIK;
 
         IWeaponControlInput _input;
@@ -55,7 +55,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         {
             _animatorController = animationDefinitions.Animator ?? throw new ArgumentNullException("animator");
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
-            _animationDefinitions = animationDefinitions ?? throw new ArgumentNullException(nameof(animationDefinitions));
+            this.animationDefinitions = animationDefinitions ?? throw new ArgumentNullException(nameof(animationDefinitions));
             _targetsCatcher = targetsCatcher ?? throw new ArgumentNullException(nameof(targetsCatcher));
             _input = input ?? throw new ArgumentNullException(nameof(_input));
 
@@ -65,12 +65,12 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
 
             _controller = new(graph, _animatorController);
 
-            idle = new Idle(rbody, world, groundDetector, _controller, locomotionCore.definitions.Walking.MaxSpeed, locomotionCore.definitions.Walking.AcceleratedSpeed, _animationDefinitions.Velocity_X, _animationDefinitions.Velocity_Y);
+            idle = new Idle(rbody, world, groundDetector, _controller, locomotionCore.definitions.Walking.MaxSpeed, locomotionCore.definitions.Walking.AcceleratedSpeed, this.animationDefinitions.Velocity_X, this.animationDefinitions.Velocity_Y);
 
 
-            aiming = new ArmAiming(_controller, _aimingHelper, _animationDefinitions.Aiming);
+            aiming = new ArmAiming(_controller, _aimingHelper, this.animationDefinitions.Aiming);
 
-            reload = new AmmoLoad(_controller, _animationDefinitions.ReloadTrigger, _animationDefinitions.ReloadMultiplier, _animationDefinitions.ReloadClipLength);
+            reload = new AmmoLoad(_controller, this.animationDefinitions.ReloadTrigger, this.animationDefinitions.ReloadMultiplier, this.animationDefinitions.ReloadClipLength);
             InitializeStatemacine(_aimIK);
         }
 
@@ -88,7 +88,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         {
             _animatorController = animationDefinitions.Animator ?? throw new ArgumentNullException("animator");
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
-            _animationDefinitions = animationDefinitions ?? throw new ArgumentNullException(nameof(animationDefinitions));
+            this.animationDefinitions = animationDefinitions ?? throw new ArgumentNullException(nameof(animationDefinitions));
             _input = input ?? throw new ArgumentNullException(nameof(_input));
 
             _aimingHelper = new AimingHelper(aimIK, targetChangeDuration);
@@ -97,12 +97,12 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
 
             _controller = new(graph, _animatorController);
 
-            idle = new Idle(rbody, world, groundDetector, _controller, locomotionCore.definitions.Walking.MaxSpeed, locomotionCore.definitions.Walking.AcceleratedSpeed, _animationDefinitions.Velocity_X, _animationDefinitions.Velocity_Y);
+            idle = new Idle(rbody, world, groundDetector, _controller, locomotionCore.definitions.Walking.MaxSpeed, locomotionCore.definitions.Walking.AcceleratedSpeed, this.animationDefinitions.Velocity_X, this.animationDefinitions.Velocity_Y);
 
 
-            aiming = new ArmAiming(_controller, _aimingHelper, _animationDefinitions.Aiming);
+            aiming = new ArmAiming(_controller, _aimingHelper, this.animationDefinitions.Aiming);
 
-            reload = new AmmoLoad(_controller, _animationDefinitions.ReloadTrigger, _animationDefinitions.ReloadMultiplier, _animationDefinitions.ReloadClipLength);
+            reload = new AmmoLoad(_controller, this.animationDefinitions.ReloadTrigger, this.animationDefinitions.ReloadMultiplier, this.animationDefinitions.ReloadClipLength);
             InitializeStatemacine(_aimIK);
         }
         public IOutputSetting OutputSetting { get => _controller.OutputSetting; set => _controller.OutputSetting = value; }
@@ -148,17 +148,17 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
             statemachine.AddState(reload);
 
 
-            var length_i_a = _animationDefinitions.GetStateTransitionOption(Transition.Idle_Aiming).Duration;
+            var length_i_a = animationDefinitions.GetStateTransitionOption(Transition.Idle_Aiming).Duration;
 
             statemachine.AddTransitionFor(idle, aiming, length_i_a, () => AimingTarget != null, null);
             statemachine.AddTransitionFor(idle, reload, 0, TriggeredReload, null, InterruptionSource.None);
 
-            var a_r = new BlendingTransition<object>(aiming, reload, TriggeredReload, null, _animationDefinitions.GetStateTransitionOption(Transition.Aiming_Reload));
+            var a_r = new BlendingTransition<object>(aiming, reload, TriggeredReload, null, animationDefinitions.GetStateTransitionOption(Transition.Aiming_Reload));
             statemachine.AddTransitionFor(aiming, idle, length_i_a, () => AimingTarget == null, null);
             statemachine.AddTransitionFor(a_r);
 
             var r_i = new BlendingTransition<object>(reload, idle, () => AimingTarget == null, null, 0, 0, 1);
-            var r_a = new BlendingTransition<object>(reload, aiming, () => AimingTarget != null, null, _animationDefinitions.GetStateTransitionOption(Transition.Reload_Aiming));
+            var r_a = new BlendingTransition<object>(reload, aiming, () => AimingTarget != null, null, animationDefinitions.GetStateTransitionOption(Transition.Reload_Aiming));
 
             statemachine.AddTransitionFor(r_i);
             statemachine.AddTransitionFor(r_a);

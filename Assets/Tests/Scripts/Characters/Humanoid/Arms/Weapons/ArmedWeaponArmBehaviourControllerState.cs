@@ -38,6 +38,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         public Func<bool> ExitFunc { get => controller.ExitFunc; }
 
         IReadOnlyDictionary<string, IArmedWeaponArmBehaviour> IArmedWeaponArmBehavioursController<IArmedWeaponArmBehaviour>.Behaviours => controller.weaponBehavioursMapping;
+        internal IArmedWeaponArmBehaviour currentActivatedBehaviour => controller.currentActivatedBehaviour;
         void InitializeBehaviours(IArmedWeaponArmBehaviour[] behaviours, HumanPart part)
         {
             foreach (var b in behaviours)

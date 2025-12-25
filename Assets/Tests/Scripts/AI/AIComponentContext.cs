@@ -14,6 +14,7 @@ namespace Tests.AI
         AICore _core;
         NavMeshAgent _navAgent;
         Blackboard _characterBlackboard;
+        AIHumanoidInput _input;
         AINavigation _navigation;
         AITargetLocker _targetLocker;
         Blackboard _blackboard;
@@ -41,6 +42,9 @@ namespace Tests.AI
             }
             set => _locomotionCore = value;
         }
+
+        internal AIHumanoidInput Input { get => _input; set => _input = value; }
+
         void WhenLocomotionCoreChange(FieldEventType type, LocomotionCore ov, LocomotionCore nv)
         {
             if (type == FieldEventType.Reading)

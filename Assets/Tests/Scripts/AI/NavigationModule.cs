@@ -117,6 +117,7 @@ namespace Tests.AI
                 if (value == null)
                     _targetPosCache = Vector3.positiveInfinity;
                 _destination = value;
+                _isMoving = true;
             }
         }
         internal bool IsMoving

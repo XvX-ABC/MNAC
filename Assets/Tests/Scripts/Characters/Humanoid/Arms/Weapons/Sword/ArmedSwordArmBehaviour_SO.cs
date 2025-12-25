@@ -174,8 +174,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         SphericalObjsTrigger _targetsTrigger;
         LoadBase _load;
 
-        BoostingHelper _boostingHelper;
-        SlashHelper _slashHelper;
+        internal BoostingHelper boostingHelper;
+        internal SlashHelper slashHelper;
 
         WithCallbackPlayableStatemachine<object> _statemachine;
         SwordBoosting _swordBoostingState;
@@ -317,8 +317,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 winput = input.LArm?.WeaponControl;
             else if (Part == HumanPart.RightArm)
                 winput = input.RArm?.WeaponControl;
-            _boostingHelper = new BoostingHelper(locomotionCore.core, _targetLocker, input.BaseInput, winput, _definitions.Boosting);
-            _slashHelper = new SlashHelper(locomotionCore.core, rotationLocker, _definitions.Slash.Duration, _definitions.Slash.RecoveryDuration);
+            boostingHelper = new BoostingHelper(locomotionCore.core, _targetLocker, input.BaseInput, winput, _definitions.Boosting);
+            slashHelper = new SlashHelper(locomotionCore.core, rotationLocker, _definitions.Slash.Duration, _definitions.Slash.RecoveryDuration);
             var mixer = InitializeMixer(graph, controller);
             _animator = new(
                 graph,
@@ -327,12 +327,12 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 locomotionCore.core,
                 locomotionCore.definitions.Walking.MaxSpeed,
                 locomotionCore.definitions.Walking.AcceleratedSpeed,
-                _boostingHelper,
-                _slashHelper,
+                boostingHelper,
+                slashHelper,
                 _definitions,
                 _animationDefinitions);
 
-            _behaviour = new(_definitions, _boostingHelper, _slashHelper, _animator);
+            _behaviour = new(_definitions, boostingHelper, slashHelper, _animator);
             _behaviour.TargetsTrigger = _targetsTrigger;
 
             if (blackboard.TryReadValue<LayerMask>(CharacterBlackboardFields.Character_Weapon_Sword_LayerMaskToHit, out var layerMask))
@@ -344,8 +344,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 throw new BlackboardKeyNotFoundException(CharacterBlackboardFields.Character_Weapon_Sword_LayerMaskToHit);
 
 
-            _swordBoostingState = new SwordBoosting(_boostingHelper);
-            _swordSlashState = new SwordSlash(_slashHelper);
+            _swordBoostingState = new SwordBoosting(boostingHelper);
+            _swordSlashState = new SwordSlash(slashHelper);
 
             if (_sword != null)
             {
@@ -368,13 +368,13 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
 
             var sb_m = new BlendingTransition<object>(_swordBoostingState, locomotionCore.movementStatemachine, null, null, 0, 0, 1, InterruptionSource.None);
-            var sb_s = new BlendingTransition<object>(_swordBoostingState, _swordSlashState, () => _slashHelper.originalEntryEvent, null, 0, 0, BlendingTransition<object>.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.None);
+            var sb_s = new BlendingTransition<object>(_swordBoostingState, _swordSlashState, () => slashHelper.originalEntryEvent, null, 0, 0, BlendingTransition<object>.FIXED_EXIT_TIME_INVALID_VALUE, InterruptionSource.None);
 
             locomotionStatemachine.AddTransitionFor(sb_m);
             locomotionStatemachine.AddTransitionFor(sb_s);
 
-            locomotionStatemachine.AddTransitionFor(locomotionCore.movementStatemachine, _swordBoostingState, () => _behaviour.Activated && _boostingHelper.originalEntryEvent);
-            locomotionStatemachine.AddTransitionFor(locomotionCore.jump, _swordBoostingState, () => _behaviour.Activated && _boostingHelper.originalEntryEvent);
+            locomotionStatemachine.AddTransitionFor(locomotionCore.movementStatemachine, _swordBoostingState, () => _behaviour.Activated && boostingHelper.originalEntryEvent);
+            locomotionStatemachine.AddTransitionFor(locomotionCore.jump, _swordBoostingState, () => _behaviour.Activated && boostingHelper.originalEntryEvent);
 
 
 
@@ -404,7 +404,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             if (blackboard.TryReadUIValue<PlayerCursorIndicator>(CharacterUIBlackboardFields.Player_Cursor_Indicator, out var indicator)
                 && blackboard.TryReadUIValue<TextGrid>(CharacterUIBlackboardFields.Weapons_Text_Grid, out var textGrid))
             {
-                _uiControl = new(Part, _boostingHelper.cdTimeline);
+                _uiControl = new(Part, boostingHelper.cdTimeline);
                 _uiControl.cursorIndicator = indicator;
                 _uiControl.textGrid = textGrid;
             }
@@ -423,15 +423,15 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 var currentField = Part switch
                 {
                     HumanPart.None => Guid.Empty,
-                    HumanPart.LeftArm => CharacterBlackboardFields.Character_Arm_Left_Core,
-                    HumanPart.RightArm => CharacterBlackboardFields.Character_Arm_Right_Core,
+                    HumanPart.LeftArm => CharacterBlackboardFields.Character_Arm_Left_Controller,
+                    HumanPart.RightArm => CharacterBlackboardFields.Character_Arm_Right_Controller,
                     _ => throw new NotImplementedException()
                 };
 
                 blackboard.TryReadValueOrThrowException<ArmController>(currentField, out var currentArmCore);
                 var anotherArmCore = core;
 
-                InitializeStatemachine(anotherArmCore, _boostingHelper, _slashHelper);
+                InitializeStatemachine(anotherArmCore, boostingHelper, slashHelper);
             }
             else if (no == null)
                 _statemachine.Enabled = false;
@@ -508,8 +508,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         Guid GetAnotherArmCoreField() => Part switch
         {
             HumanPart.None => Guid.Empty,
-            HumanPart.LeftArm => CharacterBlackboardFields.Character_Arm_Right_Core,
-            HumanPart.RightArm => CharacterBlackboardFields.Character_Arm_Left_Core,
+            HumanPart.LeftArm => CharacterBlackboardFields.Character_Arm_Right_Controller,
+            HumanPart.RightArm => CharacterBlackboardFields.Character_Arm_Left_Controller,
             _ => throw new NotImplementedException()
         };
         public override void Dispose()

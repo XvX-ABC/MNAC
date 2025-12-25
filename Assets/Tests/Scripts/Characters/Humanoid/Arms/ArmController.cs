@@ -10,10 +10,14 @@ using Tests.Characters.Weapons;
 using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
+using Tests.Utilities.Timeline;
+using Tests.Weapons;
+using Tests.Weapons_New;
 using UnityEngine;
 using UnityEngine.Playables;
 using IArmedWeaponArmBehaviour = Tests.Characters.Humanoid.Arms.Weapons.IArmedWeaponArmBehaviour;
 using IArmedWeaponArmDefinitions = Tests.Characters.Humanoid.Arms.Weapons.IArmedWeaponArmDefinitions;
+using WeaponBackpack = Tests.Characters.Weapons.WeaponBackpack;
 using WeaponCore_Obsolete = Tests.Weapons_New.WeaponCore_Obsolete;
 
 namespace Tests.Characters.Humanoid.Arms
@@ -62,6 +66,7 @@ namespace Tests.Characters.Humanoid.Arms
 
 
         internal WeaponSwitchingState weaponSwitching;
+        Func<WeaponDescription[], string> _weaponSelectionFunc;
         ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> _armedWeaponController;
         internal ArmedWeaponArmBehaviourControllerState armedWeaponControllerState;
         internal IdleState idle;
@@ -92,11 +97,32 @@ namespace Tests.Characters.Humanoid.Arms
 
         public IOutputSetting OutputSetting { get => animatorCore.OutputSetting; set => animatorCore.OutputSetting = value; }
         public Action<Playable> UpdateAction { get => throw new Exception(); set => throw new Exception(); }
+
+
+        internal IArmDefinitions definitions { get => _definitions; set => _definitions = value; }
+        internal Func<WeaponDescription[], string> weaponSelectionFunc
+        {
+            get => _weaponSelectionFunc;
+            set
+            {
+                if (weaponSwitching != null)
+                {
+                    weaponSwitching.switching.selectionFunc = value;
+                }
+                _weaponSelectionFunc = value;
+            }
+        }
+        internal ITimeline weaponSwitchingTimeline
+        {
+            get => weaponSwitching.switching.timeline;
+        }
+        internal IWeapon currentWeapon { get => weaponSwitching?.switching?.CurrentWeapon; }
+        internal WeaponBackpack weaponBackpack { get => _weaponBackpack; }
+        internal IArmedWeaponArmBehaviour currentActivatedBehaviour { get => armedWeaponControllerState.currentActivatedBehaviour; }
         protected override void Awake()
         {
             base.Awake();
             _definitions = GetComponent<IArmDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmDefinitions));
-            //animationDefinitions = GetComponent<ArmAnimationDefinitions_MonoComponent>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmAnimationDefinitions));
             animationDefinitions = _definitions.Animation;
 
             _node = new(this);
@@ -187,8 +213,8 @@ namespace Tests.Characters.Humanoid.Arms
             var field = _part switch
             {
                 HumanPart.None => Guid.Empty,
-                HumanPart.LeftArm => CharacterBlackboardFields.Character_Arm_Left_Core,
-                HumanPart.RightArm => CharacterBlackboardFields.Character_Arm_Right_Core,
+                HumanPart.LeftArm => CharacterBlackboardFields.Character_Arm_Left_Controller,
+                HumanPart.RightArm => CharacterBlackboardFields.Character_Arm_Right_Controller,
                 _ => throw new NotImplementedException()
             };
             blackboard.TryRegisterField(field, this);
@@ -211,6 +237,7 @@ namespace Tests.Characters.Humanoid.Arms
         void InitializeSwitchingBehaviour(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint)
         {
             weaponSwitching = new(definitions, launcherMountPoint, swordMountPoint, (Weapons_New.WeaponBackpack)_weaponBackpack);
+            weaponSwitching.switching.selectionFunc = _weaponSelectionFunc;
         }
         void InitializeArmedWeaponBehaviours(IArmedWeaponArmDefinitions definitions)
         {
@@ -242,6 +269,7 @@ namespace Tests.Characters.Humanoid.Arms
 
                 return nw;
             };
+
         }
         void InitializeStateMachine()
         {

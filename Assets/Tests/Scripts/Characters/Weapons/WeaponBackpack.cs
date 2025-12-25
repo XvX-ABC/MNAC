@@ -30,6 +30,10 @@ namespace Tests.Characters.Weapons
                 foreach (var loader in _weaponManager.loaders)
                     PutWeapon(loader.Name, loader.Resource);
             }
+            public override bool ContainsWeapon(string weaponName)
+            {
+                return base.ContainsWeapon(weaponName) || _weaponManager.Contains(weaponName);
+            }
             public override IWeapon GetWeapon(string weaponName)
             {
                 var w = base.GetWeapon(weaponName);
@@ -42,6 +46,7 @@ namespace Tests.Characters.Weapons
                 obj.PutInParent(null);
                 return w;
             }
+
             public override void PutWeapon(string name, IWeapon weapon)
             {
                 try
@@ -84,7 +89,10 @@ namespace Tests.Characters.Weapons
             blackboard.TryUnregisterField(CharacterBlackboardFields.Character_Weapon_Core);
             base.Dispose();
         }
-
+        public bool ContainsWeapon(string weaponName)
+        {
+            return _weaponBackpack.ContainsWeapon(weaponName);
+        }
         public IWeapon GetWeapon(string weaponName)
         {
             return _weaponBackpack.GetWeapon(weaponName);

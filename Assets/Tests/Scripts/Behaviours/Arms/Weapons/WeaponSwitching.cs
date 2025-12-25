@@ -72,6 +72,20 @@ namespace Tests.Behaviours.Arms.Weapons
             }
         }
 
+        internal Func<WeaponDescription[], string> selectionFunc
+        {
+            get => _selectionFunc;
+            set
+            {
+                if (value != null)
+                    _selectionFunc = value;
+                else
+                    _selectionFunc = _defaultSelector.Select;
+            }
+        }
+
+        public IWeapon CurrentWeapon { get => _currentWeapon; }
+
         [Obsolete]
         protected internal WeaponSwitching(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, Weapons_New.WeaponCore_Obsolete weaponCore, Func<WeaponDescription[], string> selectionFunc = null)
         {
@@ -134,7 +148,9 @@ namespace Tests.Behaviours.Arms.Weapons
         }
         protected void ChangeWeapon(TimelineContext _)
         {
-            var newWeapon = GetUpWeapon();
+            var newWeapon = GetWeapon();
+            if (newWeapon == _currentWeapon)
+                return;
             var newWeaponObj = newWeapon.Obj;
             var type = newWeapon.Type;
             switch (type)
@@ -149,7 +165,7 @@ namespace Tests.Behaviours.Arms.Weapons
                     break;
             }
             if (_currentWeapon != null)
-                PutDownWeapon(_currentWeapon);
+                PutBackWeapons(_currentWeapon);
             _currentWeapon = newWeapon;
         }
         [Obsolete]
@@ -160,7 +176,7 @@ namespace Tests.Behaviours.Arms.Weapons
                 throw new WeaponObjGetFailedByName(name);
             return weapon;
         }
-        internal IWeapon GetUpWeapon()
+        internal IWeapon GetWeapon()
         {
             var name = _selectionFunc(definitions.Origins);
             var weapon = _weaponBackpack.GetWeapon(name);
@@ -168,7 +184,7 @@ namespace Tests.Behaviours.Arms.Weapons
                 throw new WeaponObjGetFailedByName(name);
             return weapon;
         }
-        internal void PutDownWeapon(IWeapon weapon)
+        internal void PutBackWeapons(IWeapon weapon)
         {
             _weaponBackpack.PutWeapon(weapon.Name, weapon);
         }

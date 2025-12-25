@@ -15,6 +15,12 @@ namespace Tests.Weapons_New
         {
             weapons = new();
         }
+        public virtual bool ContainsWeapon(string weaponName)
+        {
+            if (weaponName == null)
+                throw new ArgumentNullException(nameof(weaponName));
+            return weapons.ContainsKey(weaponName);
+        }
         public virtual IWeapon GetWeapon(string weaponName)
         {
             if (weaponName == null)

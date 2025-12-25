@@ -4,7 +4,7 @@ using static Tests.AI.AIHumanoidInput;
 using static Tests.AI.NavigationModule;
 namespace Tests.AI
 {
-    internal class AIHumanoidInputComponent : AIComponent_Mono
+    internal class AIHumanoidInput_Mono : AIComponent_Mono
     {
         class Handler : INavigationHandler
         {
@@ -41,11 +41,13 @@ namespace Tests.AI
             _handler = new(input.baseInput);
             _navigation = context.navigation ?? throw new NullReferenceException(nameof(context.navigation));
             _navigation.module.handlers.Add(_handler);
+            context.Input = input;
         }
         public override void Dispose()
         {
             _navigation.module.handlers.Remove(_handler);
             _navigation = null;
+            context.Input = null;
             base.Dispose();
         }
     }

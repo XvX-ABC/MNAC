@@ -6,6 +6,7 @@ using Tests.States;
 using Tests.Weapons_New;
 using Tests.Weapons_New.Launcher;
 using Tests.Weapons_New.Projectiles;
+using UnityEditor.Animations;
 using UnityEngine;
 using WeaponType = Tests.Weapons_New.WeaponType;
 
@@ -155,7 +156,8 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             statemachine.AddTransitionFor(aiming, ammoLoad, length, ReloadTriggered, null, InterruptionSource.None);
 
             var l_i = new BlendingTransition<object>(ammoLoad, idle, () => target == null, null, 0, 0, 1);
-            var l_a = new BlendingTransition<object>(ammoLoad, aiming, () => target != null, null, length, 0, 1);
+            //var l_a = new BlendingTransition<object>(ammoLoad, aiming, () => target != null, null, length, 0, 1);
+            var l_a = new BlendingTransition<object>(ammoLoad, aiming, () => target != null, null, animator.animationDefinitions.GetStateTransitionOption(IArmedLauncherArmAnimationDefinitions.Transition.Reload_Aiming));
             statemachine.AddTransitionFor(l_i);
             statemachine.AddTransitionFor(l_a);
 

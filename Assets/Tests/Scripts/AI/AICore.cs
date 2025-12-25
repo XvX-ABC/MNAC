@@ -1,8 +1,10 @@
-﻿using NUnit.Framework;
+﻿using BehaviorDesigner.Runtime;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using Tests.Characters;
 using Tests.Utilities.Blackboards;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -16,6 +18,8 @@ namespace Tests.AI
         NavMeshAgent _navAgent;
         [SerializeField]
         GameObject _targetObj;
+        [SerializeField]
+        BehaviorTree _bt;
         AIComponent_Mono[] _components;
         List<AIComponent> _internalComponents;
 
@@ -54,7 +58,7 @@ namespace Tests.AI
             _components = GetComponentsInChildren<AIComponent_Mono>();
 
             _internalComponents = new();
-
+            _bt.enabled = false;
         }
         private void Start()
         {
@@ -69,7 +73,7 @@ namespace Tests.AI
                 interactableTarget = new Target(_targetObj);
             InitializeComponents(_componentContext);
             InitializeInternalComponents(_componentContext);
-            Debug.Log("components initialized");
+            _bt.enabled = true;
         }
         private void Update()
         {

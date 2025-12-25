@@ -14,7 +14,7 @@ namespace Tests.Characters.Humanoid.Arms
     {
 
 
-        WeaponSwitching _switching;
+        internal WeaponSwitching switching;
 
         internal Behaviours.Arms.Animations.ArmAnimationCore animationCore;
 
@@ -23,7 +23,7 @@ namespace Tests.Characters.Humanoid.Arms
             if (switching == null)
                 throw new ArgumentNullException(nameof(switching));
             timeline = switching.timeline;
-            _switching = switching;
+            this.switching = switching;
         }
         [Obsolete]
         public WeaponSwitchingState(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, Weapons_New.WeaponCore_Obsolete weaponCore, Func<WeaponDescription[], string> selectionFunc = null) : this(new(definitions, launcherMountPoint, swordMountPoint, weaponCore, selectionFunc))
@@ -35,8 +35,8 @@ namespace Tests.Characters.Humanoid.Arms
 
         public Func<IWeapon, IWeapon, IWeapon> SwitchingEvent
         {
-            get => _switching.SwitchingEvent;
-            set => _switching.SwitchingEvent = value;
+            get => switching.SwitchingEvent;
+            set => switching.SwitchingEvent = value;
         }
 
 
@@ -51,18 +51,18 @@ namespace Tests.Characters.Humanoid.Arms
                 Debug.LogWarning("This weapon switching behaviour is still continuing");
                 return;
             }
-            _switching.Begin();
+            switching.Begin();
             if (animationCore != null)
                 animationCore.StatusNum = 0;
         }
         public override void OnUpdate()
         {
             base.OnUpdate();
-            _switching.Update();
+            switching.Update();
         }
         public override void OnExit()
         {
-            _switching.End();
+            switching.End();
             base.OnExit();
         }
         public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
@@ -85,7 +85,7 @@ namespace Tests.Characters.Humanoid.Arms
         }
         public void SetDefaultWeapon()
         {
-            _switching.SetDefaultWeapon();
+            switching.SetDefaultWeapon();
         }
     }
 }
