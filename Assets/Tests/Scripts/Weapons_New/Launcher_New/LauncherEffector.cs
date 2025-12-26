@@ -39,6 +39,7 @@ namespace Tests.Weapons_New.Launcher
             base.Dispose();
             owner.LaunchedCallback -= WhenLaunch;
             owner.ReloadCallback -= WhenReload;
+            _launchIntervalTimeline.End();
             _launchIntervalTimeline.RemovePointEvent(_beforeLaunchEvent);
         }
         protected abstract void WhenLaunch(ILauncher launcher);
