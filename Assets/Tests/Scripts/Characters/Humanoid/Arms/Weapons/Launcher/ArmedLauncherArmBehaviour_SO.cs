@@ -267,8 +267,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                     else
                         _uiControl.Reset();
                 }
-                Cursor.visible = !value;
-                Cursor.lockState = value ? CursorLockMode.Locked : CursorLockMode.None;
+                //Cursor.visible = !value;
+                //Cursor.lockState = value ? CursorLockMode.Locked : CursorLockMode.None;
                 enabled = value;
             }
         }

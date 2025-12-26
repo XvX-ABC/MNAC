@@ -221,8 +221,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                     _behaviour.Activated = value;
                     //_targetLocker.Enabled = value;
                 }
-                Cursor.visible = !value;
-                Cursor.lockState = value ? CursorLockMode.Confined : CursorLockMode.None;
+                //Cursor.visible = !value;
+                //Cursor.lockState = value ? CursorLockMode.Confined : CursorLockMode.None;
             }
         }
         public override IWeapon Weapon
