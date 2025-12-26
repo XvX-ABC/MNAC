@@ -39,7 +39,7 @@ namespace Tests.Characters.Weapons
                 var w = base.GetWeapon(weaponName);
                 if (w == null)
                 {
-                    w = _weaponManager.GetWeapon(weaponName);
+                    w = _weaponManager.GetWeapon(weaponName, true);
                     weapons.Add(w.Name, w);
                 }
                 var obj = w.Obj;

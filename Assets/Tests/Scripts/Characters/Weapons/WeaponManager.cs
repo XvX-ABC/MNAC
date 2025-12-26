@@ -27,14 +27,14 @@ namespace Tests.Characters.Weapons
             return weaponManager.Contains(weaponName);
         }
 
-        public IWeapon GetWeapon(string weaponName)
+        public IWeapon GetWeapon(string weaponName, bool reload = false)
         {
-            return weaponManager.GetWeapon(weaponName);
+            return weaponManager.GetWeapon(weaponName, reload);
         }
 
-        public bool TryGetWeapon(string weaponName, out IWeapon weapon)
+        public bool TryGetWeapon(string weaponName, out IWeapon weapon, bool reload = false)
         {
-            return weaponManager.TryGetWeapon(weaponName, out weapon);
+            return weaponManager.TryGetWeapon(weaponName, out weapon, reload);
         }
     }
 }
