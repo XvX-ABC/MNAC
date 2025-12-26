@@ -15,22 +15,33 @@ namespace Tests.Interaction
         HashSet<IInteractable> _waitingRemoval;
         Action<IInteractable> _itemAddedAction;
         Action<IInteractable> _itemRemovedAction;
+        List<Action<GameObject>> _actionList;
         internal static HashSet<IInteractable> items { get => Instance._items; }
         internal static HashSet<IInteractable> waitingAddition { get => Instance._waitingAddition; }
         internal static HashSet<IInteractable> waitingRemoval { get => Instance._waitingRemoval; }
         internal static Action<IInteractable> itemAddedAction { get => Instance._itemAddedAction; set => Instance._itemAddedAction = value; }
         internal static Action<IInteractable> itemRemovedAction { get => Instance._itemRemovedAction; set => Instance._itemRemovedAction = value; }
         public static int Count { get => Instance._items.Count; }
+        public static List<Action<GameObject>> actionList { get => Instance._actionList; set => Instance._actionList = value; }
 
         public InteractionManager()
         {
             _items = new();
             _waitingAddition = new();
             _waitingRemoval = new();
+            _actionList = new();
         }
         public override void Awake()
         {
             base.Awake();
+        }
+        private void OnEnable()
+        {
+            StartCoroutine(UpdateWithCoroutine());
+        }
+        private void OnDisable()
+        {
+            StopCoroutine(UpdateWithCoroutine());
         }
         public override string ToString()
         {
@@ -40,15 +51,36 @@ namespace Tests.Interaction
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
-            //items.Add(item);
             waitingAddition.Add(item);
         }
         public static void RemoveItem(InteractableItem item)
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
-            //items.Remove(item);
             waitingRemoval.Add(item);
+        }
+        IEnumerator UpdateWithCoroutine()
+        {
+            while (true)
+            {
+                var i = 0;
+                SynchronizeChanges();
+                foreach (var item in items)
+                {
+                    var obj = item.Obj;
+                    for (int j = 0; j < _actionList.Count; j++)
+                    {
+                        var ac = _actionList[j];
+                        if (ac == null)
+                            continue;
+                        ac?.Invoke(item.Obj);
+                    }
+                    if (i <= 0 || i % 30 == 0)
+                        yield return null;
+                    i++;
+                }
+                yield return null;
+            }
         }
         public static void SynchronizeChanges()
         {

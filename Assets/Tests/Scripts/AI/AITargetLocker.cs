@@ -129,11 +129,11 @@ namespace Tess.AI
         public void StartCoroutine(MonoBehaviour owner)
         {
             _coroutineOwner = owner ?? throw new ArgumentNullException(nameof(owner));
-            owner.StartCoroutine(_objsCatcher.UpdateWithCoroutine());
+            //owner.StartCoroutine(_objsCatcher.UpdateWithCoroutine());
         }
         public void StopCoroutine()
         {
-            _coroutineOwner.StopCoroutine(_objsCatcher.UpdateWithCoroutine());
+            //_coroutineOwner.StopCoroutine(_objsCatcher.UpdateWithCoroutine());
         }
         public IEnumerator UpdateWithCoroutine()
         {

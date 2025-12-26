@@ -67,7 +67,6 @@ namespace Tests.Interaction
         {
             //if (!_filters.CanCatch(obj))
             //    return;
-            Debug.Log("caught item: " + obj.name);
             var t = _getTargetFunc(obj);
             //if (!_filters.CanCatch(t))
             //{
@@ -86,7 +85,6 @@ namespace Tests.Interaction
         }
         protected virtual void WhenReleaseItem(GameObject obj)
         {
-            Debug.Log("release item: " + obj.name);
             RemoveTargetBy(obj);
         }
         void RemoveTargetBy(GameObject obj)

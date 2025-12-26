@@ -19,7 +19,6 @@ namespace Tests.Interaction
         float _sqrRadius => Mathf.Pow(_radius, 2);
         private GameObjsInRadiusCatcher()
         {
-
         }
         public GameObjsInRadiusCatcher(Vector3 origin, float radius, ushort processingAmountInCoroutine = 30)
         {
@@ -39,7 +38,18 @@ namespace Tests.Interaction
                 _radius = Mathf.Max(0, value);
             }
         }
-
+        public override bool Enabled
+        {
+            get => base.Enabled;
+            set
+            {
+                base.Enabled = value;
+                if (value)
+                    InteractionManager.actionList.Add(Handler);
+                else
+                    InteractionManager.actionList.Remove(Handler);
+            }
+        }
         bool CheckInRadius(GameObject obj)
         {
             var origin = _origin;
@@ -47,6 +57,22 @@ namespace Tests.Interaction
             var tv = origin - target;
             return tv.sqrMagnitude <= _sqrRadius;
         }
+        void Handler(GameObject obj)
+        {
+            var index = caughtItems.FindIndex(o => o == obj);
+            if (obj == null)
+                return;
+            var inRadius = CheckInRadius(obj);
+            if (index > -1 && !inRadius)
+            {
+                RemoveItemImpl(obj);
+            }
+            else if (index == -1 && inRadius)
+            {
+                AddItemImpl(obj);
+            }
+        }
+        [Obsolete]
         public override IEnumerator UpdateWithCoroutine()
         {
             while (true)
@@ -60,7 +86,6 @@ namespace Tests.Interaction
                     if (!enabled)
                         break;
                     var obj = item.Obj;
-                    Debug.Log("enable: " + this.enabled);
                     var index = caughtItems.FindIndex(o => o == obj);
                     if (obj == null)
                         continue;
