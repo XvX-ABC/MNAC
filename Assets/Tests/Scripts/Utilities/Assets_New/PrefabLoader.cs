@@ -18,14 +18,11 @@ namespace Tests.Utilities.Assets_New
 
         public override bool Load()
         {
-            if (_instance == null)
-            {
-                _instance = GameObject.Instantiate(_prefab);
-                _instance.name = _prefab.name;
-                _instance.gameObject.SetActive(true);
-                return true;
-            }
-            return false;
+            _instance = GameObject.Instantiate(_prefab);
+            _instance.name = _prefab.name;
+            _instance.gameObject.SetActive(true);
+            return true;
+
         }
     }
 }

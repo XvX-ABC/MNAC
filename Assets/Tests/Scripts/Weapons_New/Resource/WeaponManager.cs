@@ -27,19 +27,19 @@ namespace Tests.Weapons_New
         {
             return FindIndex(weaponName) > -1;
         }
-        public IWeapon GetWeapon(string weaponName)
+        public IWeapon GetWeapon(string weaponName, bool reload = false)
         {
             var idx = FindIndex(weaponName);
             if (idx < 0)
                 return null;
             var l = loaders[idx];
-            if (l.Resource == null)
+            if (l.Resource == null || reload)
                 l.Load();
             return loaders[idx].Resource;
         }
-        public bool TryGetWeapon(string weaponName, out IWeapon weapon)
+        public bool TryGetWeapon(string weaponName, out IWeapon weapon, bool reload = false)
         {
-            weapon = GetWeapon(weaponName);
+            weapon = GetWeapon(weaponName, reload);
             return weapon != null;
         }
         public void Dispose()
