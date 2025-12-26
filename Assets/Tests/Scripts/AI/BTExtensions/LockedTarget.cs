@@ -12,7 +12,6 @@ namespace Tests.AI
             base.OnStart();
             _locker = core.componentContext.targetLocker;
             _locker.Enabled = true;
-            Debug.Log("start find target");
         }
         public override TaskStatus OnUpdate()
         {
@@ -27,7 +26,6 @@ namespace Tests.AI
             base.OnStart();
             _locker = core.componentContext.targetLocker;
             _locker.Enabled = false;
-            Debug.Log("stop find target");
         }
         public override TaskStatus OnUpdate()
         {

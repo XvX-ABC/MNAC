@@ -25,7 +25,6 @@ namespace Tests.AI
             base.OnStart();
             _navgation = core.componentContext.navigation;
             _navgation.Destination = core.componentContext.target;
-            Debug.Log("move to target");
         }
         public override TaskStatus OnUpdate()
         {

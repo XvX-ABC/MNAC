@@ -19,7 +19,6 @@ namespace Tests.AI
                 {
                     if (_locomotion == null)
                     {
-                        Debug.Log("created locomotion");
                         _locomotion = new(value.core);
                         _locomotion.Enabled = this.Enabled;
                     }

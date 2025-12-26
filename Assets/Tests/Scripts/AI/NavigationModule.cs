@@ -174,19 +174,13 @@ namespace Tests.AI
             }
             else if (target != null)
             {
-                Debug.Log("navigation target is not null");
                 if (_targetPosCache == Vector3.positiveInfinity || Vector3.Distance(_targetPosCache, target.Position) > _navAgent.stoppingDistance)
                     SetDestination();
-                else
-                {
-                    Debug.Log("target pos is too closest ");
-                }
                 _targetPosCache = _destination.Position;
             }
         }
         void SetDestination()
         {
-            Debug.Log("set destination");
             var pos = _destination.Position;
             if (!_navAgent.SetDestination(pos))
             {
@@ -201,7 +195,6 @@ namespace Tests.AI
         }
         void Stop()
         {
-            Debug.Log("stop");
             var currentPos = _lcontext.CurrentPosition;
             _navAgent.ResetPath();
             WhenStop();

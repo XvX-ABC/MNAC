@@ -13,7 +13,6 @@ namespace Tests.AI
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            Debug.Log("input initialized");
         }
     }
 }
