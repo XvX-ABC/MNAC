@@ -220,10 +220,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 174025670}
-    - targetCorrespondingSourceObject: {fileID: 7650634701108471582, guid: cda3572f260d2fd4aa54e5b415780ea9,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 174025671}
   m_SourcePrefab: {fileID: 100100000, guid: cda3572f260d2fd4aa54e5b415780ea9, type: 3}
 --- !u!4 &174025658 stripped
 Transform:
@@ -285,81 +281,6 @@ MonoBehaviour:
       _switch: 0
       _fire: 0
       _reload: 0
---- !u!114 &174025671
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 174025659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d7b55c7ecdb49a4a89fa5e6f9022861, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startWhenEnabled: 1
-  asynchronousLoad: 0
-  pauseWhenDisabled: 1
-  restartWhenComplete: 1
-  logTaskChanges: 0
-  group: 0
-  resetValuesOnRestart: 0
-  externalBehavior: {fileID: 0}
-  mBehaviorSource:
-    behaviorName: Behavior
-    behaviorDescription: 
-    mTaskData:
-      types: []
-      parentIndex: 
-      startIndex: 
-      variableStartIndex: 
-      JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(464.5,30)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-18.112093,254.492386)"},"ID":1,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(193.54866,252.857437)"},"ID":2,"Name":"Selector","Instant":true,"AbortTypeabortType":"Self","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-265.833038,110.000053)"},"ID":3,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Self","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-470.7698,118.860634)"},"ID":4,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"Tests.AI.HasTargetInContext","NodeData":{"Offset":"(-92.41364,170)"},"ID":5,"Name":"Has
-        Target In Context","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":0}},{"Type":"Tests.AI.StartFindTarget","NodeData":{"Offset":"(115.861832,170)"},"ID":6,"Name":"Start
-        Find Target","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":1}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(144.4353,149.760376)"},"ID":7,"Name":"Selector","Instant":true,"AbortTypeabortType":"Self","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-176.3338,118.990967)"},"ID":8,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"Tests.AI.LockedTarget","NodeData":{"Offset":"(-328.24353,168.1302)"},"ID":9,"Name":"Locked
-        Target","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":2}},{"Type":"Tests.AI.StopMoveToTarget","NodeData":{"Offset":"(-85.0776443,184.995544)"},"ID":10,"Name":"Stop
-        Move To Target","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":3}},{"Type":"BehaviorDesigner.Runtime.Tasks.UntilSuccess","NodeData":{"Offset":"(118.141167,177.971008)"},"ID":11,"Name":"Until
-        Success","Instant":true,"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-4.49047852,121.655151)"},"ID":12,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"Assets.Tests.Scripts.AI.BTExtensions.TryGetArm","NodeData":{"Offset":"(-320,197.334488)"},"ID":13,"Name":"Try
-        Get Arm","Instant":true,"HumanPartpart":"RightArm","SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":4}},{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(9.936388,283.2815)"},"ID":14,"Name":"Selector","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-487.77832,185.555664)"},"ID":15,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Self","Children":[{"Type":"Assets.Tests.Scripts.AI.BTExtensions.ArmedWeaponIsLauncher","NodeData":{"Offset":"(-279.44278,151.294861)"},"ID":16,"Name":"Armed
-        Weapon Is Launcher","Instant":true,"TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":5}},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(28.5715427,221.375732)"},"ID":17,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Inverter","NodeData":{"Offset":"(-355.6328,123.639404)"},"ID":18,"Name":"Inverter","Instant":true,"Children":[{"Type":"Assets.Tests.Scripts.AI.BTExtensions.LauncherFire","NodeData":{"Offset":"(-19.2855835,178.571533)"},"ID":19,"Name":"Launcher
-        Fire","Instant":true,"TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":6}}]},{"Type":"Assets.Tests.Scripts.AI.BTExtensions.LauncherReserveAmmoEnough","NodeData":{"Offset":"(-78.20497,314.102844)"},"ID":20,"Name":"Launcher
-        Reserve Ammo Enough","Instant":true,"TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":7}},{"Type":"Assets.Tests.Scripts.AI.BTExtensions.LauncherReload","NodeData":{"Offset":"(193.07695,114.615417)"},"ID":21,"Name":"Launcher
-        Reload","Instant":true,"TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":8}}]}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(44.66234,201.1797)"},"ID":22,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"Assets.Tests.Scripts.AI.BTExtensions.ArmedWeaponIsSword","NodeData":{"Offset":"(-339.227478,154.282)"},"ID":23,"Name":"Armed
-        Weapon Is Sword","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":null}},{"Type":"Assets.Tests.Scripts.AI.BTExtensions.SwordBoostingColdDownCompleted","NodeData":{"Offset":"(-39.2267761,162.615448)"},"ID":24,"Name":"Sword
-        Boosting Cold Down Completed","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":null}},{"Type":"Assets.Tests.Scripts.AI.BTExtensions.SwordAttack","NodeData":{"Offset":"(213.690552,163.448608)"},"ID":25,"Name":"Sword
-        Attack","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":null}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(846.6124,182.45459)"},"ID":26,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Inverter","NodeData":{"Offset":"(-162.079285,169.597656)"},"ID":27,"Name":"Inverter","Instant":true,"Children":[{"Type":"Assets.Tests.Scripts.AI.BTExtensions.ArmedWeaponIsSword","NodeData":{"Offset":"(-9.221776,132.455566)"},"ID":28,"Name":"Armed
-        Weapon Is Sword","Instant":true,"TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":9}}]},{"Type":"Assets.Tests.Scripts.AI.BTExtensions.ContainsWeaponInBackpack","NodeData":{"Offset":"(82.1082,165.311951)"},"ID":29,"Name":"Contains
-        Weapon In Backpack","Instant":true,"String_weaponName":"Sword","TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":10}},{"Type":"Assets.Tests.Scripts.AI.BTExtensions.SwitchWeapon","NodeData":{"Offset":"(326.493042,176.740723)"},"ID":30,"Name":"Switch
-        Weapon","Instant":true,"String_targetWeaponName":"Sword","TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":11}}]}]}]}]}]},{"Type":"Tests.AI.MoveToTarget","NodeData":{"Offset":"(139.161987,136.866943)"},"ID":31,"Name":"Move
-        To Target","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":12}}]}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(401.5174,130.887878)"},"ID":32,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"Tests.AI.StopFindTarget","NodeData":{"Offset":"(-31.6668758,230)"},"ID":33,"Name":"Stop
-        Find Target","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":13}},{"Type":"Tests.AI.StopMoveToTarget","NodeData":{"Offset":"(196.665985,230.833557)"},"ID":34,"Name":"Stop
-        Move To Target","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":14}}]}]}]},"Variables":[{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":15}]}'
-      fieldSerializationData:
-        typeName: []
-        fieldNameHash: 
-        startIndex: 
-        dataPosition: 
-        unityObjects:
-        - {fileID: 633971128}
-        - {fileID: 633971128}
-        - {fileID: 633971128}
-        - {fileID: 633971128}
-        - {fileID: 633971128}
-        - {fileID: 633971128}
-        - {fileID: 633971128}
-        - {fileID: 633971128}
-        - {fileID: 633971128}
-        - {fileID: 633971128}
-        - {fileID: 633971128}
-        - {fileID: 633971128}
-        - {fileID: 633971128}
-        - {fileID: 633971128}
-        - {fileID: 633971128}
-        - {fileID: 633971128}
-        byteData: 
-        byteDataArray: 
-      Version: 1.7.12
-  gizmoViewMode: 2
-  showBehaviorDesignerGizmo: 1
 --- !u!1 &195047943
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,7 +537,7 @@ GameObject:
   - component: {fileID: 275276131}
   - component: {fileID: 275276130}
   - component: {fileID: 275276129}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -739,6 +660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _navAgent: {fileID: 275276131}
   _targetObj: {fileID: 1693567504}
+  _bt: {fileID: 0}
   _character: {fileID: 0}
 --- !u!195 &275276131
 NavMeshAgent:
@@ -1094,6 +1016,7 @@ GameObject:
   - component: {fileID: 633971127}
   - component: {fileID: 633971128}
   - component: {fileID: 633971129}
+  - component: {fileID: 633971130}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -1133,6 +1056,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _navAgent: {fileID: 633971129}
   _targetObj: {fileID: 1693567504}
+  _bt: {fileID: 633971130}
   _character: {fileID: 174025663}
 --- !u!195 &633971129
 NavMeshAgent:
@@ -1156,6 +1080,84 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &633971130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 633971126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d7b55c7ecdb49a4a89fa5e6f9022861, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startWhenEnabled: 1
+  asynchronousLoad: 0
+  pauseWhenDisabled: 1
+  restartWhenComplete: 1
+  logTaskChanges: 0
+  group: 0
+  resetValuesOnRestart: 0
+  externalBehavior: {fileID: 0}
+  mBehaviorSource:
+    behaviorName: Behavior
+    behaviorDescription: 
+    mTaskData:
+      types: []
+      parentIndex: 
+      startIndex: 
+      variableStartIndex: 
+      JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(464.5,30)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-18.112093,254.492386)"},"ID":1,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(193.54866,252.857437)"},"ID":2,"Name":"Selector","Instant":true,"AbortTypeabortType":"Self","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-265.833038,110.000053)"},"ID":3,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Self","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-470.7698,118.860634)"},"ID":4,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"Tests.AI.HasTargetInContext","NodeData":{"Offset":"(-92.41364,170)"},"ID":5,"Name":"Has
+        Target In Context","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":0}},{"Type":"Tests.AI.StartFindTarget","NodeData":{"Offset":"(115.861832,170)"},"ID":6,"Name":"Start
+        Find Target","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":1}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(144.4353,149.760376)"},"ID":7,"Name":"Selector","Instant":true,"AbortTypeabortType":"Self","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-176.3338,118.990967)"},"ID":8,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"Tests.AI.LockedTarget","NodeData":{"Offset":"(-328.24353,193.771286)"},"ID":9,"Name":"Locked
+        Target","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":2}},{"Type":"Tests.AI.StopMoveToTarget","NodeData":{"Offset":"(-85.0776443,184.995544)"},"ID":10,"Name":"Stop
+        Move To Target","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":3}},{"Type":"BehaviorDesigner.Runtime.Tasks.UntilSuccess","NodeData":{"Offset":"(118.141167,177.971008)"},"ID":11,"Name":"Until
+        Success","Instant":true,"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-4.49047852,121.655151)"},"ID":12,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"Assets.Tests.Scripts.AI.BTExtensions.TryGetArm","NodeData":{"Offset":"(-320,197.334488)"},"ID":13,"Name":"Try
+        Get Arm","Instant":true,"HumanPartpart":"RightArm","SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":4}},{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(9.936388,283.2815)"},"ID":14,"Name":"Selector","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-487.77832,185.555664)"},"ID":15,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Self","Children":[{"Type":"Assets.Tests.Scripts.AI.BTExtensions.ArmedWeaponIsLauncher","NodeData":{"Offset":"(-279.44278,151.294861)"},"ID":16,"Name":"Armed
+        Weapon Is Launcher","Instant":true,"TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":5}},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(28.5715427,221.375732)"},"ID":17,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Inverter","NodeData":{"Offset":"(-355.6328,123.639404)"},"ID":18,"Name":"Inverter","Instant":true,"Children":[{"Type":"Assets.Tests.Scripts.AI.BTExtensions.LauncherFire","NodeData":{"Offset":"(-19.2855835,178.571533)"},"ID":19,"Name":"Launcher
+        Fire","Instant":true,"TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":6}}]},{"Type":"Assets.Tests.Scripts.AI.BTExtensions.LauncherReserveAmmoEnough","NodeData":{"Offset":"(-78.20497,314.102844)"},"ID":20,"Name":"Launcher
+        Reserve Ammo Enough","Instant":true,"TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":7}},{"Type":"Assets.Tests.Scripts.AI.BTExtensions.LauncherReload","NodeData":{"Offset":"(193.07695,114.615417)"},"ID":21,"Name":"Launcher
+        Reload","Instant":true,"TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":8}}]}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(149.925842,227.495575)"},"ID":22,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"Assets.Tests.Scripts.AI.BTExtensions.ArmedWeaponIsSword","NodeData":{"Offset":"(-339.227478,154.282)"},"ID":23,"Name":"Armed
+        Weapon Is Sword","Instant":true,"TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":9}},{"Type":"Assets.Tests.Scripts.AI.BTExtensions.SwordBoostingColdDownCompleted","NodeData":{"Offset":"(-39.2267761,162.615448)"},"ID":24,"Name":"Sword
+        Boosting Cold Down Completed","Instant":true,"TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":10}},{"Type":"Assets.Tests.Scripts.AI.BTExtensions.SwordAttack","NodeData":{"Offset":"(213.690552,163.448608)"},"ID":25,"Name":"Sword
+        Attack","Instant":true,"TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":11}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(846.6124,182.45459)"},"ID":26,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Inverter","NodeData":{"Offset":"(-162.079285,169.597656)"},"ID":27,"Name":"Inverter","Instant":true,"Children":[{"Type":"Assets.Tests.Scripts.AI.BTExtensions.ArmedWeaponIsSword","NodeData":{"Offset":"(-9.221776,132.455566)"},"ID":28,"Name":"Armed
+        Weapon Is Sword","Instant":true,"TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":12}}]},{"Type":"Assets.Tests.Scripts.AI.BTExtensions.ContainsWeaponInBackpack","NodeData":{"Offset":"(82.1082,165.311951)"},"ID":29,"Name":"Contains
+        Weapon In Backpack","Instant":true,"String_weaponName":"Sword","TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":13}},{"Type":"Assets.Tests.Scripts.AI.BTExtensions.SwitchWeapon","NodeData":{"Offset":"(326.493042,176.740723)"},"ID":30,"Name":"Switch
+        Weapon","Instant":true,"String_targetWeaponName":"Sword","TryGetArm_getArm":13,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":14}}]}]}]}]}]},{"Type":"Tests.AI.MoveToTarget","NodeData":{"Offset":"(139.161987,136.866943)"},"ID":31,"Name":"Move
+        To Target","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":15}}]}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(401.5174,130.887878)"},"ID":32,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"Tests.AI.StopFindTarget","NodeData":{"Offset":"(-31.6668758,230)"},"ID":33,"Name":"Stop
+        Find Target","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":16}},{"Type":"Tests.AI.StopMoveToTarget","NodeData":{"Offset":"(196.665985,230.833557)"},"ID":34,"Name":"Stop
+        Move To Target","Instant":true,"SharedAICore_sharedCore":{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":17}}]}]}]},"Variables":[{"Type":"Tests.AI.SharedAICore","Name":"core","IsShared":true,"AICoremValue":18}]}'
+      fieldSerializationData:
+        typeName: []
+        fieldNameHash: 
+        startIndex: 
+        dataPosition: 
+        unityObjects:
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        - {fileID: 633971128}
+        byteData: 
+        byteDataArray: 
+      Version: 1.7.12
+  gizmoViewMode: 2
+  showBehaviorDesignerGizmo: 1
 --- !u!1 &715262166
 GameObject:
   m_ObjectHideFlags: 0
@@ -2287,7 +2289,7 @@ GameObject:
   - component: {fileID: 1693567506}
   - component: {fileID: 1693567505}
   - component: {fileID: 1693567509}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
