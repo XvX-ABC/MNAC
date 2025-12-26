@@ -5,16 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Tests.Utilities.TransformHelper
+namespace Tests.Utilities
 {
-    public static class TransformHelper
-    {
-        static TransformHelper()
-        {
-            InvalidPosition_V2 = Vector2.positiveInfinity;
-        }
-        public static readonly Vector2 InvalidPosition_V2;
-    }
+
     public class RotationByScreen
     {
         Quaternion _rotationOffset;
