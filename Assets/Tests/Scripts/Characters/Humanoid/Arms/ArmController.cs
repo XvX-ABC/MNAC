@@ -241,7 +241,8 @@ namespace Tests.Characters.Humanoid.Arms
         }
         void InitializeArmedWeaponBehaviours(IArmedWeaponArmDefinitions definitions)
         {
-            var behaviours = _definitions.Weapon.ArmedWeaponBehaviours;
+            var behaviours = _definitions.Weapon.GetArmBehaviours(this.transform);
+            //var behaviours = _definitions.Weapon.ArmedWeaponBehaviours;
             //_armedWeaponController = new(_weaponCore, _definitions.Weapon, behaviours);
             _armedWeaponController = new(_definitions.Weapon, behaviours);
             armedWeaponControllerState = new(_armedWeaponController, _part);

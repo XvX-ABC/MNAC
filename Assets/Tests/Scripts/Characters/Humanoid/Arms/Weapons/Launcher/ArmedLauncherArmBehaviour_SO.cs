@@ -1,5 +1,7 @@
 ﻿using RootMotion.FinalIK;
 using System;
+using System.Data.Odbc;
+using System.Text;
 using Tests.Behaviours;
 using Tests.Behaviours.Arms.Weapons;
 using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
@@ -26,6 +28,7 @@ using WeaponType = Tests.Weapons_New.WeaponType;
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
     [CreateAssetMenu(fileName = "ArmedLauncherArmBehaviour", menuName = "Tests/Behaviours/Characters/Humanoid/Arms/Weapons/Launchers/ArmedLauncherArmBehaviour")]
+    [Obsolete]
     public class ArmedLauncherArmBehaviour_SO : ArmedWeaponArmBehaviourBase_SO
     {
         #region internal classes
@@ -209,7 +212,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
         #endregion
 
-
+        GameObject _characterObj;
         ArmedLauncherArmAnimator _animator;
         Behaviours.Arms.Weapons.Launcher.ArmedLauncherArmBehaviour _behaviour;
         [SerializeField]
@@ -256,6 +259,14 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             {
                 if (_behaviour != null)
                 {
+                    _sb.Append(_characterObj.name);
+                    _sb.Append(" ( ");
+                    _sb.Append(this.GetType().Name);
+                    _sb.Append(" ) : ");
+                    _sb.Append(" The behaviour's activated state changes to ");
+                    _sb.Append($"'{value}'");
+                    Debug.Log(_sb.ToString());
+                    _sb.Clear();
                     _behaviour.Activated = value;
                     //_targetLocker.Enabled = value;
 
@@ -286,7 +297,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             blackboard.TryReadValueOrThrowException<IGroundDetector>(CharacterBlackboardFields.GroundDetector, out var groundDetector);
             blackboard.TryReadValueOrThrowException<LocomotionCore>(CharacterBlackboardFields.Character_Locomotion_Core, out var locomotionCore);
             blackboard.TryReadValueOrThrowException<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph);
-            blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Main, out var actorObj);
+            blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Main, out _characterObj);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Arm_Local, out var armObj);
 
             blackboard.TryReadValueOrThrowException<IHumanoidInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
@@ -356,7 +367,21 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         public override void Update()
         {
             _behaviour.Update();
-            Cursor.lockState = _targetLocker.MainLockTarget == null ? CursorLockMode.None : CursorLockMode.Locked;
+            //Cursor.lockState = _targetLocker.MainLockTarget == null ? CursorLockMode.None : CursorLockMode.Locked;
+        }
+        StringBuilder _sb = new StringBuilder();
+        public override void FixedUpdate()
+        {
+            var statemachine = _behaviour.statemachine;
+            var animationStatemachine = _behaviour.animator.statemachine;
+            _sb.Append(_characterObj.name);
+            _sb.Append(" ( ");
+            _sb.Append(this.GetType().Name);
+            _sb.Append(" ) : \n");
+            _sb.Append(statemachine);
+            _sb.Append(animationStatemachine);
+            Debug.Log(_sb.ToString());
+            _sb.Clear();
         }
     }
 }

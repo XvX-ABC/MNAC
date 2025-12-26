@@ -1,4 +1,7 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using Tests.Extensions;
 using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons
@@ -7,7 +10,32 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
     public class ArmWeaponDefinitions : Behaviours.Arms.Weapons.ArmWeaponDefinitions, IArmedWeaponArmDefinitions
     {
         [SerializeField]
-        ArmedWeaponArmBehaviourBase_SO[] _weaponBehaviours;
-        public IArmedWeaponArmBehaviour[] ArmedWeaponBehaviours => _weaponBehaviours;
+        ArmedWeaponArmBehaviourPrefabLoader[] _behaviourLoaders;
+        IArmedWeaponArmBehaviour[] _behaviours;
+        public IArmedWeaponArmBehaviour[] ArmedWeaponBehaviours
+        {
+            get
+            {
+                _behaviours = null;
+                foreach (var loader in _behaviourLoaders)
+                {
+                    loader.Load();
+                    _behaviours = _behaviours.Append(loader.Resource);
+                }
+                return _behaviours;
+            }
+        }
+
+        public IArmedWeaponArmBehaviour[] GetArmBehaviours(Transform parent)
+        {
+            var behaviours = new List<IArmedWeaponArmBehaviour>();
+            foreach (var loader in _behaviourLoaders)
+            {
+                loader.Parent = parent;
+                loader.Load();
+                behaviours.Add(loader.Resource);
+            }
+            return behaviours.ToArray();
+        }
     }
 }

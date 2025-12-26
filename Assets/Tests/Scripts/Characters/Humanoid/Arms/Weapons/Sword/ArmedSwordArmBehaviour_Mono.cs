@@ -3,7 +3,6 @@ using Tests.Animations;
 using Tests.Behaviours;
 using Tests.Behaviours.Arms.Weapons.Sword.Animations;
 using Tests.Characters.Humanoid.Input;
-using Tests.Characters.Interaction;
 using Tests.Characters.Interaction.Input;
 using Tests.Characters.MountPoints;
 using Tests.Characters.UI;
@@ -16,19 +15,16 @@ using Tests.Utilities.Timeline;
 using Tests.Utilities.Timeline.Events;
 using Tests.Utilities.Timeline.Events.Range;
 using Tests.Weapons_New;
-using Tests.Weapons_New.Launcher;
 using Tests.Weapons_New.Sword;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.WSA;
-using Cursor = UnityEngine.Cursor;
 using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
 using PlayerCursorIndicator = Tests.Characters.UI.PlayerCursorIndicator;
 using SphericalObjsTrigger = Tests.Characters.Interaction.SphericalObjsTrigger;
 using Transition = Tests.Behaviours.Arms.Weapons.Sword.Animations.IArmedSwordArmAnimationDefinitions.Transition;
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
-    public class ArmedSwordArmBehaviour : ArmedWeaponArmBehaviourBase
+    public class ArmedSwordArmBehaviour_Mono : ArmedWeaponArmBehaviourBase_Mono
     {
         #region internal classes
         class UIControl
@@ -188,11 +184,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
 
         UIControl _uiControl;
-
-        public ArmedSwordArmBehaviour(string name, bool enabled = true) : base(name, enabled)
-        {
-        }
-
         public override WeaponType Type => WeaponType.Sword;
         internal TeamMask teamMask
         {

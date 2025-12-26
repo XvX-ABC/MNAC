@@ -29,6 +29,7 @@ using Transition = Tests.Behaviours.Arms.Weapons.Sword.Animations.IArmedSwordArm
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     [CreateAssetMenu(fileName = "ArmedSwordArmBehaviour", menuName = "Tests/Behaviours/Characters/Humanoid/Arms/Weapons/Sword/ArmedSwordArmBehaviour")]
+    [Obsolete]
     public class ArmedSwordArmBehaviour_SO : ArmedWeaponArmBehaviourBase_SO
     {
         #region internal classes

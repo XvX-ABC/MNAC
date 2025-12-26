@@ -1,5 +1,7 @@
 ﻿using System;
 using Tests.Behaviours.Arms.Weapons;
+using Tests.Characters.Humanoid.Arms.Weapons.Launchers;
+using Tests.Characters.Humanoid.Arms.Weapons.Sword;
 using Tests.States;
 using Tests.Utilities.Composable;
 using Tests.Weapons;
@@ -8,11 +10,25 @@ using WeaponType = Tests.Weapons_New.WeaponType;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons
 {
-    [Obsolete]
-    public abstract class ArmedWeaponArmBehaviourBase_SO : StateComponentNode_SO, IArmedWeaponArmBehaviour
+    public abstract class ArmedWeaponArmBehaviourBase
+        : StateComponentNode, IArmedWeaponArmBehaviour
     {
+
+        public static ArmedWeaponArmBehaviourBase CreateBehaviour(WeaponType weaponType, bool enabled = true)
+        {
+            return weaponType switch
+            {
+                WeaponType.Launcher => new ArmedLauncherArmBehaviour("armed_launcher_arm_behaviour", enabled),
+                WeaponType.Sword => new ArmedSwordArmBehaviour("armed_sword_arm_behaviour", enabled),
+                _ => throw new Exception("Invalid weapon type")
+            };
+        }
         HumanPart _part;
-        protected bool enabled;
+
+        protected ArmedWeaponArmBehaviourBase(string name, bool enabled = true) : base(name, 0, enabled)
+        {
+        }
+
         protected abstract Behaviours.Arms.IArmedWeaponArmBehaviour behaviour { get; }
         public virtual bool Activated
         {

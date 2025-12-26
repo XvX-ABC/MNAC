@@ -25,9 +25,11 @@ MonoBehaviour:
       _mountPoints:
         Launcher: 4
         Sword: 5
-      _weaponBehaviours:
-      - {fileID: 11400000, guid: ec0bc909616b5ac47b85ee89915d37a7, type: 2}
-      - {fileID: 11400000, guid: b4559db2b902b72488082f0433a3c154, type: 2}
+      _behaviourLoaders:
+      - _prefab: {fileID: 4267415106223125695, guid: 8ad34ee0f56ffaa4295275a512bd59d6,
+          type: 3}
+      - _prefab: {fileID: 5232178486244353883, guid: 69c96ed426c5a174f9daa131c8553e87,
+          type: 3}
     _animation:
       _weapon:
         _switching:

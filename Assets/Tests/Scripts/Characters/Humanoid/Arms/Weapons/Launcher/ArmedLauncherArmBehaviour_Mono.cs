@@ -27,7 +27,7 @@ using WeaponType = Tests.Weapons_New.WeaponType;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
-    public class ArmedLauncherArmBehaviour : ArmedWeaponArmBehaviourBase
+    public class ArmedLauncherArmBehaviour_Mono : ArmedWeaponArmBehaviourBase_Mono
     {
         #region internal classes
         class UIControl : IDisposable
@@ -219,10 +219,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         ArmedLauncherArmAnimationDefinitions_SO _animationDefinitions;
         ITargetLocker _targetLocker;
         UIControl _uiControl;
-        public ArmedLauncherArmBehaviour(string name, bool enabled = true) : base(name, enabled)
-        {
-        }
-
         public override WeaponType Type => WeaponType.Launcher;
 
         public override IWeapon Weapon
@@ -368,8 +364,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             //Cursor.lockState = _targetLocker.MainLockTarget == null ? CursorLockMode.None : CursorLockMode.Locked;
         }
         StringBuilder _sb = new StringBuilder();
-
-
         public override void FixedUpdate()
         {
             if (_behaviour == null)

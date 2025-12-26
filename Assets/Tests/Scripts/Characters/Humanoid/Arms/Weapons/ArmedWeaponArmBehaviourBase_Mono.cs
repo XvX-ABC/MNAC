@@ -1,16 +1,15 @@
 ﻿using System;
 using Tests.Behaviours.Arms.Weapons;
-using Tests.Characters.Humanoid;
 using Tests.States;
 using Tests.Utilities.Composable;
 using Tests.Weapons;
 using Tests.Weapons_New;
-using UnityEngine;
 using WeaponType = Tests.Weapons_New.WeaponType;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons
 {
-    public abstract class ArmedWeaponArmBehaviourBase_MonoComponent : StateComponentNode_MonoComponent, IArmedWeaponArmBehaviour
+    public abstract class ArmedWeaponArmBehaviourBase_Mono
+        : StateComponentNode_MonoComponent, IArmedWeaponArmBehaviour
     {
         HumanPart _part;
         protected abstract Behaviours.Arms.IArmedWeaponArmBehaviour behaviour { get; }
@@ -38,11 +37,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
                 return _part;
             }
             set => _part = value;
-        }
-        protected override void Awake()
-        {
-            base.Awake();
-
         }
         public override void OnEnter()
         {
@@ -96,9 +90,12 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         {
         }
 
+        public virtual void LateUpdate()
+        {
+
+        }
         public virtual void FixedUpdate()
         {
         }
-        public virtual void LateUpdate() { }
     }
 }
