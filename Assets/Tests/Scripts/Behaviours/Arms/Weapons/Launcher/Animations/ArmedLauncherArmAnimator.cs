@@ -142,7 +142,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
 
 
 
-            statemachine = new("armed_launcher_statemachine");
+            statemachine = new("armed_launcher_animation_statemachine");
             statemachine.AddState(idle);
             statemachine.AddState(aiming);
             statemachine.AddState(reload);
