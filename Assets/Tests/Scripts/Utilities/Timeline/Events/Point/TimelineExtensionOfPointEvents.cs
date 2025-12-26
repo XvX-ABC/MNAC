@@ -36,7 +36,7 @@ namespace Tests.Utilities.Timeline.Events.Point
             if (evt == null)
                 throw new ArgumentNullException(nameof(evt));
             if (timeline.IsRunning)
-                throw new InvalidOperationException($"Can't to add the event, because the timeline is running now.");
+                throw new InvalidOperationException($"Can't to remove the event, because the timeline is running now.");
             return timeline.RemoveEvent(evt);
         }
     }
