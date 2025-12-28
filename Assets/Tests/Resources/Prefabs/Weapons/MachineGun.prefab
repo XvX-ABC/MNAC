@@ -77,7 +77,7 @@ MonoBehaviour:
   _ammoReserveAmount: 20
   _ammoInMagazineAmount: 20
   _launchingIntervalTime: 0.2
-  _reloadDurationTime: 3
+  _reloadDurationTime: 1
   _launchDelayRange: {x: 0, y: 0}
 --- !u!114 &1115461732062153378
 MonoBehaviour:

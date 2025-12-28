@@ -74,8 +74,8 @@ namespace Tests.Characters.Weapons
 
         void Start()
         {
-            if (_screenCatcher != null)
-                StartCoroutine(_screenCatcher.UpdateWithCoroutine());
+            //if (_screenCatcher != null)
+            //    StartCoroutine(_screenCatcher.UpdateWithCoroutine());
         }
         void OnEnable()
         {
@@ -105,8 +105,8 @@ namespace Tests.Characters.Weapons
             blackboard.TryReadValueOrThrowException<TeamMask>(CharacterBlackboardFields.Character_TeamMask, out var teamMask);
 
             _screenCatcher = new(camera, _processingAmountInCoroutine);
-            if (didStart)
-                StartCoroutine(_screenCatcher.UpdateWithCoroutine());
+            //if (didStart)
+            //    StartCoroutine(_screenCatcher.UpdateWithCoroutine());
             _locker = new(
                 input,
                 _screenCatcher,

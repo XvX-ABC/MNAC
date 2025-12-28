@@ -150,8 +150,9 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         {
             slashHelper.Target = targets.Count > 0 ? targets[^1] : null;
         }
-        public override void Update()
+        public override void BehaviourOnUpdate()
         {
+            Debug.Log(statemachine);
             boostingHelper.Update();
             animator.Update();
 

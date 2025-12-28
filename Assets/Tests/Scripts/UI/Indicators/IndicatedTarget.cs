@@ -11,6 +11,7 @@ namespace Tests.UI
         protected Indicator indicator;
         [SerializeField]
         IndicatorsManager _indicatorsManager;
+        GameObject _indicatedObj;
 
         public bool IsValid { get => this.enabled; }
         public IndicatorType IndicatorType { get => indicatorType; }
@@ -32,6 +33,8 @@ namespace Tests.UI
                 _indicatorsManager = value;
             }
         }
+
+        public GameObject IndicatedObj { get => _indicatedObj; set => _indicatedObj = value; }
 
         protected virtual void OnEnable()
         {
@@ -61,7 +64,7 @@ namespace Tests.UI
 
         public virtual Vector3 GetScreenPosition(Camera camera)
         {
-            return camera.WorldToScreenPoint(this.transform.position);
+            return camera.WorldToScreenPoint(_indicatedObj?.transform.position ?? this.transform.position);
         }
     }
 }

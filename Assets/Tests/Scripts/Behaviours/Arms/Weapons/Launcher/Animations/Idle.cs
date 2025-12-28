@@ -14,7 +14,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         string _velocity_y;
         float _maxSpeed;
         float _accelerationSpeed;
-        Rigidbody _rbody;
+        internal Rigidbody _rbody;
         World _world;
         IGroundDetector _groundDetector;
         public Idle(Rigidbody rbody, World world, IGroundDetector groundDetector, ControllerPlayable controller, float maxSpeed, float accelerationSpeed, string velocity_x, string velocity_y, bool enabled = true) : base(controller, "idle", 0, enabled)

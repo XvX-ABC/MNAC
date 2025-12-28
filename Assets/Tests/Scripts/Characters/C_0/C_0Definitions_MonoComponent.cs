@@ -1,4 +1,6 @@
-﻿using Tests.Interaction;
+﻿using System;
+using Tests.Interaction;
+using Tests.States;
 using UnityEngine;
 
 namespace Tests.Characters.C_0
@@ -13,6 +15,8 @@ namespace Tests.Characters.C_0
         TeamMask _teamMask;
         [SerializeField]
         HealthDefinitions _health;
+        [SerializeField]
+        BehaviourTransitionOptions[] _transitionOptions;
         public LayerMask ProjectilesLayerMaskToHit => _projectilesLayerMaskToHit;
 
         public TeamMask TeamMask => _teamMask;
@@ -20,5 +24,14 @@ namespace Tests.Characters.C_0
         public LayerMask SwordLayerMaskToHit => _swordLayerMaskToHit;
 
         public HealthDefinitions Health => _health;
+
+        public BlendingTransitionOptions GetTransitionOptions(BehavioursTransition transition)
+        {
+            var idx = Array.FindIndex(_transitionOptions, o => o.transition == transition);
+            if (idx == -1)
+                throw new TransitionOptionsCantFoundException($"Can't found a transition options by '{transition}'");
+
+            return _transitionOptions[idx];
+        }
     }
 }

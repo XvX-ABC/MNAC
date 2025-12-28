@@ -2,6 +2,13 @@
 using UnityEngine;
 namespace Tests.States
 {
+    public class TransitionOptionsCantFoundException : Exception
+    {
+        public TransitionOptionsCantFoundException(string message) : base(message)
+        {
+
+        }
+    }
     [Serializable]
 
     public class BlendingTransitionOptions : IBlendingTransitionOptions

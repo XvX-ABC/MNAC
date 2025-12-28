@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using Tests.Characters;
+using Tests.Interaction;
 using Tests.Utilities.Blackboards;
 using TMPro;
 using Unity.VisualScripting;
@@ -71,6 +72,8 @@ namespace Tests.AI
             };
             if (_targetObj != null)
                 interactableTarget = new Target(_targetObj);
+
+
             InitializeComponents(_componentContext);
             InitializeInternalComponents(_componentContext);
             _bt.enabled = true;

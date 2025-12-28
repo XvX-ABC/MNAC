@@ -33,9 +33,9 @@ MonoBehaviour:
       _fixedExitTime: 0
       _interruptionSource: 0
       _transition: 1
-    - _duration: 1
+    - _duration: 0.25
       _offset: 0
       _enableFixedExit: 1
       _fixedExitTime: 1
-      _interruptionSource: 1
+      _interruptionSource: 0
       _transition: 2

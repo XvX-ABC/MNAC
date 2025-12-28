@@ -41,7 +41,7 @@ namespace Tests.TPhysics.Locomotion
             world = World.Default;
             state = LocomotionModuleState.Ready;
         }
-        public bool Enabled
+        public virtual bool Enabled
         {
             get => enabled;
             set => enabled = value;

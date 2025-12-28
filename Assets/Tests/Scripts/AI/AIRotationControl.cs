@@ -19,7 +19,7 @@ namespace Tests.AI
                 {
                     if (_locomotion == null)
                     {
-                        _locomotion = new(value.core);
+                        _locomotion = new(value.internalCore);
                         _locomotion.Enabled = this.Enabled;
                     }
                     value.rotationModule = _locomotion;

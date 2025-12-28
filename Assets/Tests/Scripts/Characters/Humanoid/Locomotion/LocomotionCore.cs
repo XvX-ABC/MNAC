@@ -38,7 +38,7 @@ namespace Tests.Characters.Humanoid.Locomotion
 
         internal LocomotionAnimator animator;
 
-        internal LCore core => _core;
+        internal LCore internalCore => _core;
         internal LContext locomotionContext => _core.Context;
 
         internal RotationLocomotionBase rotationModule
@@ -64,17 +64,17 @@ namespace Tests.Characters.Humanoid.Locomotion
             definitions = GetComponent<ILocomotionDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(ILocomotionDefinitions));
 
         }
-        private void OnEnable()
-        {
-            if (statemachine != null)
-            {
-                statemachine.Enabled = true;
-            }
-        }
-        private void OnDisable()
-        {
-            statemachine.Enabled = false;
-        }
+        //private void OnEnable()
+        //{
+        //    if (statemachine != null)
+        //    {
+        //        statemachine.Enabled = true;
+        //    }
+        //}
+        //private void OnDisable()
+        //{
+        //    statemachine.Enabled = false;
+        //}
         void InitializeRigidbody(Rigidbody rbody)
         {
             rbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;

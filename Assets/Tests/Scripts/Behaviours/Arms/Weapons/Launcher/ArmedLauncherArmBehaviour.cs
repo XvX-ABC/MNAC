@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
 using Tests.Characters.Interaction.Input;
 using Tests.Interaction;
@@ -131,8 +132,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
 
         void WhenTargetChanged(ILockTarget _, ILockTarget newTarget)
         {
-            //animator.AimingTarget = newTarget;
-            //target = newTarget;
             UpdateTarget(newTarget);
         }
         void InitializeStatemachine()
@@ -177,8 +176,9 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         {
             animator.AimingTarget = newTarget;
             target = newTarget;
+            Debug.Log($"The armed launcher arm will  change the aiming target to '{newTarget}'");
         }
-        public override void Update()
+        public override void BehaviourOnUpdate()
         {
             animator.Update();
         }

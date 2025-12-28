@@ -11,7 +11,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
     public abstract class ArmedWeaponArmBehaviourBase_Mono
         : StateComponentNode_MonoComponent, IArmedWeaponArmBehaviour
     {
-        HumanPart _part;
+        HumanBodyPart _part;
         protected abstract Behaviours.Arms.IArmedWeaponArmBehaviour behaviour { get; }
         public virtual bool Activated
         {
@@ -28,11 +28,11 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         public virtual IArmedWeaponArmAnimationPlayablePart Animator { get => behaviour.Animator; }
         public virtual Func<bool> EntryFunc { get => behaviour.EntryFunc; }
         public virtual Func<bool> ExitFunc { get => behaviour.ExitFunc; }
-        public HumanPart Part
+        public HumanBodyPart Part
         {
             get
             {
-                if (_part != HumanPart.LeftArm && _part != HumanPart.RightArm)
+                if (_part != HumanBodyPart.LeftArm && _part != HumanBodyPart.RightArm)
                     throw new ArgumentException("ArmedWeaponArmBehaviourBase_MonoComponent can only be attached to LeftArm or RightArm");
                 return _part;
             }
@@ -86,15 +86,15 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
             behaviour?.State?.ToNextStateTransitionEnd(currentTransition);
         }
 
-        public virtual void Update()
+        public virtual void BehaviourOnUpdate()
         {
         }
 
-        public virtual void LateUpdate()
+        public virtual void BehaviourOnLateUpdate()
         {
 
         }
-        public virtual void FixedUpdate()
+        public virtual void BehaviourOnFixedUpdate()
         {
         }
     }

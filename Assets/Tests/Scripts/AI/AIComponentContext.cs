@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Tess.AI;
 using Tests.Characters.Humanoid.Locomotion;
+using Tests.Interaction;
 using Tests.TPhysics.Locomotion;
 using Tests.Utilities.Blackboards;
 using UnityEngine.AI;

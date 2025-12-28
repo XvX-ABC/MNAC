@@ -14,8 +14,8 @@ namespace Tests.Characters.Interaction
         ushort _processingAmountOfFrames = 30;
         [SerializeField]
         Camera _camera;
-        [SerializeField]
-        bool useCoroutine;
+        //[SerializeField]
+        //bool useCoroutine;
 
         public ushort ProcessingAmountOfFrames { get => _catcher.ProcessingAmountOfFrames; set => _processingAmountOfFrames = _catcher.ProcessingAmountOfFrames = value; }
         public Camera Camera { get => _catcher.Camera; set => _camera = _catcher.Camera = value; }
@@ -26,13 +26,13 @@ namespace Tests.Characters.Interaction
         }
         protected virtual void Start()
         {
-            if (useCoroutine)
-                StartCoroutine(_catcher.UpdateWithCoroutine());
+            //if (useCoroutine)
+                //StartCoroutine(_catcher.UpdateWithCoroutine());
         }
         protected virtual void FixedUpdate()
         {
-            if (!useCoroutine)
-                _catcher.Update();
+            //if (!useCoroutine)
+            //    _catcher.Update();
         }
         public override void Initialize(Blackboard blackboard)
         {

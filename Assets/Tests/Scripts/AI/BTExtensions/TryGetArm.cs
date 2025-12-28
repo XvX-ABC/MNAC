@@ -78,7 +78,7 @@ namespace Assets.Tests.Scripts.AI.BTExtensions
     internal class TryGetArm : AIConditionalBase
     {
         [SerializeField]
-        internal HumanPart part;
+        internal HumanBodyPart part;
         [HideInInspector]
         internal ArmController controller;
         public override TaskStatus OnUpdate()

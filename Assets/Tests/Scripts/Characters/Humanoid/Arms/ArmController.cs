@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Tests.Animations;
 using Tests.Behaviours.Arms.Animations;
 using Tests.Behaviours.Arms.Weapons;
@@ -6,7 +7,6 @@ using Tests.Behaviours.Arms.Weapons.Animations;
 using Tests.Characters.Humanoid.Arms.Weapons;
 using Tests.Characters.Humanoid.Input;
 using Tests.Characters.MountPoints;
-using Tests.Characters.Weapons;
 using Tests.States;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
@@ -59,7 +59,7 @@ namespace Tests.Characters.Humanoid.Arms
         [SerializeField]
         MountPoint[] _mountPoints;
         [SerializeField]
-        HumanPart _part;
+        HumanBodyPart _part;
 
         IArmDefinitions _definitions;
         IArmAnimationDefinitions animationDefinitions;
@@ -88,7 +88,7 @@ namespace Tests.Characters.Humanoid.Arms
                 if (value != null)
                 {
                     value.TryReadValueOrThrowException<IHumanoidInput>(CharacterBlackboardFields.Character_Input_Main, out var input);
-                    _armInput = _part == HumanPart.LeftArm ? input.LArm : input.RArm;
+                    _armInput = _part == HumanBodyPart.LeftArm ? input.LArm : input.RArm;
                     value.TryReadValue(CharacterBlackboardFields.Character_Weapon_Core, out _weaponCore);
                 }
                 _blackboard = value;
@@ -127,7 +127,7 @@ namespace Tests.Characters.Humanoid.Arms
 
             _node = new(this);
 
-            if (_part != HumanPart.LeftArm && _part != HumanPart.RightArm)
+            if (_part != HumanBodyPart.LeftArm && _part != HumanBodyPart.RightArm)
                 throw new Exception("The part of definitions must is left arm or right arm.");
         }
 
@@ -169,9 +169,9 @@ namespace Tests.Characters.Humanoid.Arms
                 throw new Exception();
 
 
-            if (_part == HumanPart.LeftArm)
+            if (_part == HumanBodyPart.LeftArm)
                 owner.leftArm = this;
-            else if (_part == HumanPart.RightArm)
+            else if (_part == HumanBodyPart.RightArm)
                 owner.rightArm = this;
             this.Enabled = true;
 
@@ -182,8 +182,8 @@ namespace Tests.Characters.Humanoid.Arms
             var swordMountPoint = FindMountPoint(weaponDefinitions.MountPoints.Sword) ?? throw new NullReferenceException("swordMountPoint");
             var location = _part switch
             {
-                HumanPart.LeftArm => MountPointLocation.Left_Hand_Weapon,
-                HumanPart.RightArm => MountPointLocation.Right_Hand_Weapon,
+                HumanBodyPart.LeftArm => MountPointLocation.Left_Hand_Weapon,
+                HumanBodyPart.RightArm => MountPointLocation.Right_Hand_Weapon,
                 _ => throw new Exception("The part of definitions must is left arm or right arm.")
             };
 
@@ -212,9 +212,9 @@ namespace Tests.Characters.Humanoid.Arms
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Arm_Core_Local, this);
             var field = _part switch
             {
-                HumanPart.None => Guid.Empty,
-                HumanPart.LeftArm => CharacterBlackboardFields.Character_Arm_Left_Controller,
-                HumanPart.RightArm => CharacterBlackboardFields.Character_Arm_Right_Controller,
+                HumanBodyPart.None => Guid.Empty,
+                HumanBodyPart.LeftArm => CharacterBlackboardFields.Character_Arm_Left_Controller,
+                HumanBodyPart.RightArm => CharacterBlackboardFields.Character_Arm_Right_Controller,
                 _ => throw new NotImplementedException()
             };
             blackboard.TryRegisterField(field, this);
@@ -258,8 +258,8 @@ namespace Tests.Characters.Humanoid.Arms
                 {
                     var field = _part switch
                     {
-                        HumanPart.LeftArm => CharacterBlackboardFields.Character_Weapon_LeftArm_Armed,
-                        HumanPart.RightArm => CharacterBlackboardFields.Character_Weapon_RightArm_Armed,
+                        HumanBodyPart.LeftArm => CharacterBlackboardFields.Character_Weapon_LeftArm_Armed,
+                        HumanBodyPart.RightArm => CharacterBlackboardFields.Character_Weapon_RightArm_Armed,
                     };
                     if (_blackboard.Contains(field))
                         _blackboard.TryWriteValue(field, nw);
@@ -357,9 +357,10 @@ namespace Tests.Characters.Humanoid.Arms
             _armedWeaponController.Update();
             animatorCore.OnUpdate();
         }
-
+        StringBuilder _sb = new StringBuilder();
         void FixedUpdate()
         {
+
             _armedWeaponController.FixedUpdate();
         }
         void LateUpdate()

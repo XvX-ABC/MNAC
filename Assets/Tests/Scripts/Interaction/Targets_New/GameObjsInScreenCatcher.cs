@@ -23,40 +23,122 @@ namespace Tests.Interaction
         public Camera Camera { get => _camera; set => _camera = value ?? throw new NullReferenceException(nameof(_camera)); }
         public ushort ProcessingAmountOfFrames { get => _processingAmountOfFrames; set => _processingAmountOfFrames = value; }
         public Action<List<GameObject>> CatchCompletedAction { get => _catchCompletedAction; set => _catchCompletedAction = value; }
-        public override void Update()
+        public override bool Enabled
         {
-            if (!this.enabled)
+            get => base.Enabled;
+            set
             {
-                CleanAll();
-                return;
-            }
-
-            foreach (var item in InteractionManager.items)
-            {
-                var obj = item.Obj;
-                if (caughtItems.Contains(obj))
+                base.Enabled = value;
+                if (value)
                 {
-                    if (obj.TryGetComponent<Renderer>(out var renderer))
-                    {
-                        var planes = GeometryUtility.CalculateFrustumPlanes(_camera);
-                        if (!GeometryUtility.TestPlanesAABB(planes, renderer.bounds))
-                        {
-                            RemoveItemImpl(obj);
-                        }
-                    }
-                    else
-                        RemoveItemImpl(obj);
+                    InteractionManager.handlerList.Add(Handler);
+                    InteractionManager.CoroutineEndAction += WhenCoroutineEnd;
                 }
-                else if (obj.TryGetComponent<Renderer>(out var renderer))
+                else
+                {
+                    InteractionManager.handlerList.Remove(Handler);
+                    InteractionManager.CoroutineEndAction -= WhenCoroutineEnd;
+                }
+            }
+        }
+        //public override void Update()
+        //{
+        //    if (!this.enabled)
+        //    {
+        //        CleanAll();
+        //        return;
+        //    }
+
+        //    foreach (var item in InteractionManager.items)
+        //    {
+        //        var obj = item.Obj;
+        //        if (caughtItems.Contains(obj))
+        //        {
+        //            if (obj.TryGetComponent<Renderer>(out var renderer))
+        //            {
+        //                var planes = GeometryUtility.CalculateFrustumPlanes(_camera);
+        //                if (!GeometryUtility.TestPlanesAABB(planes, renderer.bounds))
+        //                {
+        //                    RemoveItemImpl(obj);
+        //                }
+        //            }
+        //            else
+        //                RemoveItemImpl(obj);
+        //        }
+        //        else if (obj.TryGetComponent<Renderer>(out var renderer))
+        //        {
+        //            var planes = GeometryUtility.CalculateFrustumPlanes(_camera);
+        //            if (GeometryUtility.TestPlanesAABB(planes, renderer.bounds))
+        //            {
+        //                AddItemImpl(obj);
+        //            }
+        //        }
+        //    }
+        //    _catchCompletedAction?.Invoke(caughtItems);
+        //}
+        void Handler(IInteractable item)
+        {
+            if (item is not IVolumetricInteractable nitem)
+                return;
+            var obj = item.Obj;
+            var planes = GeometryUtility.CalculateFrustumPlanes(_camera);
+            if (caughtItems.Contains(obj))
+            {
+                if (!GeometryUtility.TestPlanesAABB(planes, nitem.Bounds))
+                {
+                    RemoveItemImpl(obj);
+                }
+            }
+            else
+            {
+                if (GeometryUtility.TestPlanesAABB(planes, nitem.Bounds))
+                {
+
+                    AddItemImpl(obj);
+                }
+            }
+        }
+        void WhenCoroutineEnd()
+        {
+            _catchCompletedAction?.Invoke(caughtItems);
+        }
+        void Handler(GameObject obj)
+        {
+            if (obj != null && caughtItems.Contains(obj))
+            {
+                //if (obj.TryGetComponent<Renderer>(out var renderer))
+                //{
+                //    var planes = GeometryUtility.CalculateFrustumPlanes(_camera);
+                //    if (!GeometryUtility.TestPlanesAABB(planes, renderer.bounds))
+                //    {
+                //        RemoveItemImpl(obj);
+                //    }
+                //}
+                //else
+                //    RemoveItemImpl(obj);
+
+                if (obj.TryGetComponent<IVolumetricInteractable>(out var item))
                 {
                     var planes = GeometryUtility.CalculateFrustumPlanes(_camera);
-                    if (GeometryUtility.TestPlanesAABB(planes, renderer.bounds))
-                    {
-                        AddItemImpl(obj);
-                    }
+                    if (GeometryUtility.TestPlanesAABB(planes, item.Bounds))
+                        RemoveItemImpl(obj);
                 }
+                else
+                    RemoveItemImpl(obj);
             }
-            _catchCompletedAction?.Invoke(caughtItems);
+            else if (obj.TryGetComponent<IVolumetricInteractable>(out var item))
+            {
+                var planes = GeometryUtility.CalculateFrustumPlanes(_camera);
+                if (GeometryUtility.TestPlanesAABB(planes, item.Bounds))
+                {
+                    AddItemImpl(obj);
+                }
+                //var planes = GeometryUtility.CalculateFrustumPlanes(_camera);
+                //if (GeometryUtility.TestPlanesAABB(planes, renderer.bounds))
+                //{
+                //    AddItemImpl(obj);
+                //}
+            }
         }
         public override IEnumerator UpdateWithCoroutine()
         {
@@ -75,7 +157,7 @@ namespace Tests.Interaction
                 //}
                 //InteractionManager.waitingAddition.Clear();
                 //InteractionManager.waitingRemoval.Clear();
-                InteractionManager.SynchronizeChanges();
+                //InteractionManager.SynchronizeChanges();
                 foreach (var item in InteractionManager.items)
                 {
                     if (!this.enabled)

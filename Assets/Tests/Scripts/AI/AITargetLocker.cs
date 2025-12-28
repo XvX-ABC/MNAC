@@ -56,7 +56,7 @@ namespace Tess.AI
 
             public bool CanCatch(ILockTarget target)
             {
-                return _detector.TryDetect(_origin, target.Position, out _);
+                return !_detector.TryDetect(_origin, target.Position, out _);
             }
 
             public bool CanRelease(ILockTarget target)
@@ -149,11 +149,16 @@ namespace Tess.AI
             _enemyFilter = new(new TeamMask { Value = 0 });
             _locker.AddFilter(_enemyFilter);
 
-            //_obstacleFilter = new();
-            //_locker.AddFilter(_obstacleFilter);
+            _obstacleFilter = new();
+            _locker.AddFilter(_obstacleFilter);
 
             var characterBlackboard = context.characterBlackboard;
-            characterBlackboard.RegisterFieldChangeAction<TeamMask>(AIBlackboardFields.Character_TeamMask, WhenTeamMaskChange);
+            if (characterBlackboard.TryReadValue<TeamMask>(AIBlackboardFields.Character_TeamMask, out var teamMask))
+            {
+                _enemyFilter.TeamMask = teamMask;
+            }
+            else
+                characterBlackboard.RegisterFieldChangeAction<TeamMask>(AIBlackboardFields.Character_TeamMask, WhenTeamMaskChange);
 
 
             context.targetLocker = this;
@@ -214,7 +219,7 @@ namespace Tess.AI
             _locker.OnFixedUpdate();
             if (_locomotionCore != null)
             {
-                var pos = _locomotionCore.core.Context.CurrentPosition;
+                var pos = _locomotionCore.internalCore.Context.CurrentPosition;
                 _locker.Origin = pos;
                 //_obstacleFilter.Origin = pos;
             }

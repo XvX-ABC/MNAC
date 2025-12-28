@@ -34,4 +34,4 @@ MonoBehaviour:
       _weapon:
         _switching:
           _clip: {fileID: 7400000, guid: 144d826f16e9fcc4bbdbc9a04589fe12, type: 2}
-    _part: 2
+    _part: 3

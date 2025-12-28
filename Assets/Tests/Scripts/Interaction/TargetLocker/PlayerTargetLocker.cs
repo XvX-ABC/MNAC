@@ -209,7 +209,7 @@ namespace Tests.Interaction
                 if (value != null)
                 {
                     value.LockType = LockType.Lock_Confirmed;
-                    _targetChangeTween = DOTween.To(() => _cursorController.CursorPosition, pos => _cursorController.CursorPosition = pos, _camera.WorldToScreenPoint(value.Obj.transform.position), _targetChangeDuration);
+                    _targetChangeTween = DOTween.To(() => _cursorController.CursorPosition, pos => _cursorController.CursorPosition = pos, _camera.WorldToScreenPoint(value.Position), _targetChangeDuration);
                 }
                 _mainLockTarget = value;
                 _mainLockTargetChangedAction?.Invoke(ov, _mainLockTarget);
@@ -308,7 +308,6 @@ namespace Tests.Interaction
             }
             RemoveTargetBy(obj);
             _targetObjs.Remove(obj);
-
         }
         void AddTargetBy(GameObject obj, LockType type)
         {
@@ -364,7 +363,7 @@ namespace Tests.Interaction
         {
             //_ringCatcher.CursorPosition = _mainTargetObj != null ? _camera.WorldToScreenPoint(_mainTargetObj.transform.position) : _cursorPosition;
             if (_targetChangeTween == null || !_targetChangeTween.IsActive() || !_targetChangeTween.IsPlaying())
-                _cursorController.CursorPosition = _mainLockTarget != null ? _camera.WorldToScreenPoint(_mainLockTarget.Obj.transform.position) : _cursorPosition;
+                _cursorController.CursorPosition = _mainLockTarget != null ? _camera.WorldToScreenPoint(_mainLockTarget.Position) : _cursorPosition;
         }
         bool IsBehindObstacle(GameObject obj)
         {

@@ -48,11 +48,11 @@ namespace Tests.Characters.Humanoid.Animations
 
         }
     }
-    internal class DiedState : HumanAnimationStateBase
+    internal class DeathState : HumanAnimationStateBase
     {
         ControllerPlayable _controller;
         IDeathAnimationDefinitions _definitions;
-        public DiedState(ITimeline timeline, ControllerPlayable controller, IDeathAnimationDefinitions definitions, bool enabled = true) : base("stunning", 0, enabled)
+        public DeathState(ITimeline timeline, ControllerPlayable controller, IDeathAnimationDefinitions definitions, bool enabled = true) : base("stunning", 0, enabled)
         {
             this.timeline = timeline ?? throw new ArgumentNullException(nameof(timeline));
             _controller = controller ?? throw new ArgumentNullException(nameof(controller));
@@ -269,7 +269,7 @@ namespace Tests.Characters.Humanoid.Animations
             var health = influenceCore.FindInfluence<Health_Obsolete>() ?? throw new ArgumentNullException("health");
 
             var stunningState = new StunningState(stun.Timeline, _controller, _definitions.Stunning);
-            var diedState = new DiedState(_core.diedState.Timeline, _controller, _definitions.Death);
+            var diedState = new DeathState(_core.diedState.Timeline, _controller, _definitions.Death);
 
             var lanimator = locomotionCore.animator;
             var groundedMovement = new SubStatemachineState<object>(lanimator.statemachine, lanimator.groundedMovement, "groundMovement");

@@ -44,6 +44,8 @@ namespace Tests.Characters.Interaction
             }
         }
 
+        protected override Bounds bounds => throw new System.NotImplementedException();
+
         void Awake()
         {
             _definitions = GetComponent<ICharacterDefinitions_T0>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ICharacterDefinitions_T0));
@@ -90,6 +92,11 @@ namespace Tests.Characters.Interaction
         }
 
         internal override AnimationPlayablePartBase GetMainAnimationPlayablePart()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        internal override CharacterAccessor SetAccessorToObj(GameObject obj)
         {
             throw new System.NotImplementedException();
         }

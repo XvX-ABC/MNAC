@@ -18,6 +18,11 @@ namespace Tests.Extensions
         }
         public static T[] Append<T>(this T[] array, T elem)
         {
+            if (array == null)
+            {
+                array = new T[] { elem };
+                return array;
+            }
             Array.Resize(ref array, array.Length + 1);
             array[^1] = elem;
             return array;

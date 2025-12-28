@@ -1,8 +1,6 @@
 ﻿using System;
 using Tests.Characters.Humanoid.Input;
 using Tests.Interaction;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
 using UnityEngine;
 
 namespace Tests.Behaviours

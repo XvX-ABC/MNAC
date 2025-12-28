@@ -11,6 +11,7 @@ using Tests.States;
 using Tests.TPhysics.Environment;
 using Tests.Weapons.Launcher;
 using Tests.Weapons_New.Launcher;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SocialPlatforms;
@@ -201,7 +202,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         public void Update()
         {
             statemachine.OnUpdate();
-            //Debug.Log(statemachine);
             var sb = new StringBuilder();
             sb.AppendLine(statemachine.ToString());
             //Debug.Log(sb.ToString());

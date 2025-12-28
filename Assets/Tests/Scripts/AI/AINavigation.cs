@@ -19,10 +19,10 @@ namespace Tests.AI
             set
             {
                 if (_locomotionCore != null)
-                    _locomotionCore.core.EvaluationModules = _locomotionCore.core.EvaluationModules.Remove(module);
+                    _locomotionCore.internalCore.EvaluationModules = _locomotionCore.internalCore.EvaluationModules.Remove(module);
                 if (value != null)
                 {
-                    value.core.EvaluationModules = value.core.EvaluationModules.Append(module);
+                    value.internalCore.EvaluationModules = value.internalCore.EvaluationModules.Append(module);
                 }
                 _locomotionCore = value;
             }

@@ -1,4 +1,5 @@
-﻿using Tests.Characters.UI;
+﻿using Tests.Characters.Humanoid;
+using Tests.Characters.UI;
 using Tests.Interaction;
 using Tests.UI;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace Tests.Characters.Interaction
     {
         static ObjectPool<LockTarget> s_pool;
         static GameObject _currentObj;
+        static GameObject _currentChestObj;
         static LockType _currentType;
         static LockTarget()
         {
@@ -18,10 +20,16 @@ namespace Tests.Characters.Interaction
         }
         public static LockTarget GetInstance(GameObject obj, LockType type)
         {
+            if (obj.TryGetComponent<ICompositeItems>(out var compositeItems))
+            {
+                _currentChestObj = compositeItems.GetItem((uint)HumanBodyPart.Chest);
+            }
+
             _currentObj = obj;
             _currentType = type;
             var result = s_pool.Get();
             _currentObj = null;
+            _currentChestObj = null;
             _currentType = default;
             return result;
         }
@@ -36,11 +44,13 @@ namespace Tests.Characters.Interaction
         static void WhenGetInstance(LockTarget target)
         {
             target.Obj = _currentObj;
+            target.ChestObj = _currentChestObj;
             target.LockType = _currentType;
         }
         static void WhenReleaseInstance(LockTarget target)
         {
             target.Obj = null;
+            target.ChestObj = null;
             target.LockType = LockType.None;
         }
         static void DestroyInstance(LockTarget target)
@@ -52,9 +62,20 @@ namespace Tests.Characters.Interaction
             return target._obj;
         }
         GameObject _obj;
+        GameObject _chestObj;
         LockType _lockType;
-        internal IndicatedTarget indicatedTarget;
-        internal BoxIndicator indicator => (BoxIndicator)indicatedTarget?.Indicator;
+        IndicatedTarget _indicatedTarget;
+        internal BoxIndicator indicator => (BoxIndicator)_indicatedTarget?.Indicator;
+        internal IndicatedTarget indicatedTarget
+        {
+            get => _indicatedTarget;
+            set
+            {
+                if (value != null)
+                    value.IndicatedObj = _chestObj;
+                _indicatedTarget = value;
+            }
+        }
         public GameObject Obj { get => _obj; set => _obj = value; }
         public LockType LockType
         {
@@ -75,7 +96,9 @@ namespace Tests.Characters.Interaction
             }
         }
 
-        public Vector3 Position => _obj?.transform.position ?? Vector3.positiveInfinity;
+        public Vector3 Position => _chestObj?.transform?.position ?? _obj.transform.position;
+
+        public GameObject ChestObj { get => _chestObj; set => _chestObj = value; }
 
         public override int GetHashCode()
         {

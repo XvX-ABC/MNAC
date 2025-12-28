@@ -52,7 +52,7 @@ namespace Tests.Characters.Humanoid
         public override void OnEnter()
         {
             base.OnEnter();
-            _core.enabled = true;
+            //_core.enabled = true;
             if (_leftArmCore != null && !_leftArmCore.enabled)
                 _leftArmCore.enabled = true;
             if (_rightArmCore != null && !_rightArmCore.enabled)
@@ -66,7 +66,7 @@ namespace Tests.Characters.Humanoid
         }
         public override void OnExit()
         {
-            _core.enabled = false;
+            //_core.enabled = false;
             if (_leftArmCore != null)
                 _leftArmCore.enabled = false;
             if (_rightArmCore != null)

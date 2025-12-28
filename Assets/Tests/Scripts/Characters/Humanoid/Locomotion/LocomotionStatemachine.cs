@@ -21,7 +21,6 @@ namespace Tests.Characters.Humanoid.Locomotion
             //Debug.Log(this);
             return context;
         }
-
         //void IState<object>.AddTransition(ITransition<object> transition)
         //{
         //    if (transition == null)

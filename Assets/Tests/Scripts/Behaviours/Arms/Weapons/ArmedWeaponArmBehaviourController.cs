@@ -198,17 +198,17 @@ namespace Tests.Behaviours.Arms.Weapons
         public void Update()
         {
             if (activatedBehaviour != null)
-                activatedBehaviour.Update();
+                activatedBehaviour.BehaviourOnUpdate();
         }
         public void LateUpdate()
         {
             if (activatedBehaviour != null)
-                activatedBehaviour.LateUpdate();
+                activatedBehaviour.BehaviourOnLateUpdate();
         }
         public void FixedUpdate()
         {
             if (activatedBehaviour != null)
-                activatedBehaviour.FixedUpdate();
+                activatedBehaviour.BehaviourOnFixedUpdate();
         }
     }
 }

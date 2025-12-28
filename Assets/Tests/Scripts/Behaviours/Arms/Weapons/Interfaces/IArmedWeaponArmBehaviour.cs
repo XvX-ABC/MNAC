@@ -18,8 +18,8 @@ namespace Tests.Behaviours.Arms
         public Func<bool> ExitFunc { get; }
 
         public IWithCallbackPlayableState<object> State { get => null; }
-        public void Update();
-        public void LateUpdate();
-        public void FixedUpdate();
+        public void BehaviourOnUpdate();
+        public void BehaviourOnLateUpdate();
+        public void BehaviourOnFixedUpdate();
     }
 }

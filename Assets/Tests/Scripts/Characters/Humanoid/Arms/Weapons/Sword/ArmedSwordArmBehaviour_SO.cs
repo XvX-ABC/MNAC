@@ -44,9 +44,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             TextGrid _textGrid;
             TextBox _textBox;
             ProgressSlider _slider;
-            HumanPart _part;
+            HumanBodyPart _part;
 
-            public UIControl(HumanPart part, ITimeline cdTimeline)
+            public UIControl(HumanBodyPart part, ITimeline cdTimeline)
             {
                 _part = part;
                 reloadTimeline = cdTimeline ?? throw new ArgumentNullException(nameof(cdTimeline));
@@ -62,8 +62,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
                         _slider = _part switch
                         {
-                            HumanPart.LeftArm => _indicator.Slider_lb,
-                            HumanPart.RightArm => _indicator.Slider_rb,
+                            HumanBodyPart.LeftArm => _indicator.Slider_lb,
+                            HumanBodyPart.RightArm => _indicator.Slider_rb,
                             _ => null
                         };
                         _slider.ChangeMode(SLIDER_MODE_NORMALLY);
@@ -83,8 +83,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                     {
                         _textBox = _part switch
                         {
-                            HumanPart.LeftArm => value.TextBox_2,
-                            HumanPart.RightArm => value.TextBox_3,
+                            HumanBodyPart.LeftArm => value.TextBox_2,
+                            HumanBodyPart.RightArm => value.TextBox_3,
                             _ => null
                         };
                     }
@@ -257,13 +257,13 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             base.OnEnable();
 
         }
-        public override void Update()
+        public override void BehaviourOnUpdate()
         {
-            _behaviour?.Update();
+            _behaviour?.BehaviourOnUpdate();
         }
-        public override void FixedUpdate()
+        public override void BehaviourOnFixedUpdate()
         {
-            _behaviour.FixedUpdate();
+            _behaviour.BehaviourOnFixedUpdate();
         }
         //void UpdateTargetsCatcherFor(Blackboard blackboard)
         void CreateSphereTriggerTargetsCatcher(LocomotionCore locomotionCore, GameObject armObj)
@@ -274,7 +274,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             obj.transform.localPosition = Vector3.zero;
             obj.transform.localRotation = Quaternion.identity;
             _targetsTrigger = obj.AddComponent<SphericalObjsTrigger>();
-            _targetsTrigger.Initialize(locomotionCore.core, 45);
+            _targetsTrigger.Initialize(locomotionCore.internalCore, 45);
             _targetsTrigger.IncludeLayerMask = _definitions.Trigger.IncludeLayerMask;
             _targetsTrigger.ExcludeLayerMask = _definitions.Trigger.ExcludeLayerMask;
         }
@@ -314,18 +314,18 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
             //var boostingHelper = new BoostingHelper(locomotionCore.core, camera, input, _definitions.Boosting);
             var winput = default(IWeaponControlInput);
-            if (Part == HumanPart.LeftArm)
+            if (Part == HumanBodyPart.LeftArm)
                 winput = input.LArm?.WeaponControl;
-            else if (Part == HumanPart.RightArm)
+            else if (Part == HumanBodyPart.RightArm)
                 winput = input.RArm?.WeaponControl;
-            boostingHelper = new BoostingHelper(locomotionCore.core, _targetLocker, input.BaseInput, winput, _definitions.Boosting);
-            slashHelper = new SlashHelper(locomotionCore.core, rotationLocker, _definitions.Slash.Duration, _definitions.Slash.RecoveryDuration);
+            boostingHelper = new BoostingHelper(locomotionCore.internalCore, _targetLocker, input.BaseInput, winput, _definitions.Boosting);
+            slashHelper = new SlashHelper(locomotionCore.internalCore, rotationLocker, _definitions.Slash.Duration, _definitions.Slash.RecoveryDuration);
             var mixer = InitializeMixer(graph, controller);
             _animator = new(
                 graph,
                 controller,
                 mixer,
-                locomotionCore.core,
+                locomotionCore.internalCore,
                 locomotionCore.definitions.Walking.MaxSpeed,
                 locomotionCore.definitions.Walking.AcceleratedSpeed,
                 boostingHelper,
@@ -423,9 +423,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
                 var currentField = Part switch
                 {
-                    HumanPart.None => Guid.Empty,
-                    HumanPart.LeftArm => CharacterBlackboardFields.Character_Arm_Left_Controller,
-                    HumanPart.RightArm => CharacterBlackboardFields.Character_Arm_Right_Controller,
+                    HumanBodyPart.None => Guid.Empty,
+                    HumanBodyPart.LeftArm => CharacterBlackboardFields.Character_Arm_Left_Controller,
+                    HumanBodyPart.RightArm => CharacterBlackboardFields.Character_Arm_Right_Controller,
                     _ => throw new NotImplementedException()
                 };
 
@@ -499,8 +499,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         {
             var field = Part switch
             {
-                HumanPart.LeftArm => MountPointFields.Left_Chest_Trigger,
-                HumanPart.RightArm => MountPointFields.Right_Chest_Trigger,
+                HumanBodyPart.LeftArm => MountPointFields.Left_Chest_Trigger,
+                HumanBodyPart.RightArm => MountPointFields.Right_Chest_Trigger,
                 _ => throw new Exception(),
             };
             blackboard.TryGetMountPointOrThrowException(field, out var mountPoint);
@@ -508,17 +508,17 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         }
         Guid GetAnotherArmCoreField() => Part switch
         {
-            HumanPart.None => Guid.Empty,
-            HumanPart.LeftArm => CharacterBlackboardFields.Character_Arm_Right_Controller,
-            HumanPart.RightArm => CharacterBlackboardFields.Character_Arm_Left_Controller,
+            HumanBodyPart.None => Guid.Empty,
+            HumanBodyPart.LeftArm => CharacterBlackboardFields.Character_Arm_Right_Controller,
+            HumanBodyPart.RightArm => CharacterBlackboardFields.Character_Arm_Left_Controller,
             _ => throw new NotImplementedException()
         };
         public override void Dispose()
         {
             var field = Part switch
             {
-                HumanPart.LeftArm => MountPointFields.Left_Chest_Trigger,
-                HumanPart.RightArm => MountPointFields.Right_Chest_Trigger,
+                HumanBodyPart.LeftArm => MountPointFields.Left_Chest_Trigger,
+                HumanBodyPart.RightArm => MountPointFields.Right_Chest_Trigger,
                 _ => throw new Exception(),
             };
             _uiControl.Dispose();

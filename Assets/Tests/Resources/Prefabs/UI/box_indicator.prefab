@@ -110,7 +110,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 20}
+  m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1060168937856825404
 MonoBehaviour:
@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   width: 20
-  lockOnDuration: 0.3
+  animationDuration: 0
   animationDefinitions:
     DiffusionProportion: 1.7
   _unlockColor: {r: 1, g: 0, b: 0, a: 1}

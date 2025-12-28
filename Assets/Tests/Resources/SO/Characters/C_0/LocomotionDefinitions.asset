@@ -28,7 +28,7 @@ MonoBehaviour:
       _duration: 0.3
       _coldDownTime: 1
     _jump:
-      _height: 3
+      _height: 10
     _animation:
       _velocity_x: Velocity_X
       _velocity_y: Velocity_Y

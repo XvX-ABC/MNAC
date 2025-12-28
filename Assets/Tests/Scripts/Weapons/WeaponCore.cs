@@ -62,18 +62,18 @@ namespace Tests.Weapons
             }
             return false;
         }
-        public bool TryGetWeaponDescription(string name, out WeaponDescription description)
-        {
-            description = default;
-            if (name == null || name.Length == 0)
-                return false;
-            if (TryGetWeaponOriginObj(name, out var obj) && obj.TryGetComponent<IWeapon_Obsolete>(out var w))
-            {
-                description = new WeaponDescription { Name = w.Name, Type = w.Type };
-                return true;
-            }
-            return false;
-        }
+        //public bool TryGetWeaponDescription(string name, out WeaponDescription description)
+        //{
+        //    description = default;
+        //    if (name == null || name.Length == 0)
+        //        return false;
+        //    if (TryGetWeaponOriginObj(name, out var obj) && obj.TryGetComponent<IWeapon_Obsolete>(out var w))
+        //    {
+        //        description = new WeaponDescription { Name = w.Name, Type = w.Type };
+        //        return true;
+        //    }
+        //    return false;
+        //}
         public bool TryCreateWeaponObj(string name, out GameObject obj)
         {
             obj = default;

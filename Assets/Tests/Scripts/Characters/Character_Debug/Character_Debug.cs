@@ -16,15 +16,15 @@ namespace Tests.Characters
         Health _health;
         [SerializeField]
         TeamMask _teamMask;
-        List<CharacterAccessor_Debug> _accessors;
         public IHealth HP => _health;
 
         public TeamMask TeamMask { get => _teamMask; set => _teamMask = value; }
 
+        protected override Bounds bounds => throw new NotImplementedException();
+
         protected override void Awake()
         {
-            _accessors = new();
-            SetAccessors();
+            //SetAccessors();
         }
         protected override void Start()
         {
@@ -43,7 +43,6 @@ namespace Tests.Characters
         }
         protected override void OnDestroy()
         {
-            DestroyAccessors();
         }
         internal override void ComponentsDispose()
         {
@@ -73,26 +72,33 @@ namespace Tests.Characters
         {
 
         }
-        void SetAccessors()
+        //void SetAccessors()
+        //{
+        //    var colliders = GetComponentsInChildren<Collider>();
+        //    foreach (var c in colliders)
+        //    {
+        //        var obj = c.gameObject;
+        //        if (obj == this)
+        //            continue;
+        //        var accessor = obj.AddComponent<CharacterAccessor_Debug>(); ;
+        //        accessor.character = this;
+        //        _accessors.Add(accessor);
+        //    }
+        //}
+        //void DestroyAccessors()
+        //{
+        //    foreach (var a in _accessors)
+        //    {
+        //        Destroy(a);
+        //    }
+        //    _accessors.Clear();
+        //}
+
+        internal override CharacterAccessor SetAccessorToObj(GameObject obj)
         {
-            var colliders = GetComponentsInChildren<Collider>();
-            foreach (var c in colliders)
-            {
-                var obj = c.gameObject;
-                if (obj == this)
-                    continue;
-                var accessor = obj.AddComponent<CharacterAccessor_Debug>(); ;
-                accessor.character = this;
-                _accessors.Add(accessor);
-            }
-        }
-        void DestroyAccessors()
-        {
-            foreach (var a in _accessors)
-            {
-                Destroy(a);
-            }
-            _accessors.Clear();
+            var a = obj.AddComponent<CharacterAccessor_Debug>();
+            a.character = this;
+            return a;
         }
     }
 }

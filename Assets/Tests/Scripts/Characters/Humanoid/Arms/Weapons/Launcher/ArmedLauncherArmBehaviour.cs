@@ -45,9 +45,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             TextGrid _textGrid;
             TextBox _textBox;
             ProgressSlider _slider;
-            HumanPart _part;
+            HumanBodyPart _part;
 
-            public UIControl(HumanPart part)
+            public UIControl(HumanBodyPart part)
             {
                 _part = part;
             }
@@ -96,8 +96,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
                         _slider = _part switch
                         {
-                            HumanPart.LeftArm => _indicator.Slider_lb,
-                            HumanPart.RightArm => _indicator.Slider_rb,
+                            HumanBodyPart.LeftArm => _indicator.Slider_lb,
+                            HumanBodyPart.RightArm => _indicator.Slider_rb,
                             _ => null
                         };
                         _slider.ChangeMode(SLIDER_MODE_NORMALLY);
@@ -117,8 +117,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                     {
                         _textBox = _part switch
                         {
-                            HumanPart.LeftArm => value.TextBox_2,
-                            HumanPart.RightArm => value.TextBox_3,
+                            HumanBodyPart.LeftArm => value.TextBox_2,
+                            HumanBodyPart.RightArm => value.TextBox_3,
                             _ => null
                         };
                         _textBox.Text = _maximumMagazineAmount.ToString();
@@ -306,8 +306,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
             var armInput = Part switch
             {
-                HumanPart.LeftArm => input.LArm,
-                HumanPart.RightArm => input.RArm,
+                HumanBodyPart.LeftArm => input.LArm,
+                HumanBodyPart.RightArm => input.RArm,
                 _ => null
             };
 
@@ -362,15 +362,15 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             _uiControl?.Dispose();
             base.Dispose();
         }
-        public override void Update()
+        public override void BehaviourOnUpdate()
         {
-            _behaviour.Update();
+            _behaviour.BehaviourOnUpdate();
             //Cursor.lockState = _targetLocker.MainLockTarget == null ? CursorLockMode.None : CursorLockMode.Locked;
         }
         StringBuilder _sb = new StringBuilder();
 
 
-        public override void FixedUpdate()
+        public override void BehaviourOnFixedUpdate()
         {
             if (_behaviour == null)
                 return;

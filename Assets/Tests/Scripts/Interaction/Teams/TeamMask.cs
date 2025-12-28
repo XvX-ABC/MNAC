@@ -32,7 +32,10 @@ namespace Tests.Interaction
         {
             return a.Value != b.Value;
         }
-
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
 
     }
 }

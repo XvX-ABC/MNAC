@@ -7,6 +7,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
 {
     public interface IArmedWeaponArmBehaviour : Behaviours.Arms.IArmedWeaponArmBehaviour, IComponent, IWithCallbackPlayableState<object>
     {
-        public HumanPart Part { get; set; }
+        public HumanBodyPart Part { get; set; }
     }
 }

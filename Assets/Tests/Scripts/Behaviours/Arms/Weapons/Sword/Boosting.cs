@@ -5,7 +5,6 @@ using Tests.Interaction;
 using Tests.States;
 using Tests.TPhysics.Locomotion;
 using Tests.Utilities.Timeline;
-using Tests.Utilities.TransformHelper;
 using UnityEngine;
 
 namespace Tests.Behaviours.Arms.Weapons.Sword

@@ -20,7 +20,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         {
             this.controller = controller ?? throw new ArgumentNullException(nameof(controller));
         }
-        protected internal ArmedWeaponArmBehaviourControllerState(ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> controller, HumanPart part) : base("weapon_armed_behaviour", 0)
+        protected internal ArmedWeaponArmBehaviourControllerState(ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> controller, HumanBodyPart part) : base("weapon_armed_behaviour", 0)
         {
             this.controller = controller ?? throw new ArgumentNullException(nameof(controller));
             InitializeBehaviours(this.controller.behavioursCache, part);
@@ -29,7 +29,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         public ArmedWeaponArmBehaviourControllerState(WeaponCore_Obsolete weaponCore, IArmedWeaponArmDefinitions definitions, params IArmedWeaponArmBehaviour[] behaviours) : this(new((Weapons_New.WeaponCore_Obsolete)weaponCore, definitions, behaviours))
         {
         }
-        public ArmedWeaponArmBehaviourControllerState(WeaponCore_Obsolete weaponCore, IArmedWeaponArmDefinitions definitions, HumanPart part, params IArmedWeaponArmBehaviour[] behaviours) : this(new((Weapons_New.WeaponCore_Obsolete)weaponCore, definitions, behaviours), part)
+        public ArmedWeaponArmBehaviourControllerState(WeaponCore_Obsolete weaponCore, IArmedWeaponArmDefinitions definitions, HumanBodyPart part, params IArmedWeaponArmBehaviour[] behaviours) : this(new((Weapons_New.WeaponCore_Obsolete)weaponCore, definitions, behaviours), part)
         {
         }
         public Action<IWeapon, IArmedWeaponArmBehaviour> ActivatedAction { get => controller.ActivatedAction; set => controller.ActivatedAction = value; }
@@ -39,7 +39,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
 
         IReadOnlyDictionary<string, IArmedWeaponArmBehaviour> IArmedWeaponArmBehavioursController<IArmedWeaponArmBehaviour>.Behaviours => controller.weaponBehavioursMapping;
         internal IArmedWeaponArmBehaviour currentActivatedBehaviour => controller.currentActivatedBehaviour;
-        void InitializeBehaviours(IArmedWeaponArmBehaviour[] behaviours, HumanPart part)
+        void InitializeBehaviours(IArmedWeaponArmBehaviour[] behaviours, HumanBodyPart part)
         {
             foreach (var b in behaviours)
                 b.Part = part;

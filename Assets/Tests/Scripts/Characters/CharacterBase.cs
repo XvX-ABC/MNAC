@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Tests.Animations;
 using Tests.Characters.Humanoid;
@@ -12,7 +14,6 @@ using UnityEngine.Playables;
 using UnityEngine.Rendering;
 namespace Tests.Characters
 {
-    using AnimationNormalState = Humanoid.Animations.NormalState;
     [DefaultExecutionOrder(1)]
     public abstract class CharacterBase : MonoBehaviour, ICharacter
     {
@@ -66,24 +67,30 @@ namespace Tests.Characters
         internal Blackboard blackboard;
         internal InfluenceCore influenceCore;
         internal CharacterComponent[] components;
+        internal List<CharacterAccessor> accessors;
         CharacterBehavioursStatemachine _statemachine;
         CharacterAnimationStateMachine _animationStatemachine;
         CAnimator _animator;
         internal bool allowAnimationInitialization { get => _animator != null; }
+        protected abstract Bounds bounds { get; }
         public CharacterBase()
         {
             _id = Guid.NewGuid();
 
         }
+        internal abstract CharacterAccessor SetAccessorToObj(GameObject obj);
         protected virtual void Awake()
         {
             influenceCore = CreateInfluenceCore();
             blackboard = CreateBlackboard();
             components = GetComponents();
+            accessors = new();
             if (TryGetComponent<Animator>(out var animator))
             {
                 _animator = new(gameObject, animator, blackboard);
             }
+
+            SetAccessorsForChildrenColliders();
 
         }
         protected virtual void Start()
@@ -131,7 +138,7 @@ namespace Tests.Characters
             var a = attrs.FirstOrDefault(a => a is InteractableAttribute);
             if (a != null)
             {
-                _item = new InteractableItem(ID, gameObject);
+                _item = new InteractableItem(ID, gameObject, bounds);
                 InteractionManager.AddItem(_item);
             }
         }
@@ -176,6 +183,21 @@ namespace Tests.Characters
                 if (comp == null)
                     continue;
                 comp.enabled = false;
+            }
+        }
+        protected virtual void SetAccessorsForChildrenColliders()
+        {
+            var colliders = GetComponentsInChildren<Collider>();
+            foreach (var c in colliders)
+            {
+                var obj = c.gameObject;
+                if (obj == this)
+                    continue;
+                var accessor = SetAccessorToObj(obj);
+                if (accessor == null)
+                    continue;
+                accessor.Character = this;
+                accessors.Add(accessor);
             }
         }
         internal abstract CharacterBehavioursStatemachine CreateStatemachine();

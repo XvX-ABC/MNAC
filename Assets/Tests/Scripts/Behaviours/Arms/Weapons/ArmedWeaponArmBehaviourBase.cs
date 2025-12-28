@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Tests.States;
 using Tests.Weapons;
 using Tests.Weapons_New;
@@ -17,14 +18,14 @@ namespace Tests.Behaviours.Arms.Weapons
         public abstract Func<bool> ExitFunc { get; }
         public abstract IWithCallbackPlayableState<object> State { get; }
 
-        public virtual void FixedUpdate()
+        public virtual void BehaviourOnFixedUpdate()
         {
         }
 
-        public virtual void Update()
+        public virtual void BehaviourOnUpdate()
         {
         }
-        public virtual void LateUpdate() { }
+        public virtual void BehaviourOnLateUpdate() { }
     }
 }
 

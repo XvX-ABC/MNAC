@@ -1,12 +1,11 @@
 ﻿using System;
 using Tests.Interaction;
-using Tests.Weapons_New.Projectiles;
 using UnityEngine;
 
 namespace Tests.Weapons_New.Projectiles
 {
     [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(Collider))]
+    [RequireComponent(typeof(SphereCollider))]
     public class Bullet : Projectile, IBullet
     {
         public delegate void HitActionDelegate(IProjectile projectile, GameObject obj);
@@ -16,6 +15,7 @@ namespace Tests.Weapons_New.Projectiles
         float _damagePoint;
         Ray _shootingRay;
         Rigidbody _rbody;
+        SphereCollider _collider;
         Action<IProjectile> _startMoveAction;
         HitActionDelegate _hitAction;
         public Ray ShootingRay { get => _shootingRay; set => _shootingRay = value; }
@@ -27,6 +27,7 @@ namespace Tests.Weapons_New.Projectiles
         {
             base.Awake();
             _rbody = GetComponent<Rigidbody>();
+            _collider = GetComponent<SphereCollider>();
             blackboard.TryRegisterField(BulletComponent.OwnerBullet, this);
         }
         protected virtual void OnTriggerEnter(Collider other)
@@ -49,15 +50,22 @@ namespace Tests.Weapons_New.Projectiles
         }
         void FixedUpdate()
         {
-            _rbody.MovePosition(_rbody.position + transform.forward * _speed * Time.fixedDeltaTime);
+            var originPos = _rbody.position;
+            var length = _speed * Time.fixedDeltaTime;
+            var nextPos = _rbody.position + transform.forward * length;
+            if (Physics.SphereCast(originPos, _collider.radius, transform.forward, out var hit, length, layerMaskToHit))
+            {
+                nextPos = hit.point;
+            }
+            _rbody.MovePosition(nextPos);
         }
         void Damage(GameObject obj)
         {
             if (InteractionHelper.CheckFriendly(ownerTeamMask, obj))
                 return;
+
             if (!obj.TryGetComponent<IDamageable>(out var d) || !d.HP.IsAlive)
                 return;
-
             d.HP.ReceivePoint(_damagePoint);
         }
 

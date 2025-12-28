@@ -77,13 +77,15 @@ namespace Tests.Characters.Humanoid
         CharacterBehavioursStatemachine _statemachine;
         CharacterBehavioursStateContext _context;
         internal NormalState normalState;
-        internal DiedState diedState;
+        internal DeathState diedState;
+
+
+        Rigidbody _rbody;
 
 
         protected override void Awake()
         {
             base.Awake();
-
 
             if (leftArm != null)
                 leftArm.enabled = false;
@@ -94,10 +96,13 @@ namespace Tests.Characters.Humanoid
         {
             if (animator != null)
                 animator.Enabled = true;
-
-        }
-        void Start()
-        {
+            if (_components != null)
+                foreach (var comp in _components)
+                {
+                    if (comp == null)
+                        continue;
+                    comp.enabled = true;
+                }
 
         }
         void FixedUpdate()
@@ -108,6 +113,13 @@ namespace Tests.Characters.Humanoid
         {
             if (animator != null)
                 animator.Enabled = false;
+            if (_components != null)
+                foreach (var comp in _components)
+                {
+                    if (comp == null)
+                        continue;
+                    comp.enabled = false;
+                }
         }
         void OnDestroy()
         {
@@ -118,7 +130,7 @@ namespace Tests.Characters.Humanoid
         {
             foreach (var comp in _components)
             {
-                if (comp == null)
+                if (comp?.Node == null)
                     continue;
                 if (comp is HumanoidComponent hcomp)
                     hcomp.owner = this;

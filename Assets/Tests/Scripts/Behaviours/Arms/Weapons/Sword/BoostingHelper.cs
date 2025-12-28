@@ -12,7 +12,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
     {
         internal Boosting state;
         internal BoostingLocomotion locomotion;
-       internal ITimeline cdTimeline;
+        internal ITimeline cdTimeline;
         IWeaponControlInput _input;
 
         public BoostingHelper(LocomotionCore locomotionCore, ITargetLocker targetLocker, IBaseInput baseInput, IWeaponControlInput weaponControlInput, IBoostingDefinitions definitions)

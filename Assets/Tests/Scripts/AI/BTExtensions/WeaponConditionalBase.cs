@@ -14,7 +14,7 @@ namespace Assets.Tests.Scripts.AI.BTExtensions
         [SerializeField]
         TryGetArm _getArm;
         protected ArmController controller { get => _getArm?.controller; }
-        protected HumanPart part;
+        protected HumanBodyPart part;
         protected WInput input;
         protected IWeapon weapon { get => controller.currentWeapon; }
 
@@ -25,8 +25,8 @@ namespace Assets.Tests.Scripts.AI.BTExtensions
             var humanInput = core.componentContext.Input;
             input = part switch
             {
-                HumanPart.LeftArm => humanInput.leftArmInput.weaponInput,
-                HumanPart.RightArm => humanInput.rightArmInput.weaponInput,
+                HumanBodyPart.LeftArm => humanInput.leftArmInput.weaponInput,
+                HumanBodyPart.RightArm => humanInput.rightArmInput.weaponInput,
                 _ => throw new Exception("The humanoid part must is LeftArm or RightArm.")
             };
         }

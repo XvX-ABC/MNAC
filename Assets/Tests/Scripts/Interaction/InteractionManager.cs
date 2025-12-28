@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using Tests.Utilities;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 namespace Tests.Interaction
 {
@@ -16,6 +17,8 @@ namespace Tests.Interaction
         Action<IInteractable> _itemAddedAction;
         Action<IInteractable> _itemRemovedAction;
         List<Action<GameObject>> _actionList;
+        List<Action<IInteractable>> _handlerList;
+        Action _coroutineEndAction;
         internal static HashSet<IInteractable> items { get => Instance._items; }
         internal static HashSet<IInteractable> waitingAddition { get => Instance._waitingAddition; }
         internal static HashSet<IInteractable> waitingRemoval { get => Instance._waitingRemoval; }
@@ -23,6 +26,8 @@ namespace Tests.Interaction
         internal static Action<IInteractable> itemRemovedAction { get => Instance._itemRemovedAction; set => Instance._itemRemovedAction = value; }
         public static int Count { get => Instance._items.Count; }
         public static List<Action<GameObject>> actionList { get => Instance._actionList; set => Instance._actionList = value; }
+        public static List<Action<IInteractable>> handlerList { get => Instance._handlerList; set => Instance._handlerList = value; }
+        public static Action CoroutineEndAction { get => Instance._coroutineEndAction; set => Instance._coroutineEndAction = value; }
 
         public InteractionManager()
         {
@@ -30,6 +35,7 @@ namespace Tests.Interaction
             _waitingAddition = new();
             _waitingRemoval = new();
             _actionList = new();
+            _handlerList = new();
         }
         public override void Awake()
         {
@@ -73,12 +79,20 @@ namespace Tests.Interaction
                         var ac = _actionList[j];
                         if (ac == null)
                             continue;
-                        ac?.Invoke(item.Obj);
+                        ac(item.Obj);
+                    }
+                    for (int j = 0; j < _handlerList.Count; j++)
+                    {
+                        var h = _handlerList[j];
+                        if (h == null)
+                            continue;
+                        h(item);
                     }
                     if (i <= 0 || i % 30 == 0)
                         yield return null;
                     i++;
                 }
+                _coroutineEndAction?.Invoke();
                 yield return null;
             }
         }

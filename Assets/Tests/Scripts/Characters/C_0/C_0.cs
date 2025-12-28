@@ -1,11 +1,13 @@
 ﻿using System;
 using Tests.Animations;
 using Tests.Characters.Humanoid;
+using Tests.Characters.Humanoid.Locomotion;
 using Tests.Characters.Interaction;
 using Tests.Interaction;
 using Tests.Interaction.Influence;
 using Tests.States;
 using Tests.Utilities.Blackboards;
+using Unity.VisualScripting;
 using UnityEngine;
 using AnimationNormalState = Tests.Characters.Humanoid.Animations.NormalState;
 using Health = Tests.Interaction.Health;
@@ -14,16 +16,20 @@ using Stun = Tests.Interaction.Influence.Stun;
 
 namespace Tests.Characters.C_0
 {
-    public interface IC_0 : ICharacter, IHealth, ITeamMember
+    public interface IC_0 : ICharacter, IDamageable, ITeamMember, ICompositeItems
     {
 
     }
     [Interactable]
-    internal class C_0 : CharacterBase
+    internal class C_0 : CharacterBase, IC_0
     {
 
         [SerializeField]
         Camera _camera;
+        [SerializeField]
+        HumanoidBodyParts _bodyParts;
+        [SerializeField]
+        Collider _movementCollider;
         internal HumanoidController _humanoidController;
         NormalState _normalState;
         AnimationNormalState _animationNormalState;
@@ -31,7 +37,9 @@ namespace Tests.Characters.C_0
         ICharacterAnimationDefinitions_C_0 _animationDefinitions;
         Health _health;
         TeamMask _teamMask;
+        Action<GameObject> _destroyedCallBack;
 
+        DeathState _deathState;
         public TeamMask TeamMask { get => _teamMask; set => _teamMask = value; }
 
         public bool IsAlive => _health.IsAlive;
@@ -42,12 +50,25 @@ namespace Tests.Characters.C_0
 
         public float Point => _health.Point;
 
+        public Action<GameObject> DestroyedCallback { get => _destroyedCallBack; set => _destroyedCallBack = value; }
+
+        public IHealth HP => _health;
+
+        protected override Bounds bounds => _movementCollider.bounds;
+
         protected override void Awake()
         {
             _humanoidController = GetComponentInChildren<HumanoidController>() ?? throw new ComponentCantFindException(this.gameObject, typeof(HumanoidComponent));
             _definitions = GetComponentInChildren<ICharacterDefinitions_C_0>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ICharacterDefinitions_C_0));
             _animationDefinitions = GetComponentInChildren<ICharacterAnimationDefinitions_C_0>() ?? throw new ComponentCantFindException(this.gameObject, typeof(ICharacterAnimationDefinitions_C_0));
+            _teamMask = _definitions.TeamMask;
+
             base.Awake();
+        }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            _destroyedCallBack?.Invoke(this.gameObject);
         }
         internal override Blackboard CreateBlackboard()
         {
@@ -84,8 +105,26 @@ namespace Tests.Characters.C_0
         {
             _humanoidController.Dispose();
         }
-
         internal override CharacterBehavioursStatemachine CreateStatemachine()
+        {
+            var health = influenceCore.FindInfluence<Health>();
+            var context = new CharacterBehavioursStateContext();
+            var deathStateHelper = new DeathStateHelper(this.gameObject, null, 0);
+            var deathState = deathStateHelper.state;
+
+            blackboard.TryReadValueOrThrowException<LocomotionCore>(CharacterBlackboardFields.Character_Locomotion_Core, out var locomotionCore);
+            deathStateHelper.LocomotionCore = locomotionCore.internalCore;
+
+            var statemachine = new CharacterBehavioursStatemachine(context, this.gameObject.name + "_statemachine");
+            statemachine.AddState(_normalState);
+            statemachine.AddState(deathState);
+
+            var n_d = new BlendingTransition<object>(_normalState, deathState, () => !_health.IsAlive, null, _definitions.GetTransitionOptions(BehavioursTransition.Normal_Death));
+            statemachine.AddTransitionFor(n_d);
+            _deathState = deathState;
+            return statemachine;
+        }
+        internal CharacterBehavioursStatemachine CreateStatemachine_Obsolete()
         {
             var stun = influenceCore.FindInfluence<Stun>();
             var health = influenceCore.FindInfluence<Health>();
@@ -111,12 +150,27 @@ namespace Tests.Characters.C_0
         }
         internal override CharacterAnimationStateMachine CreateAnimationStatemachine(CAnimator animator)
         {
+            var health = influenceCore.FindInfluence<Health>() ?? throw new InfluenceNotExistInCoreException<Health>();
+            var deathState = new Humanoid.Animations.DeathState(_deathState.Timeline, animator.controller, _animationDefinitions.Death);
+
+
+            var statemachine = new CharacterAnimationStateMachine(this.gameObject.name + "_animation_statemachine");
+            statemachine.AddState(_animationNormalState);
+            statemachine.AddState(deathState);
+
+            var n_d = new BlendingTransition<object>(_animationNormalState, deathState, () => !_health.IsAlive, null, _definitions.GetTransitionOptions(BehavioursTransition.Normal_Death));
+            statemachine.AddTransitionFor(n_d);
+
+            return statemachine;
+        }
+        internal CharacterAnimationStateMachine CreateAnimationStatemachine_Obsolete(CAnimator animator)
+        {
 
             var stun = influenceCore.FindInfluence<Stun>() ?? throw new ArgumentNullException("stun");
             var health = influenceCore.FindInfluence<Health>() ?? throw new ArgumentNullException("health");
 
             var stunningState = new Humanoid.Animations.StunningState(stun.Timeline, animator.controller, _animationDefinitions.Stunning);
-            var deathState = default(Humanoid.Animations.DiedState);
+            var deathState = default(Humanoid.Animations.DeathState);
 
             var statemachine = new CharacterAnimationStateMachine(this.gameObject.name);
             statemachine.AddState(_animationNormalState);
@@ -139,9 +193,14 @@ namespace Tests.Characters.C_0
             return statemachine;
         }
 
-        public void ReceivePoint(float point)
+        public GameObject GetItem(uint key)
         {
-            throw new NotImplementedException();
+            return _bodyParts.GetItem(key);
+        }
+
+        internal override CharacterAccessor SetAccessorToObj(GameObject obj)
+        {
+            return obj.AddComponent<C_0Accessor>();
         }
     }
 }

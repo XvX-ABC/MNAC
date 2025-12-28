@@ -3,9 +3,13 @@ using UnityEngine;
 
 namespace Tests.Interaction
 {
-    internal interface IInteractable
+    public interface IInteractable
     {
         public Guid ID { get; }
         public GameObject Obj { get; }
+    }
+    public interface IVolumetricInteractable : IInteractable
+    {
+        public Bounds Bounds { get; }
     }
 }

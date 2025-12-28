@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Tests.Utilities.Timeline;
 using Tests.Utilities.Timeline.Events.Point;
 using Tests.Utilities.Timeline.Events.Range;
+using Unity.Android.Gradle;
 using UnityEngine;
 
 namespace Tests.TPhysics.Locomotion
@@ -26,7 +27,6 @@ namespace Tests.TPhysics.Locomotion
 
         public float TransitionalDuration { get => _transitionalDuration; set => _transitionalDuration = Mathf.Max(0, value); }
         public Vector2 Range { get => _range; set => _range = value; }
-
         public override Context OnEnd(Context context)
         {
             context.Rbody.drag = _range.x;
