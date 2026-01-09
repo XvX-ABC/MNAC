@@ -8,7 +8,5 @@ namespace Tests.Characters.Humanoid.Animations
     {
         public IHumanArmAnimationDefinitions LeftArmDefinitions { get; }
         public IHumanArmAnimationDefinitions RightArmDefinitions { get; }
-        public IStunningAnimationDefinitions Stunning { get; }
-        public IDeathAnimationDefinitions Death { get; }
     }
 }

@@ -36,6 +36,7 @@ namespace Tests.Interaction.Influence
         {
             return _influences.ContainsKey(typeof(T));
         }
+        //TODO: 使用子类尝试获取时，获取不到
         public T FindInfluence<T>() where T : IInfluence
         {
             var type = typeof(T);

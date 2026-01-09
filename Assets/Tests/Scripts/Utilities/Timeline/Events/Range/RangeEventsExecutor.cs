@@ -81,6 +81,10 @@ namespace Tests.Utilities.Timeline.Events.Range
             _events = list.OrderBy(evt => evt.Event.TriggeredProportion).ToArray();
             return (ushort)list.Count;
         }
+        public void RemoveAll()
+        {
+            _events = null;
+        }
         public bool RemoveEvent(ITimelineEvent evt)
         {
             if (evt == null || evt is not IRangeEvent revt)

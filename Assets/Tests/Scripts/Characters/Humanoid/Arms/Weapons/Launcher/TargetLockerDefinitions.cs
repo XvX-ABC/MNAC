@@ -1,6 +1,5 @@
 ﻿using System;
 using Tests.Interaction;
-using Tests.Weapons.Launcher;
 using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers

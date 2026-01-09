@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Tests.Interaction;
 using Tests.TPhysics.Locomotion;
 using Tests.Utilities;
@@ -131,9 +132,13 @@ namespace Tests.AI
         }
         public override Context Update(Context context)
         {
+            if (context.GroundDetector.Grounds.Count == 0)
+                return context;
+            var currentPos = context.CurrentPosition;
+            if (!_navAgent.isOnNavMesh)
+                _navAgent.Warp(currentPos);
             _lcontext = context;
             navAgent.speed = context.CurrentSpeed;
-            var currentPos = context.CurrentPosition;
             var worldDeltaPosition = _navAgent.nextPosition - currentPos;
 
             var nextPosition = _navAgent.nextPosition;
@@ -181,6 +186,16 @@ namespace Tests.AI
         }
         void SetDestination()
         {
+            if (!_navAgent.enabled)
+            {
+                Debug.LogWarning($"The navigation agent of {_navAgent.gameObject.name} was not enabled");
+                return;
+            }
+            if (!_navAgent.isOnNavMesh)
+            {
+                Debug.LogWarning($"The navigation agent of {_navAgent.gameObject.name} must have been placed on  nav mesh");
+                return;
+            }
             var pos = _destination.Position;
             if (!_navAgent.SetDestination(pos))
             {
@@ -195,6 +210,16 @@ namespace Tests.AI
         }
         void Stop()
         {
+            if (!_navAgent.enabled)
+            {
+                Debug.LogWarning($"The navigation agent of {_navAgent.gameObject.name} was not enabled");
+                return;
+            }
+            if (!_navAgent.isOnNavMesh)
+            {
+                Debug.LogWarning($"The navigation agent of {_navAgent.gameObject.name} must have been placed on  nav mesh");
+                return;
+            }
             var currentPos = _lcontext.CurrentPosition;
             _navAgent.ResetPath();
             WhenStop();

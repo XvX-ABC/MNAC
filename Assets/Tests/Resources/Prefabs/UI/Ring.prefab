@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 5930171710908605950}
   - component: {fileID: 3873626040609962122}
   m_Layer: 5
-  m_Name: Ring
+  m_Name: ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

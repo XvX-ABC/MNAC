@@ -9,8 +9,8 @@ namespace Tests.Behaviours.Arms.Weapons
     {
         Action<IWeapon, T> ActivatedAction { get; set; }
         Action<IWeapon, T> UnactivatedAction { get; set; }
-        Func<bool> EntryFunc { get; }
-        Func<bool> ExitFunc { get; }
+        Func<bool> ActivationTrigger { get; }
+        Func<bool> UnactivationTrigger { get; }
         public IReadOnlyDictionary<string, T> Behaviours { get; }
 
         void ActivateBehaviourBy(IWeapon weapon);

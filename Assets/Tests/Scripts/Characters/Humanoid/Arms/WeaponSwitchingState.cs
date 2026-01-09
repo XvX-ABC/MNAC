@@ -1,13 +1,14 @@
 ﻿using System;
 using Tests.Animations;
 using Tests.Behaviours.Arms.Weapons;
+using Tests.Characters.Weapons;
 using Tests.States;
 using Tests.Utilities.Composable;
 using Tests.Utilities.MountPoints;
 using Tests.Weapons;
 using Tests.Weapons_New;
 using UnityEngine;
-
+using WeaponBackpack = Tests.Characters.Weapons.WeaponBackpack;
 namespace Tests.Characters.Humanoid.Arms
 {
     internal class WeaponSwitchingState : StateComponentNode, IAnimationPlayableState, IArmBehaviour
@@ -25,18 +26,14 @@ namespace Tests.Characters.Humanoid.Arms
             timeline = switching.timeline;
             this.switching = switching;
         }
-        [Obsolete]
-        public WeaponSwitchingState(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, Weapons_New.WeaponCore_Obsolete weaponCore, Func<WeaponDescription[], string> selectionFunc = null) : this(new(definitions, launcherMountPoint, swordMountPoint, weaponCore, selectionFunc))
-        {
-        }
-        public WeaponSwitchingState(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, WeaponBackpack weaponBackpack, Func<WeaponDescription[], string> selectionFunc = null) : this(new(definitions, launcherMountPoint, swordMountPoint, weaponBackpack, selectionFunc))
+        public WeaponSwitchingState(ArmController ownerArmController, IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, WeaponBackpack weaponBackpack, Func<WeaponDescription[], string> selectionFunc = null) : this(new(ownerArmController, definitions, launcherMountPoint, swordMountPoint, weaponBackpack, selectionFunc))
         {
         }
 
-        public Func<IWeapon, IWeapon, IWeapon> SwitchingEvent
+        public Action<IWeapon, IWeapon> SwitchedEvent
         {
-            get => switching.SwitchingEvent;
-            set => switching.SwitchingEvent = value;
+            get => switching.SwitchedEvent;
+            set => switching.SwitchedEvent = value;
         }
 
 
@@ -48,7 +45,7 @@ namespace Tests.Characters.Humanoid.Arms
             base.OnEnter();
             if (timeline.IsRunning)
             {
-                Debug.LogWarning("This weapon switching behaviour is still continuing");
+                Debug.LogWarning("This weapon switching behaviour was still continuing");
                 return;
             }
             switching.Begin();

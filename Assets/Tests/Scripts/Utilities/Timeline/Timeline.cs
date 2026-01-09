@@ -222,6 +222,11 @@ namespace Tests.Utilities.Timeline
                     return true;
             return false;
         }
+        public void RemoveAll()
+        {
+            foreach (var e in executors)
+                e.RemoveAll();
+        }
         public bool RemoveEvent(ITimelineEvent evt)
         {
             if (evt == null)

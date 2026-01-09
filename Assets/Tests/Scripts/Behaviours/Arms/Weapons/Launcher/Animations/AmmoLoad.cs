@@ -1,7 +1,6 @@
 ﻿using System;
 using Tests.Animations;
 using Tests.States;
-using Tests.Weapons.Launcher;
 using Tests.Weapons_New.Launcher;
 using UnityEngine;
 
@@ -50,7 +49,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         }
         public override void OnExit()
         {
-            Debug.Log($"ammo load exit, length: {timeline.Length}, time: {timeline.Time}");
             timeline.End();
             controller.SetBool(_animationName, false);
             base.OnExit();

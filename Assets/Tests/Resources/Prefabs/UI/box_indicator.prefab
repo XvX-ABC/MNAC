@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.3137255}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -124,11 +124,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fffa85631d6a4a4fb9154fd0086bb94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 20
+  width: 40
   animationDuration: 0
   animationDefinitions:
     DiffusionProportion: 1.7
-  _unlockColor: {r: 1, g: 0, b: 0, a: 1}
-  _unconfirmColor: {r: 1, g: 0.99003696, b: 0, a: 1}
-  _confirmedColor: {r: 1, g: 1, b: 1, a: 1}
+  _unlockColor: {r: 1, g: 0.9882353, b: 0, a: 1}
+  _unconfirmColor: {r: 1, g: 1, b: 1, a: 1}
+  _confirmedColor: {r: 1, g: 0, b: 0, a: 1}
   _type: 0

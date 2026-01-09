@@ -25,5 +25,23 @@ namespace Tests.Characters.UI
             if (!blackboard.TryReadUIValue(key, out value))
                 throw new Exception($"Key '{key}' not found in blackboard.");
         }
+        public static void TryRegisterUIField<T>(this Blackboard blackboard, object key, T value = default)
+        {
+            if (blackboard == null)
+                throw new NullReferenceException(nameof(blackboard));
+            if (blackboard.TryReadValue<Blackboard>(CharacterUIBlackboardFields.Blackboard_Main, out var subBlackboard))
+            {
+                subBlackboard.TryRegisterField(key, value);
+            }
+        }
+        public static void TryUnregisterUIField<T>(this Blackboard blackboard, object key, T value = default)
+        {
+            if (blackboard == null)
+                throw new NullReferenceException(nameof(blackboard));
+            if (blackboard.TryReadValue<Blackboard>(CharacterUIBlackboardFields.Blackboard_Main, out var subBlackboard))
+            {
+                subBlackboard.TryUnregisterField(key, value);
+            }
+        }
     }
 }

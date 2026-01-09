@@ -17,11 +17,11 @@ namespace Tests.Characters.Interaction
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Component_TargetLocker, this);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Character_Components_TargetLocker, this);
         }
         public override void Dispose()
         {
-            blackboard.TryUnregisterField(CharacterBlackboardFields.Character_Component_TargetLocker);
+            blackboard.TryUnregisterField(CharacterBlackboardFields.Character_Components_TargetLocker);
             base.Dispose();
         }
         public virtual void OnFixedUpdate()

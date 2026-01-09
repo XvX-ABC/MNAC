@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Animations
 {
+    [Obsolete]
     internal class HumanAnimationDefinitionsLoader : MonoBehaviour, IHumanAnimationDefinitions
     {
         [SerializeField]
@@ -17,8 +18,5 @@ namespace Tests.Characters.Humanoid.Animations
 
         public IHumanArmAnimationDefinitions RightArmDefinitions => _definitions.RightArmDefinitions;
 
-        public IStunningAnimationDefinitions Stunning => _definitions.Stunning;
-
-        public IDeathAnimationDefinitions Death => _definitions.Death;
     }
 }

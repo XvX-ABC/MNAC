@@ -12,9 +12,6 @@ namespace Tests.Characters.Humanoid.Arms
         ArmWeaponDefinitions _weapon;
         [SerializeField]
         ArmAnimationDefinitions _animation;
-        [SerializeField]
-        HumanBodyPart _part;
-        public HumanBodyPart Part { get => _part; }
         public IArmedWeaponArmDefinitions Weapon => _weapon;
 
         public IArmAnimationDefinitions Animation => _animation;

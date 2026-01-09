@@ -13,26 +13,11 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         LayerMask _layerMaskToHit;
         [SerializeField]
         TeamMask _teamMask;
-        //[SerializeField]
-        //protected AnimationClip aimingClip;
-        ////[SerializeField]
-        //protected AnimationClip reloadClip;
-        //[SerializeField]
-        //protected float idleAndAimTransitionLength;
-        //[SerializeField]
-        //protected float aimAndReloadTransitionsLength;
-        ////[Obsolete]
-        //public AnimationClip AimingClip => aimingClip;
-        //[Obsolete]
-        //public AnimationClip ReloadClip => reloadClip;
-
-        //public float IdleAndAimTransitionLength => idleAndAimTransitionLength;
-
-        //public float AimAndReloadTransitionLength => aimAndReloadTransitionsLength;
 
         public LayerMask LayerMaskToHit { get => _layerMaskToHit; set => _layerMaskToHit = value; }
         public TeamMask TeamMask { get => _teamMask; set => _teamMask = value; }
 
         public TargetInteraction TargetInteraction => _targetInteraction;
+
     }
 }

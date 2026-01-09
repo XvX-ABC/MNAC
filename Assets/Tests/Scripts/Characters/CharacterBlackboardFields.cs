@@ -1,5 +1,5 @@
 ﻿using System;
-using Tests.Utilities.Composable;
+using Tests.Utilities.Blackboards;
 
 namespace Tests.Characters
 {
@@ -28,8 +28,8 @@ namespace Tests.Characters
             Character_Influence_Core = Guid.NewGuid();
 
             FieldChangeHandler = MiddlewareFields.FieldChangeHandler;
-            Player_ScreenCatcherr = Guid.NewGuid();
-            Character_Component_TargetLocker = Guid.NewGuid();
+            Player_ScreenCatcher = Guid.NewGuid();
+            Character_Components_TargetLocker = Guid.NewGuid();
 
             Character_Input_Main_Obsolete = Guid.NewGuid();
             Character_Input_Main = Guid.NewGuid();
@@ -61,8 +61,8 @@ namespace Tests.Characters
         public static readonly Guid Character_Arm_Right_Controller;
         public static readonly Guid Character_Influence_Core;
         public static readonly Guid FieldChangeHandler;
-        public static readonly Guid Character_Component_TargetLocker;
-        public static readonly Guid Player_ScreenCatcherr;
+        public static readonly Guid Character_Components_TargetLocker;
+        public static readonly Guid Player_ScreenCatcher;
 
         public static readonly Guid Character_Input_Main_Obsolete;
         public static readonly Guid Character_Input_Main;
@@ -75,11 +75,12 @@ namespace Tests.Characters
         public static readonly Guid GroundDetector;
         public static readonly Guid World;
         public static readonly Guid Character_Locomotion_Core;
-        internal static readonly Guid Character_Animation_Tree;
-        internal static readonly Guid Character_Weapon_Projectile_LayerMaskToHit;
-        internal static readonly Guid Character_Weapon_Sword_LayerMaskToHit;
-        internal static readonly Guid Character_TeamMask;
-        internal static readonly Guid Character_Weapon_Backpack;
+        public static readonly Guid Character_Animation_Tree;
+        public static readonly Guid Character_Weapon_Projectile_LayerMaskToHit;
+        public static readonly Guid Character_Weapon_Sword_LayerMaskToHit;
+        public static readonly Guid Character_TeamMask;
+        public static readonly Guid Character_Weapon_Backpack;
+        public static readonly Guid Character_BodyParts;
     }
 
 }

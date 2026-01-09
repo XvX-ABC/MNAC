@@ -44,7 +44,6 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         }
         public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
-            Debug.Log("aiming transition running");
             base.FromPreviousStateTransitionRunning(currentTransition);
             _aim.Weight = Mathf.Lerp(_w, 1, currentTransition.Timeline.NormalizedTime);
             _aim.TargetUpdate();

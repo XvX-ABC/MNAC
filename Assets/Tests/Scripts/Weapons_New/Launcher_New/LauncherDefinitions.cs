@@ -15,6 +15,8 @@ namespace Tests.Weapons_New.Launcher
         float _reloadDurationTime;
         [SerializeField]
         Vector2 _launchDelayRange;
+        [SerializeField]
+        bool _allowedAutoReload;
 
 
         public ushort AmmoInMagazineAmount => _ammoInMagazineAmount;
@@ -27,5 +29,7 @@ namespace Tests.Weapons_New.Launcher
         public ushort AmmoReserveAmount => _ammoReserveAmount;
 
         public float LaunchingIntervalTime => _launchingIntervalTime;
+
+        public bool AllowedAutoReload { get => _allowedAutoReload; }
     }
 }

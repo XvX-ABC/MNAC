@@ -23,7 +23,7 @@ namespace Tests.AI
 
         internal Blackboard blackboard { get => _blackboard; set => _blackboard = value; }
         internal NavMeshAgent navAgent { get => _navAgent; set => _navAgent = value; }
-        internal Blackboard characterBlackboard { get => _characterBlackboard; set => _characterBlackboard = value; }
+        internal Blackboard characterBlackboard { get => _core.characterBlackboard; set => _core.characterBlackboard = value; }
         internal AICore core { get => _core; set => _core = value; }
         internal ITarget target { get => _core.interactableTarget; set => _core.interactableTarget = value; }
         internal AINavigation navigation { get => _navigation; set => _navigation = value; }

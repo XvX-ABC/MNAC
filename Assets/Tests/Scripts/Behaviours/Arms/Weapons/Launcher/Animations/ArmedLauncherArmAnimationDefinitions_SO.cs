@@ -22,6 +22,8 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
 
         public string ReloadMultiplier => _definitions.ReloadMultiplier;
 
+        public string MirrorSwitch => ((IArmedLauncherArmAnimationDefinitions)_definitions).MirrorSwitch;
+
         public StateTransitionOptions GetStateTransitionOption(IArmedLauncherArmAnimationDefinitions.Transition transition)
         {
             return _definitions.GetStateTransitionOption(transition);

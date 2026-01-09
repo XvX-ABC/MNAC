@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tests.Interaction;
 using Tests.Utilities.Blackboards;
 using UnityEngine;
 
-namespace Tests.UI.Assets.Tests.Scripts.UI
+namespace Tests.UI
 {
-    internal class HealthBar : UIComponent
+    public class HealthBar : UIComponent, IHealthCallback
     {
         [SerializeField]
-        ProgressSlider _slider;
+        protected ProgressSlider slider;
+
+        public float TriggerProportion => 1;
+
+        public bool RepetitiveExecution => true;
+
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
@@ -21,6 +27,14 @@ namespace Tests.UI.Assets.Tests.Scripts.UI
         {
             blackboard.TryUnregisterField(UIBlackboardFields.Health_Bar);
             base.Dispose();
+        }
+
+        public void Execute(GameObject obj, IHealth health)
+        {
+            var point = health.Point;
+            var maxPoint = health.MaxPoint;
+            var proportion = maxPoint > 0 ? point / maxPoint : 0;
+            slider.Value = proportion;
         }
     }
 }

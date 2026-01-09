@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace Tests.Characters
 {
+    [Obsolete]
     public interface ITargetsCatcher_Obsolete
     {
         public Blackboard Blackboard { get; set; }
@@ -26,7 +27,7 @@ namespace Tests.Characters
     {
         public Vector3 Position { get; }
     }
-
+    [Obsolete]
     [Serializable]
     public class TargetsCatcher_Obsolete : ITargetsCatcher_Obsolete
     {

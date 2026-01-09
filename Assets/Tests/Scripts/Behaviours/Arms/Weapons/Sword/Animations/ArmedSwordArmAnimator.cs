@@ -1,5 +1,6 @@
 ﻿using System;
 using Tests.Animations;
+using Tests.Characters.Humanoid;
 using Tests.States;
 using Tests.TPhysics.Locomotion;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         }
         IArmedSwordArmBehaviourDefinitions _definitions;
         IArmedSwordArmAnimationDefinitions _animationDefinitions;
-        ISword_Obsolete _sword;
+        HumanBodyPart _bodyPart;
 
         bool _enabled;
 
@@ -35,6 +36,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         internal ArmedSwordAnimationState state;
 
         public ArmedSwordArmAnimator(
+            HumanBodyPart bodyPart,
             PlayableGraph graph,
             ControllerPlayable baseController,
             WholeBodyMixerPlayable mixer,
@@ -46,12 +48,14 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
             IArmedSwordArmBehaviourDefinitions definitions,
             IArmedSwordArmAnimationDefinitions animationDefinitions)
         {
+            _bodyPart = bodyPart;
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
             _animationDefinitions = animationDefinitions ?? throw new ArgumentNullException(nameof(animationDefinitions));
             _boostingHelper = boostingHelper ?? throw new ArgumentNullException(nameof(_boostingHelper));
             _slashHelper = slashHelper ?? throw new ArgumentNullException(nameof(slashHelper));
 
             _armController = new ArmControllerPlayable(graph, _animationDefinitions.VelocityName_X, _animationDefinitions.VelocityName_Y, _animationDefinitions.ArmController);
+
             _wholeBody = new()
             {
                 controller = new(
@@ -66,8 +70,18 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
             };
 
             var baseWholeBodyController = baseController;
+
             var wholeBodyController = _wholeBody.controller;
+            var isLeft = _bodyPart switch
+            {
+                Characters.Humanoid.HumanBodyPart.LeftArm => true,
+                Characters.Humanoid.HumanBodyPart.RightArm => false,
+                _ => throw new Exception("The body part must be one of the arms.")
+            };
+            wholeBodyController.SetBool(_animationDefinitions.MirrorSwitch, isLeft);
+
             var armController = _armController;
+
             InitializeWholeBodyAnimation(graph, baseController, mixer ?? throw new ArgumentNullException(nameof(mixer)), wholeBodyController);
 
 
@@ -115,30 +129,10 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
                 //_controller.OutputSetting.Weight = _wholeBody.controller.OutputSetting.Weight = value ? 1 : 0;
             }
         }
-        public ISword_Obsolete Sword
-        {
-            get => _sword;
-            set
-            {
-                _sword = value;
-            }
-        }
 
         public Playable GetPlayablePart(PlayableGraph graph)
         {
             return _armController.PlayablePart;
-        }
-        public void Update()
-        {
-            //statemachine.OnUpdate();
-            //Debug.Log(statemachine);
-
-            //Debug.Log($"s: {_wholeBody.controller.GetSlashSwitch()}, b: {_wholeBody.controller.GetBoostingSwitch()}");
-
-            //var p = (AnimatorControllerPlayable)_wholeBody.controller.PlayablePart;
-            //var state = p.GetCurrentAnimatorStateInfo(0);
-            //var t = p.GetAnimatorTransitionInfo(0);
-            //Debug.Log($"idle: {state.IsName("Idle")}, boosting: {state.IsName("baked_armed_sword_boosting_V0")}, slash: {state.IsName("baked_armed_sword_slash_v0")}, boosting_sw:{_wholeBody.controller.GetBool(_animationDefinitions.BoostingSwitchName)}, slash_sw: {_wholeBody.controller.GetBool(_animationDefinitions.SlashSwitchName)}, {t.IsName("Idle -> baked_armed_sword_boosting_V0")}, {t.IsName("baked_armed_sword_boosting_V0 -> baked_armed_sword_slash_v0")}");
         }
     }
 }

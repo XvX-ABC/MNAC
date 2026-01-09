@@ -1,11 +1,7 @@
-﻿using System;
-using Tests.Behaviours.Arm.Weapons;
+﻿using Tests.Behaviours.Arm.Weapons;
 using Tests.Characters.Interaction.Input;
-using Tests.Input;
 using Tests.States;
-using Tests.Weapons.Launcher;
 using Tests.Weapons_New.Launcher;
-using UnityEngine;
 
 namespace Tests.Behaviours.Arms
 {

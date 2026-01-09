@@ -10,7 +10,6 @@ namespace Tests.Characters.Humanoid.Arms
         [SerializeField]
         ArmDefinitions _definitions;
 
-        public HumanBodyPart Part => _definitions.Part;
 
         public IArmedWeaponArmDefinitions Weapon => _definitions.Weapon;
 

@@ -14,8 +14,8 @@ namespace Tests.Behaviours.Arms.Weapons
         public abstract WeaponType Type { get; }
         public abstract IWeapon Weapon { get; set; }
         public abstract IArmedWeaponArmAnimationPlayablePart Animator { get; }
-        public abstract Func<bool> EntryFunc { get; }
-        public abstract Func<bool> ExitFunc { get; }
+        public abstract Func<bool> ActivationTrigger { get; }
+        public abstract Func<bool> UnactivationTrigger { get; }
         public abstract IWithCallbackPlayableState<object> State { get; }
 
         public virtual void BehaviourOnFixedUpdate()

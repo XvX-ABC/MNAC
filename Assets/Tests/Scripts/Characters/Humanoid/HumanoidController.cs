@@ -8,7 +8,6 @@ using Tests.Characters.Interaction;
 using Tests.Characters.MountPoints;
 using Tests.Characters.UI;
 using Tests.Interaction.Influence;
-using Tests.Utilities.Assets_New;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
@@ -37,8 +36,6 @@ namespace Tests.Characters.Humanoid
             internal ArmController lefArm;
             [SerializeField]
             internal ArmController rightArm;
-            //[SerializeField]
-            //internal WeaponsCore weapons;
             [SerializeField]
             internal WeaponBackpack weaponBackpack;
             public CharacterComponent[] ToArray()
@@ -63,10 +60,6 @@ namespace Tests.Characters.Humanoid
         internal ArmController leftArm;
         internal ArmController rightArm;
         internal LocomotionCore locomotionCore;
-
-
-        [SerializeField]
-        ResourceLoader<TargetLockerBase> _targetLockerLoader;
 
 
 
@@ -104,10 +97,6 @@ namespace Tests.Characters.Humanoid
                     comp.enabled = true;
                 }
 
-        }
-        void FixedUpdate()
-        {
-            animator.Update();
         }
         void OnDisable()
         {
@@ -170,10 +159,6 @@ namespace Tests.Characters.Humanoid
             _components = _requiredComponents.ToArray();
 
             _collisionComponentsManager = new();
-            //blackboard.TryRegisterField(CharacterBlackboardFields.Player_Camera_Main, _camera);
-            //blackboard.TryRegisterField(CharacterBlackboardFields.Character_Obj_Main, gameObject);
-
-            //blackboard.TryRegisterField(CharacterBlackboardFields.Character_Influence_Core, influenceCore);
 
 
 
@@ -182,33 +167,11 @@ namespace Tests.Characters.Humanoid
 
             _mountPointManager.Initialize(blackboard);
 
-
-            //InitializeUI();
-
             InitializeAnimator();
-
-            //InitializeTargetLocker();
 
             InitializeComponents();
 
-
-
-            //InitializeArmController();
-
-
-
-            //InitializeStatemachine(influenceCore);
-
-
-            //animator.InitializeArmsAnimation();
-            //animator.InitializeNormalState();
-            //animator.InitializeStatemachine();
-
-
             normalState = new(locomotionCore, leftArm, rightArm);
-
-
-            //this.blackboard = blackboard;
         }
 
         private void OnCollisionEnter(Collision collision)

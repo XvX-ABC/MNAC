@@ -1,6 +1,5 @@
 ﻿using RootMotion.FinalIK;
 using System;
-using System.Data.Odbc;
 using System.Text;
 using Tests.Behaviours;
 using Tests.Behaviours.Arms.Weapons;
@@ -27,8 +26,7 @@ using WeaponType = Tests.Weapons_New.WeaponType;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 {
-    [CreateAssetMenu(fileName = "ArmedLauncherArmBehaviour", menuName = "Tests/Behaviours/Characters/Humanoid/Arms/Weapons/Launchers/ArmedLauncherArmBehaviour")]
-    [Obsolete]
+    [CreateAssetMenu(fileName = "ArmedLauncherArmBehaviour", menuName = SOHelper.BEHAVIOURS_MENU_NAME + "/ArmedLauncherArmBehaviour")]
     public class ArmedLauncherArmBehaviour_SO : ArmedWeaponArmBehaviourBase_SO
     {
         #region internal classes
@@ -239,9 +237,9 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
         public override IArmedWeaponArmAnimationPlayablePart Animator => _behaviour.Animator;
 
-        public override Func<bool> EntryFunc => _behaviour.EntryFunc;
+        public override Func<bool> ActivationTrigger => _behaviour.ActivationTrigger;
 
-        public override Func<bool> ExitFunc => _behaviour.ExitFunc;
+        public override Func<bool> UnactivationTrigger => _behaviour.UnactivationTrigger;
 
         protected override Behaviours.Arms.IArmedWeaponArmBehaviour behaviour
         {
@@ -265,7 +263,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                     _sb.Append(" ) : ");
                     _sb.Append(" The behaviour's activated state changes to ");
                     _sb.Append($"'{value}'");
-                    Debug.Log(_sb.ToString());
+                    //Debug.Log(_sb.ToString());
                     _sb.Clear();
                     _behaviour.Activated = value;
                     //_targetLocker.Enabled = value;
@@ -278,8 +276,6 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                     else
                         _uiControl.Reset();
                 }
-                //Cursor.visible = !value;
-                //Cursor.lockState = value ? CursorLockMode.Locked : CursorLockMode.None;
                 enabled = value;
             }
         }
@@ -310,12 +306,12 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             {
                 HumanBodyPart.LeftArm => input.LArm,
                 HumanBodyPart.RightArm => input.RArm,
-                _ => null
+                _ => throw new Exception("The part must be one of the arms.")
             };
 
 
             var weaponControlInput = armInput.WeaponControl;
-            blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Component_TargetLocker, out _targetLocker);
+            blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Components_TargetLocker, out _targetLocker);
             InitializeBehaviourAndAnimator(graph, aimIK, input.BaseInput, rbody, world, groundDetector, _targetLocker, locomotionCore, armInput.WeaponControl);
 
 
@@ -333,9 +329,20 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         {
             var targetChangeDuration = _definitions.TargetInteraction.SwitchDuration;
             targetLocker.TargetChangeDuration = targetChangeDuration;
-            _animator = new(graph, aimIK, rbody, world, groundDetector, locomotionCore, targetChangeDuration, _definitions, _animationDefinitions, weaponControlInput);
-            _behaviour = new(_definitions, _animator);
-
+            _behaviour = new(Part, _definitions);
+            _behaviour.animator = _animator = new(
+                _behaviour,
+                graph,
+                aimIK,
+                rbody,
+                world,
+                groundDetector,
+                locomotionCore,
+                targetChangeDuration,
+                _definitions,
+                _animationDefinitions,
+                weaponControlInput);
+            _behaviour.InitializeStatemachine();
 
 
             if (blackboard.TryReadValue<LayerMask>(CharacterBlackboardFields.Character_Weapon_Projectile_LayerMaskToHit, out var layerMask))
@@ -380,7 +387,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             _sb.Append(" ) : \n");
             _sb.Append(statemachine);
             _sb.Append(animationStatemachine);
-            Debug.Log(_sb.ToString());
+            //Debug.Log(_sb.ToString());
             _sb.Clear();
         }
     }

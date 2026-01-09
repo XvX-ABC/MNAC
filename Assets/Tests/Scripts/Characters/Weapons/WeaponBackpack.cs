@@ -1,4 +1,5 @@
 ﻿using System;
+using Tests.Characters.Humanoid;
 using Tests.Utilities;
 using Tests.Utilities.Assets.Tests.Scripts.Utilities.Extensions;
 using Tests.Utilities.Blackboards;
@@ -30,27 +31,34 @@ namespace Tests.Characters.Weapons
                 foreach (var loader in _weaponManager.loaders)
                     PutWeapon(loader.Name, loader.Resource);
             }
-            public override bool ContainsWeapon(string weaponName)
+            string GetWeaponName(HumanBodyPart bodyPart, string weaponName)
             {
-                return base.ContainsWeapon(weaponName) || _weaponManager.Contains(weaponName);
+                return Enum.GetName(typeof(HumanBodyPart), bodyPart) + "_" + weaponName;
             }
-            public override IWeapon GetWeapon(string weaponName)
+            public bool ContainsWeapon(HumanBodyPart bodyPart, string weaponName)
             {
-                var w = base.GetWeapon(weaponName);
+                var name = GetWeaponName(bodyPart, weaponName);
+                return base.ContainsWeapon(name) || _weaponManager.Contains(weaponName);
+            }
+            public IWeapon GetWeapon(HumanBodyPart bodyPart, string weaponName)
+            {
+                var name = GetWeaponName(bodyPart, weaponName);
+                var w = base.GetWeapon(name);
                 if (w == null)
                 {
                     w = _weaponManager.GetWeapon(weaponName, true);
-                    weapons.Add(w.Name, w);
+                    weapons.Add(name, w);
                 }
                 var obj = w.Obj;
                 obj.PutInParent(null);
                 return w;
             }
 
-            public override void PutWeapon(string name, IWeapon weapon)
+            public void PutWeapon(HumanBodyPart bodyPart, string weaponName, IWeapon weapon)
             {
                 try
                 {
+                    var name = GetWeaponName(bodyPart, weaponName);
                     base.PutWeapon(name, weapon);
                     weapon.Obj.transform.PutInParent(_parent);
                 }
@@ -89,18 +97,28 @@ namespace Tests.Characters.Weapons
             blackboard.TryUnregisterField(CharacterBlackboardFields.Character_Weapon_Core);
             base.Dispose();
         }
-        public bool ContainsWeapon(string weaponName)
+        public bool ContainsWeapon(HumanBodyPart bodyPart, string weaponName)
         {
-            return _weaponBackpack.ContainsWeapon(weaponName);
+            return _weaponBackpack.ContainsWeapon(bodyPart, weaponName);
         }
+        public IWeapon GetWeapon(HumanBodyPart bodyPart, string weaponName)
+        {
+            return _weaponBackpack.GetWeapon(bodyPart, weaponName);
+        }
+
+        public void PutWeapon(HumanBodyPart bodyPart, string name, IWeapon weapon)
+        {
+            _weaponBackpack.PutWeapon(bodyPart, name, weapon);
+        }
+
         public IWeapon GetWeapon(string weaponName)
         {
-            return _weaponBackpack.GetWeapon(weaponName);
+            return ((IWeaponBackpack)_weaponBackpack).GetWeapon(weaponName);
         }
 
         public void PutWeapon(string name, IWeapon weapon)
         {
-            _weaponBackpack.PutWeapon(name, weapon);
+            ((IWeaponBackpack)_weaponBackpack).PutWeapon(name, weapon);
         }
     }
 }

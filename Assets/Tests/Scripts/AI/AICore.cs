@@ -1,12 +1,9 @@
 ﻿using BehaviorDesigner.Runtime;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using Tests.Characters;
 using Tests.Interaction;
 using Tests.Utilities.Blackboards;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,6 +16,8 @@ namespace Tests.AI
         NavMeshAgent _navAgent;
         [SerializeField]
         GameObject _targetObj;
+        [SerializeField]
+        IDamageable _damageable;
         [SerializeField]
         BehaviorTree _bt;
         AIComponent_Mono[] _components;
@@ -52,6 +51,21 @@ namespace Tests.AI
         internal Action<ITarget, ITarget> targetChangedAction { get => _targetChangedAction; set => _targetChangedAction = value; }
         internal Blackboard characterBlackboard { get => _characterBlackboard; set => _characterBlackboard = value; }
         internal AIComponentContext componentContext { get => _componentContext; set => _componentContext = value; }
+        public GameObject TargetObj
+        {
+            get => _targetObj;
+            set
+            {
+                if (_targetObj != null)
+                {
+                    _damageable = _targetObj.GetComponent<IDamageable>();
+                    interactableTarget = new Target(_targetObj);
+                }
+                _targetObj = value;
+            }
+        }
+
+        public BehaviorTree BehaviourTree { get => _bt; set => _bt = value; }
 
         private void Awake()
         {
@@ -59,24 +73,21 @@ namespace Tests.AI
             _components = GetComponentsInChildren<AIComponent_Mono>();
 
             _internalComponents = new();
-            _bt.enabled = false;
-        }
-        private void Start()
-        {
-            _characterBlackboard = _character.blackboard ?? throw new NullReferenceException("The character blackboard can't is null.");
+
+            TargetObj = _targetObj;
+
             _componentContext = new()
             {
                 navAgent = _navAgent,
                 core = this,
-                characterBlackboard = _characterBlackboard,
             };
-            if (_targetObj != null)
-                interactableTarget = new Target(_targetObj);
-
+        }
+        private void Start()
+        {
+            _characterBlackboard = _character.blackboard ?? throw new NullReferenceException("The character blackboard can't is null.");
 
             InitializeComponents(_componentContext);
             InitializeInternalComponents(_componentContext);
-            _bt.enabled = true;
         }
         private void Update()
         {
@@ -86,6 +97,8 @@ namespace Tests.AI
             else if (_targetObj == null && interactableTarget != null)
                 interactableTarget = null;
 #endif
+            if (_damageable != null && !_damageable.HP.IsAlive)
+                interactableTarget = null;
         }
         private void OnDestroy()
         {

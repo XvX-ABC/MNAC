@@ -53,7 +53,7 @@ namespace Tests.Utilities.Composable
     {
         Guid _id;
         protected Blackboard blackboard;
-        internal ComponentNode node;
+        protected internal ComponentNode node;
         //protected ComponentBase_MonoComponent()
         //{
         //    _id = Guid.NewGuid();

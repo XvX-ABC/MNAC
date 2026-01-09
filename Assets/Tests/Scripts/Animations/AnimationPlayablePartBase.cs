@@ -5,7 +5,6 @@ namespace Tests.Animations
 {
     public abstract class AnimationPlayablePartBase : IAnimationPlayablePart
     {
-        protected bool enabled;
         protected PlayableGraph graph;
         protected Playable playablePart;
         OutputSetting _outputSetting;

@@ -35,7 +35,6 @@ namespace Tests.AI
         Handler _handler;
         public override void Initialize(AIComponentContext context)
         {
-
             base.Initialize(context);
             input = new();
             _handler = new(input.baseInput);

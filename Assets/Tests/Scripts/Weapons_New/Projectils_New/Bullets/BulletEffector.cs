@@ -16,12 +16,10 @@ namespace Tests.Weapons_New.Projectiles
         private void OnEnable()
         {
             _movingEffect.gameObject.SetActive(true);
-            //_hitEffect.gameObject.SetActive(true);
         }
         private void OnDisable()
         {
             _movingEffect.gameObject.SetActive(false);
-            //_hitEffect.gameObject.SetActive(false);
         }
         private void FixedUpdate()
         {
@@ -33,7 +31,8 @@ namespace Tests.Weapons_New.Projectiles
                 _collisionLayerMask = layerMask;
             blackboard.RegisterFieldChangeAction<LayerMask>(ProjectileFields.Hit_LayerMask, WhenLayerMaskToHitChange);
             _hitEffect.Parent = this.owner.transform;
-            owner.HitAction += WhenHItObj;
+            //owner.HitAction += WhenHItObj;
+            owner.HitAction_New += WhenHitObj;
             owner.StartMoveAction += WhenStartMove;
         }
         public override void Dispose()
@@ -49,6 +48,23 @@ namespace Tests.Weapons_New.Projectiles
                 return;
             collisionLayerMask = nv;
         }
+        protected virtual void WhenHitObj(Vector3 prePos, Vector3 preForward, IProjectile projectile, GameObject obj)
+        {
+            if (!this.enabled)
+                return;
+            var ray = new Ray(prePos, preForward);
+            var collider = owner._collider;
+            if (Physics.SphereCast(ray, collider.radius, out var hitInfo, Mathf.Infinity, owner.LayerMaskToHit))
+            {
+                var point = hitInfo.point;
+                var normal = hitInfo.normal;
+                _hitEffect.transform.position = point;
+                _hitEffect.transform.rotation = Quaternion.FromToRotation(Vector3.up, normal);
+                _hitEffect.transform.SetParent(hitInfo.collider.transform);
+            }
+            _movingEffect.Stop();
+            _hitEffect.Play();
+        }
         protected virtual void WhenHItObj(IProjectile projectile, GameObject hitObj)
         {
             if (!this.enabled)
@@ -56,12 +72,14 @@ namespace Tests.Weapons_New.Projectiles
             var collider = owner.GetComponent<CapsuleCollider>();
             if (collider != null)
             {
-                if (Physics.SphereCast(shootingRay, collider.radius, out var hitInfo, Mathf.Infinity, _collisionLayerMask))
+                var ray = new Ray(owner.transform.position, owner.transform.forward);
+                if (Physics.SphereCast(ray, collider.radius, out var hitInfo, Mathf.Infinity, _collisionLayerMask))
                 {
                     var point = hitInfo.point;
                     var normal = hitInfo.normal;
                     _hitEffect.transform.position = point;
                     _hitEffect.transform.rotation = Quaternion.FromToRotation(Vector3.up, normal);
+                    //_hitEffect.transform.SetParent(hitInfo.collider.transform);
                 }
             }
             _movingEffect.Stop();

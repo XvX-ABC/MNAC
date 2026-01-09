@@ -7,48 +7,75 @@ namespace Tests.Weapons_New.Launcher
 {
     internal abstract class LauncherEffector : LauncherEffectComponent
     {
+        ITimeline _reloadTimeline;
         ITimeline _launchIntervalTimeline;
         IPointEvent _beforeLaunchEvent;
         [Range(0, 1)]
         [SerializeField]
         float _launchBeforeProportion;
 
-        protected virtual void OnEnable()
-        {
-            //launcher.LaunchAction += WhenLaunch;
-            //launcher.ReloadAction += WhenReload;
-            //_beforeLaunchEvent = (IPointEvent)_launchIntervalTimeline.AddPointEvent(_launchBeforeProportion, WhenBeforeLaunch);
-        }
-        protected virtual void OnDisable()
-        {
-            //launcher.LaunchAction -= WhenLaunch;
-            //launcher.ReloadAction -= WhenReload;
-            //_launchIntervalTimeline.RemovePointEvent(_beforeLaunchEvent);
-        }
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            //blackboard.TryReadValueOrThrowException<ILauncher>(LauncherEffectComponent.OwnerLauncher, out launcher);
             owner.LaunchedCallback += WhenLaunch;
             owner.ReloadCallback += WhenReload;
+
+
+            {
+                _reloadTimeline = owner.ReloadTimeline;
+                _reloadTimeline.StartAction += WhenReloadStart;
+                _reloadTimeline.EndAction += WhenReloadEnd;
+            }
+
+
             _launchIntervalTimeline = owner.LaunchingIntervalTimeline;
-            _beforeLaunchEvent = (IPointEvent)_launchIntervalTimeline.AddPointEvent(_launchBeforeProportion, WhenBeforeLaunch);
+            _beforeLaunchEvent = (IPointEvent)_launchIntervalTimeline.AddPointEvent(_launchBeforeProportion, WhenLauncherBefore);
         }
         public override void Dispose()
         {
             base.Dispose();
+
+            {
+                _reloadTimeline.StartAction -= WhenReloadStart;
+                _reloadTimeline.EndAction -= WhenReloadEnd;
+            }
+
             owner.LaunchedCallback -= WhenLaunch;
             owner.ReloadCallback -= WhenReload;
-            _launchIntervalTimeline.End();
             _launchIntervalTimeline.RemovePointEvent(_beforeLaunchEvent);
         }
-        protected abstract void WhenLaunch(ILauncher launcher);
-        protected abstract void WhenReload(ILauncher launcher);
-        void WhenBeforeLaunch(TimelineContext ctx)
+        protected virtual void WhenLaunch(ILauncher launcher)
         {
-            WhenBeforeLaunch(owner);
+
         }
-        protected abstract void WhenBeforeLaunch(ILauncher launcher);
+        protected virtual void WhenReloadStart(ILauncher launcher)
+        {
+
+        }
+        protected virtual void WhenReloadEnd(ILauncher launcher)
+        {
+
+        }
+        void WhenReloadStart(TimelineContext _)
+        {
+            WhenReloadStart(owner);
+        }
+        void WhenReloadEnd(TimelineContext _)
+        {
+            WhenReloadEnd(owner);
+        }
+        protected virtual void WhenReload(ILauncher launcher)
+        {
+
+        }
+        void WhenLauncherBefore(TimelineContext ctx)
+        {
+            WhenLaunchBefore(owner);
+        }
+        protected virtual void WhenLaunchBefore(ILauncher launcher)
+        {
+
+        }
         public virtual float LaunchBeforeProportion
         {
             get => _launchBeforeProportion;

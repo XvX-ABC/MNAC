@@ -1,9 +1,11 @@
-﻿using Tests.Utilities.Blackboards;
+﻿using System;
+using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
 using UnityEngine;
 
 namespace Tests.UI
 {
+    [Obsolete]
     [RequireComponent(typeof(UICore))]
     public class UICore_Test : MonoBehaviour
     {

@@ -16,7 +16,7 @@ namespace Tess.AI
         {
             get
             {
-                if (this.gameObject != null)
+                if (this != null)
                     return this.gameObject;
                 return null;
             }

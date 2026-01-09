@@ -22,6 +22,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
         public ActionDefinitions Slash => _definitions.Slash;
 
+        public string MirrorSwitch => ((IArmedSwordArmAnimationDefinitions)_definitions).MirrorSwitch;
+
         public StateTransitionOptions GetTransitionOptions(IArmedSwordArmAnimationDefinitions.Transition transition)
         {
             return _definitions.GetTransitionOptions(transition);

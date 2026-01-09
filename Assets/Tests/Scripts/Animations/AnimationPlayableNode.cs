@@ -36,6 +36,8 @@ namespace Tests.Animations
         {
             get => (IAnimationPlayablePartNode)parent;
         }
+
+        [Obsolete]
         public PlayableGraph Graph { get => graph; set => graph = value; }
         [Obsolete]
         bool NodeCheck(IAnimationPlayablePartNode node)

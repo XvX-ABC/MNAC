@@ -40,7 +40,7 @@ namespace Tests.Characters.Interaction
             blackboard.TryReadValueOrThrowException<Camera>(CharacterBlackboardFields.Player_Camera_Main, out var camera);
             _catcher = new(camera, _processingAmountOfFrames);
 
-            blackboard.TryRegisterField(CharacterBlackboardFields.Player_ScreenCatcherr, this);
+            blackboard.TryRegisterField(CharacterBlackboardFields.Player_ScreenCatcher, this);
         }
     }
 }

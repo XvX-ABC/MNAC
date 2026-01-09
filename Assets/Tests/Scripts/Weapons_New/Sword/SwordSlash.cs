@@ -13,17 +13,18 @@ namespace Tests.Weapons_New.Sword
         public override void Initialize(Blackboard blackboard)
         {
             base.Initialize(blackboard);
-            sword.HitAction += WhenHitObj;
+            sword.HitAction += WhenHitTarget;
         }
         public override void Dispose()
         {
-            sword.HitAction -= WhenHitObj;
+            sword.HitAction -= WhenHitTarget;
             base.Dispose();
         }
-        void WhenHitObj(GameObject obj)
+        void WhenHitTarget(GameObject obj)
         {
             if (obj.TryGetComponent<IDamageable>(out var d))
             {
+                Debug.Log("slash damage obj: " + obj.name);
                 d.HP.ReceivePoint(_damagePoint);
             }
         }

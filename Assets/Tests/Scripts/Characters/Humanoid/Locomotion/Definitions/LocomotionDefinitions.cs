@@ -1,5 +1,4 @@
-﻿using Locomotion;
-using System;
+﻿using System;
 using Tests.Characters.Humanoid.Locomotion.Animations;
 using UnityEngine;
 
@@ -19,6 +18,8 @@ namespace Tests.Characters.Humanoid.Locomotion
         [SerializeField]
         JumpDefinitions _jump;
         [SerializeField]
+        MutativeDragDefinitions _mutativeDrag;
+        [SerializeField]
         LocomotionAnimatorDefinitions _animation;
         public ushort PostureEvaluationFramesAmount => _postureEvaluationFramesAmount;
 
@@ -31,5 +32,7 @@ namespace Tests.Characters.Humanoid.Locomotion
         public IJumpDefinitions Jump => _jump;
 
         public IBoostingDefinitions Boosting => _boosting;
+
+        public IMutativeDragDefinitions MutativeDrag { get => _mutativeDrag; }
     }
 }

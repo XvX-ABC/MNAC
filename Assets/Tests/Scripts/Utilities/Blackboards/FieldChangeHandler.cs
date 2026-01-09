@@ -56,7 +56,7 @@ namespace Tests.Utilities.Blackboards
                 _mappingAction.Add(key, action);
             }
         }
-        public void RegisterAction_New<T>(K key, Action<FieldEventType, T, T> action)
+        public void RegisterAction<T>(K key, Action<FieldEventType, T, T> action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
@@ -72,7 +72,7 @@ namespace Tests.Utilities.Blackboards
             RegisterAction(key, generatedAction);
             _gdm.mapping.Add(action.GetHashCode(), generatedAction);
         }
-        public void UnregisterAction_New<T>(K key, Action<FieldEventType, T, T> action)
+        public void UnregisterAction<T>(K key, Action<FieldEventType, T, T> action)
         {
             if (_mappingAction.TryGetValue(key, out var dele))
             {
@@ -107,7 +107,7 @@ namespace Tests.Utilities.Blackboards
             //}
         }
         [Obsolete]
-        public void RegisterAction<T>(K key, Action<FieldEventType, T, T> action)
+        public void RegisterAction_Obsolete<T>(K key, Action<FieldEventType, T, T> action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
@@ -133,7 +133,7 @@ namespace Tests.Utilities.Blackboards
             });
         }
         [Obsolete]
-        public void UnregisterAction<T>(K key, Action<FieldEventType, T, T> action)
+        public void UnregisterAction_Obsolete<T>(K key, Action<FieldEventType, T, T> action)
         {
             if (!_mappingAction.ContainsKey(key))
                 return;

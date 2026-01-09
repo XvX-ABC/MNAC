@@ -28,7 +28,7 @@ namespace Tests.Characters.UI
                     slider.enabled = true;
                 }
                 var hp = _damageable.HP;
-                slider.Value = hp.Point / hp.MaxPoint;
+                slider.Value = hp.MaxPoint > 0 ? hp.Point / hp.MaxPoint : 1;
             }
             else
             {

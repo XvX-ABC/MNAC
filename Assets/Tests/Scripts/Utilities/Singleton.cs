@@ -53,7 +53,8 @@ namespace Tests.Utilities
         }
         public virtual void OnApplicationQuit()
         {
-            Destroy(this);
+            if (this != null)
+                Destroy(this);
         }
     }
 }

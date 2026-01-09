@@ -18,11 +18,13 @@ namespace Tests.Characters.UI
         QuantityBhv _bhv;
         public override Color Color { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override float Value { get => _bhv.FillAmount; set => _bhv.FillAmount = value; }
+        public float MaxAmount { get => _bhv.MaximumAmount; set => _bhv.MaximumAmount = value; }
+        public float MinAmount { get => _bhv.MinimumAmount; set => _bhv.MinimumAmount = value; }
+        public float CurrentAmount { get => _bhv.Amount; set => _bhv.Amount = value; }
         protected override void Awake()
         {
             _bhv = GetComponent<QuantityBhv>();
         }
-
         protected override void ApplyMode(ProgressSliderMode mode)
         {
             throw new NotImplementedException();

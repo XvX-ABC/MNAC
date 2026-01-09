@@ -10,22 +10,7 @@ namespace Tests.Behaviours.Arms.Animations
 {
     internal class ArmAnimationCore : AnimationPlayablePartBase
     {
-        IArmedWeaponArmDefinitions _definitions;
-        IArmWeaponAnimationDefinitions _animationDefinitions;
-
-        MixerPlayablePart _mixer;
-        internal SwitchingPlayablePart switching;
-        internal IArmedWeaponArmAnimator armedAnimator;
-
-        IdleState _idleState;
-        SwitchingState _switchingState;
-        ArmedWeaponState _armedState;
-        BlendingState _blendingState;
-        ArmAnimationPlayingState _playingState;
-
-        byte _statusNum = 3;
-        internal bool playing;
-
+        #region internal classes
         class ArmAnimationPlayingState : StateBase
         {
             protected ArmAnimationCore core;
@@ -102,12 +87,8 @@ namespace Tests.Behaviours.Arms.Animations
                 parentNode.AddChild(_mixer.Node);
                 _mixer.Node.AddChild(_switching.Node);
                 _mixer.Node.AddChild(_armedWeapon.Node);
-                //Debug.Log("switching output settting weight: " + _switching.Node.Value.OutputSetting.Weight);
-                //Debug.Log("armedWeapon output settting weight: " + _armedWeapon.Node.Value.OutputSetting.Weight);
                 _mixer.OutputSetting = core.OutputSetting;
                 _mixer.OutputSetting.Weight = 1;
-                //_switching.Reset();
-                //core.OutputSetting.Weight = 1;
 
             }
             public override void OnExit()
@@ -127,36 +108,8 @@ namespace Tests.Behaviours.Arms.Animations
                 core.OutputSetting.Weight = 0;
             }
         }
-        public float SwitchingWeight
-        {
-            get => switching.Weight;
-            set => switching.Weight = value;
-        }
-        public byte StatusNum
-        {
-            get => _statusNum;
-            set
-            {
-                if (value == _statusNum)
-                    return;
-                if ((value == 1 || value == 2) && !CheckArmedAnimator())
-                    value = 3;
-                UpdatePlayingState(value);
-                _statusNum = value;
-            }
-        }
-        public ArmAnimationCore(PlayableGraph graph, IArmedWeaponArmDefinitions weaponDefinitions, IArmWeaponAnimationDefinitions animationDefinitions, IArmedWeaponArmAnimator armedAnimator) : base(graph)
-        {
-            _definitions = weaponDefinitions ?? throw new ArgumentNullException(nameof(weaponDefinitions));
-            _animationDefinitions = animationDefinitions ?? throw new ArgumentNullException(nameof(animationDefinitions));
-            this.armedAnimator = armedAnimator ?? throw new ArgumentNullException(nameof(armedAnimator));
 
 
-            switching = new(graph, _definitions, _animationDefinitions);
-            _mixer = new(graph);
-
-            InitializeStates();
-        }
         class MixerPlayablePart : AnimationPlayablePartBase
         {
             public MixerPlayablePart(PlayableGraph graph) : base(graph)
@@ -164,18 +117,6 @@ namespace Tests.Behaviours.Arms.Animations
                 playablePart = AnimationMixerPlayable.Create(graph, 2);
             }
 
-            //public override bool Initialize(PlayableGraph graph)
-            //{
-            //    if (playablePart.IsNull())
-            //    {
-            //        var mixer = AnimationMixerPlayable.Create(graph, 2);
-            //        playablePart = mixer;
-            //    }
-            //    return true;
-            //}
-            //public override void Dispose()
-            //{
-            //}
         }
         internal class SwitchingPlayablePart : AnimationPlayablePartBase
         {
@@ -208,7 +149,6 @@ namespace Tests.Behaviours.Arms.Animations
             {
                 _definitions = definitions;
                 _animationDefinitions = animationDefinitions;
-                enabled = true;
 
                 var clip = _animationDefinitions.Switching.Clip ?? throw new NullReferenceException("definitions.Switching.Clip");
                 var length = clip.length;
@@ -237,6 +177,57 @@ namespace Tests.Behaviours.Arms.Animations
                 if (playablePart.IsNull())
                     throw new NullReferenceException();
                 playablePart.Pause();
+            }
+        }
+
+        #endregion
+
+
+        IArmedWeaponArmDefinitions _definitions;
+        IArmWeaponAnimationDefinitions _animationDefinitions;
+
+        MixerPlayablePart _mixer;
+        internal SwitchingPlayablePart switching;
+        internal IArmedWeaponArmAnimator armedAnimator;
+
+        IdleState _idleState;
+        SwitchingState _switchingState;
+        ArmedWeaponState _armedState;
+        BlendingState _blendingState;
+        ArmAnimationPlayingState _playingState;
+
+        byte _statusNum = 3;
+        internal bool playing;
+
+        public ArmAnimationCore(PlayableGraph graph, IArmedWeaponArmDefinitions weaponDefinitions, IArmWeaponAnimationDefinitions animationDefinitions, IArmedWeaponArmAnimator armedAnimator) : base(graph)
+        {
+            _definitions = weaponDefinitions ?? throw new ArgumentNullException(nameof(weaponDefinitions));
+            _animationDefinitions = animationDefinitions ?? throw new ArgumentNullException(nameof(animationDefinitions));
+            this.armedAnimator = armedAnimator ?? throw new ArgumentNullException(nameof(armedAnimator));
+
+
+            switching = new(graph, _definitions, _animationDefinitions);
+            _mixer = new(graph);
+
+            InitializeStates();
+        }
+
+        public float SwitchingWeight
+        {
+            get => switching.Weight;
+            set => switching.Weight = value;
+        }
+        public byte StatusNum
+        {
+            get => _statusNum;
+            set
+            {
+                if (value == _statusNum)
+                    return;
+                if ((value == 1 || value == 2) && !CheckArmedAnimator())
+                    value = 3;
+                UpdatePlayingState(value);
+                _statusNum = value;
             }
         }
 

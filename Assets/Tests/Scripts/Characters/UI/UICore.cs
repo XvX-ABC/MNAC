@@ -8,6 +8,7 @@ namespace Tests.Characters.UI
     [RequireComponent(typeof(Core))]
     internal class UICore : CharacterComponent
     {
+        static UICore s_instance;
         class Input : Tests.UI.IInput
         {
             IBaseInput _input;
@@ -20,10 +21,20 @@ namespace Tests.Characters.UI
             public Vector3 MousePosition => _input.MousePosition;
         }
         Core _core;
+
+        internal static UICore instance { get => s_instance; }
+
         protected override void Awake()
         {
+            //if (s_instance != null)
+            //{
+            //    Destroy(this.gameObject);
+            //    return;
+            //}
             base.Awake();
             _core = GetComponent<Core>();
+            //DontDestroyOnLoad(this.gameObject);
+            //s_instance = this;
         }
         public override void Initialize(Blackboard blackboard)
         {

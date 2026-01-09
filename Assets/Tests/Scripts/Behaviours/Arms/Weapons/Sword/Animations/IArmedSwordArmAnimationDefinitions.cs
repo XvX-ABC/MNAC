@@ -16,6 +16,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         public RuntimeAnimatorController ArmController { get; }
         string VelocityName_Y { get; }
         string VelocityName_X { get; }
+        string MirrorSwitch { get; }
         ActionDefinitions Boost { get; }
         ActionDefinitions Slash { get; }
         public StateTransitionOptions GetTransitionOptions(Transition transition);

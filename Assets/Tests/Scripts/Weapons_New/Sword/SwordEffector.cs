@@ -25,9 +25,9 @@ namespace Tests.Weapons_New.Sword
             base.Dispose();
         }
         [Obsolete]
-        protected abstract void WhenTargetEnter(GameObject ob);
+        protected virtual void WhenTargetEnter(GameObject ob) { }
         [Obsolete]
-        protected abstract void WhenTargetExit(GameObject obj);
+        protected virtual void WhenTargetExit(GameObject obj) { }
         protected virtual void WhenHitTarget(GameObject obj) { }
     }
 }

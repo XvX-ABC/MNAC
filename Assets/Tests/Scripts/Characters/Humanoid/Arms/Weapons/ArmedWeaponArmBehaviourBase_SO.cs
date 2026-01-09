@@ -4,11 +4,11 @@ using Tests.States;
 using Tests.Utilities.Composable;
 using Tests.Weapons;
 using Tests.Weapons_New;
+using UnityEngine;
 using WeaponType = Tests.Weapons_New.WeaponType;
 
 namespace Tests.Characters.Humanoid.Arms.Weapons
 {
-    [Obsolete]
     public abstract class ArmedWeaponArmBehaviourBase_SO : StateComponentNode_SO, IArmedWeaponArmBehaviour
     {
         HumanBodyPart _part;
@@ -19,6 +19,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
             get => enabled;
             set
             {
+                Debug.Log(this.GetType().Name + ", activated state changeto  : " + value);
                 enabled = value;
                 behaviour.Activated = value;
             }
@@ -27,8 +28,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
         public abstract WeaponType Type { get; }
         public virtual IWeapon Weapon { get => behaviour.Weapon; set => behaviour.Weapon = value; }
         public virtual IArmedWeaponArmAnimationPlayablePart Animator { get => behaviour.Animator; }
-        public virtual Func<bool> EntryFunc { get => behaviour.EntryFunc; }
-        public virtual Func<bool> ExitFunc { get => behaviour.ExitFunc; }
+        public virtual Func<bool> ActivationTrigger { get => behaviour.ActivationTrigger; }
+        public virtual Func<bool> UnactivationTrigger { get => behaviour.UnactivationTrigger; }
         public HumanBodyPart Part
         {
             get

@@ -10,5 +10,6 @@ namespace Tests.Weapons_New.Launcher
         public float ReloadDurationTime { get; }
         public float LaunchingIntervalTime { get; }
         public Vector2 LaunchDelayRange { get; }
+        bool AllowedAutoReload { get; }
     }
 }

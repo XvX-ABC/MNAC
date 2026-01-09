@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
@@ -59,6 +60,10 @@ namespace Tests.Animations
             if (playablePart.IsNull())
                 throw new NullReferenceException(nameof(playablePart));
             controller.SetTrigger(name);
+        }
+        public AnimatorStateInfo GetCurrentAnimatorStateInfo()
+        {
+            return controller.GetCurrentAnimatorStateInfo(0);
         }
     }
 }

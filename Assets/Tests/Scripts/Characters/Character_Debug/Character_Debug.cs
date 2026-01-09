@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Tests.Animations;
 using Tests.Interaction;
 using Tests.Interaction.Influence;
@@ -16,14 +17,19 @@ namespace Tests.Characters
         Health _health;
         [SerializeField]
         TeamMask _teamMask;
+        [SerializeField]
+        Collider _collider;
         public IHealth HP => _health;
 
         public TeamMask TeamMask { get => _teamMask; set => _teamMask = value; }
 
-        protected override Bounds bounds => throw new NotImplementedException();
+        protected override Bounds bounds => _collider.bounds;
 
         protected override void Awake()
         {
+            colliders = GetComponentsInChildren<Collider>().ToList();
+            accessors = new();
+            base.SetAccessorsForChildrenColliders();
             //SetAccessors();
         }
         protected override void Start()
@@ -48,7 +54,7 @@ namespace Tests.Characters
         {
         }
 
-        internal override InfluenceCore CreateInfluenceCore()
+        internal override InfluenceCore CreateInfluences()
         {
             return default;
         }
@@ -96,9 +102,7 @@ namespace Tests.Characters
 
         internal override CharacterAccessor SetAccessorToObj(GameObject obj)
         {
-            var a = obj.AddComponent<CharacterAccessor_Debug>();
-            a.character = this;
-            return a;
+            return obj.AddComponent<CharacterAccessor_Debug>();
         }
     }
 }

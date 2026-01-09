@@ -35,7 +35,7 @@ namespace Tests.Interaction
             {
                 if (!filter.CanCatch(item))
                 {
-                    Debug.Log($"The check by filter '{filter.GetType().Name}' to item '{item}' was not pass succeed");
+                    //Debug.Log($"The check by filter '{filter.GetType().Name}' to item '{item}' was not pass succeed");
                     return false;
                 }
             }

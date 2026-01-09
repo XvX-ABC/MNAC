@@ -55,13 +55,13 @@ namespace Tests.Characters.Humanoid.Locomotion
             base.Initialize(blackboard);
             _lcore.AddModule(rotationLocomotionModule, true);
             if (!TryReadTargetLocker(blackboard))
-                blackboard.RegisterFieldChangeAction<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, WhenTargetLockerChange);
+                blackboard.RegisterFieldChangeAction<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Components_TargetLocker, WhenTargetLockerChange);
             Enabled = true;
         }
         public override void Dispose()
         {
             Enabled = false;
-            blackboard.UnregisterFieldChangeAction<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, WhenTargetLockerChange);
+            blackboard.UnregisterFieldChangeAction<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Components_TargetLocker, WhenTargetLockerChange);
             _lcore.RemoveModule(rotationLocomotionModule);
             base.Dispose();
         }
@@ -73,7 +73,7 @@ namespace Tests.Characters.Humanoid.Locomotion
         }
         protected bool TryReadTargetLocker(Blackboard blackboard)
         {
-            var r = blackboard.TryReadValue<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Component_TargetLocker, out var targetLocker);
+            var r = blackboard.TryReadValue<ITargetLocker<ILockTarget>>(CharacterBlackboardFields.Character_Components_TargetLocker, out var targetLocker);
             this.targetLocker = targetLocker;
             return r;
         }

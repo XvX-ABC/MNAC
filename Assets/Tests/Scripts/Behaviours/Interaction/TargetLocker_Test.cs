@@ -2,7 +2,7 @@
 using Tests.UI;
 using UnityEngine;
 using GameObjsInScreenCatcher = Tests.Interaction.GameObjsInScreenCatcher;
-using LockTarget = Tests.Characters.Interaction.LockTarget;
+using LockTarget_Obsolete = Tests.Characters.Interaction.LockTarget_Obsolete;
 namespace Tests.Behaviours.Arms.Weapons
 {
     internal class TargetLocker_Test : MonoBehaviour
@@ -21,7 +21,7 @@ namespace Tests.Behaviours.Arms.Weapons
         ObstacleDetector _obstacleDetector;
 
         GameObjsInScreenCatcher _screenObjsCatcher;
-        PlayerTargetLocker<LockTarget> _locker;
+        PlayerTargetLocker<LockTarget_Obsolete> _locker;
 
 
         Vector3 _lastPos;
@@ -33,7 +33,7 @@ namespace Tests.Behaviours.Arms.Weapons
         private void Start()
         {
             _screenObjsCatcher = new(_camera, _handleAmountInCoroutine);
-            _locker = new(_screenObjsCatcher, LockTarget.GetInstance, LockTarget.ReleaseInstance, _camera, cursorIndicator, null, _handleAmountInCoroutine);
+            _locker = new(_screenObjsCatcher, LockTarget_Obsolete.GetInstance, LockTarget_Obsolete.ReleaseInstance, _camera, cursorIndicator, null, _handleAmountInCoroutine);
             StartCoroutine(_screenObjsCatcher.UpdateWithCoroutine());
 
         }

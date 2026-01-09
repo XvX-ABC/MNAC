@@ -22,6 +22,8 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         [SerializeField]
         string _reloadMultiplier;
         [SerializeField]
+        string _mirrorSwitch;
+        [SerializeField]
         StateTransitionOptions[] _transitionOptions;
         public RuntimeAnimatorController Animator => _animator;
 
@@ -36,6 +38,8 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         public string ReloadTrigger => _reloadTrigger;
 
         public string ReloadMultiplier => _reloadMultiplier;
+
+        public string MirrorSwitch { get => _mirrorSwitch; }
 
         public StateTransitionOptions GetStateTransitionOption(IArmedLauncherArmAnimationDefinitions.Transition transition)
         {

@@ -39,7 +39,7 @@ namespace Tests.Weapons_New.Sword
         }
         private void OnValidate()
         {
-            if (!Application.isPlaying)
+            if (_material != null)
                 Value = _value;
         }
 

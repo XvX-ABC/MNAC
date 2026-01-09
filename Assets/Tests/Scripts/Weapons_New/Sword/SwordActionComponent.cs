@@ -7,9 +7,12 @@ namespace Tests.Weapons_New.Sword
     {
         protected Sword sword;
         protected internal float multiplier;
+        float _duration;
         SwordAction _ownerAction;
 
         protected abstract SwordActionType actionType { get; }
+        protected internal virtual float duration { get => _duration; set => _duration = value; }
+
         protected override void Awake()
         {
             base.Awake();

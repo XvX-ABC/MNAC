@@ -20,5 +20,7 @@ namespace Tests.Characters.Humanoid.Locomotion
         public ushort PostureEvaluationFramesAmount => _definitions.PostureEvaluationFramesAmount;
 
         public ILocomotionAnimatorDefinitions Animation => _definitions.Animation;
+
+        public IMutativeDragDefinitions MutativeDrag => ((ILocomotionDefinitions)_definitions).MutativeDrag;
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace Tests.Interaction
@@ -18,7 +19,7 @@ namespace Tests.Interaction
         {
             _processingAmountOfFrames = processingAmountInCoroutine;
             _camera = camera ?? throw new ArgumentNullException(nameof(camera));
-            InteractionManager.itemRemovedAction += item => RemoveItemImpl(item.Obj); //TODO: ???
+            InteractionManager.itemRemovedAction += item => RemoveItemImpl(item.Obj); //TODO: 啥意思???
         }
         public Camera Camera { get => _camera; set => _camera = value ?? throw new NullReferenceException(nameof(_camera)); }
         public ushort ProcessingAmountOfFrames { get => _processingAmountOfFrames; set => _processingAmountOfFrames = value; }
@@ -82,6 +83,8 @@ namespace Tests.Interaction
                 return;
             var obj = item.Obj;
             var planes = GeometryUtility.CalculateFrustumPlanes(_camera);
+            if (obj == null)
+                return;
             if (caughtItems.Contains(obj))
             {
                 if (!GeometryUtility.TestPlanesAABB(planes, nitem.Bounds))

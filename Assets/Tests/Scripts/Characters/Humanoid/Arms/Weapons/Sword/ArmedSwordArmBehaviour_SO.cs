@@ -29,7 +29,6 @@ using Transition = Tests.Behaviours.Arms.Weapons.Sword.Animations.IArmedSwordArm
 namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 {
     [CreateAssetMenu(fileName = "ArmedSwordArmBehaviour", menuName = "Tests/Behaviours/Characters/Humanoid/Arms/Weapons/Sword/ArmedSwordArmBehaviour")]
-    [Obsolete]
     public class ArmedSwordArmBehaviour_SO : ArmedWeaponArmBehaviourBase_SO
     {
         #region internal classes
@@ -178,7 +177,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         internal BoostingHelper boostingHelper;
         internal SlashHelper slashHelper;
 
-        WithCallbackPlayableStatemachine<object> _statemachine;
+        WithCallbackPlayableStatemachine<object> _occupationStatemachine;
         SwordBoosting _swordBoostingState;
         SwordSlash _swordSlashState;
 
@@ -186,7 +185,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
 
         TeamMask _teamMask;
 
-        ArmOccupation _armOccupation;
+        ArmsOccupation _armsOccupation;
 
 
         UIControl _uiControl;
@@ -234,6 +233,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 base.Weapon = value;
                 if (value is ISword sword)
                 {
+
                     var extensionAction = sword.GetSwordAction(SwordActionType.Extension);
                     var slashAction = sword.GetSwordAction(SwordActionType.Slash);
                     if (_swordBoostingState != null)
@@ -245,6 +245,14 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                         _swordSlashState.ExtensionAction = extensionAction;
                         _swordSlashState.SlashAction = slashAction;
                     }
+
+                    if (blackboard.TryReadValue<HumanoidBodyParts>(CharacterBlackboardFields.Character_BodyParts, out var bodyParts))
+                    {
+                        var chestObj = bodyParts.GetItem((uint)HumanBodyPart.Chest);
+                        sword.OwnerObj = chestObj;
+                    }
+
+
                     sword.TeamMask = _teamMask;
                     _sword = sword;
                 }
@@ -288,7 +296,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             blackboard.TryReadValueOrThrowException<PlayableGraph>(CharacterBlackboardFields.Character_Animation_Graph, out var graph);
             blackboard.TryReadValueOrThrowException<ControllerPlayable>(CharacterBlackboardFields.Character_Animation_Whole_Body_Animator, out var controller);
             blackboard.TryReadValueOrThrowException<GameObject>(CharacterBlackboardFields.Character_Obj_Arm_Local, out var armObj);
-            blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Component_TargetLocker, out _targetLocker);
+            blackboard.TryReadValueOrThrowException(CharacterBlackboardFields.Character_Components_TargetLocker, out _targetLocker);
 
 
 
@@ -322,6 +330,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             slashHelper = new SlashHelper(locomotionCore.internalCore, rotationLocker, _definitions.Slash.Duration, _definitions.Slash.RecoveryDuration);
             var mixer = InitializeMixer(graph, controller);
             _animator = new(
+                Part,
                 graph,
                 controller,
                 mixer,
@@ -389,17 +398,18 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             locomotionStatemachine.AddTransitionFor(s_m);
 
 
-            var anotherArmCoreField = GetAnotherArmCoreField();
+            var anotherArmControllerField = GetAnotherArmCoreField();
 
-            if (blackboard.TryReadValue<ArmController>(anotherArmCoreField, out var anotherArmCore))
-            {
-                WhenAnotherArmEnable(FieldEventType.Writing, null, anotherArmCore);
-            }
-            else
-            {
-                blackboard.TryReadValueOrThrowException<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler);
-                handler.RegisterAction<ArmController>(anotherArmCoreField, WhenAnotherArmEnable);
-            }
+            //if (blackboard.TryReadValue<ArmController>(anotherArmControllerField, out var anotherArmCore))
+            //{
+            //    WhenAnotherArmEnable(FieldEventType.Writing, null, anotherArmCore);
+            //}
+            //else
+            //{
+            //blackboard.TryReadValueOrThrowException<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler);
+            //handler.RegisterAction_Obsolete<ArmController>(anotherArmCoreField, WhenAnotherArmEnable);
+            GetAnotherArmController(anotherArmControllerField);
+            //}
 
 
             if (blackboard.TryReadUIValue<PlayerCursorIndicator>(CharacterUIBlackboardFields.Player_Cursor_Indicator, out var indicator)
@@ -413,12 +423,20 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             this.Activated = this.Activated;
 
         }
+        void GetAnotherArmController(Guid fieldID)
+        {
+            if (blackboard.TryReadValue<ArmController>(fieldID, out var anotherController))
+            {
+                WhenAnotherArmEnable(FieldEventType.Writing, null, anotherController);
+            }
+            blackboard.RegisterFieldChangeAction<ArmController>(fieldID, WhenAnotherArmEnable);
+        }
         void WhenAnotherArmEnable(FieldEventType type, ArmController _, ArmController no)
         {
             if (type != FieldEventType.Register && type != FieldEventType.Writing)
                 return;
             var core = no;
-            if (_statemachine == null)
+            if (_occupationStatemachine == null)
             {
 
                 var currentField = Part switch
@@ -435,43 +453,39 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 InitializeStatemachine(anotherArmCore, boostingHelper, slashHelper);
             }
             else if (no == null)
-                _statemachine.Enabled = false;
+                _occupationStatemachine.Enabled = false;
             else
             {
-                var otherArm = _armOccupation.anotherArm;
-                otherArm.ArmCore = core;
-                _statemachine.Enabled = true;
+                var unoccupited = _armsOccupation.unoccupited;
+                unoccupited.ArmController = core;
+                _occupationStatemachine.Enabled = true;
             }
 
 
         }
-        /// <summary>
-        /// UNDONE: 与另一条手臂的协调逻辑
-        /// 问题：
-        /// - 过渡时间如何定义 （DONE）
-        /// - 还没支持另一条手臂被抢占时，动画的过渡
-        /// </summary>
-        void InitializeStatemachine(ArmController anotherArmCore, BoostingHelper boostingHelper, SlashHelper slashHelper)
+        void InitializeStatemachine(ArmController anotherArmController, BoostingHelper boostingHelper, SlashHelper slashHelper)
         {
-            if (anotherArmCore == null)
+            if (anotherArmController == null)
                 return;
-            _statemachine = new("arm_occupation");
+            _occupationStatemachine = new("arm_occupation");
 
-            var anotherArm = new AnotherArm(anotherArmCore, "another_arm");
-            var currentArm = new CurrentArm(anotherArmCore, "current_arm");
+            var unoccupited = new Unoccupied(anotherArmController, "unoccupited");
 
-            _statemachine.AddState(anotherArm);
-            _statemachine.AddState(currentArm);
+            var occupited = new Occupited(anotherArmController, "occupited");
 
-            var oa_c = new BlendingTransition<object>(anotherArm, currentArm, () => _behaviour.Activated && boostingHelper.EntryEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Idle_Boosting));
-            _statemachine.AddTransitionFor(oa_c);
 
-            var c_oa_s = new BlendingTransition<object>(currentArm, anotherArm, () => _behaviour.Activated && slashHelper.ExitEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Slash_Idle));
-            var c_oa_b = new BlendingTransition<object>(currentArm, anotherArm, () => _behaviour.Activated && !slashHelper.EntryEvent && boostingHelper.ExitEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Boosting_Idle));
-            _statemachine.AddTransitionFor(c_oa_b);
-            _statemachine.AddTransitionFor(c_oa_s);
+            _occupationStatemachine.AddState(unoccupited);
+            _occupationStatemachine.AddState(occupited);
 
-            _armOccupation = new() { currentArm = currentArm, anotherArm = anotherArm };
+            var oa_c = new BlendingTransition<object>(unoccupited, occupited, () => _behaviour.Activated && boostingHelper.EntryEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Idle_Boosting));
+            _occupationStatemachine.AddTransitionFor(oa_c);
+
+            var c_oa_s = new BlendingTransition<object>(occupited, unoccupited, () => _behaviour.Activated && slashHelper.ExitEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Slash_Idle));
+            var c_oa_b = new BlendingTransition<object>(occupited, unoccupited, () => _behaviour.Activated && !slashHelper.EntryEvent && boostingHelper.ExitEvent, null, _animationDefinitions.GetTransitionOptions(Transition.Boosting_Idle));
+            _occupationStatemachine.AddTransitionFor(c_oa_b);
+            _occupationStatemachine.AddTransitionFor(c_oa_s);
+
+            _armsOccupation = new() { occupited = occupited, unoccupited = unoccupited };
 
         }
         WholeBodyMixerPlayable InitializeMixer(PlayableGraph graph, ControllerPlayable baseController)
@@ -515,77 +529,78 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         };
         public override void Dispose()
         {
+
             var field = Part switch
             {
                 HumanBodyPart.LeftArm => MountPointFields.Left_Chest_Trigger,
                 HumanBodyPart.RightArm => MountPointFields.Right_Chest_Trigger,
                 _ => throw new Exception(),
             };
-            _uiControl.Dispose();
-            base.Dispose();
-            //blackboard.TryUnregisterField(CharacterBlackboardFields.TargetLocker);
             blackboard.TryGetMountPointOrThrowException(field, out var mountPoint);
 
-            blackboard.TryReadValueOrThrowException<FieldChangeHandler>(CharacterBlackboardFields.FieldChangeHandler, out var handler);
             field = GetAnotherArmCoreField();
-            handler.UnregisterAction<ArmController>(field, WhenAnotherArmEnable);
+            blackboard.UnregisterFieldChangeAction<ArmController>(field, WhenAnotherArmEnable);
 
             mountPoint.Load = null;
+            _uiControl.Dispose();
+            base.Dispose();
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
-            _statemachine?.OnEnter();
+            _occupationStatemachine?.OnEnter();
         }
 
         public override void OnUpdate()
         {
             base.OnUpdate();
-            _statemachine?.OnUpdate();
+            _occupationStatemachine?.OnUpdate();
+            Debug.Log(_occupationStatemachine);
         }
 
         public override void OnExit()
         {
-            _statemachine?.OnExit();
+            _occupationStatemachine?.OnExit();
             base.OnExit();
         }
 
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
-            _statemachine?.ChangeStateTo(_armOccupation.anotherArm);
-            _statemachine?.FromPreviousStateTransitionBegin(currentTransition);
+            _occupationStatemachine?.ChangeStateTo(_armsOccupation.unoccupited);
+
+            //_occupationStatemachine?.FromPreviousStateTransitionBegin(currentTransition);
         }
 
         public override void FromPreviousStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionRunning(currentTransition);
-            _statemachine?.FromPreviousStateTransitionRunning(currentTransition);
+            //_occupationStatemachine?.FromPreviousStateTransitionRunning(currentTransition);
         }
 
         public override void FromPreviousStateTransitionEnd(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionEnd(currentTransition);
-            _statemachine?.FromPreviousStateTransitionEnd(currentTransition);
+            //_occupationStatemachine?.FromPreviousStateTransitionEnd(currentTransition);
         }
 
         public override void ToNextStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.ToNextStateTransitionBegin(currentTransition);
-            _statemachine?.ToNextStateTransitionBegin(currentTransition);
+            //_occupationStatemachine?.ToNextStateTransitionBegin(currentTransition);
         }
 
         public override void ToNextStateTransitionRunning(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.ToNextStateTransitionRunning(currentTransition);
-            _statemachine?.ToNextStateTransitionRunning(currentTransition);
+            //_occupationStatemachine?.ToNextStateTransitionRunning(currentTransition);
         }
 
         public override void ToNextStateTransitionEnd(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.ToNextStateTransitionEnd(currentTransition);
-            _statemachine?.ToNextStateTransitionEnd(currentTransition);
+            //_occupationStatemachine?.ToNextStateTransitionEnd(currentTransition);
         }
 
     }

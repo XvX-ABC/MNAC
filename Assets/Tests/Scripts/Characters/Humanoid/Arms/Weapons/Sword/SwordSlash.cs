@@ -15,7 +15,16 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         SwordAction _slashAction;
 
         public SwordAction ExtensionAction { get => _extensionAction; set => _extensionAction = value; }
-        public SwordAction SlashAction { get => _slashAction; set => _slashAction = value; }
+        public SwordAction SlashAction
+        {
+            get => _slashAction;
+            set
+            {
+                if (value != null)
+                    value.Duration = _helper.slashDuration;
+                _slashAction = value;
+            }
+        }
 
         public SwordSlash(SlashHelper slashHelper) : base("sword_slash", 0)
         {
@@ -26,13 +35,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             var v = length > 0 ? _helper.slashDuration / length : 0;
             this.timeline.AddPointEvent(v, _ =>
             {
-                if (_extensionAction != null)
-                {
-                    _extensionAction.Multiplier = _oldMultiplier;
-                    _extensionAction.Enabled = false;
-                }
-                if (_slashAction != null)
-                    _slashAction.Enabled = false;
+                DisableSlashAction();
             });
         }
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
@@ -43,6 +46,11 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         public override void OnEnter()
         {
             base.OnEnter();
+            EnableSlashActions();
+            timeline.Restart();
+        }
+        void EnableSlashActions()
+        {
             if (_extensionAction != null)
             {
                 _oldMultiplier = _extensionAction.Multiplier;
@@ -51,7 +59,16 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
             }
             if (_slashAction != null)
                 _slashAction.Enabled = true;
-            timeline.Restart();
+        }
+        void DisableSlashAction()
+        {
+            if (_extensionAction != null)
+            {
+                _extensionAction.Multiplier = _oldMultiplier;
+                _extensionAction.Enabled = false;
+            }
+            if (_slashAction != null)
+                _slashAction.Enabled = false;
         }
         public override void OnUpdate()
         {
@@ -61,6 +78,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
         public override void OnExit()
         {
             _helper.slashing = false;
+            if (_extensionAction != null && _extensionAction.Enabled)
+                DisableSlashAction();
             timeline.End();
             base.OnExit();
         }

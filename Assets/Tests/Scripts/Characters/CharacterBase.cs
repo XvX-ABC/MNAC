@@ -67,10 +67,11 @@ namespace Tests.Characters
         internal Blackboard blackboard;
         internal InfluenceCore influenceCore;
         internal CharacterComponent[] components;
+        internal List<Collider> colliders;
         internal List<CharacterAccessor> accessors;
-        CharacterBehavioursStatemachine _statemachine;
-        CharacterAnimationStateMachine _animationStatemachine;
-        CAnimator _animator;
+        internal CharacterBehavioursStatemachine _statemachine;
+        internal CharacterAnimationStateMachine _animationStatemachine;
+        internal CAnimator _animator;
         internal bool allowAnimationInitialization { get => _animator != null; }
         protected abstract Bounds bounds { get; }
         public CharacterBase()
@@ -81,10 +82,11 @@ namespace Tests.Characters
         internal abstract CharacterAccessor SetAccessorToObj(GameObject obj);
         protected virtual void Awake()
         {
-            influenceCore = CreateInfluenceCore();
+            influenceCore = CreateInfluences();
             blackboard = CreateBlackboard();
             components = GetComponents();
             accessors = new();
+            colliders = GetComponentsInChildren<Collider>().ToList();
             if (TryGetComponent<Animator>(out var animator))
             {
                 _animator = new(gameObject, animator, blackboard);
@@ -115,7 +117,7 @@ namespace Tests.Characters
         }
         protected virtual void OnDisable()
         {
-            _animator?.Stop();
+            //_animator?.Stop();
             if (_statemachine != null)
                 _statemachine.Enabled = false;
             if (_animationStatemachine != null)
@@ -127,6 +129,7 @@ namespace Tests.Characters
         {
             _statemachine.OnUpdate();
             _animationStatemachine?.OnUpdate();
+            //Debug.Log(this.gameObject.name + ", " + _statemachine);
         }
         protected virtual void OnDestroy()
         {
@@ -138,7 +141,7 @@ namespace Tests.Characters
             var a = attrs.FirstOrDefault(a => a is InteractableAttribute);
             if (a != null)
             {
-                _item = new InteractableItem(ID, gameObject, bounds);
+                _item = new InteractableItem(ID, gameObject, () => this.bounds);
                 InteractionManager.AddItem(_item);
             }
         }
@@ -155,7 +158,7 @@ namespace Tests.Characters
             blackboard.TryRegisterField(CharacterBlackboardFields.Character_Influence_Core, influenceCore);
             return blackboard;
         }
-        internal abstract InfluenceCore CreateInfluenceCore();
+        internal abstract InfluenceCore CreateInfluences();
         internal abstract CharacterComponent[] GetComponents();
         internal virtual void InitializeComponents(Blackboard blackboard)
         {
@@ -187,7 +190,6 @@ namespace Tests.Characters
         }
         protected virtual void SetAccessorsForChildrenColliders()
         {
-            var colliders = GetComponentsInChildren<Collider>();
             foreach (var c in colliders)
             {
                 var obj = c.gameObject;
@@ -203,5 +205,7 @@ namespace Tests.Characters
         internal abstract CharacterBehavioursStatemachine CreateStatemachine();
         internal abstract AnimationPlayablePartBase GetMainAnimationPlayablePart();
         internal virtual CharacterAnimationStateMachine CreateAnimationStatemachine(CAnimator animator) { return null; }
+        [Obsolete]
+        internal virtual void ResetStates() { }
     }
 }

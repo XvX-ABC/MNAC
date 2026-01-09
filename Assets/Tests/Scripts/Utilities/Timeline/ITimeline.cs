@@ -28,5 +28,6 @@ namespace Tests.Utilities.Timeline
         bool SetTime(float time, bool runningCheck = true);
         void End();
         void Reset();
+        void RemoveAll();
     }
 }

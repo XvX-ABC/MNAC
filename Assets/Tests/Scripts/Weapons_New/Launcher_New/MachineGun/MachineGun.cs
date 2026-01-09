@@ -30,10 +30,5 @@ namespace Tests.Weapons_New.Launcher
         {
             _bulletPool.Release(projectile as Bullet);
         }
-        protected override void Update()
-        {
-            base.Update();
-            //Debug.Log(statemachine);
-        }
     }
 }

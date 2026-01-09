@@ -1,12 +1,13 @@
 ﻿using System;
+using Tests.Characters.Humanoid.Arms;
 using Tests.Utilities.MountPoints;
 using Tests.Utilities.Timeline;
-using Tests.Weapons;
-using UnityEngine;
 using Tests.Utilities.Timeline.Events.Point;
+using Tests.Weapons;
 using Tests.Weapons_New;
-using Tests.Characters.Weapons;
-using WeaponBackpack = Tests.Weapons_New.WeaponBackpack;
+using UnityEngine;
+using MountPoint = Tests.Utilities.MountPoints.MountPoint;
+using WeaponBackpack = Tests.Characters.Weapons.WeaponBackpack;
 namespace Tests.Behaviours.Arms.Weapons
 {
 
@@ -16,59 +17,20 @@ namespace Tests.Behaviours.Arms.Weapons
         MountPoint _launcherMountPoint;
         MountPoint _swordMountPoint;
         WeaponBackpack _weaponBackpack;
-        [Obsolete]
-        Weapons_New.WeaponCore_Obsolete _weaponCore;
         Func<WeaponDescription[], string> _selectionFunc;
 
         internal ITimeline timeline;
         IWeapon _currentWeapon;
-        GameObject _currentWeaponObj;
         DefaultWeaponSelector _defaultSelector;
-        Func<IWeapon, IWeapon, IWeapon> _switchingEvent;
+        Action<IWeapon, IWeapon> _switchedEvent_new;
+        ArmController _ownerArmController;
 
-        public Func<IWeapon, IWeapon, IWeapon> SwitchingEvent
+        public Action<IWeapon, IWeapon> SwitchedEvent
         {
-            get => _switchingEvent;
+            get => _switchedEvent_new;
             set
             {
-                _switchingEvent = value;
-                if (value != null)
-                {
-
-                    _swordMountPoint.LoadObjChangeFunc = _launcherMountPoint.LoadObjChangeFunc = (ol, nl) =>
-                      {
-                          var ow = default(IWeapon);
-                          var nw = default(IWeapon);
-                          if (ol != null)
-                          {
-                              var ob = ol.Obj;
-                              ow = ob.GetComponent<IWeapon>() ?? throw new ComponentCantFindException(ob, typeof(IWeapon));
-                              ob.SetActive(false);
-                          }
-                          if (nl != null)
-                          {
-                              var nb = nl.Obj;
-                              nw = nb.GetComponent<IWeapon>() ?? throw new ComponentCantFindException(nb, typeof(IWeapon));
-                              nb.SetActive(true);
-                          }
-                          var w = _switchingEvent?.Invoke(ow, nw);
-
-                          //var result = default(GameObject);
-                          //if (w == ow)
-                          //{
-                          //    result = ob;
-                          //}
-                          //else
-                          //{
-                          //    ob?.SetActive(false);
-                          //    nb?.SetActive(true);
-                          //    result = nb;
-                          //}
-                          return nl;
-                      };
-                }
-                else
-                    _launcherMountPoint.LoadObjChangeFunc = null;
+                _switchedEvent_new = value;
             }
         }
 
@@ -86,37 +48,10 @@ namespace Tests.Behaviours.Arms.Weapons
 
         public IWeapon CurrentWeapon { get => _currentWeapon; }
 
-        [Obsolete]
-        protected internal WeaponSwitching(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, Weapons_New.WeaponCore_Obsolete weaponCore, Func<WeaponDescription[], string> selectionFunc = null)
+
+        internal WeaponSwitching(ArmController ownerArmController, IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, WeaponBackpack weaponBackpack, Func<WeaponDescription[], string> selectionFunc = null)
         {
-            this.definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
-            _launcherMountPoint = launcherMountPoint ?? throw new ArgumentNullException(nameof(launcherMountPoint));
-            _swordMountPoint = swordMountPoint ?? throw new ArgumentNullException(nameof(swordMountPoint));
-            timeline = new Timeline_V1(this.definitions.Switching.DurationTime);
-            timeline.AddPointEvent(this.definitions.Switching.MountedProportion, ChangeWeapon);
-
-
-            _weaponCore = weaponCore ?? throw new NullReferenceException(nameof(weaponCore));
-
-
-            //foreach (var origin in definitions.Origins)
-            //{
-            //    if (!_weaponCore.ContainsOrigin(origin.Name))
-            //        throw new WeaponNotContainsException(_weaponCore, origin.Name);
-            //}
-
-
-            if (selectionFunc == null)
-            {
-                _defaultSelector = new();
-                _selectionFunc = _defaultSelector.Select;
-            }
-            else
-                _selectionFunc = selectionFunc;
-        }
-
-        internal WeaponSwitching(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, WeaponBackpack weaponBackpack, Func<WeaponDescription[], string> selectionFunc = null)
-        {
+            _ownerArmController = ownerArmController ?? throw new ArgumentNullException(nameof(ownerArmController));
             this.definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
             _launcherMountPoint = launcherMountPoint ?? throw new ArgumentNullException(nameof(launcherMountPoint));
             _swordMountPoint = swordMountPoint ?? throw new ArgumentNullException(nameof(swordMountPoint));
@@ -126,14 +61,6 @@ namespace Tests.Behaviours.Arms.Weapons
 
             _weaponBackpack = weaponBackpack ?? throw new NullReferenceException(nameof(weaponBackpack));
 
-
-            //foreach (var origin in definitions.Origins)
-            //{
-            //    if (!_weaponCore.ContainsOrigin(origin.Name))
-            //        throw new WeaponNotContainsException(_weaponCore, origin.Name);
-            //}
-
-
             if (selectionFunc == null)
             {
                 _defaultSelector = new();
@@ -141,16 +68,42 @@ namespace Tests.Behaviours.Arms.Weapons
             }
             else
                 _selectionFunc = selectionFunc;
+
+
+            _swordMountPoint.LoadObjChangeFunc = _launcherMountPoint.LoadObjChangeFunc = (ol, nl) =>
+            {
+                if (ol != null)
+                {
+                    var ob = ol.Obj;
+                    ob.SetActive(false);
+                }
+                if (nl != null)
+                {
+                    var nb = nl.Obj;
+                    nb.SetActive(true);
+                }
+                return nl;
+            };
         }
+
+
         public void SetDefaultWeapon()
         {
             ChangeWeapon(default);
         }
         protected void ChangeWeapon(TimelineContext _)
         {
-            var newWeapon = GetWeapon();
-            if (newWeapon == _currentWeapon)
-                return;
+            var name = _selectionFunc(definitions.Origins);
+            if (_currentWeapon != null)
+            {
+                if (name == _currentWeapon.Name)
+                {
+                    _switchedEvent_new?.Invoke(_currentWeapon, _currentWeapon);
+                    return;
+                }
+                PutBackWeapons(_currentWeapon);
+            }
+            var newWeapon = GetWeaponBy(name);
             var newWeaponObj = newWeapon.Obj;
             var type = newWeapon.Type;
             switch (type)
@@ -164,29 +117,20 @@ namespace Tests.Behaviours.Arms.Weapons
                     _launcherMountPoint.Load = null;
                     break;
             }
-            if (_currentWeapon != null)
-                PutBackWeapons(_currentWeapon);
+
+            _switchedEvent_new?.Invoke(_currentWeapon, newWeapon);
             _currentWeapon = newWeapon;
         }
-        [Obsolete]
-        protected IWeapon GetWeapon_Obsolete()
+        internal IWeapon GetWeaponBy(string name)
         {
-            var name = _selectionFunc(definitions.Origins);
-            if (!_weaponCore.TryGetWeapon(name, out var weapon))
-                throw new WeaponObjGetFailedByName(name);
-            return weapon;
-        }
-        internal IWeapon GetWeapon()
-        {
-            var name = _selectionFunc(definitions.Origins);
-            var weapon = _weaponBackpack.GetWeapon(name);
+            var weapon = _weaponBackpack.GetWeapon(_ownerArmController.bodyPart, name);
             if (weapon == null)
                 throw new WeaponObjGetFailedByName(name);
             return weapon;
         }
         internal void PutBackWeapons(IWeapon weapon)
         {
-            _weaponBackpack.PutWeapon(weapon.Name, weapon);
+            _weaponBackpack.PutWeapon(_ownerArmController.bodyPart, weapon.Name, weapon);
         }
         public void Begin()
         {
@@ -196,11 +140,6 @@ namespace Tests.Behaviours.Arms.Weapons
         {
             timeline.OnUpdate(Time.deltaTime);
         }
-        //public void End()
-        //{
-        //    timeline.End();
-        //    timeline.Reset();
-        //}
         public void End()
         {
             timeline.EndEarly();

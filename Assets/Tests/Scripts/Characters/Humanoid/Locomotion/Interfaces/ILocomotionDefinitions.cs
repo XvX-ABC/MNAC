@@ -9,6 +9,8 @@ namespace Tests.Characters.Humanoid.Locomotion
         public IJumpDefinitions Jump { get; }
         public IQuickBoostingDefinitions QuickBoosting { get; }
         public ushort PostureEvaluationFramesAmount { get; }
+        public IMutativeDragDefinitions MutativeDrag { get; }
         public Animations.ILocomotionAnimatorDefinitions Animation { get; }
+
     }
 }

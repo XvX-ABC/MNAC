@@ -1,8 +1,10 @@
-﻿using Tests.Characters.Animations;
+﻿using System;
+using Tests.Characters.Animations;
 using UnityEngine;
 
 namespace Tests.Characters.Humanoid.Animations
 {
+    [Obsolete]
     [CreateAssetMenu(fileName = "HumanoidAnimationDefinitions", menuName = SOHelper.DEFINITIONS_MENU_NAME + "/Animation/HumanoidAnimationDefinitions")]
     public class HumanoidAnimationDefinitions_SO : ScriptableObject, IHumanAnimationDefinitions
     {
@@ -13,8 +15,5 @@ namespace Tests.Characters.Humanoid.Animations
 
         public IHumanArmAnimationDefinitions RightArmDefinitions => _definitions.RightArmDefinitions;
 
-        public IStunningAnimationDefinitions Stunning => _definitions.Stunning;
-
-        public IDeathAnimationDefinitions Death => _definitions.Death;
     }
 }

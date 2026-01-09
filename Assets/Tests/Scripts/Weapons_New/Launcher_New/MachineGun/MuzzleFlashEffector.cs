@@ -78,7 +78,7 @@ namespace Tests.Weapons_New.Launcher
             StopFlame();
         }
 
-        protected override void WhenBeforeLaunch(ILauncher launcher)
+        protected override void WhenLaunchBefore(ILauncher launcher)
         {
             if (!enabled)
                 return;

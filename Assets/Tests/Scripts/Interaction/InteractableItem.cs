@@ -8,12 +8,12 @@ namespace Tests.Interaction
     {
         Guid _id;
         GameObject _obj;
-        Bounds _bounds;
-        public InteractableItem(Guid id, GameObject obj, Bounds bounds)
+        Func<Bounds> _boundsGetFunc;
+        public InteractableItem(Guid id, GameObject obj, Func<Bounds> boundsGetFunc)
         {
             _id = id;
             _obj = obj;
-            _bounds = bounds;
+            _boundsGetFunc = boundsGetFunc ?? throw new ArgumentNullException(nameof(boundsGetFunc));
         }
         public InteractableItem() : this(Guid.NewGuid(), null, default)
         {
@@ -22,6 +22,6 @@ namespace Tests.Interaction
 
         public Guid ID => _id;
 
-        public Bounds Bounds => _bounds;
+        public Bounds Bounds => _boundsGetFunc();
     }
 }

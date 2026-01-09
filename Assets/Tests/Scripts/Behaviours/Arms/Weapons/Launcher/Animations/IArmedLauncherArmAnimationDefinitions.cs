@@ -18,6 +18,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
         float ReloadClipLength { get; }
         string ReloadTrigger { get; }
         string ReloadMultiplier { get; }
+        string MirrorSwitch { get; }
 
         public StateTransitionOptions GetStateTransitionOption(Transition transition);
     }

@@ -11,7 +11,11 @@ namespace Tests.UI
     {
         protected RectTransform rectTransform;
         [SerializeField]
+        RectTransform _parent;
+        [SerializeField]
         protected float width;
+        [SerializeField]
+        Camera _camera;
         public virtual float Width
         {
             get => width;
@@ -26,7 +30,11 @@ namespace Tests.UI
             get => rectTransform.position;
             set
             {
-                rectTransform.position = value;
+                //rectTransform.position = value;
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(_parent, value, _camera, out Vector2 localPoint))
+                {
+                    rectTransform.localPosition = localPoint;
+                }
             }
         }
         public override bool Enabled
@@ -43,6 +51,8 @@ namespace Tests.UI
                     this.gameObject.SetActive(value);
             }
         }
+
+        public Camera Camera { get => _camera; set => _camera = value; }
 
         protected override void Awake()
         {

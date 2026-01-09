@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Tests.Behaviours.Arms.Weapons.Sword.Animations;
+using Tests.Characters.Humanoid;
 using Tests.Interaction;
 using Tests.States;
 using Tests.TPhysics.Locomotion;
@@ -57,9 +58,9 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
 
         public override IArmedWeaponArmAnimationPlayablePart Animator => animator;
 
-        public override Func<bool> EntryFunc => () => this.enabled;
+        public override Func<bool> ActivationTrigger => () => this.enabled;
 
-        public override Func<bool> ExitFunc => () => !this.enabled;
+        public override Func<bool> UnactivationTrigger => () => !this.enabled;
 
         public override IWithCallbackPlayableState<object> State => _state;
         public ISphericalObjsTrigger TargetsTrigger
@@ -103,6 +104,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
                 _layerMaskToHit = value;
             }
         }
+
 
         public ArmedSwordArmBehaviour(IArmedSwordArmBehaviourDefinitions definitions, BoostingHelper boostingHelper, SlashHelper slashHelper, ArmedSwordArmAnimator animator)
         {
@@ -152,9 +154,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
         }
         public override void BehaviourOnUpdate()
         {
-            Debug.Log(statemachine);
             boostingHelper.Update();
-            animator.Update();
 
         }
     }

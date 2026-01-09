@@ -15,27 +15,15 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
     {
         protected ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> controller;
         internal Behaviours.Arms.Animations.ArmAnimationCore animationCore;
-        [Obsolete]
-        protected internal ArmedWeaponArmBehaviourControllerState(ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> controller) : base("weapon_armed_behaviour", 0)
-        {
-            this.controller = controller ?? throw new ArgumentNullException(nameof(controller));
-        }
         protected internal ArmedWeaponArmBehaviourControllerState(ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> controller, HumanBodyPart part) : base("weapon_armed_behaviour", 0)
         {
             this.controller = controller ?? throw new ArgumentNullException(nameof(controller));
             InitializeBehaviours(this.controller.behavioursCache, part);
         }
-        [Obsolete]
-        public ArmedWeaponArmBehaviourControllerState(WeaponCore_Obsolete weaponCore, IArmedWeaponArmDefinitions definitions, params IArmedWeaponArmBehaviour[] behaviours) : this(new((Weapons_New.WeaponCore_Obsolete)weaponCore, definitions, behaviours))
-        {
-        }
-        public ArmedWeaponArmBehaviourControllerState(WeaponCore_Obsolete weaponCore, IArmedWeaponArmDefinitions definitions, HumanBodyPart part, params IArmedWeaponArmBehaviour[] behaviours) : this(new((Weapons_New.WeaponCore_Obsolete)weaponCore, definitions, behaviours), part)
-        {
-        }
         public Action<IWeapon, IArmedWeaponArmBehaviour> ActivatedAction { get => controller.ActivatedAction; set => controller.ActivatedAction = value; }
         public Action<IWeapon, IArmedWeaponArmBehaviour> UnactivatedAction { get => controller.UnactivatedAction; set => controller.UnactivatedAction = value; }
-        public Func<bool> EntryFunc { get => controller.EntryFunc; }
-        public Func<bool> ExitFunc { get => controller.ExitFunc; }
+        public Func<bool> ActivationTrigger { get => controller.ActivationTrigger; }
+        public Func<bool> UnactivationTrigger { get => controller.UnactivationTrigger; }
 
         IReadOnlyDictionary<string, IArmedWeaponArmBehaviour> IArmedWeaponArmBehavioursController<IArmedWeaponArmBehaviour>.Behaviours => controller.weaponBehavioursMapping;
         internal IArmedWeaponArmBehaviour currentActivatedBehaviour => controller.currentActivatedBehaviour;

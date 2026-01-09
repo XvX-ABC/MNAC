@@ -8,7 +8,6 @@ using IProjectile = Tests.Weapons_New.Projectiles.IProjectile;
 
 namespace Tests.Weapons_New.Launcher
 {
-    //DONE: 使用状态机重写发射器逻辑
     internal abstract class Launcher : Weapon, ILauncher
     {
 
@@ -52,7 +51,7 @@ namespace Tests.Weapons_New.Launcher
         [SerializeField]
         Transform _muzzleTrans;
         [SerializeField]
-        bool _launchWhenEnter;
+        bool _launchImmediatelyWhenEnter;
         [SerializeField]
         LauncherComponent[] _subComponents;
         Blackboard _blackboard;
@@ -180,7 +179,7 @@ namespace Tests.Weapons_New.Launcher
         }
         protected virtual bool CanReload()
         {
-            return reloadTrigger == null ? false : ammo.MagazineAmount != definitions.AmmoInMagazineAmount && reloadTrigger();
+            return reloadTrigger == null ? false : (ammo.ReserveAmount > 0 && ammo.MagazineAmount != definitions.AmmoInMagazineAmount) && reloadTrigger();
         }
         protected internal virtual IProjectile Launch()
         {

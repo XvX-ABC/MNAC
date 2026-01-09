@@ -21,7 +21,7 @@ namespace Tests.TPhysics.Locomotion
         {
             TransitionalDuration = transitionalDuration;
             _timeline = new Timeline_V2(_transitionalDuration);
-            _timeline.AddRangeEvent(0, 1, UpdateMass);
+            _timeline.AddRangeEvent(0, 1, UpdateDrag);
             _range = range;
         }
 
@@ -45,7 +45,7 @@ namespace Tests.TPhysics.Locomotion
             _timeline.OnUpdate(Time.deltaTime);
             return context;
         }
-        void UpdateMass(TimelineContext ctx)
+        void UpdateDrag(TimelineContext ctx)
         {
             var t = ctx.NormalizedTime;
             var m = Mathf.Lerp(_range.x, _range.y, t);

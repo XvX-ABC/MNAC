@@ -48,39 +48,9 @@ namespace Tests.TPhysics.Locomotion
         }
         public override Context OnStart(Context context)
         {
-            //return OnUpdate(context);
             return context;
         }
         public override Context OnUpdate(Context context)
-        {
-            //return OnUpdate_0(context);
-            return OnUpdate_1(context);
-        }
-        public Context OnUpdate_0(Context context)
-        {
-            var up = world.Up;
-            if (context.GroundDetector.Grounds.Count > 0)
-            {
-                up = context.GroundDetector.GroundsNormal;
-            }
-            var direction = CalculateDirection(context);
-
-
-            if (direction == Vector3.zero)
-                return context;
-            var velocity = context.CurrentVelocity;
-            var speed = velocity.magnitude;
-
-            //TODO: 完善实现方式
-            var dv = _maxSpeed - speed;
-            var fs = Mathf.Max(0, dv);
-            if (_acceleratedSpeed > 0)
-                fs = Mathf.Min(fs, _acceleratedSpeed) * Time.deltaTime;
-            context.CurrentVelocity += direction * fs;
-            Debug.Log($"dv: {dv}, as: {_acceleratedSpeed}, ms: {_maxSpeed}, fs: {fs},  iv: {(direction * fs).magnitude / Time.deltaTime}, velocity: {context.CurrentVelocity.magnitude}");
-            return context;
-        }
-        public Context OnUpdate_1(Context context)
         {
             var up = world.Up;
             if (context.GroundDetector.Grounds.Count > 0)
@@ -106,7 +76,6 @@ namespace Tests.TPhysics.Locomotion
         }
         public override Context OnEnd(Context context)
         {
-            //return OnUpdate(context);
             return context;
         }
     }

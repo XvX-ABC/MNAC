@@ -12,7 +12,9 @@ namespace Tests.Weapons_New.Sword
         List<SwordActionComponent> _components;
         Sword _owner;
         SwordActionType _type;
+        [Obsolete]
         float _multiplier;
+        float _duration;
         internal SwordAction(Sword owner, SwordActionType type, float multiplier = 1)
         {
             _owner = owner;
@@ -27,7 +29,7 @@ namespace Tests.Weapons_New.Sword
             set
             {
                 foreach (var comp in _components)
-                    comp.enabled = value;
+                    comp.Enabled = value;
                 _enabled = value;
                 if (value)
                     _owner.currentEnabledActions.Add(this);
@@ -37,6 +39,7 @@ namespace Tests.Weapons_New.Sword
         }
 
         public SwordActionType Type { get => _type; set => _type = value; }
+        [Obsolete]
         public float Multiplier
         {
             get => _multiplier;
@@ -48,6 +51,17 @@ namespace Tests.Weapons_New.Sword
             }
         }
 
+        public float Duration
+        {
+            get => _duration;
+            set
+            {
+                foreach (var c in _components)
+                    c.duration = value;
+                _duration = value;
+            }
+        }
+
         internal bool Contains(SwordActionComponent comp)
         {
             return _components.Contains(comp);
@@ -56,6 +70,7 @@ namespace Tests.Weapons_New.Sword
         {
             comp.enabled = _enabled;
             comp.multiplier = _multiplier;
+            comp.duration = _duration;
         }
         internal void AddComponent(SwordActionComponent comp)
         {

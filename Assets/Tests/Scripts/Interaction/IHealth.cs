@@ -1,4 +1,6 @@
-﻿namespace Tests.Interaction
+﻿using NUnit.Framework;
+
+namespace Tests.Interaction
 {
     public interface IHealth : INumerical
     {

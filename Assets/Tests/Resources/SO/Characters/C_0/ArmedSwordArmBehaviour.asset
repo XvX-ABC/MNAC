@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78faa008d606cf040a8bb0479f3f1525, type: 3}
+  m_Name: ArmedSwordArmBehaviour
+  m_EditorClassIdentifier: 
+  _definitions: {fileID: 11400000, guid: 757324632e3c3f342bdb42bbff505aa9, type: 2}
+  _animationDefinitions: {fileID: 11400000, guid: 59623b418ccffa440b542be63b2cda79,
+    type: 2}

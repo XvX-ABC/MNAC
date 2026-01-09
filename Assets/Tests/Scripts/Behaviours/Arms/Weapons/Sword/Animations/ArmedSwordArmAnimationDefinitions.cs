@@ -16,6 +16,8 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         [SerializeField]
         string _velocityName_X;
         [SerializeField]
+        string _mirrorSwitch;
+        [SerializeField]
         ActionDefinitions _boost;
         [SerializeField]
         ActionDefinitions _slash;
@@ -39,6 +41,8 @@ namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
         public ActionDefinitions Boost => _boost;
 
         public ActionDefinitions Slash => _slash;
+
+        public string MirrorSwitch { get => _mirrorSwitch; }
 
         public StateTransitionOptions GetTransitionOptions(IArmedSwordArmAnimationDefinitions.Transition transition)
         {

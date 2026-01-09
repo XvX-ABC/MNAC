@@ -8,7 +8,7 @@ namespace Tests.AI
     {
         static AIBlackboardFields()
         {
-            Component_NavAgent = Guid.NewGuid();
+            Component_NavAgent =  Guid.NewGuid();
             Character_LocomotionCore = CharacterBlackboardFields.Character_Locomotion_Core;
             Character_Obj_Main = CharacterBlackboardFields.Character_Obj_Main;
             Character_Blackboard = Guid.NewGuid();

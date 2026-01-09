@@ -13,6 +13,6 @@ namespace Tests.Utilities.Timeline.Events
         public ushort RemoveEvents(Span<ITimelineEvent> events);
         public void Execute(TimelineContext context);
         public void Reset();
-
+        void RemoveAll();
     }
 }

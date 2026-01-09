@@ -3,6 +3,7 @@ using Tests.TPhysics;
 using Tests.TPhysics.Environment;
 using Tests.Utilities.Blackboards;
 using Tests.Utilities.Composable;
+using UnityEditor.Search;
 using UnityEngine;
 using Core = Tests.TPhysics.Environment.EnvironmentCore;
 namespace Tests.Characters
@@ -66,7 +67,6 @@ namespace Tests.Characters
         }
         private void FixedUpdate()
         {
-
             groundDetector.Position = _rbody?.position ?? this.transform.position;
             groundDetector.OnFixedUpdate();
         }

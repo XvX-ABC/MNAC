@@ -35,12 +35,13 @@ namespace Tests.Characters.Humanoid.Locomotion
         internal WalkingState walking;
         internal JumpLocomotionState jump;
         RotationLocomotionBase _rotationModule;
+        MutativeDragController _mutativeDragControl;
+
 
         internal LocomotionAnimator animator;
 
         internal LCore internalCore => _core;
         internal LContext locomotionContext => _core.Context;
-
         internal RotationLocomotionBase rotationModule
         {
             get => _rotationModule;
@@ -58,23 +59,27 @@ namespace Tests.Characters.Humanoid.Locomotion
             }
         }
 
+        internal MutativeDragController MutativeDragControl
+        {
+            get => _mutativeDragControl;
+        }
+
         protected override void Awake()
         {
             base.Awake();
             definitions = GetComponent<ILocomotionDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(ILocomotionDefinitions));
 
         }
-        //private void OnEnable()
-        //{
-        //    if (statemachine != null)
-        //    {
-        //        statemachine.Enabled = true;
-        //    }
-        //}
-        //private void OnDisable()
-        //{
-        //    statemachine.Enabled = false;
-        //}
+        private void OnEnable()
+        {
+            if (statemachine != null)
+                statemachine.Enabled = true;
+        }
+        private void OnDisable()
+        {
+            if (statemachine != null)
+                statemachine.Enabled = false;
+        }
         void InitializeRigidbody(Rigidbody rbody)
         {
             rbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
@@ -112,6 +117,7 @@ namespace Tests.Characters.Humanoid.Locomotion
             InitializeRotation(camera, rbody, _input.BaseInput);
             InitializeMovementStatemachine();
             InitializeMainStatemachine(rbody, world, groundDetector);
+            InitializeMutativeDragControl(groundDetector, _input.BaseInput);
 
             _core.EvaluationModules = ArrayExtensions.Append(_core.EvaluationModules, statemachine);
 
@@ -127,6 +133,17 @@ namespace Tests.Characters.Humanoid.Locomotion
         void InitializeRotation(Camera camera, Rigidbody rigidbody, IBaseInput input)
         {
             rotationModule = new RotationByPlayerLocomotion(camera, rigidbody, _core, input);
+        }
+        void InitializeMutativeDragControl(IGroundDetector groundDetector, IBaseInput input)
+        {
+            _mutativeDragControl = new(
+                definitions.MutativeDrag.TransitionDuration,
+                definitions.MutativeDrag.Range,
+                groundDetector,
+                input,
+                _core,
+                statemachine,
+                movementStatemachine);
         }
         void InitializeMovementStatemachine()
         {
@@ -161,6 +178,14 @@ namespace Tests.Characters.Humanoid.Locomotion
 
 
         }
+        public void AddModule(ILocomotionModule module)
+        {
+            _core.AddModule(module);
+        }
+        public void RemoveModule(ILocomotionModule module)
+        {
+            _core.RemoveModule(module);
+        }
         private void LateUpdate()
         {
 
@@ -172,6 +197,7 @@ namespace Tests.Characters.Humanoid.Locomotion
             _core.Update();
             var pos = _core.Context.CurrentPosition;
             _rotationModule.OnUpdate();
+            _mutativeDragControl?.OnUpdate();
             Debug.DrawLine(pos, pos + _core.Context.CurrentVelocity, Color.magenta);
             //animator.Update();
             //Debug.Log(statemachine);
@@ -187,5 +213,14 @@ namespace Tests.Characters.Humanoid.Locomotion
             //Gizmos.DrawLine(pos, fpos);
         }
 
+        internal void EnableModule(ILocomotionModule module)
+        {
+            _core.EnableModule(module);
+        }
+
+        internal void DisableModule(ILocomotionModule module)
+        {
+            _core.DisableModule(module);
+        }
     }
 }

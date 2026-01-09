@@ -33,7 +33,6 @@ namespace Tests.Utilities.MountPoints
                     newLoad = _loadChangedFunc(currentLoad, newLoad);
                 else
                     newLoad = value;
-
                 if (currentLoad != null)
                     Unmount();
                 if (newLoad != null)

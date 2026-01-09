@@ -15,7 +15,10 @@ namespace Tests.TPhysics.Locomotion
         }
         public override Context OnUpdate(Context context)
         {
-            context.CurrentVelocity = Vector3.zero;
+            var v = context.CurrentVelocity;
+            var normal = context.groundNormal;
+            //context.CurrentVelocity = new Vector3(0, v.y, 0);
+            context.CurrentVelocity = Vector3.Project(v, normal);
             return context;
         }
     }

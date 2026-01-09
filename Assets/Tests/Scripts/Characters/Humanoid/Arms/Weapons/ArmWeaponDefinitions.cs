@@ -10,32 +10,25 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
     public class ArmWeaponDefinitions : Behaviours.Arms.Weapons.ArmWeaponDefinitions, IArmedWeaponArmDefinitions
     {
         [SerializeField]
-        ArmedWeaponArmBehaviourPrefabLoader[] _behaviourLoaders;
-        IArmedWeaponArmBehaviour[] _behaviours;
+        ArmedWeaponArmBehaviourBase_SO[] _behaviours;
+
         public IArmedWeaponArmBehaviour[] ArmedWeaponBehaviours
         {
             get
             {
-                _behaviours = null;
-                foreach (var loader in _behaviourLoaders)
+                var length = _behaviours.Length;
+                var behaviours = new ArmedWeaponArmBehaviourBase_SO[_behaviours.Length];
+                for (int i = 0; i < length; i++)
                 {
-                    loader.Load();
-                    _behaviours = _behaviours.Append(loader.Resource);
+                    behaviours[i] = GameObject.Instantiate(_behaviours[i]);
                 }
-                return _behaviours;
+                return behaviours;
             }
         }
 
         public IArmedWeaponArmBehaviour[] GetArmBehaviours(Transform parent)
         {
-            var behaviours = new List<IArmedWeaponArmBehaviour>();
-            foreach (var loader in _behaviourLoaders)
-            {
-                loader.Parent = parent;
-                loader.Load();
-                behaviours.Add(loader.Resource);
-            }
-            return behaviours.ToArray();
+            throw new NotImplementedException();
         }
     }
 }

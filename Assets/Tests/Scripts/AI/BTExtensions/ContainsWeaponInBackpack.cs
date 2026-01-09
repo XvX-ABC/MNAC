@@ -16,7 +16,7 @@ namespace Assets.Tests.Scripts.AI.BTExtensions
         }
         public override TaskStatus OnUpdate()
         {
-            return _backpack.ContainsWeapon(_weaponName) ? TaskStatus.Success : TaskStatus.Failure;
+            return _backpack.ContainsWeapon(part, _weaponName) ? TaskStatus.Success : TaskStatus.Failure;
         }
     }
 }

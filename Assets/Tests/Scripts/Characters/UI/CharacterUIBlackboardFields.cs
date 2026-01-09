@@ -17,12 +17,15 @@ namespace Tests.Characters.UI
             Player_Cursor_Indicator = UIBlackboardFields.Cursor_Indicator;
             Indicators_Manager = UIBlackboardFields.Indicators_Manager;
             Weapons_Text_Grid = UIBlackboardFields.Weapons_Text_Grid;
+            Health_Bar = UIBlackboardFields.Health_Bar;
         }
+        [Obsolete]
         public readonly static Guid Catcher_Ring;
         public readonly static Guid Blackboard_Main;
         public readonly static Guid Targets_Display;
         public readonly static Guid Player_Cursor_Indicator;
         public readonly static Guid Indicators_Manager;
         public static readonly Guid Weapons_Text_Grid;
+        public static readonly Guid Health_Bar;
     }
 }

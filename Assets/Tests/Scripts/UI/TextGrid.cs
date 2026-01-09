@@ -26,24 +26,24 @@ namespace Tests.UI
         {
             get
             {
-                _textBox_0.gameObject.SetActive(true);
-                return _textBox_0;
+                _textBox_1.gameObject.SetActive(true);
+                return _textBox_1;
             }
         }
         public TextBox TextBox_2
         {
             get
             {
-                _textBox_0.gameObject.SetActive(true);
-                return _textBox_0;
+                _textBox_2.gameObject.SetActive(true);
+                return _textBox_2;
             }
         }
         public TextBox TextBox_3
         {
             get
             {
-                _textBox_0.gameObject.SetActive(true);
-                return _textBox_0;
+                _textBox_3.gameObject.SetActive(true);
+                return _textBox_3;
             }
         }
         

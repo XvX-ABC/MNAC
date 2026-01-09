@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Tests.Characters.Humanoid.Input;
-using Tests.Input;
 using Tests.States;
 using Tests.TPhysics.Environment;
 using Tests.TPhysics.Locomotion;
@@ -76,21 +75,21 @@ namespace Tests.Characters.Humanoid.Locomotion
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
-            context.Core.EnableModule(module);
+            //context.Core.EnableModule(module);
         }
         public override void OnUpdate()
         {
-            base.OnUpdate();
-            var input = context.input;
-            var direction = input.HorizontalVector;
-            if (direction == Vector3.zero && groundDetector.Grounds.Count > 0)
-                _lcore.EnableModule(mutativeDrag);
-            else
-                _lcore.DisableModule(mutativeDrag);
+            //base.OnUpdate();
+            //var input = context.input;
+            //var direction = input.HorizontalVector;
+            //if (direction == Vector3.zero && groundDetector.Grounds.Count > 0)
+            //    _lcore.EnableModule(mutativeDrag);
+            //else
+            //    _lcore.DisableModule(mutativeDrag);
         }
         public override void OnExit()
         {
-            _lcore.DisableModule(mutativeDrag);
+            //_lcore.DisableModule(mutativeDrag);
             base.OnExit();
         }
         void UpdateHorizontalVector(IHumanoidInput input)

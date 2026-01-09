@@ -1,9 +1,13 @@
 ﻿using DG.Tweening;
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Threading;
 using Tests.States;
+using Tests.Utilities;
 using Tests.Utilities.Timeline;
 using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
 
 namespace Tests.Interaction
 {
@@ -211,6 +215,10 @@ namespace Tests.Interaction
                     value.LockType = LockType.Lock_Confirmed;
                     _targetChangeTween = DOTween.To(() => _cursorController.CursorPosition, pos => _cursorController.CursorPosition = pos, _camera.WorldToScreenPoint(value.Position), _targetChangeDuration);
                 }
+                else
+                {
+                    _targetChangeTween = DOTween.To(() => _cursorController.CursorPosition, pos => _cursorController.CursorPosition = pos, _cursorPosition, _targetChangeDuration);
+                }
                 _mainLockTarget = value;
                 _mainLockTargetChangedAction?.Invoke(ov, _mainLockTarget);
             }
@@ -361,13 +369,12 @@ namespace Tests.Interaction
         }
         void UpdateCursorReceiver()
         {
-            //_ringCatcher.CursorPosition = _mainTargetObj != null ? _camera.WorldToScreenPoint(_mainTargetObj.transform.position) : _cursorPosition;
             if (_targetChangeTween == null || !_targetChangeTween.IsActive() || !_targetChangeTween.IsPlaying())
                 _cursorController.CursorPosition = _mainLockTarget != null ? _camera.WorldToScreenPoint(_mainLockTarget.Position) : _cursorPosition;
         }
-        bool IsBehindObstacle(GameObject obj)
+        bool IsBehindObstacle(T target)
         {
-            return _obstacleDetector.TryDetect(_originWorldPosition, obj.transform.position, out _);
+            return _obstacleDetector.TryDetect(_originWorldPosition, target.Position, out _);
         }
         internal T FindClosestObjByMainObj(List<GameObject> objs)
         {
@@ -409,7 +416,7 @@ namespace Tests.Interaction
         void UpdateTargetLockType(T target)
         {
             var obj = target.Obj;
-            if (_obstacleDetector != null && IsBehindObstacle(obj))
+            if (_obstacleDetector != null && IsBehindObstacle(target))
                 target.LockType = LockType.CantLock;
             else if (target != _mainLockTarget)
                 target.LockType = LockType.Lock_Unconfirm;
@@ -421,6 +428,17 @@ namespace Tests.Interaction
         public override void OnLateUpdate()
         {
             UpdateCursorReceiver();
+        }
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine(this.GetType().Name);
+            sb.AppendLine("caught items: ");
+            foreach (var obj in _targetObjs)
+            {
+                sb.AppendLine(obj.name);
+            }
+            return sb.ToString();
         }
     }
 }

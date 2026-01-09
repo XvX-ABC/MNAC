@@ -1,5 +1,5 @@
 ﻿using System;
-using Tests.Utilities.Assets_New;
+using Tests.Utilities.Assets;
 
 namespace Tests.Weapons_New
 {

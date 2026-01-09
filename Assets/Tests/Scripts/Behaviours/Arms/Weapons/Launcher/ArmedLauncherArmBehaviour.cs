@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
+using Tests.Characters.Humanoid;
 using Tests.Characters.Interaction.Input;
 using Tests.Interaction;
 using Tests.States;
@@ -16,12 +17,12 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
     internal class ArmedLauncherArmBehaviour : ArmedWeaponArmBehaviourBase
     {
         IArmedLauncherArmBehaviourDefinitions _definitions;
-        [Obsolete]
-        ITargetsCatcher _targetsCatcher;
         ITargetLocker _targetLocker;
         IWeaponControlInput _winput;
         ILauncher _launcher;
+        ILauncherDefinitions _launcherDefinitions;
         internal IGameObjTarget_New target;
+        HumanBodyPart _part;
 
 
         internal Idle idle;
@@ -36,13 +37,13 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
         internal TeamMask teamMask;
 
 
-        public ArmedLauncherArmBehaviour(IArmedLauncherArmBehaviourDefinitions definitions, ArmedLauncherArmAnimator animator)
+        public ArmedLauncherArmBehaviour(HumanBodyPart part, IArmedLauncherArmBehaviourDefinitions definitions)
         {
+            _part = part;
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
-            this.animator = animator ?? throw new ArgumentNullException(nameof(animator));
             TeamMask = _definitions.TeamMask;
             LayerMaskToHit = _definitions.LayerMaskToHit;
-            InitializeStatemachine();
+            //InitializeStatemachine();
         }
 
         public override WeaponType Type => WeaponType.Launcher;
@@ -57,6 +58,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
                     _launcher = launcher;
                     _launcher.TeamMask = teamMask;
                     _launcher.LayerMaskToHit = layerMaskToHit;
+                    _launcherDefinitions = _launcher.Definitions;
                     ammoLoad.TargetLauncher = launcher;
                     animator.Launcher = launcher;
                     aiming.ControlledWeapon = launcher;
@@ -69,9 +71,9 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
 
         public override IArmedWeaponArmAnimationPlayablePart Animator => animator;
 
-        public override Func<bool> EntryFunc => () => this.enabled;
+        public override Func<bool> ActivationTrigger => () => this.enabled;
 
-        public override Func<bool> ExitFunc => () => !this.enabled;
+        public override Func<bool> UnactivationTrigger => () => !this.enabled;
         public IWeaponControlInput Input
         {
             get => _winput;
@@ -130,11 +132,13 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             }
         }
 
+        public HumanBodyPart BodyPart { get => _part; }
+
         void WhenTargetChanged(ILockTarget _, ILockTarget newTarget)
         {
             UpdateTarget(newTarget);
         }
-        void InitializeStatemachine()
+        internal void InitializeStatemachine()
         {
             statemachine = new("armed_launcher_statemachine");
             idle = new Idle();
@@ -148,35 +152,39 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             var length = 0;
 
             statemachine.AddTransitionFor(idle, aiming, length, () => target != null, null);
-            statemachine.AddTransitionFor(idle, ammoLoad, 0, ReloadTriggered, null, InterruptionSource.None);
+            statemachine.AddTransitionFor(idle, ammoLoad, 0, TryReload, null, InterruptionSource.None);
 
 
             statemachine.AddTransitionFor(aiming, idle, length, () => target == null, null);
-            statemachine.AddTransitionFor(aiming, ammoLoad, length, ReloadTriggered, null, InterruptionSource.None);
+            statemachine.AddTransitionFor(aiming, ammoLoad, length, TryReload, null, InterruptionSource.None);
 
             var l_i = new BlendingTransition<object>(ammoLoad, idle, () => target == null, null, 0, 0, 1);
-            //var l_a = new BlendingTransition<object>(ammoLoad, aiming, () => target != null, null, length, 0, 1);
             var l_a = new BlendingTransition<object>(ammoLoad, aiming, () => target != null, null, animator.animationDefinitions.GetStateTransitionOption(IArmedLauncherArmAnimationDefinitions.Transition.Reload_Aiming));
             statemachine.AddTransitionFor(l_i);
             statemachine.AddTransitionFor(l_a);
 
             _state = new(this);
 
-            bool WeaponCanToReload()
+        }
+        internal bool TryReload()
+        {
+            return TryAutoReload() || TryManualReload();
+            bool TryAutoReload()
             {
-                return _launcher.Definitions.AmmoInMagazineAmount > _launcher.MagazineAmmoAmount && _launcher.ReserveAmmoAmount > 0;
+                return _launcherDefinitions.AllowedAutoReload && _launcher.MagazineAmmoAmount == 0;
             }
-            bool ReloadTriggered()
+            bool TryManualReload()
             {
-                return _winput == null ? false : _winput.Reload && WeaponCanToReload();
+                return _winput == null ? false : _winput.Reload /*&& WeaponCanToReload()*/;
             }
 
         }
         void UpdateTarget(ILockTarget newTarget)
         {
-            animator.AimingTarget = newTarget;
+            if (animator != null)
+                animator.AimingTarget = newTarget;
             target = newTarget;
-            Debug.Log($"The armed launcher arm will  change the aiming target to '{newTarget}'");
+            //Debug.Log($"The armed launcher arm will  change the aiming target to '{newTarget}'");
         }
         public override void BehaviourOnUpdate()
         {

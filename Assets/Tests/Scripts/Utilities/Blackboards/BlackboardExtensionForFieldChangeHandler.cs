@@ -1,5 +1,4 @@
 ﻿using System;
-using Tests.Utilities.Composable;
 
 namespace Tests.Utilities.Blackboards
 {
@@ -11,7 +10,7 @@ namespace Tests.Utilities.Blackboards
                 throw new ArgumentNullException(nameof(action));
             blackboard.TryReadValueOrThrowException<FieldChangeHandler>(MiddlewareFields.FieldChangeHandler, out var handler);
             //handler.RegisterAction(key, action);
-            handler.RegisterAction_New(key, action);
+            handler.RegisterAction(key, action);
         }
         //TODO：没必要使用泛型
         public static void UnregisterFieldChangeAction<T>(this Blackboard blackboard, object key, Action<FieldEventType, T, T> action)
@@ -20,7 +19,7 @@ namespace Tests.Utilities.Blackboards
                 throw new ArgumentNullException(nameof(action));
             blackboard.TryReadValueOrThrowException<FieldChangeHandler>(MiddlewareFields.FieldChangeHandler, out var handler);
             //handler.UnregisterAction(key, action);
-            handler.UnregisterAction_New(key, action);
+            handler.UnregisterAction(key, action);
         }
         public static void RegisterGlobalFieldChangeAction(this Blackboard blackboard, Action<FieldEventType, object, object> action)
         {

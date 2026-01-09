@@ -15,20 +15,23 @@ MonoBehaviour:
   _definitions:
     _postureEvaluationFramesAmount: 3
     _walking:
-      _maxSpeed: 10
-      _acceleratedSpeed: 5
+      _maxSpeed: 15
+      _acceleratedSpeed: 8
       _dragTransitionalDuration: 1
-      _dragTransitionalRange: {x: 0, y: 10}
+      _dragTransitionalRange: {x: 0, y: 30}
     _boosting:
       _speedPower: 1
       _acceleratedSpeedPower: 1
     _quickBoosting:
-      _speedPower: 10
+      _speedPower: 5
       _acceleratedSpeedPower: 0
       _duration: 0.3
       _coldDownTime: 1
     _jump:
       _height: 10
+    _mutativeDrag:
+      _transitionDuration: 1
+      _range: {x: 0, y: 30}
     _animation:
       _velocity_x: Velocity_X
       _velocity_y: Velocity_Y

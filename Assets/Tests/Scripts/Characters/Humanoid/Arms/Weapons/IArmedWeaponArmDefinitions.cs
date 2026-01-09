@@ -5,8 +5,8 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
 {
     public interface IArmedWeaponArmDefinitions : Behaviours.Arms.Weapons.IArmedWeaponArmDefinitions
     {
-        [Obsolete]
         IArmedWeaponArmBehaviour[] ArmedWeaponBehaviours { get; }
+        [Obsolete]
         public IArmedWeaponArmBehaviour[] GetArmBehaviours(Transform parent);
     }
 }

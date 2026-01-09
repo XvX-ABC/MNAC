@@ -72,6 +72,10 @@ namespace Tests.Utilities.Timeline.Events.Point
             _events = list.OrderBy(evt => evt.TriggeredProportion).ToArray();
             return (ushort)list.Count;
         }
+        public void RemoveAll()
+        {
+            _events = null;
+        }
         public bool RemoveEvent(ITimelineEvent evt)
         {
             if (evt == null || evt is not IPointEvent pevt)

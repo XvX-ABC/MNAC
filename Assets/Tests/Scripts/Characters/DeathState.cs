@@ -1,9 +1,10 @@
-﻿using Cinemachine;
-using System;
+﻿using System;
+using Tests.Characters.Humanoid.Locomotion;
 using Tests.TPhysics.Locomotion;
 using Tests.Utilities.Timeline;
-using Unity.VisualScripting.Dependencies.NCalc;
+using Tests.Utilities.Timeline.Events.Point;
 using UnityEngine;
+using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
 
 namespace Tests.Characters
 {
@@ -18,15 +19,16 @@ namespace Tests.Characters
                 state.LocomotionCore = value;
             }
         }
-        public DeathStateHelper(GameObject obj, Action<GameObject> deathAction, float duration = 0, bool enabled = true)
+        public DeathStateHelper(GameObject obj, Action<GameObject> startAction, Action<GameObject> endAction, float duration = 0, bool enabled = true)
         {
-            state = new DeathState(obj, deathAction, duration, enabled);
+            state = new DeathState(obj, startAction, endAction, duration, enabled);
         }
     }
     internal class DeathState : CharacterBehaviourStateBase
     {
         GameObject _obj;
-        Action<GameObject> _action;
+        Action<GameObject> _startAction;
+        Action<GameObject> _endAction;
         LocomotionCore _locomotionCore;
         DiedLocomotion _diedLocomotion;
 
@@ -39,20 +41,30 @@ namespace Tests.Characters
                     _locomotionCore.RemoveModule(_diedLocomotion);
                 if (value != null)
                     value.AddModule(_diedLocomotion);
+                _diedLocomotion.LocomotionCore = value;
                 _locomotionCore = value;
             }
         }
 
         internal class DiedLocomotion : LocomotionModuleBase
         {
-            StopLocomotion _locomotion;
+            StopLocomotion _stopLocomotion;
+            StopRotation _stopRotation;
+            LocomotionCore _lcore;
+
             public DiedLocomotion()
             {
-                _locomotion = new();
+                _stopLocomotion = new();
+                _stopRotation = new();
             }
+
+            internal LocomotionCore LocomotionCore { get => _lcore; set => _lcore = value; }
+
             public override Context OnEnd(Context context)
             {
-                return OnUpdate(context);
+                var rbody = context.Rbody;
+                rbody.drag = 0;
+                return context;
             }
 
             public override Context OnStart(Context context)
@@ -64,21 +76,32 @@ namespace Tests.Characters
             {
                 var groundsDetector = context.GroundDetector;
                 if (groundsDetector.Grounds.Count > 0)
-                    return _locomotion.OnUpdate(context);
+                {
+                    if (_lcore != null)
+                    {
+                        var range = _lcore.definitions.MutativeDrag.Range;
+                        var maxDrag = Mathf.Max(range.x, range.y);
+                        context.Rbody.drag = maxDrag;
+                    }
+                    context = _stopLocomotion.OnUpdate(context);
+                    return _stopRotation.OnUpdate(context);
+                }
                 return context;
             }
         }
-        public DeathState(GameObject obj, Action<GameObject> deathAction, float duration = 0, bool enabled = true) : base("death", duration, enabled)
+        public DeathState(GameObject obj, Action<GameObject> startAction, Action<GameObject> endAction, float duration = 0, bool enabled = true) : base("death", duration, enabled)
         {
             _obj = obj;
-            _action = deathAction;
+            _startAction = startAction;
+            _endAction = endAction;
             _diedLocomotion = new();
-            this.timeline.EndAction += DoDied;
+            this.timeline.AddPointEvent(0, _ => _startAction?.Invoke(_obj));
+            this.timeline.AddPointEvent(1, DoDied);
         }
         void DoDied(TimelineContext _)
         {
             if (_obj != null)
-                _action?.Invoke(_obj);
+                _endAction?.Invoke(_obj);
         }
         public override void OnEnter()
         {

@@ -11,16 +11,8 @@ namespace Tests.Characters.Humanoid.Animations
         HumanArmAnimationDefinitions _leftArm;
         [SerializeField]
         HumanArmAnimationDefinitions _rightArm;
-        [SerializeField]
-        StunningAnimationDefinitions _stunning;
-        [SerializeField]
-        DeathAnimationDefinitions _death;
         public IHumanArmAnimationDefinitions LeftArmDefinitions => _leftArm;
 
         public IHumanArmAnimationDefinitions RightArmDefinitions => _rightArm;
-
-        public IStunningAnimationDefinitions Stunning => _stunning;
-
-        public IDeathAnimationDefinitions Death => _death;
     }
 }
