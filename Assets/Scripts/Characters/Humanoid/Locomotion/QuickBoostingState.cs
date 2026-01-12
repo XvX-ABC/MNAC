@@ -1,0 +1,87 @@
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using Tests.Behaviours.Input;
+using Tests.Characters.Humanoid.Input;
+using Tests.Input;
+using Tests.States;
+using Tests.TPhysics.Locomotion;
+using Tests.Utilities.Timeline;
+using TMPro;
+using UnityEngine;
+
+namespace Tests.Characters.Humanoid.Locomotion
+{
+    internal class QuickBoostingHelper
+    {
+        QuickBoostingState _state;
+        ITimeline _cdTimeline;
+        IHumanoidInput _hinput;
+        public QuickBoostingHelper([NotNull] IMovementDefinitions movementDefinitions, [NotNull] IQuickBoostingDefinitions definitions, bool enabled = true)
+        {
+            //_state = new QuickBoostingState(movementDefinitions, definitions, enabled);
+            _state = new QuickBoostingState(movementDefinitions, definitions, enabled);
+            _cdTimeline = new Timeline(definitions.ColdDownTime);
+
+            _state.ExitAction += () => _cdTimeline.Restart();
+            _cdTimeline.SetNormalizedTime(1);
+        }
+
+        public QuickBoostingState State { get => _state; set => _state = value; }
+        public bool IsColdDowned
+        {
+            get => _cdTimeline.NormalizedTime >= 1;
+        }
+        public IHumanoidInput Input
+        {
+            get => _hinput;
+            set
+            {
+                _hinput = value;
+                _state.Input = _hinput?.BaseInput;
+            }
+        }
+        public bool TriggerEvent
+        {
+            get => _hinput == null ? false : _hinput.HorizontalVector != Vector3.zero && _hinput.QuickBoost && IsColdDowned;
+            //get => _input == null ? false : _input.HorizontalVector != Vector3.zero && _input.QuickBoost && IsColdDowned;
+        }
+        public void Update()
+        {
+            _cdTimeline.OnUpdate(Time.deltaTime);
+        }
+    }
+    internal class QuickBoostingState : LocomotionStateBase
+    {
+        BoostingLocomotion locomotion;
+        IBaseInput _input;
+        public QuickBoostingState(
+            [NotNull] IMovementDefinitions movementDefinitions,
+            [NotNull] IQuickBoostingDefinitions definitions,
+            bool enabled = true) : base("quick_boosting", definitions.Duration, enabled)
+        {
+            var speed = movementDefinitions.MaxSpeed * Mathf.Max(1, definitions.MaxSpeedPower);
+            locomotion = new BoostingLocomotion(speed, 0);
+        }
+
+        public IBaseInput Input
+        {
+            get => _input;
+            set => _input = value;
+        }
+
+        protected override ILocomotionModule module => locomotion;
+
+        public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<object> currentTransition)
+        {
+            base.FromPreviousStateTransitionBegin(currentTransition);
+            context.Core.EnableModule(module);
+            locomotion.DirectionVector = _input == null ? Vector3.zero : _input.HorizontalVector;
+            //locomotion.HorizontalVector = context.Input_Obsolete.HorizontalVector;
+        }
+        public override void OnExit()
+        {
+            locomotion.DirectionVector = Vector3.zero;
+            base.OnExit();
+        }
+    }
+}

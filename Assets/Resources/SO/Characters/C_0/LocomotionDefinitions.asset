@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b6805018ae3c54d9459b6e3bf0db7d, type: 3}
+  m_Name: LocomotionDefinitions
+  m_EditorClassIdentifier: 
+  _definitions:
+    _postureEvaluationFramesAmount: 3
+    _walking:
+      _maxSpeed: 15
+      _acceleratedSpeed: 8
+    _boosting:
+      _speedPower: 1
+      _acceleratedSpeedPower: 1
+    _quickBoosting:
+      _speedPower: 5
+      _acceleratedSpeedPower: 0
+      _duration: 0.3
+      _coldDownTime: 1
+    _jump:
+      _height: 5
+    _mutativeDrag:
+      _transitionDuration: 1
+      _range: {x: 0, y: 30}
+    _animation:
+      _velocity_x: Velocity_X
+      _velocity_y: Velocity_Y
+      _jump_clip_length: 2.458
+      _jump_trigger: Jump
+      _jump_multiplier: Jump_Multiplier
+      _inAir: 
+      _descending: Descending
+      _boosting_clip_length: 2.458
+      _boosting_trigger: Boosting
+      _boosting_multiplier: Boosting_Multiplieir
