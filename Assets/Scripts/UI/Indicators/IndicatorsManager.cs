@@ -30,7 +30,23 @@ namespace Tests.UI
         }
         private void Start()
         {
-            StartCoroutine(DrawTargets());
+            //StartCoroutine(DrawTargets());
+        }
+        private void LateUpdate()
+        {
+            for (int i = 0; i < _targets.Count; i++)
+            {
+                var target = _targets[i];
+                if (target.IsValid)
+                {
+
+                    var spos = target.GetScreenPosition(_camera);
+
+                    var indicator = target.Indicator;
+                    if (RectTransformUtility.ScreenPointToLocalPointInRectangle(_rectTransform, spos, null, out var localPos))
+                        indicator.LocalPosition = localPos;
+                }
+            }
         }
         public override void Initialize(Blackboard blackboard)
         {

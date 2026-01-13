@@ -114,7 +114,6 @@ namespace Tests.Interaction
             var distance = Vector3.Distance(Origin, pos);
             if (c.distance > distance)
             {
-                Debug.Log("Found a new closest target: " + target);
                 _closest = new() { target = target, distance = distance };
                 return true;
             }

@@ -32,7 +32,7 @@ namespace Tests.Behaviours.Foots
         public Vector3 PositionOffset { get => _positionOffset; set => _positionOffset = value; }
         public LayerMask Layer { get => _layer; set => _layer = value; }
 
-        public void OnFixedUpdate()
+        public void OnLateUpdate()
         {
             var pos = _footObj.transform.position;
             var ray = new Ray(pos, -_worldUpward);

@@ -58,10 +58,10 @@ namespace Tests.Characters.Humanoid.Legs
                 throw new Exception();
             _footIk = new(_footObj, _legIk, _groundLayerMask, _offset, World.DefaultUp);
         }
-        private void FixedUpdate()
+        private void LateUpdate()
         {
             _footIk.WorldUpward = worldUp;
-            _footIk.OnFixedUpdate();
+            _footIk.OnLateUpdate();
         }
     }
 }

@@ -160,7 +160,7 @@ MonoBehaviour:
   _clipName: sword_extension
   _multiplier: Multiplier
   _clipLength: 2.458
-  _duration: 1
+  _duration: 0.6
 --- !u!1 &5586083075540034363
 GameObject:
   m_ObjectHideFlags: 0

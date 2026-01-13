@@ -24,7 +24,6 @@ namespace Tests.Weapons_New.Sword
         }
         void WhenHitTarget(GameObject obj)
         {
-            Debug.Log("slash hit target");
             if (obj.TryGetComponent<IDamageable>(out var d))
             {
                 d.HP.ReceivePoint(_damagePoint);
