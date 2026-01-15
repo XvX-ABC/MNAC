@@ -17,8 +17,7 @@ namespace Tests.TPhysics.Locomotion
         {
             var v = context.CurrentVelocity;
             var normal = context.groundNormal;
-            context.CurrentVelocity = new Vector3(0, v.y, 0);
-            //context.CurrentVelocity = Vector3.Project(v, normal);
+            context.CurrentVelocity = Vector3.Project(v, normal);
             return context;
         }
     }
