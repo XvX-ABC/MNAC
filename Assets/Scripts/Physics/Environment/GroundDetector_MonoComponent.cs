@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tests.TPhysics.Environment
+namespace MNAC.TPhysics.Environment
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(GroundDetectionDefinitions_MonoComponent))]

@@ -1,9 +1,9 @@
-﻿using Tests.Behaviours.Input;
-using Tests.Characters.Humanoid.Input;
-using Tests.Characters.Interaction.Input;
+﻿using MNAC.Behaviours.Input;
+using MNAC.Characters.Humanoid.Input;
+using MNAC.Characters.Interaction.Input;
 using UnityEngine;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal class AIHumanoidInput : IHumanoidInput
     {

@@ -1,6 +1,6 @@
-﻿using Tests.States;
+﻿using MNAC.States;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     internal class CharacterBehaviourStateBase : WithCallbackPlayableState<object>
     {

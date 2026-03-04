@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-namespace Tests.Utilities
+namespace MNAC.Utilities
 {
 #if UNITY_EDITOR
     public class DebuggingHelper

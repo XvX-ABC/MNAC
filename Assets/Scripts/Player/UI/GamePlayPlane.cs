@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Players.UI
+namespace MNAC.Players.UI
 {
     [RequireComponent(typeof(CanvasGroup))]
     internal class GamePlayPlane : MonoBehaviour

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Tests.Players.UI
+namespace MNAC.Players.UI
 {
     [RequireComponent(typeof(GamePlayController))]
     internal class PlayerPanelController : MonoBehaviour

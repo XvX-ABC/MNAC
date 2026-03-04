@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tests.Input;
-using Tests.TPhysics;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
+using MNAC.Input;
+using MNAC.TPhysics;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Composable;
 using UnityEngine;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     [Obsolete]
     public interface ITargetsCatcher_Obsolete

@@ -1,6 +1,6 @@
-﻿using Tests.Utilities.Composable;
+﻿using MNAC.Utilities.Composable;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     public class UIComponent : ComponentBase_MonoComponent
     {

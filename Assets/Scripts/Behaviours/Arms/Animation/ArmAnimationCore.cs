@@ -1,12 +1,12 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.Behaviours.Arms.Weapons;
-using Tests.Behaviours.Arms.Weapons.Animations;
-using Tests.States;
+using MNAC.Animations;
+using MNAC.Behaviours.Arms.Weapons;
+using MNAC.Behaviours.Arms.Weapons.Animations;
+using MNAC.States;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
-namespace Tests.Behaviours.Arms.Animations
+namespace MNAC.Behaviours.Arms.Animations
 {
     internal class ArmAnimationCore : AnimationPlayablePartBase
     {
@@ -120,7 +120,7 @@ namespace Tests.Behaviours.Arms.Animations
         }
         internal class SwitchingPlayablePart : AnimationPlayablePartBase
         {
-            IArmedWeaponArmDefinitions _definitions;
+            IArmedArmDefinitions _definitions;
             IArmWeaponAnimationDefinitions _animationDefinitions;
             float _weight;
             internal PlayState State => playablePart.GetPlayState();
@@ -145,7 +145,7 @@ namespace Tests.Behaviours.Arms.Animations
                         OutputSetting.Weight = _weight;
                 }
             }
-            public SwitchingPlayablePart(PlayableGraph graph, IArmedWeaponArmDefinitions definitions, IArmWeaponAnimationDefinitions animationDefinitions) : base(graph)
+            public SwitchingPlayablePart(PlayableGraph graph, IArmedArmDefinitions definitions, IArmWeaponAnimationDefinitions animationDefinitions) : base(graph)
             {
                 _definitions = definitions;
                 _animationDefinitions = animationDefinitions;
@@ -183,12 +183,12 @@ namespace Tests.Behaviours.Arms.Animations
         #endregion
 
 
-        IArmedWeaponArmDefinitions _definitions;
+        IArmedArmDefinitions _definitions;
         IArmWeaponAnimationDefinitions _animationDefinitions;
 
         MixerPlayablePart _mixer;
         internal SwitchingPlayablePart switching;
-        internal IArmedWeaponArmAnimator armedAnimator;
+        internal IArmedArmAnimator armedAnimator;
 
         IdleState _idleState;
         SwitchingState _switchingState;
@@ -199,7 +199,7 @@ namespace Tests.Behaviours.Arms.Animations
         byte _statusNum = 3;
         internal bool playing;
 
-        public ArmAnimationCore(PlayableGraph graph, IArmedWeaponArmDefinitions weaponDefinitions, IArmWeaponAnimationDefinitions animationDefinitions, IArmedWeaponArmAnimator armedAnimator) : base(graph)
+        public ArmAnimationCore(PlayableGraph graph, IArmedArmDefinitions weaponDefinitions, IArmWeaponAnimationDefinitions animationDefinitions, IArmedArmAnimator armedAnimator) : base(graph)
         {
             _definitions = weaponDefinitions ?? throw new ArgumentNullException(nameof(weaponDefinitions));
             _animationDefinitions = animationDefinitions ?? throw new ArgumentNullException(nameof(animationDefinitions));

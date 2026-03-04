@@ -1,9 +1,9 @@
-﻿using Tests.Characters;
-using Tests.Characters.Humanoid.Locomotion;
-using Tests.TPhysics.Locomotion;
+﻿using MNAC.Characters;
+using MNAC.Characters.Humanoid.Locomotion;
+using MNAC.TPhysics.Locomotion;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal class AINavigation_Mono : AIComponent_Mono
     {

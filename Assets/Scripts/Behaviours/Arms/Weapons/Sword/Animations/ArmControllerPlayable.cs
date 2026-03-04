@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Animations;
+using MNAC.Animations;
 using UnityEngine;
 using UnityEngine.Playables;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Sword.Animations
 {
     internal class ArmControllerPlayable : ControllerPlayable
     {

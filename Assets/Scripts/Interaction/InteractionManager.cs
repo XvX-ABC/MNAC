@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Tests.Utilities;
+using MNAC.Utilities;
 using UnityEngine;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public class InteractionManager : Singleton<InteractionManager>
     {

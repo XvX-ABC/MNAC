@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tests.Utilities.Blackboards
+namespace MNAC.Utilities.Blackboards
 {
     public class FieldChangeHandler<K, A> : IMiddleware<K, A>
     {

@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Characters.MountPoints;
+using MNAC.Characters.MountPoints;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons
+namespace MNAC.Behaviours.Arms.Weapons
 {
     [Serializable]
     public struct MountPointsDefinitions

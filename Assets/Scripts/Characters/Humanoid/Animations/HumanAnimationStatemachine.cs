@@ -1,4 +1,4 @@
-﻿namespace Tests.Characters.Humanoid.Animations
+﻿namespace MNAC.Characters.Humanoid.Animations
 {
     internal class HumanAnimationStatemachine : CharacterAnimationStateMachine
     {

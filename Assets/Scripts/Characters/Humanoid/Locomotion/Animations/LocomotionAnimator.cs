@@ -1,17 +1,17 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.Characters.Humanoid.Input;
-using Tests.Characters.Humanoid.Legs;
-using Tests.Input;
-using Tests.States;
-using Tests.TPhysics;
-using Tests.TPhysics.Environment;
-using Tests.TPhysics.Locomotion;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
+using MNAC.Animations;
+using MNAC.Characters.Humanoid.Input;
+using MNAC.Characters.Humanoid.Legs;
+using MNAC.Input;
+using MNAC.States;
+using MNAC.TPhysics;
+using MNAC.TPhysics.Environment;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Composable;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Locomotion.Animations
+namespace MNAC.Characters.Humanoid.Locomotion.Animations
 {
 
     internal class LocomotionAnimator : ComponentBase

@@ -1,7 +1,7 @@
 ﻿using RootMotion.FinalIK;
 using UnityEngine;
 
-namespace Tests.Behaviours.Foots
+namespace MNAC.Behaviours.Foots
 {
     public class SimpleFootIK_Mono : MonoBehaviour
     {

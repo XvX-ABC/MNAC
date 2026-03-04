@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tests.Interaction;
+using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tests.Behaviours
+namespace MNAC.Behaviours
 {
     internal class SimpleTargetLocker : SimpleTargetLocker<ILockTarget>, ITargetLocker
     {

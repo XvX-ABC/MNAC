@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tests.Animations;
-using Tests.Characters.Interaction.Influences;
-using Tests.Interaction;
-using Tests.Interaction.Influences;
-using Tests.Utilities.Blackboards;
+using MNAC.Animations;
+using MNAC.Characters.Interaction.Influences;
+using MNAC.Interaction;
+using MNAC.Interaction.Influences;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
-using Health = Tests.Interaction.Influences.Health;
+using Health = MNAC.Interaction.Influences.Health;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     [Interactable]
     public class Character_Debug : CharacterBase, ITeamMember, IDamageable, IKnockbackable

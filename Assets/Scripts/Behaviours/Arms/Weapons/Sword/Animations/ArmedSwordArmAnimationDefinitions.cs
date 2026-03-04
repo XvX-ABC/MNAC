@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Sword.Animations
 {
     [Serializable]
     public class ArmedSwordArmAnimationDefinitions : IArmedSwordArmAnimationDefinitions

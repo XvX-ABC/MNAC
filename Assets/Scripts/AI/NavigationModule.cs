@@ -1,16 +1,16 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Tests.Interaction;
-using Tests.TPhysics.Locomotion;
-using Tests.Utilities;
-using Tests.Utilities.Timeline;
-using Tests.Utilities.Timeline.Events.Point;
+using MNAC.Interaction;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Utilities;
+using MNAC.Utilities.Timeline;
+using MNAC.Utilities.Timeline.Events.Point;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal interface IValidTarget
     {

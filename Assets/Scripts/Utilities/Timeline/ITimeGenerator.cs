@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-namespace Tests.Utilities.Timeline
+namespace MNAC.Utilities.Timeline
 {
     public interface ITimeGenerator
     {

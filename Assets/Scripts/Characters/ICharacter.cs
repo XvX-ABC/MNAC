@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Characters.Interaction
+namespace MNAC.Characters.Interaction
 {
     public interface ICharacter : IGuidable
     {

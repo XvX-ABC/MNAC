@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tests.Characters.Interaction;
+using MNAC.Characters.Interaction;
 using UnityEngine;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     internal abstract class CharacterAccessor : MonoBehaviour
     {

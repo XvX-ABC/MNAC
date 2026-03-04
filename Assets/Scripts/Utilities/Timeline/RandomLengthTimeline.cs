@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Utilities.Timeline
+namespace MNAC.Utilities.Timeline
 {
     public class RandomLengthTimeline_V1 : Timeline
     {

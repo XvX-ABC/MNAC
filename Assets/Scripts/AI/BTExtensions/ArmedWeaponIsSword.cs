@@ -1,4 +1,4 @@
-﻿using Tests.Weapons_New.Sword;
+﻿using MNAC.Weapons.Sword;
 
 namespace Assets.Tests.Scripts.AI.BTExtensions
 {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tests.Animations;
-using Tests.States;
-using Tests.Utilities.Timeline;
+using MNAC.Animations;
+using MNAC.States;
+using MNAC.Utilities.Timeline;
 
-namespace Tests.Behaviours.Arms.Weapon.Animations
+namespace MNAC.Behaviours.Arms.Weapon.Animations
 {
     internal class ArmedWeaponAnimationStateBase : WithCallbackPlayableState<object>
     {

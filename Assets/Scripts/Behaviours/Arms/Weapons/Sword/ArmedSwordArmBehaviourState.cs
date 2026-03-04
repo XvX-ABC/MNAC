@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Behaviours.Arms.Weapons.Sword.Animations;
-using Tests.States;
+using MNAC.Behaviours.Arms.Weapons.Sword.Animations;
+using MNAC.States;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword
+namespace MNAC.Behaviours.Arms.Weapons.Sword
 {
     internal class ArmedSwordArmBehaviourState : WithCallbackStatemachineState<object>
     {

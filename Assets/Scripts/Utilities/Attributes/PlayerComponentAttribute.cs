@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Utilities.Attributes
+namespace MNAC.Utilities.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class PlayerComponentAttribute : Attribute

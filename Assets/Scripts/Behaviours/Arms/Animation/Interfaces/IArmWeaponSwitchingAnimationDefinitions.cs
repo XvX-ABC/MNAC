@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Animations
+namespace MNAC.Behaviours.Arms.Animations
 {
     public interface IArmWeaponSwitchingAnimationDefinitions
     {

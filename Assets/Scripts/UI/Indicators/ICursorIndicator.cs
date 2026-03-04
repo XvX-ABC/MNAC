@@ -1,7 +1,7 @@
-﻿using Tests.Interaction;
+﻿using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     public interface ICursorIndicator : ICursorController
     {

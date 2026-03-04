@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-namespace Tests.Input
+namespace MNAC.Input
 {
     public class VirtualInput : IVirtualInput
     {

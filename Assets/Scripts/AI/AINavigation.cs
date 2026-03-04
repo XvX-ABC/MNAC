@@ -1,10 +1,10 @@
 ﻿using System;
-using Tests.Extensions;
-using Tests.Interaction;
-using Tests.Utilities.Blackboards;
+using MNAC.Interaction;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Extensions;
 using UnityEngine;
-using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
-namespace Tests.AI
+using LocomotionCore = MNAC.Characters.Humanoid.Locomotion.LocomotionCore;
+namespace MNAC.AI
 {
     [Serializable]
     internal class AINavigation : AIComponent

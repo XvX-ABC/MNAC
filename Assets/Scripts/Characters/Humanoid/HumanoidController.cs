@@ -1,19 +1,19 @@
 ﻿using System;
-using Tests.Characters.Humanoid.Animations;
-using Tests.Characters.Humanoid.Arms;
-using Tests.Characters.Humanoid.Input;
-using Tests.Characters.Humanoid.Legs;
-using Tests.Characters.Humanoid.Locomotion;
-using Tests.Characters.Interaction;
-using Tests.Characters.MountPoints;
-using Tests.Characters.UI;
-using Tests.Interaction.Influences;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
+using MNAC.Characters.Humanoid.Animations;
+using MNAC.Characters.Humanoid.Arms;
+using MNAC.Characters.Humanoid.Input;
+using MNAC.Characters.Humanoid.Legs;
+using MNAC.Characters.Humanoid.Locomotion;
+using MNAC.Characters.Interaction;
+using MNAC.Characters.MountPoints;
+using MNAC.Characters.UI;
+using MNAC.Interaction.Influences;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Composable;
 using UnityEngine;
-using WeaponBackpack = Tests.Characters.Weapons.WeaponBackpack;
+using WeaponBackpack = MNAC.Characters.Weapons.WeaponBackpack;
 
-namespace Tests.Characters.Humanoid
+namespace MNAC.Characters.Humanoid
 {
     internal class HumanoidController : CharacterComponent, IComponent
     {

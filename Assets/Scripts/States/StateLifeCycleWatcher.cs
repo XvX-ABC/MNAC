@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tests.States
+namespace MNAC.States
 {
     public class StateLifeCycleWatcher<T>
     {

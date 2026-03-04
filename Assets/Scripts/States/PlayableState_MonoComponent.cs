@@ -1,6 +1,6 @@
-﻿using Tests.Utilities.Timeline;
+﻿using MNAC.Utilities.Timeline;
 
-namespace Tests.States
+namespace MNAC.States
 {
     public abstract class PlayableState_MonoComponent : PlayableState_MonoComponent<object>
     {

@@ -1,6 +1,6 @@
-﻿using Tests.TPhysics.Locomotion;
+﻿using MNAC.TPhysics.Locomotion;
 
-namespace Tests.Characters.Humanoid.Locomotion
+namespace MNAC.Characters.Humanoid.Locomotion
 {
     public interface ILocomotionDefinitions
     {

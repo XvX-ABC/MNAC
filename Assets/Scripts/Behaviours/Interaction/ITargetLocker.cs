@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Interaction;
+using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tests.Behaviours
+namespace MNAC.Behaviours
 {
     internal interface ITargetLocker : ITargetLocker<ILockTarget>
     {

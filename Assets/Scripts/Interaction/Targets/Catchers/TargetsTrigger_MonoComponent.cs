@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Interaction.Targets
+namespace MNAC.Interaction.Targets
 {
     [RequireComponent(typeof(Collider))]
     public class TargetsTrigger_MonoComponent : TargetsCatcherBase_MonoComponent

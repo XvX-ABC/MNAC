@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-namespace Tests.Utilities
+namespace MNAC.Utilities
 {
     public class ActionsLock<T> : IActionsLock<T> where T : Enum
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading;
-using Tests.Animations;
-using Tests.States;
+using MNAC.Animations;
+using MNAC.States;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Sword.Animations
 {
     internal abstract class ArmedSwordWholeBodyAnimationStateBase : ArmedSwordAnimationStateBase
     {

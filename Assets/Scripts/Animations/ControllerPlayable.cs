@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
-namespace Tests.Animations
+namespace MNAC.Animations
 {
 
 

@@ -1,6 +1,6 @@
-﻿using Tests.Interaction;
+﻿using MNAC.Interaction;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal interface ITarget : IGameObjTarget_New, IPositionTarget
     {

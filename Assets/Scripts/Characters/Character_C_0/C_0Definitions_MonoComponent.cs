@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Interaction;
-using Tests.States;
+using MNAC.Interaction;
+using MNAC.States;
 using UnityEngine;
 
-namespace Tests.Characters.C_0
+namespace MNAC.Characters.C_0
 {
     [Obsolete]
     internal class C_0Definitions_MonoComponent : MonoBehaviour, ICharacterDefinitions_C_0

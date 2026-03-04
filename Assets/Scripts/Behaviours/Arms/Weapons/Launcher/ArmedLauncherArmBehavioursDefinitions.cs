@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Interaction;
+using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher
+namespace MNAC.Behaviours.Arms.Weapons.Launcher
 {
     [Serializable]
     public class ArmedLauncherArmBehavioursDefinitions : IArmedLauncherArmBehaviourDefinitions

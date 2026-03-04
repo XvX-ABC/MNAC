@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Tests.Players.UI
+namespace MNAC.Players.UI
 {
     internal class ExitGame : MonoBehaviour
     {

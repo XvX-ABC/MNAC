@@ -1,6 +1,6 @@
-﻿using Tests.Interaction;
+﻿using MNAC.Interaction;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Launchers
 {
     public interface ITargetLockerDefinitions
     {

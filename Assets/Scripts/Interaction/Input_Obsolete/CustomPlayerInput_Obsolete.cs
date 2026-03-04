@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UInput = UnityEngine.Input;
-namespace Tests.Input
+namespace MNAC.Input
 {
     public enum InputTypes
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Behaviours.Arms.Weapons
+namespace MNAC.Behaviours.Arms.Weapons
 {
     [Obsolete]
     public interface IAimer_Obsolete

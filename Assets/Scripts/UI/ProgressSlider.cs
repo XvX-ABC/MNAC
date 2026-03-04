@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using static Tests.UI.ProgressSlider_Slider;
+using static MNAC.UI.ProgressSlider_Slider;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     
     public abstract class ProgressSlider : UIComponent

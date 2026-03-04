@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Utilities.Timeline
+namespace MNAC.Utilities.Timeline
 {
     internal class TimelineException : Exception
     {

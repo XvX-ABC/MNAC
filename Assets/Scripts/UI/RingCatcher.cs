@@ -3,7 +3,7 @@ using System;
 
 using UnityEngine;
 using UnityEngine.UI;
-namespace Tests.UI
+namespace MNAC.UI
 {
     [ExecuteAlways]
     public class RingCatcher : MonoBehaviour, ICursor

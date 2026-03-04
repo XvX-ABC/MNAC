@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
-using Tests.Utilities.MTrees;
+using MNAC.Utilities.MTrees;
 
-namespace Tests.Utilities.Composable
+namespace MNAC.Utilities.Composable
 {
     public class ComponentNode<T> : MTContainerNode<IComponent<T>>, IComponentNode<T>
     {

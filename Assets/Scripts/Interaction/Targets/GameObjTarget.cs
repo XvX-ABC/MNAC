@@ -3,7 +3,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Pool;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public class GameObjTarget : IGameObjTarget
     {

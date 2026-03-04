@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Tests.Characters.Humanoid.Input;
-using Tests.States;
-using Tests.TPhysics.Environment;
-using Tests.TPhysics.Locomotion;
+using MNAC.Characters.Humanoid.Input;
+using MNAC.States;
+using MNAC.TPhysics.Environment;
+using MNAC.TPhysics.Locomotion;
 using UnityEngine;
-using LCore = Tests.TPhysics.Locomotion.LocomotionCore;
-namespace Tests.Characters.Humanoid.Locomotion
+using LCore = MNAC.TPhysics.Locomotion.LocomotionCore;
+namespace MNAC.Characters.Humanoid.Locomotion
 {
     internal class MovementState : LocomotionStateBase
     {

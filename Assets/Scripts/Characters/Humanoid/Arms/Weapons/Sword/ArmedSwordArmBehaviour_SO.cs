@@ -1,31 +1,31 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.Behaviours;
-using Tests.Behaviours.Arms.Weapons.Sword.Animations;
-using Tests.Characters.Humanoid.Input;
-using Tests.Characters.Interaction.Input;
-using Tests.Characters.MountPoints;
-using Tests.Characters.UI;
-using Tests.Interaction;
-using Tests.States;
-using Tests.UI;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.MountPoints;
-using Tests.Utilities.Timeline;
-using Tests.Utilities.Timeline.Events;
-using Tests.Utilities.Timeline.Events.Range;
-using Tests.Weapons_New;
-using Tests.Weapons_New.Sword;
+using MNAC.Animations;
+using MNAC.Behaviours;
+using MNAC.Behaviours.Arms.Weapons.Sword.Animations;
+using MNAC.Characters.Humanoid.Input;
+using MNAC.Characters.Interaction.Input;
+using MNAC.Characters.MountPoints;
+using MNAC.Characters.UI;
+using MNAC.Interaction;
+using MNAC.States;
+using MNAC.UI;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.MountPoints;
+using MNAC.Utilities.Timeline;
+using MNAC.Utilities.Timeline.Events;
+using MNAC.Utilities.Timeline.Events.Range;
+using MNAC.Weapons;
+using MNAC.Weapons.Sword;
 using UnityEngine;
 using UnityEngine.Playables;
-using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
-using PlayerCursorIndicator = Tests.Characters.UI.PlayerCursorIndicator;
-using SphericalObjsTrigger = Tests.Characters.Interaction.SphericalObjsTrigger;
-using Transition = Tests.Behaviours.Arms.Weapons.Sword.Animations.IArmedSwordArmAnimationDefinitions.Transition;
-namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
+using LocomotionCore = MNAC.Characters.Humanoid.Locomotion.LocomotionCore;
+using PlayerCursorIndicator = MNAC.Characters.UI.PlayerCursorIndicator;
+using SphericalObjsTrigger = MNAC.Characters.Interaction.SphericalObjsTrigger;
+using Transition = MNAC.Behaviours.Arms.Weapons.Sword.Animations.IArmedSwordArmAnimationDefinitions.Transition;
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Sword
 {
     [CreateAssetMenu(fileName = "ArmedSwordArmBehaviour", menuName = "Tests/Behaviours/Characters/Humanoid/Arms/Weapons/Sword/ArmedSwordArmBehaviour")]
-    public class ArmedSwordArmBehaviour_SO : ArmedWeaponArmBehaviourBase_SO
+    public class ArmedSwordArmBehaviour_SO : ArmedArmBehaviourBase_SO
     {
         #region internal classes
         class UIControl
@@ -196,7 +196,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
                 _targetsTrigger.TeamMask = value;
             }
         }
-        protected override Behaviours.Arms.IArmedWeaponArmBehaviour behaviour
+        protected override Behaviours.Arms.IArmedArmBehaviour behaviour
         {
             get
             {

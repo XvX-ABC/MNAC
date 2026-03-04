@@ -1,8 +1,8 @@
-﻿using Tests.Animations;
+﻿using MNAC.Animations;
 
-namespace Tests.Behaviours.Arms.Weapons
+namespace MNAC.Behaviours.Arms.Weapons
 {
-    public interface IArmedWeaponArmAnimationPlayablePart : IDynamicPlayablePart
+    public interface IArmedArmAnimationPlayablePart : IDynamicPlayablePart
     {
     }
 }

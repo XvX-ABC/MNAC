@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading;
-using Tests.Animations;
-using Tests.States;
+using MNAC.Animations;
+using MNAC.States;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Sword.Animations
 {
     internal class Slash : ArmedSwordWholeBodyAnimationStateBase
     {

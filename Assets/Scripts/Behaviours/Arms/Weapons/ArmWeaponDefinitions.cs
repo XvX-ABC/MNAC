@@ -1,11 +1,11 @@
 ﻿using System;
-using Tests.Weapons;
+using MNAC.Weapons;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons
+namespace MNAC.Behaviours.Arms.Weapons
 {
     [Serializable]
-    public class ArmWeaponDefinitions : IArmedWeaponArmDefinitions
+    public class ArmWeaponDefinitions : IArmedArmDefinitions
     {
         [SerializeField]
         WeaponDescription[] _origins;

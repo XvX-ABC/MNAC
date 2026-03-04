@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Utilities.Attributes;
-using Tests.Utilities.Blackboards;
+using MNAC.Utilities.Attributes;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
 
-namespace Tests.Utilities.Composable
+namespace MNAC.Utilities.Composable
 {
     public abstract class ComponentBase_MonoComponent<T> : MonoBehaviour, IComponent<T>
     {

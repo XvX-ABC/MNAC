@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.States
+namespace MNAC.States
 {
     public class EmptyState<T> : StateBase<T>
     {

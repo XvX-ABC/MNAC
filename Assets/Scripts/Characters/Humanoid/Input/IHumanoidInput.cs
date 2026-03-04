@@ -1,7 +1,7 @@
-﻿using Tests.Behaviours.Input;
+﻿using MNAC.Behaviours.Input;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Input
+namespace MNAC.Characters.Humanoid.Input
 {
     public interface IHumanoidInput
     {

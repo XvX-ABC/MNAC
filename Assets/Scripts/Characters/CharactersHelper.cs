@@ -4,10 +4,10 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using Tests.Interaction;
+using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     internal class CharactersHelper
     {

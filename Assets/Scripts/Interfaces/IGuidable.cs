@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests
+namespace MNAC
 {
     public interface IGuidable
     {

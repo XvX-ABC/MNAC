@@ -1,4 +1,4 @@
-﻿namespace Tests.Utilities.Timeline
+﻿namespace MNAC.Utilities.Timeline
 {
     public struct TimelineContext
     {

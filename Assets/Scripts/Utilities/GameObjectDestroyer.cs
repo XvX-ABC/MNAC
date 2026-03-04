@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Tests.Utilities
+namespace MNAC.Utilities
 {
     internal class GameObjectDestroyer : MonoBehaviour
     {

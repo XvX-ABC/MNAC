@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tests.AI.Debugging
+namespace MNAC.AI.Debugging
 {
 #if UNITY_EDITOR
     [DefaultExecutionOrder(1)]

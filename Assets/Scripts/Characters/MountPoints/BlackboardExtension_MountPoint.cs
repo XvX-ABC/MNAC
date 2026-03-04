@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.MountPoints;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.MountPoints;
 
-namespace Tests.Characters.MountPoints
+namespace MNAC.Characters.MountPoints
 {
     internal static class BlackboardExtension_MountPoint
     {

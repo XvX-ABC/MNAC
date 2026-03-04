@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Characters.Humanoid.Legs;
-using Tests.States;
+using MNAC.Characters.Humanoid.Legs;
+using MNAC.States;
 
-namespace Tests.Characters.Humanoid.Locomotion.Animations
+namespace MNAC.Characters.Humanoid.Locomotion.Animations
 {
     internal class GroundedMovementState : MovementState
     {

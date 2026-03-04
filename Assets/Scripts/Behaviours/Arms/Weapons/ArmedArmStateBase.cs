@@ -1,6 +1,6 @@
-﻿using Tests.States;
+﻿using MNAC.States;
 
-namespace Tests.Behaviours.Arm.Weapons
+namespace MNAC.Behaviours.Arm.Weapons
 {
     internal abstract class ArmedArmStateBase : WithCallbackPlayableState
     {

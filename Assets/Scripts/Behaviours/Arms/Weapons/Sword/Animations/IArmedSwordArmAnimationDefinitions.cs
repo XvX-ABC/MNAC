@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Sword.Animations
 {
     public interface IArmedSwordArmAnimationDefinitions
     {

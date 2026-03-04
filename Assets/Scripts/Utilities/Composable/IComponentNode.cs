@@ -1,6 +1,6 @@
-﻿using Tests.Utilities.MTrees;
+﻿using MNAC.Utilities.MTrees;
 
-namespace Tests.Utilities.Composable
+namespace MNAC.Utilities.Composable
 {
     public interface IComponentNode<T> : IMTContainerNode<IComponent<T>>
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Interaction.Influences
+namespace MNAC.Interaction.Influences
 {
     [Serializable]
     public class Health : NumberBase, IHealth, IInfluence

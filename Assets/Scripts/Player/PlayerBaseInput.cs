@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Behaviours.Input;
+using MNAC.Behaviours.Input;
 using UnityEngine;
 using UInput = UnityEngine.Input;
 
-namespace Tests.Player
+namespace MNAC.Player
 {
     [Serializable]
     public class PlayerBaseInput : IBaseInput

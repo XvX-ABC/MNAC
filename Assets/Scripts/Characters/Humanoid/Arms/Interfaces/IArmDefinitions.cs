@@ -1,13 +1,13 @@
-﻿using Tests.Behaviours.Arms.Animations;
-using Tests.Characters.Humanoid;
-using Tests.Characters.Humanoid.Arms.Weapons;
+﻿using MNAC.Behaviours.Arms.Animations;
+using MNAC.Characters.Humanoid;
+using MNAC.Characters.Humanoid.Arms.Weapons;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms
+namespace MNAC.Characters.Humanoid.Arms
 {
     public interface IArmDefinitions
     {
-        IArmedWeaponArmDefinitions Weapon { get; }
+        IArmedArmDefinitions Weapon { get; }
         IArmAnimationDefinitions Animation { get; }
     }
 }

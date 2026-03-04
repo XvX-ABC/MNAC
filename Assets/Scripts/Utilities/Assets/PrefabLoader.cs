@@ -2,7 +2,7 @@
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Tests.Utilities.Assets
+namespace MNAC.Utilities.Assets
 {
     [Serializable]
     public class PrefabLoader<T> : ResourceLoader<T> where T : Component

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Interaction.Influences
+namespace MNAC.Interaction.Influences
 {
     public class InfluenceNotExistInCoreException<T> : Exception where T : IInfluence
     {

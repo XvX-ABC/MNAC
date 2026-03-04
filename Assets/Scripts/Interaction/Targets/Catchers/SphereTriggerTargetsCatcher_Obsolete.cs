@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Interaction.Targets
+namespace MNAC.Interaction.Targets
 {
     [RequireComponent(typeof(SphereCollider))]
     [Obsolete]

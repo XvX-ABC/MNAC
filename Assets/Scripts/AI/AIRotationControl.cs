@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Utilities.Blackboards;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
-using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
-namespace Tests.AI
+using LocomotionCore = MNAC.Characters.Humanoid.Locomotion.LocomotionCore;
+namespace MNAC.AI
 {
     internal class AIRotationControl : AIComponent
     {

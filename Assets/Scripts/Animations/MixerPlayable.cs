@@ -2,7 +2,7 @@
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
-namespace Tests.Animations
+namespace MNAC.Animations
 {
     public class MixerPlayable : AnimationPlayablePartBase
     {

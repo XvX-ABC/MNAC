@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.Rendering;
 
-namespace Tests.Utilities.MTrees
+namespace MNAC.Utilities.MTrees
 {
     public abstract class MTContainerNode<T> : MTNode, IMTContainerNode<T>
     {

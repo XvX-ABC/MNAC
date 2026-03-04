@@ -1,13 +1,13 @@
 ﻿using System;
-using Tests.Behaviours.Arm.Weapons;
-using Tests.Behaviours.Input;
-using Tests.Interaction;
-using Tests.States;
-using Tests.TPhysics.Locomotion;
-using Tests.Utilities.Timeline;
+using MNAC.Behaviours.Arm.Weapons;
+using MNAC.Behaviours.Input;
+using MNAC.Interaction;
+using MNAC.States;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Utilities.Timeline;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword
+namespace MNAC.Behaviours.Arms.Weapons.Sword
 {
     internal class Boosting : ArmedArmStateBase
     {

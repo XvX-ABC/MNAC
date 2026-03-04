@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Tests.Behaviours.Foots
+namespace MNAC.Behaviours.Foots
 {
     public class SimpleFootIK
     {

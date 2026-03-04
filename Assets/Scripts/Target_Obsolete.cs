@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests
+namespace MNAC
 {
     [Obsolete]
     public class Target_Obsolete : MonoBehaviour, ITarget_Obsolete

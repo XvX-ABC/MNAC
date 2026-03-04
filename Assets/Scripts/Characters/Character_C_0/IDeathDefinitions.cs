@@ -1,4 +1,4 @@
-﻿namespace Tests.Characters.C_0
+﻿namespace MNAC.Characters.C_0
 {
     internal interface IDeathDefinitions
     {

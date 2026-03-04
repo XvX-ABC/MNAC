@@ -1,11 +1,11 @@
 ﻿using BehaviorDesigner.Runtime.Tasks;
 using System;
-using Tests.AI;
-using Tests.Characters.Humanoid;
-using Tests.Characters.Humanoid.Arms;
-using Tests.Weapons_New;
+using MNAC.AI;
+using MNAC.Characters.Humanoid;
+using MNAC.Characters.Humanoid.Arms;
+using MNAC.Weapons;
 using UnityEngine;
-using static Tests.AI.AIHumanoidInput;
+using static MNAC.AI.AIHumanoidInput;
 
 namespace Assets.Tests.Scripts.AI.BTExtensions
 {

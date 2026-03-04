@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Behaviours.Arms.Weapons.Animations;
+using MNAC.Behaviours.Arms.Weapons.Animations;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Animations
+namespace MNAC.Behaviours.Arms.Animations
 {
     [Serializable]
     internal class ArmAnimationDefinitions : IArmAnimationDefinitions

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons
+namespace MNAC.Behaviours.Arms.Weapons
 {
     [Serializable]
     public struct SwitchingDefinitions

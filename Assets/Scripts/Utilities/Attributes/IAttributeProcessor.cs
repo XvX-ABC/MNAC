@@ -1,7 +1,7 @@
 ﻿using System;
-using Tests.Utilities.Composable;
+using MNAC.Utilities.Composable;
 
-namespace Tests.Utilities.Attributes
+namespace MNAC.Utilities.Attributes
 {
     public interface IAttributeProcessor
     {

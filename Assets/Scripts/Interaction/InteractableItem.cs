@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public class InteractableItem : IVolumetricInteractable
     {

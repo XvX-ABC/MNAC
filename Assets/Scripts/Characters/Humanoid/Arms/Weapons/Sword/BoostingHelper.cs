@@ -1,13 +1,13 @@
 ﻿using System;
-using Tests.Behaviours;
-using Tests.Behaviours.Arms.Weapons.Sword;
-using Tests.Behaviours.Input;
-using Tests.Characters.Interaction;
-using Tests.Characters.Interaction.Input;
-using Tests.Input;
+using MNAC.Behaviours;
+using MNAC.Behaviours.Arms.Weapons.Sword;
+using MNAC.Behaviours.Input;
+using MNAC.Characters.Interaction;
+using MNAC.Characters.Interaction.Input;
+using MNAC.Input;
 using UnityEngine;
-using ISwordBoostingDefinitions = Tests.Behaviours.Arms.Weapons.Sword.IBoostingDefinitions;
-namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
+using ISwordBoostingDefinitions = MNAC.Behaviours.Arms.Weapons.Sword.IBoostingDefinitions;
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Sword
 {
     internal class BoostingHelper : Behaviours.Arms.Weapons.Sword.BoostingHelper
     {

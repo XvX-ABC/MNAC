@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Interaction;
+using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Launchers
 {
     [CreateAssetMenu(fileName = "ArmedLauncherArmBehavioursDefinitions", menuName = "Tests/Definitions/Characters/Humanoid/Arms/Weapons/Launchers/ArmedLauncherArmBehavioursDefinitions")]
     internal class ArmedLauncherArmBehavioursDefinitions_SO : ScriptableObject, IArmedLauncherArmBehaviourDefinitions

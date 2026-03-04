@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Animations
+namespace MNAC.Characters.Humanoid.Animations
 {
     public interface IHumanArmAnimationDefinitions
     {

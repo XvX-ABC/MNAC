@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher
+namespace MNAC.Behaviours.Arms.Weapons.Launcher
 {
     [Serializable]
     public struct TargetInteraction

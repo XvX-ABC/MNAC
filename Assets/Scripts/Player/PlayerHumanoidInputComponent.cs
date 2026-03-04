@@ -1,7 +1,7 @@
-﻿using Tests.Characters.Humanoid.Input;
+﻿using MNAC.Characters.Humanoid.Input;
 using UnityEngine;
 
-namespace Tests.Player
+namespace MNAC.Player
 {
     internal class PlayerHumanoidInputComponent : HumanoidInputComponent
     {

@@ -2642,17 +2642,17 @@ PrefabInstance:
     - target: {fileID: 2245998083834554860, guid: fb7110c94038f05409f6fb1f09541b12,
         type: 3}
       propertyPath: _onNameChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2245998083834554860, guid: fb7110c94038f05409f6fb1f09541b12,
         type: 3}
       propertyPath: _onAmountChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2245998083834554860, guid: fb7110c94038f05409f6fb1f09541b12,
         type: 3}
       propertyPath: _onInvalidRequest.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2345446880678630459, guid: fb7110c94038f05409f6fb1f09541b12,
         type: 3}
@@ -2722,17 +2722,17 @@ PrefabInstance:
     - target: {fileID: 4807526572795287665, guid: fb7110c94038f05409f6fb1f09541b12,
         type: 3}
       propertyPath: _onNameChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4807526572795287665, guid: fb7110c94038f05409f6fb1f09541b12,
         type: 3}
       propertyPath: _onAmountChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4807526572795287665, guid: fb7110c94038f05409f6fb1f09541b12,
         type: 3}
       propertyPath: _onInvalidRequest.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4823578337418285756, guid: fb7110c94038f05409f6fb1f09541b12,
         type: 3}
@@ -3404,6 +3404,11 @@ PrefabInstance:
       propertyPath: _gameplayPanel
       value: 
       objectReference: {fileID: 1634149122}
+    - target: {fileID: 7196688681597710701, guid: d7e482d15ae853843814693ae41378c8,
+        type: 3}
+      propertyPath: _continueButtonObj
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7196688681597710701, guid: d7e482d15ae853843814693ae41378c8,
         type: 3}
       propertyPath: _persistentAcrossScenes

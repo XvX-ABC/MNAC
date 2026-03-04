@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using static Tests.AI.AIHumanoidInput;
-using static Tests.AI.NavigationModule;
-namespace Tests.AI
+using static MNAC.AI.AIHumanoidInput;
+using static MNAC.AI.NavigationModule;
+namespace MNAC.AI
 {
     internal class AIHumanoidInput_Mono : AIComponent_Mono
     {

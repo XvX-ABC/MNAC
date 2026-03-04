@@ -1,7 +1,7 @@
-﻿using Tests.Weapons_New;
+﻿using MNAC.Weapons;
 using UnityEngine;
 
-namespace Tests.Characters.Weapons
+namespace MNAC.Characters.Weapons
 {
     [CreateAssetMenu(fileName = "WeaponManager_Prefab", menuName = SOHelper.DEFINITIONS_MENU_NAME + "/WeaponManager_Prefab")]
     internal class WeaponManager_Prefab : WeaponManager

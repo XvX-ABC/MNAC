@@ -1,33 +1,33 @@
 ﻿using RootMotion.FinalIK;
 using System;
 using System.Text;
-using Tests.Behaviours;
-using Tests.Behaviours.Arms.Weapons;
-using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
-using Tests.Behaviours.Input;
-using Tests.Characters.Humanoid.Input;
-using Tests.Characters.Humanoid.Locomotion;
-using Tests.Characters.Interaction.Input;
-using Tests.Characters.UI;
-using Tests.Interaction;
-using Tests.TPhysics;
-using Tests.TPhysics.Environment;
-using Tests.UI;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Timeline;
-using Tests.Utilities.Timeline.Events;
-using Tests.Utilities.Timeline.Events.Range;
-using Tests.Weapons_New;
-using Tests.Weapons_New.Launcher;
+using MNAC.Behaviours;
+using MNAC.Behaviours.Arms.Weapons;
+using MNAC.Behaviours.Arms.Weapons.Launcher.Animations;
+using MNAC.Behaviours.Input;
+using MNAC.Characters.Humanoid.Input;
+using MNAC.Characters.Humanoid.Locomotion;
+using MNAC.Characters.Interaction.Input;
+using MNAC.Characters.UI;
+using MNAC.Interaction;
+using MNAC.TPhysics;
+using MNAC.TPhysics.Environment;
+using MNAC.UI;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Timeline;
+using MNAC.Utilities.Timeline.Events;
+using MNAC.Utilities.Timeline.Events.Range;
+using MNAC.Weapons;
+using MNAC.Weapons.Launcher;
 using UnityEngine;
 using UnityEngine.Playables;
-using PlayerCursorIndicator = Tests.UI.PlayerCursorIndicator;
-using WeaponType = Tests.Weapons_New.WeaponType;
+using PlayerCursorIndicator = MNAC.UI.PlayerCursorIndicator;
+using WeaponType = MNAC.Weapons.WeaponType;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Launchers
 {
     [CreateAssetMenu(fileName = "ArmedLauncherArmBehaviour", menuName = SOHelper.BEHAVIOURS_MENU_NAME + "/ArmedLauncherArmBehaviour")]
-    public class ArmedLauncherArmBehaviour_SO : ArmedWeaponArmBehaviourBase_SO
+    public class ArmedLauncherArmBehaviour_SO : ArmedArmBehaviourBase_SO
     {
         #region internal classes
         class UIControl : IDisposable
@@ -235,13 +235,13 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             }
         }
 
-        public override IArmedWeaponArmAnimationPlayablePart Animator => _behaviour.Animator;
+        public override IArmedArmAnimationPlayablePart Animator => _behaviour.Animator;
 
         public override Func<bool> ActivationTrigger => _behaviour.ActivationTrigger;
 
         public override Func<bool> UnactivationTrigger => _behaviour.UnactivationTrigger;
 
-        protected override Behaviours.Arms.IArmedWeaponArmBehaviour behaviour
+        protected override Behaviours.Arms.IArmedArmBehaviour behaviour
         {
             get
             {
@@ -306,7 +306,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
             {
                 HumanBodyPart.LeftArm => input.LArm,
                 HumanBodyPart.RightArm => input.RArm,
-                _ => throw new Exception("The part must be one of the arms.")
+                _ => throw new Exception("The body part must be one of the arms.")
             };
 
 

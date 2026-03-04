@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     [TaskCategory("Tests/AI")]
     internal abstract class AIConditionalBase : Conditional

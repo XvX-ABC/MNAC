@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Tests.Utilities.Timeline;
+using MNAC.Utilities.Timeline;
 using UnityEngine;
 
-namespace Tests.States
+namespace MNAC.States
 {
     public class PlayableStateMachine : PlayableStateMachine<object>
     {

@@ -1,10 +1,10 @@
 ﻿using System;
-using Tests.Characters.Humanoid.Locomotion;
+using MNAC.Characters.Humanoid.Locomotion;
 using UnityEngine;
-using LBoostingDefinitions = Tests.Characters.Humanoid.Locomotion.BoostingDefinitions;
-using SwordBoostingDefinitioins = Tests.Behaviours.Arms.Weapons.Sword.BoostingDefinitions;
-using SwordSlashDefinitions = Tests.Behaviours.Arms.Weapons.Sword.SlashDefinitions;
-namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
+using LBoostingDefinitions = MNAC.Characters.Humanoid.Locomotion.BoostingDefinitions;
+using SwordBoostingDefinitioins = MNAC.Behaviours.Arms.Weapons.Sword.BoostingDefinitions;
+using SwordSlashDefinitions = MNAC.Behaviours.Arms.Weapons.Sword.SlashDefinitions;
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Sword
 {
     [Serializable]
     public class ArmedSwordArmBehaviourDefinitions : IArmedSwordArmBehaviourDefinitions

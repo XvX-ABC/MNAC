@@ -1,7 +1,7 @@
 ﻿using System;
-using Tests.States;
+using MNAC.States;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     internal class CharacterBehavioursStatemachine : WithCallbackPlayableStatemachine<object>
     {

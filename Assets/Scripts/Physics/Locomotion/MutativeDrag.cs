@@ -1,7 +1,7 @@
-﻿using Tests.Utilities.Timeline;
+﻿using MNAC.Utilities.Timeline;
 using UnityEngine;
 
-namespace Tests.TPhysics.Locomotion
+namespace MNAC.TPhysics.Locomotion
 {
     public class MutativeDrag : LocomotionModuleBase
     {

@@ -1,8 +1,8 @@
-﻿using Tests.Interaction;
-using Tests.States;
+﻿using MNAC.Interaction;
+using MNAC.States;
 using UnityEngine;
 
-namespace Tests.Characters.C_0
+namespace MNAC.Characters.C_0
 {
     [CreateAssetMenu(fileName = "C_0_Definitions", menuName = SOHelper.DEFINITIONS_MENU_NAME + "/C_0")]
     internal class C_0Definitions_SO : ScriptableObject, ICharacterDefinitions_C_0

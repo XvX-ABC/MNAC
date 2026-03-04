@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.TPhysics.Environment
+namespace MNAC.TPhysics.Environment
 {
     [Serializable]
     public class GroundDetectionDefinitions : IGroundDetectionDefinitions

@@ -1,4 +1,4 @@
-﻿namespace Tests.Interaction
+﻿namespace MNAC.Interaction
 {
     public interface IStun
     {

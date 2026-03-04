@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid
+namespace MNAC.Characters.Humanoid
 {
     [Serializable]
     internal class HumanoidBodyParts : ICompositeItems

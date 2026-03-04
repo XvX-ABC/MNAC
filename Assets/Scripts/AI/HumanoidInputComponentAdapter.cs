@@ -1,8 +1,8 @@
-﻿using Tests.Characters.Humanoid.Input;
-using Tests.Utilities.Blackboards;
+﻿using MNAC.Characters.Humanoid.Input;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal class HumanoidInputComponentAdapter : HumanoidInputComponent
     {

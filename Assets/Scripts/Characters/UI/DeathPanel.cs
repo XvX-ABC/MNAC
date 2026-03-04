@@ -1,10 +1,10 @@
 ﻿using DG.Tweening;
-using Tests.UI;
-using Tests.Utilities.Blackboards;
+using MNAC.UI;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tests.Characters.UI
+namespace MNAC.Characters.UI
 {
     internal class DeathPanel : UIComponent
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Tests.Utilities.Attributes
+namespace MNAC.Utilities.Attributes
 {
     public class AttributeProcessingCore
     {

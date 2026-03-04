@@ -1,13 +1,13 @@
-﻿using Tests.Animations;
+﻿using MNAC.Animations;
 using UnityEngine.Playables;
 
-namespace Tests.Behaviours.Arms.Weapons.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Animations
 {
     internal class ArmedWeaponPlayablePart : AnimationPlayablePartBase
     {
-        IArmedWeaponArmAnimationPlayablePart _animator;
+        IArmedArmAnimationPlayablePart _animator;
 
-        internal IArmedWeaponArmAnimationPlayablePart animator
+        internal IArmedArmAnimationPlayablePart animator
         {
             get => _animator;
             set

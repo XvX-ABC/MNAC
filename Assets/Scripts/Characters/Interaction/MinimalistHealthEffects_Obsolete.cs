@@ -1,7 +1,7 @@
 ﻿using Minimalist.Quantity;
 using System;
-using Tests.Interaction;
-namespace Tests.Characters.Interaction
+using MNAC.Interaction;
+namespace MNAC.Characters.Interaction
 {
     [Obsolete]
     public class MinimalistHealthEffects_Obsolete : IHealthEffects_Obsolete

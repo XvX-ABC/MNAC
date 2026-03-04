@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Characters.C_0
+namespace MNAC.Characters.C_0
 {
     [Serializable]
     internal class DeathDefinitions : IDeathDefinitions

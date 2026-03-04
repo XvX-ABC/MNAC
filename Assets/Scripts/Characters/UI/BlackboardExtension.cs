@@ -1,7 +1,7 @@
 using System;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
-namespace Tests.Characters.UI
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Composable;
+namespace MNAC.Characters.UI
 {
     public static class BlackboardExtension
     {

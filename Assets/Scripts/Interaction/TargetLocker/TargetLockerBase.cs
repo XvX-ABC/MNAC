@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public abstract class TargetLockerBase<T> : ITargetLocker<T> where T : class, ILockTarget
     {

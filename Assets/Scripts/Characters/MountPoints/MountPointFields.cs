@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Tests.Characters.MountPoints
+namespace MNAC.Characters.MountPoints
 {
     public enum MountPointLocation
     {

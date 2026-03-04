@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
-namespace Tests.States
+namespace MNAC.States
 {
     // TODO：完善状态运行时的错误捕获
     public abstract class StateMachineBase<S, T> : StateBase<T> where S : class, IState<T>

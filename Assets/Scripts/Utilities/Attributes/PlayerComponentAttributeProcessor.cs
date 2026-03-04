@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Utilities.Attributes
+namespace MNAC.Utilities.Attributes
 {
     internal class PlayerComponentAttributeProcessor : IAttributeProcessor
     {

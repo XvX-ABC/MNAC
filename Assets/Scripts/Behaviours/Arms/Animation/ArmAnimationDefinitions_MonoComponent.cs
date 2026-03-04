@@ -1,7 +1,7 @@
-﻿using Tests.Behaviours.Arms.Weapons.Animations;
+﻿using MNAC.Behaviours.Arms.Weapons.Animations;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Animations
+namespace MNAC.Behaviours.Arms.Animations
 {
     internal class ArmAnimationDefinitions_MonoComponent
         : MonoBehaviour, IArmAnimationDefinitions

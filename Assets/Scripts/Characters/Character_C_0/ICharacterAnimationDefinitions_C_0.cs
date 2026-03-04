@@ -1,7 +1,7 @@
-﻿using Tests.Characters.Animations;
-using Tests.Characters.Humanoid.Animations;
+﻿using MNAC.Characters.Animations;
+using MNAC.Characters.Humanoid.Animations;
 
-namespace Tests.Characters.C_0
+namespace MNAC.Characters.C_0
 {
     internal interface ICharacterAnimationDefinitions_C_0
     {

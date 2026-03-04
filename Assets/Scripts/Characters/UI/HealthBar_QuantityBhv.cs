@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.UI;
-using Tests.Utilities.Blackboards;
+using MNAC.UI;
+using MNAC.Utilities.Blackboards;
 
-namespace Tests.Characters.UI
+namespace MNAC.Characters.UI
 {
     public class HealthBar_QuantityBhv : HealthBar
     {

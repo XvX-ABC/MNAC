@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Utilities.Timeline;
+using MNAC.Utilities.Timeline;
 using UnityEngine;
 
-namespace Tests.TPhysics.Locomotion
+namespace MNAC.TPhysics.Locomotion
 {
     public class JumpLocomotion : LocomotionModuleBase
     {
@@ -18,6 +18,7 @@ namespace Tests.TPhysics.Locomotion
         }
         public override Context OnStart(Context context)
         {
+            var world = context.world;
             var jv = Mathf.Sqrt(-2 * world.Gravity.y * _height);
             var ov = context.CurrentVelocity;
             context.CurrentVelocity += Quaternion.FromToRotation(World.DefaultUp, world.Up) * new Vector3(0, jv, 0);

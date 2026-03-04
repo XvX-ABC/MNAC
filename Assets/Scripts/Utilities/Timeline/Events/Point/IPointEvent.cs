@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Tests.Utilities.Timeline.Events;
+using MNAC.Utilities.Timeline.Events;
 
-namespace Tests.Utilities.Timeline.Events.Point
+namespace MNAC.Utilities.Timeline.Events.Point
 {
     public interface IPointEvent : ITimelineEvent
     {

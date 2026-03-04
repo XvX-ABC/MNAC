@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal class Target : ITarget
     {

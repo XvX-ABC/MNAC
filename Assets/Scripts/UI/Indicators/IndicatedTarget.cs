@@ -1,8 +1,8 @@
-﻿using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
+﻿using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Composable;
 using UnityEngine;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     public abstract class IndicatedTarget : ComponentBase_MonoComponent, IIndicatedTarget
     {

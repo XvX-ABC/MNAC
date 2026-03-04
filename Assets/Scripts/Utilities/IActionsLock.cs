@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Utilities
+namespace MNAC.Utilities
 {
     public interface IActionsLock<T> where T : Enum
     {

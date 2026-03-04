@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.TPhysics.Locomotion;
+using MNAC.TPhysics.Locomotion;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Locomotion
+namespace MNAC.Characters.Humanoid.Locomotion
 {
     internal class JumpLocomotionState : LocomotionStateBase
     {

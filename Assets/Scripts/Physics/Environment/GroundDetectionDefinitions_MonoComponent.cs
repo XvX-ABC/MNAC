@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.TPhysics.Environment
+namespace MNAC.TPhysics.Environment
 {
     public class GroundDetectionDefinitions_MonoComponent : MonoBehaviour, IGroundDetectionDefinitions
     {

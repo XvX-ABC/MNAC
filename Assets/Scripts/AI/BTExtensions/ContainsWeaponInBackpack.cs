@@ -1,4 +1,4 @@
-﻿using Tests.Characters.Weapons;
+﻿using MNAC.Characters.Weapons;
 using UnityEngine;
 using TaskStatus = BehaviorDesigner.Runtime.Tasks.TaskStatus;
 

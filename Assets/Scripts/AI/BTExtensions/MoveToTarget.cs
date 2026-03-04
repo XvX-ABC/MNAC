@@ -1,7 +1,7 @@
 ﻿using BehaviorDesigner.Runtime.Tasks;
 using UnityEngine;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal class StopMoveToTarget : AIActionBase
     {

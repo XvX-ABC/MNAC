@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using static Tests.UI.BoxIndicator;
+using static MNAC.UI.BoxIndicator;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     public class Target_Debug : IndicatedTarget
     {

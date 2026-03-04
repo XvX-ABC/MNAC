@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tests.Interaction;
-using Tests.Utilities.Blackboards;
+using MNAC.Interaction;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     public class HealthBar : UIComponent, IHealthCallback
     {

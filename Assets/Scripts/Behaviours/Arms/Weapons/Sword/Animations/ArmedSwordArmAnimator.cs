@@ -1,15 +1,15 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.Characters.Humanoid;
-using Tests.States;
-using Tests.TPhysics.Locomotion;
+using MNAC.Animations;
+using MNAC.Characters.Humanoid;
+using MNAC.States;
+using MNAC.TPhysics.Locomotion;
 using UnityEngine;
 using UnityEngine.Playables;
-using Transition = Tests.Behaviours.Arms.Weapons.Sword.Animations.IArmedSwordArmAnimationDefinitions.Transition;
+using Transition = MNAC.Behaviours.Arms.Weapons.Sword.Animations.IArmedSwordArmAnimationDefinitions.Transition;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Sword.Animations
 {
-    internal class ArmedSwordArmAnimator : IArmedWeaponArmAnimationPlayablePart
+    internal class ArmedSwordArmAnimator : IArmedArmAnimationPlayablePart
     {
         class WholeBody
         {

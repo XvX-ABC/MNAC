@@ -6,7 +6,7 @@
 //using UnityEngine;
 //using UnityEngine.Animations;
 //using UnityEngine.Playables;
-//using static Tests.Behaviours.Arms.Weapons.Animations.ArmedWeaponArmAnimator_Obsolete;
+//using static Tests.Behaviours.Arms.Weapons.Animations.ArmedArmAnimator_Obsolete;
 //namespace Tests.Behaviours.Arms.Animations
 //{
 //    [Obsolete]
@@ -16,7 +16,7 @@
 //        IArmWeaponAnimationDefinitions _animationDefinitions;
 //        MixerPlayablePart _mixer;
 //        internal SwitchingPlayablePart switching;
-//        internal ArmedWeaponArmAnimator_Obsolete armedAnimator;
+//        internal ArmedArmAnimator_Obsolete armedAnimator;
 
 //        IdleState _idleState;
 //        SwitchingState _switchingState;
@@ -124,7 +124,7 @@
 //        {
 //            SwitchingState _switching;
 //            BlendingState _blending;
-//            ArmedWeaponArmAnimator_Obsolete _armedAnimator;
+//            ArmedArmAnimator_Obsolete _armedAnimator;
 //            ArmAnimationPlayingState _currentState;
 //            public DynamicBlendingState(ArmAnimationCore_Obsolete core, SwitchingState switching, ArmedWeaponState armed, BlendingState blending) : base("dynamic_blending_state", core)
 //            {

@@ -1,7 +1,7 @@
-﻿using Tests.Utilities.Composable;
+﻿using MNAC.Utilities.Composable;
 using UnityEngine;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     [RequireComponent(typeof(RectTransform))]
     /*

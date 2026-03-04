@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Tests.Utilities.Assets.Tests.Scripts.Utilities.Extensions
+namespace MNAC.Utilities.Extensions
 {
     public static class GameObjExtensions
     {

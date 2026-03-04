@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tests.Interaction.Influences
+namespace MNAC.Interaction.Influences
 {
     [Serializable]
     public class HealthWithCallback : Health, IHealthWithCallBack

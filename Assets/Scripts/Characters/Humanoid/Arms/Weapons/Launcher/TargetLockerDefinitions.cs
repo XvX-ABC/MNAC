@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Interaction;
+using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Launchers
 {
 
     [Serializable]

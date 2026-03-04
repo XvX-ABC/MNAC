@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Locomotion.Animations
+namespace MNAC.Characters.Humanoid.Locomotion.Animations
 {
     [Serializable]
     public class LocomotionAnimatorDefinitions : ILocomotionAnimatorDefinitions

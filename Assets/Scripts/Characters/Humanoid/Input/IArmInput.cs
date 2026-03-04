@@ -1,6 +1,6 @@
-﻿using Tests.Characters.Interaction.Input;
+﻿using MNAC.Characters.Interaction.Input;
 
-namespace Tests.Characters.Humanoid.Input
+namespace MNAC.Characters.Humanoid.Input
 {
     public interface IArmInput
     {

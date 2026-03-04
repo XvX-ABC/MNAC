@@ -1,9 +1,9 @@
-﻿using Tests.Behaviours.Arms.Animations;
-using Tests.Characters.Humanoid;
-using Tests.Characters.Humanoid.Arms.Weapons;
+﻿using MNAC.Behaviours.Arms.Animations;
+using MNAC.Characters.Humanoid;
+using MNAC.Characters.Humanoid.Arms.Weapons;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms
+namespace MNAC.Characters.Humanoid.Arms
 {
     internal class ArmDefinitions_Mono : MonoBehaviour, IArmDefinitions
     {
@@ -14,7 +14,7 @@ namespace Tests.Characters.Humanoid.Arms
         [SerializeField]
         HumanBodyPart _part;
         public HumanBodyPart Part { get => _part; }
-        public IArmedWeaponArmDefinitions Weapon => _weapon;
+        public IArmedArmDefinitions Weapon => _weapon;
 
         public IArmAnimationDefinitions Animation => _animation;
     }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using Tests.Utilities.Timeline;
+using MNAC.Utilities.Timeline;
 
-namespace Tests.States
+namespace MNAC.States
 {
     public interface IPlayableTransition<T> : ITransition<T>, IReadonlyPlayableTransition<T>
     {

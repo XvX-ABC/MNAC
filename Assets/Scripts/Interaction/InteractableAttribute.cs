@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class InteractableAttribute : Attribute

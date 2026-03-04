@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.TPhysics.Locomotion
+namespace MNAC.TPhysics.Locomotion
 {
     public class StopLocomotion : LocomotionModuleBase
     {

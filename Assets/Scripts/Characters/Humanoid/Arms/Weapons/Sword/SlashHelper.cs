@@ -1,7 +1,7 @@
-﻿using Tests.Behaviours.Arms.Weapons.Sword;
+﻿using MNAC.Behaviours.Arms.Weapons.Sword;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Sword
 {
     internal class SlashHelper : Behaviours.Arms.Weapons.Sword.SlashHelper
     {

@@ -1,33 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tests.Behaviours.Arms.Weapons;
-using Tests.Characters.Weapons;
-using Tests.States;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
-using Tests.Weapons_New;
-using WeaponCore_Obsolete = Tests.Characters.Weapons.WeaponCore_Obsolete;
+using MNAC.Behaviours.Arms.Weapons;
+using MNAC.Characters.Weapons;
+using MNAC.States;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Composable;
+using MNAC.Weapons;
+using WeaponCore_Obsolete = MNAC.Characters.Weapons.WeaponCore_Obsolete;
 
 
-namespace Tests.Characters.Humanoid.Arms.Weapons
+namespace MNAC.Characters.Humanoid.Arms.Weapons
 {
-    internal class ArmedWeaponArmBehaviourControllerState : StateComponentNode, IArmedWeaponArmBehavioursController<IArmedWeaponArmBehaviour>
+    internal class ArmedArmBehaviourControllerState : StateComponentNode, IArmedArmBehavioursController<IArmedArmBehaviour>
     {
-        protected ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> controller;
+        protected ArmedArmBehaviourController<IArmedArmBehaviour> controller;
         internal Behaviours.Arms.Animations.ArmAnimationCore animationCore;
-        protected internal ArmedWeaponArmBehaviourControllerState(ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> controller, HumanBodyPart part) : base("weapon_armed_behaviour", 0)
+        protected internal ArmedArmBehaviourControllerState(ArmedArmBehaviourController<IArmedArmBehaviour> controller, HumanBodyPart part) : base("weapon_armed_behaviour", 0)
         {
             this.controller = controller ?? throw new ArgumentNullException(nameof(controller));
             InitializeBehaviours(this.controller.behavioursCache, part);
         }
-        public Action<IWeapon, IArmedWeaponArmBehaviour> ActivatedAction { get => controller.ActivatedAction; set => controller.ActivatedAction = value; }
-        public Action<IWeapon, IArmedWeaponArmBehaviour> UnactivatedAction { get => controller.UnactivatedAction; set => controller.UnactivatedAction = value; }
+        public Action<IWeapon, IArmedArmBehaviour> ActivatedAction { get => controller.ActivatedAction; set => controller.ActivatedAction = value; }
+        public Action<IWeapon, IArmedArmBehaviour> UnactivatedAction { get => controller.UnactivatedAction; set => controller.UnactivatedAction = value; }
         public Func<bool> ActivationTrigger { get => controller.ActivationTrigger; }
         public Func<bool> UnactivationTrigger { get => controller.UnactivationTrigger; }
 
-        IReadOnlyDictionary<string, IArmedWeaponArmBehaviour> IArmedWeaponArmBehavioursController<IArmedWeaponArmBehaviour>.Behaviours => controller.weaponBehavioursMapping;
-        internal IArmedWeaponArmBehaviour currentActivatedBehaviour => controller.currentActivatedBehaviour;
-        void InitializeBehaviours(IArmedWeaponArmBehaviour[] behaviours, HumanBodyPart part)
+        IReadOnlyDictionary<string, IArmedArmBehaviour> IArmedArmBehavioursController<IArmedArmBehaviour>.Behaviours => controller.weaponBehavioursMapping;
+        internal IArmedArmBehaviour currentActivatedBehaviour => controller.currentActivatedBehaviour;
+        void InitializeBehaviours(IArmedArmBehaviour[] behaviours, HumanBodyPart part)
         {
             foreach (var b in behaviours)
                 b.Part = part;

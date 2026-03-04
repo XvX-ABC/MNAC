@@ -1,19 +1,19 @@
 ﻿using System;
-using Tests.Behaviours.Arms.Weapons;
-using Tests.States;
-using Tests.Utilities.Composable;
-using Tests.Weapons;
-using Tests.Weapons_New;
+using MNAC.Behaviours.Arms.Weapons;
+using MNAC.States;
+using MNAC.Utilities.Composable;
+using MNAC.Weapons;
+using MNAC.Weapons;
 using UnityEngine;
-using WeaponType = Tests.Weapons_New.WeaponType;
+using WeaponType = MNAC.Weapons.WeaponType;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons
+namespace MNAC.Characters.Humanoid.Arms.Weapons
 {
-    public abstract class ArmedWeaponArmBehaviourBase_SO : StateComponentNode_SO, IArmedWeaponArmBehaviour
+    public abstract class ArmedArmBehaviourBase_SO : StateComponentNode_SO, IArmedArmBehaviour
     {
         HumanBodyPart _part;
         protected bool enabled;
-        protected abstract Behaviours.Arms.IArmedWeaponArmBehaviour behaviour { get; }
+        protected abstract Behaviours.Arms.IArmedArmBehaviour behaviour { get; }
         public virtual bool Activated
         {
             get => enabled;
@@ -27,7 +27,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
 
         public abstract WeaponType Type { get; }
         public virtual IWeapon Weapon { get => behaviour.Weapon; set => behaviour.Weapon = value; }
-        public virtual IArmedWeaponArmAnimationPlayablePart Animator { get => behaviour.Animator; }
+        public virtual IArmedArmAnimationPlayablePart Animator { get => behaviour.Animator; }
         public virtual Func<bool> ActivationTrigger { get => behaviour.ActivationTrigger; }
         public virtual Func<bool> UnactivationTrigger { get => behaviour.UnactivationTrigger; }
         public HumanBodyPart Part
@@ -35,7 +35,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
             get
             {
                 if (_part != HumanBodyPart.LeftArm && _part != HumanBodyPart.RightArm)
-                    throw new ArgumentException("ArmedWeaponArmBehaviourBase_MonoComponent can only be attached to LeftArm or RightArm");
+                    throw new ArgumentException("ArmedArmBehaviourBase_MonoComponent can only be attached to LeftArm or RightArm");
                 return _part;
             }
             set => _part = value;

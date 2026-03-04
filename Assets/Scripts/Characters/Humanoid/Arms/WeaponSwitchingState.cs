@@ -1,15 +1,15 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.Behaviours.Arms.Weapons;
-using Tests.Characters.Weapons;
-using Tests.States;
-using Tests.Utilities.Composable;
-using Tests.Utilities.MountPoints;
-using Tests.Weapons;
-using Tests.Weapons_New;
+using MNAC.Animations;
+using MNAC.Behaviours.Arms.Weapons;
+using MNAC.Characters.Weapons;
+using MNAC.States;
+using MNAC.Utilities.Composable;
+using MNAC.Utilities.MountPoints;
+using MNAC.Weapons;
+using MNAC.Weapons;
 using UnityEngine;
-using WeaponBackpack = Tests.Characters.Weapons.WeaponBackpack;
-namespace Tests.Characters.Humanoid.Arms
+using WeaponBackpack = MNAC.Characters.Weapons.WeaponBackpack;
+namespace MNAC.Characters.Humanoid.Arms
 {
     internal class WeaponSwitchingState : StateComponentNode, IAnimationPlayableState, IArmBehaviour
     {
@@ -26,7 +26,7 @@ namespace Tests.Characters.Humanoid.Arms
             timeline = switching.timeline;
             this.switching = switching;
         }
-        public WeaponSwitchingState(ArmController ownerArmController, IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, WeaponBackpack weaponBackpack, Func<WeaponDescription[], string> selectionFunc = null) : this(new(ownerArmController, definitions, launcherMountPoint, swordMountPoint, weaponBackpack, selectionFunc))
+        public WeaponSwitchingState(ArmController ownerArmController, IArmedArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint, WeaponBackpack weaponBackpack, Func<WeaponDescription[], string> selectionFunc = null) : this(new(ownerArmController, definitions, launcherMountPoint, swordMountPoint, weaponBackpack, selectionFunc))
         {
         }
 

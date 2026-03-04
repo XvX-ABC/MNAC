@@ -1,8 +1,8 @@
-﻿using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
+﻿using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Composable;
 using UnityEngine;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     [RequireComponent(typeof(TargetsDisplay))]
     public class TargetsDisplay_Composable : UIComponent

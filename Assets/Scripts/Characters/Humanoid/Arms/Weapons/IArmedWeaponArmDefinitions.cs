@@ -1,12 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons
+namespace MNAC.Characters.Humanoid.Arms.Weapons
 {
-    public interface IArmedWeaponArmDefinitions : Behaviours.Arms.Weapons.IArmedWeaponArmDefinitions
+    public interface IArmedArmDefinitions : Behaviours.Arms.Weapons.IArmedArmDefinitions
     {
-        IArmedWeaponArmBehaviour[] ArmedWeaponBehaviours { get; }
+        IArmedArmBehaviour[] ArmedWeaponBehaviours { get; }
         [Obsolete]
-        public IArmedWeaponArmBehaviour[] GetArmBehaviours(Transform parent);
+        public IArmedArmBehaviour[] GetArmBehaviours(Transform parent);
     }
 }

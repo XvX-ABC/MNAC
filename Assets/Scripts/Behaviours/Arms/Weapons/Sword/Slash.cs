@@ -1,13 +1,13 @@
 ﻿using System;
-using Tests.Behaviours.Arm.Weapons;
-using Tests.Interaction;
-using Tests.States;
-using Tests.TPhysics.Locomotion;
-using Tests.Utilities.Timeline;
-using Tests.Weapons_New.Sword;
+using MNAC.Behaviours.Arm.Weapons;
+using MNAC.Interaction;
+using MNAC.States;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Utilities.Timeline;
+using MNAC.Weapons.Sword;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword
+namespace MNAC.Behaviours.Arms.Weapons.Sword
 {
     internal class Slash : ArmedArmStateBase
     {

@@ -1,11 +1,11 @@
 ﻿using System;
-using Tests.Characters.MountPoints;
-using Tests.Weapons;
+using MNAC.Characters.MountPoints;
+using MNAC.Weapons;
 
-namespace Tests.Behaviours.Arms.Weapons
+namespace MNAC.Behaviours.Arms.Weapons
 {
 
-    public interface IArmedWeaponArmDefinitions
+    public interface IArmedArmDefinitions
     {
         WeaponDescription[] Origins { get; }
         SwitchingDefinitions Switching { get; }

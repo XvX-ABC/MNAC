@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Tests.Interaction.Influences
+namespace MNAC.Interaction.Influences
 {
     public interface IInfluence
     {

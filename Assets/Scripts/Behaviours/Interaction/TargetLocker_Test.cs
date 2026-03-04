@@ -1,9 +1,9 @@
-﻿using Tests.Interaction;
-using Tests.UI;
+﻿using MNAC.Interaction;
+using MNAC.UI;
 using UnityEngine;
-using GameObjsInScreenCatcher = Tests.Interaction.GameObjsInScreenCatcher;
-using LockTarget_Obsolete = Tests.Characters.Interaction.LockTarget_Obsolete;
-namespace Tests.Behaviours.Arms.Weapons
+using GameObjsInScreenCatcher = MNAC.Interaction.GameObjsInScreenCatcher;
+using LockTarget_Obsolete = MNAC.Characters.Interaction.LockTarget_Obsolete;
+namespace MNAC.Behaviours.Arms.Weapons
 {
     internal class TargetLocker_Test : MonoBehaviour
     {

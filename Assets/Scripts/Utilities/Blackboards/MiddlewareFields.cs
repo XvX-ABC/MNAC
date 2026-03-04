@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Utilities.Blackboards
+namespace MNAC.Utilities.Blackboards
 {
     public static class MiddlewareFields
     {

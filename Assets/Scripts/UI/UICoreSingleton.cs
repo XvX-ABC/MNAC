@@ -1,6 +1,6 @@
-﻿using Tests.Utilities;
+﻿using MNAC.Utilities;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     public class UICoreSingleton : Singleton<UICoreSingleton>
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 
-namespace Tests.Utilities.MTrees
+namespace MNAC.Utilities.MTrees
 {
     public class MTree : IEnumerable<IMTNode>
     {

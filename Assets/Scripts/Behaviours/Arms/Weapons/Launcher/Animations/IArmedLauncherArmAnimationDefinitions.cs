@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Launcher.Animations
 {
     internal interface IArmedLauncherArmAnimationDefinitions
     {

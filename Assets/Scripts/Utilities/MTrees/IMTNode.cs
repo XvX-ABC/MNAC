@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Tests.Utilities.MTrees
+namespace MNAC.Utilities.MTrees
 {
     public interface IMTNode
     {

@@ -1,4 +1,4 @@
-﻿namespace Tests.Behaviours.Arms.Animations
+﻿namespace MNAC.Behaviours.Arms.Animations
 {
     public interface IArmWeaponAnimationDefinitions
     {

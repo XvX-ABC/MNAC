@@ -1,13 +1,13 @@
 ﻿using RootMotion.FinalIK;
 using System;
-using Tests.Interaction;
-using Tests.Utilities.Timeline;
-using Tests.Utilities.Timeline.Events.Range;
-using Tests.Weapons;
-using Tests.Weapons_New;
+using MNAC.Interaction;
+using MNAC.Utilities.Timeline;
+using MNAC.Utilities.Timeline.Events.Range;
+using MNAC.Weapons;
+using MNAC.Weapons;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Launcher.Animations
 {
     internal class AimingHelper
     {

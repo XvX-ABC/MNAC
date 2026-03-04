@@ -1,6 +1,6 @@
-﻿using Tests.Characters.Humanoid.Locomotion;
+﻿using MNAC.Characters.Humanoid.Locomotion;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Sword
 {
     public interface IArmedSwordArmBehaviourDefinitions : Behaviours.Arms.Weapons.Sword.IArmedSwordArmBehaviourDefinitions
     {

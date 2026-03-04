@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Characters.Animations;
+using MNAC.Characters.Animations;
 using UnityEngine;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     [Serializable]
     public class DeathAnimationDefinitions : IDeathAnimationDefinitions

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public abstract class TargetsCatcherBase_New<T> : CatcherBase<T>, ITargetsCatcher_New<T> where T : ITarget_New
     {

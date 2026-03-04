@@ -1,12 +1,12 @@
 ﻿using System;
-using Tests.Interaction;
-using Tests.TPhysics.Locomotion;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
+using MNAC.Interaction;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Composable;
 using UnityEngine;
-using LCore = Tests.TPhysics.Locomotion.LocomotionCore;
+using LCore = MNAC.TPhysics.Locomotion.LocomotionCore;
 
-namespace Tests.Characters.Humanoid.Locomotion
+namespace MNAC.Characters.Humanoid.Locomotion
 {
     public abstract class RotationLocomotionBase : ComponentBase
     {

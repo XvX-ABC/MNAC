@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Utilities.MountPoints
+namespace MNAC.Utilities.MountPoints
 {
     public interface ILoad
     {

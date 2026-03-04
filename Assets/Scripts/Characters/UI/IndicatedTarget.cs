@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-namespace Tests.Characters.UI
+namespace MNAC.Characters.UI
 {
-    internal class IndicatedTarget : Tests.UI.IndicatedTarget
+    internal class IndicatedTarget : MNAC.UI.IndicatedTarget
     {
         protected override void OnEnable()
         {
-            indicatorType = Tests.UI.IndicatorType.Box;
+            indicatorType = MNAC.UI.IndicatorType.Box;
             base.OnEnable();
         }
     }

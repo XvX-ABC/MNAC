@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
-using Tests.Utilities.Blackboards;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid
+namespace MNAC.Characters.Humanoid
 {
     internal class CharacterCollisionComponentsManager : CharacterCollisionComponent
     {

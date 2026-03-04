@@ -1,10 +1,10 @@
-﻿using Tests.Characters.Humanoid;
-using Tests.TPhysics;
-using Tests.TPhysics.Environment;
-using Tests.Utilities.Blackboards;
+﻿using MNAC.Characters.Humanoid;
+using MNAC.TPhysics;
+using MNAC.TPhysics.Environment;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
-using Core = Tests.TPhysics.Environment.EnvironmentCore;
-namespace Tests.Characters
+using Core = MNAC.TPhysics.Environment.EnvironmentCore;
+namespace MNAC.Characters
 {
     [RequireComponent(typeof(CapsuleCollider))]
     internal class EnvironmentCore : CharacterCollisionComponent

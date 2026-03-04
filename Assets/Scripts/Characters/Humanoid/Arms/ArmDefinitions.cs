@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Behaviours.Arms.Animations;
-using Tests.Characters.Humanoid.Arms.Weapons;
+using MNAC.Behaviours.Arms.Animations;
+using MNAC.Characters.Humanoid.Arms.Weapons;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms
+namespace MNAC.Characters.Humanoid.Arms
 {
     [Serializable]
     internal class ArmDefinitions : IArmDefinitions
@@ -12,7 +12,7 @@ namespace Tests.Characters.Humanoid.Arms
         ArmWeaponDefinitions _weapon;
         [SerializeField]
         ArmAnimationDefinitions _animation;
-        public IArmedWeaponArmDefinitions Weapon => _weapon;
+        public IArmedArmDefinitions Weapon => _weapon;
 
         public IArmAnimationDefinitions Animation => _animation;
     }

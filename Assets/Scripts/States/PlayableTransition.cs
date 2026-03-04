@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
-using Tests.Utilities.Timeline;
-using Tests.Utilities.Timeline.Events.Point;
-using Tests.Utilities.Timeline.Events.Range;
-namespace Tests.States
+using MNAC.Utilities.Timeline;
+using MNAC.Utilities.Timeline.Events.Point;
+using MNAC.Utilities.Timeline.Events.Range;
+namespace MNAC.States
 {
     public class PlayableTransition<T> : StateMachineBase<IPlayableState<T>, T>.Transition, IPlayableTransition<T>
     {

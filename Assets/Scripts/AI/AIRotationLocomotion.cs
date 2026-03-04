@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Characters.Humanoid.Locomotion;
-using Tests.Interaction;
-using Tests.TPhysics.Locomotion;
-using LCore = Tests.TPhysics.Locomotion.LocomotionCore;
-namespace Tests.AI
+using MNAC.Characters.Humanoid.Locomotion;
+using MNAC.Interaction;
+using MNAC.TPhysics.Locomotion;
+using LCore = MNAC.TPhysics.Locomotion.LocomotionCore;
+namespace MNAC.AI
 {
 
     internal class AIRotationLocomotion : RotationLocomotionBase

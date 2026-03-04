@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public abstract class PlayerTargetLockerBase<T> : TargetLockerBase<T>, IPlayerTargetLocker<T> where T : class, ILockTarget
     {

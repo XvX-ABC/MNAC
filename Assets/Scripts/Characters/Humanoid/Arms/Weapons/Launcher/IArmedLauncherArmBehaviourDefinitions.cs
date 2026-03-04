@@ -1,4 +1,4 @@
-﻿namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
+﻿namespace MNAC.Characters.Humanoid.Arms.Weapons.Launchers
 {
     public interface IArmedLauncherArmBehaviourDefinitions : Behaviours.Arms.Weapons.IArmedLauncherArmBehaviourDefinitions
     {

@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Behaviours.Arms.Weapons.Launcher;
-using Tests.Interaction;
+using MNAC.Behaviours.Arms.Weapons.Launcher;
+using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons
+namespace MNAC.Behaviours.Arms.Weapons
 {
     public interface IArmedLauncherArmBehaviourDefinitions
     {

@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Utilities.Blackboards;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     [RequireComponent(typeof(RingCatcher))]
     public class RingCatcher_Composable : UIComponent

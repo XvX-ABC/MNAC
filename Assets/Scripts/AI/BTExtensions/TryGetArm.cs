@@ -1,12 +1,12 @@
 ﻿using System;
-using Tests.AI;
-using Tests.Characters.Humanoid;
-using Tests.Characters.Humanoid.Arms;
-using Tests.Characters.Humanoid.Arms.Weapons.Sword;
-using Tests.Weapons_New.Sword;
+using MNAC.AI;
+using MNAC.Characters.Humanoid;
+using MNAC.Characters.Humanoid.Arms;
+using MNAC.Characters.Humanoid.Arms.Weapons.Sword;
+using MNAC.Weapons.Sword;
 using UnityEngine;
-using BoostingHelper = Tests.Characters.Humanoid.Arms.Weapons.Sword.BoostingHelper;
-using SlashHelper = Tests.Characters.Humanoid.Arms.Weapons.Sword.SlashHelper;
+using BoostingHelper = MNAC.Characters.Humanoid.Arms.Weapons.Sword.BoostingHelper;
+using SlashHelper = MNAC.Characters.Humanoid.Arms.Weapons.Sword.SlashHelper;
 using TaskStatus = BehaviorDesigner.Runtime.Tasks.TaskStatus;
 
 namespace Assets.Tests.Scripts.AI.BTExtensions

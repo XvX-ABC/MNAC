@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Launchers
 {
     internal class SOHelper
     {

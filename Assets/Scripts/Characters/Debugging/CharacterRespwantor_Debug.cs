@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     internal class CharacterRespwantor_Debug : MonoBehaviour
     {

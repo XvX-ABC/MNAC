@@ -1,10 +1,10 @@
-﻿using Tests.Behaviours.Arm.Weapons;
-using Tests.States;
-using Tests.Utilities.Timeline;
-using Tests.Weapons_New.Launcher;
+﻿using MNAC.Behaviours.Arm.Weapons;
+using MNAC.States;
+using MNAC.Utilities.Timeline;
+using MNAC.Weapons.Launcher;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher
+namespace MNAC.Behaviours.Arms.Weapons.Launcher
 {
     internal class AmmoLoad : ArmedArmStateBase
     {

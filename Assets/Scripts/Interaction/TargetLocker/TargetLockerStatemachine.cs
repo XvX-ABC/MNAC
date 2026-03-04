@@ -1,6 +1,6 @@
-﻿using Tests.States;
+﻿using MNAC.States;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     internal class TargetLockerStatemachine : WithCallbackPlayableStatemachine<object>
     {

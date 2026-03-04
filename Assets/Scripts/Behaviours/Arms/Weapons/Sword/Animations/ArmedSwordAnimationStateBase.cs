@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
-using Tests.Animations;
-using Tests.Behaviours.Arms.Weapon.Animations;
+using MNAC.Animations;
+using MNAC.Behaviours.Arms.Weapon.Animations;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Sword.Animations
 {
     internal class ArmedSwordAnimationStateBase : ArmedWeaponAnimationStateBase
     {

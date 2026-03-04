@@ -1,8 +1,8 @@
-﻿using Tests.Characters.Interaction;
-using Tests.Interaction;
-using Tests.Interaction.Influences;
+﻿using MNAC.Characters.Interaction;
+using MNAC.Interaction;
+using MNAC.Interaction.Influences;
 
-namespace Tests.Characters.C_0
+namespace MNAC.Characters.C_0
 {
     public interface IC_0 : ICharacter, IDamageableWithCallback, ITeamMember, ICompositeItems, IKnockbackable
     {

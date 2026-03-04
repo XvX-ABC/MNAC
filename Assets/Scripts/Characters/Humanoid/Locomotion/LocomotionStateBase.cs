@@ -1,10 +1,10 @@
 ﻿using System;
-using Tests.States;
-using Tests.TPhysics.Locomotion;
-using Tests.Utilities.Timeline;
+using MNAC.States;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Utilities.Timeline;
 using UnityEngine;
-using Core = Tests.TPhysics.Locomotion.LocomotionCore;
-namespace Tests.Characters.Humanoid.Locomotion
+using Core = MNAC.TPhysics.Locomotion.LocomotionCore;
+namespace MNAC.Characters.Humanoid.Locomotion
 {
     internal abstract class LocomotionStateBase : WithCallbackPlayableState<object>
     {

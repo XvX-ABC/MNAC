@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.Characters.Animations;
-using Tests.States;
-using Tests.Utilities.Timeline;
-namespace Tests.Characters.Humanoid.Animations
+using MNAC.Animations;
+using MNAC.Characters.Animations;
+using MNAC.States;
+using MNAC.Utilities.Timeline;
+namespace MNAC.Characters.Humanoid.Animations
 {
     internal class StunningState : HumanAnimationStateBase
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Tests.States
+namespace MNAC.States
 {
     public interface ITransition<T> : IReadonlyTransition<T>
     {

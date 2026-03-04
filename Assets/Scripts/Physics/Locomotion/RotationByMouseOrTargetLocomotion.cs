@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Interaction;
-using Tests.Utilities;
+using MNAC.Interaction;
+using MNAC.Utilities;
 using UnityEngine;
 
-namespace Tests.TPhysics.Locomotion
+namespace MNAC.TPhysics.Locomotion
 {
     public class RotationByMouseOrTargetLocomotion : LocomotionModuleBase
     {

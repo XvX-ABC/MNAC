@@ -1,4 +1,4 @@
-﻿namespace Tests.Characters.Humanoid.Locomotion.Animations
+﻿namespace MNAC.Characters.Humanoid.Locomotion.Animations
 {
     public interface ILocomotionAnimatorDefinitions
     {

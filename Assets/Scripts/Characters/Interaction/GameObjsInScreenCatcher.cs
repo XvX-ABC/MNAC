@@ -1,14 +1,14 @@
-﻿using Tests.Utilities.Attributes;
-using Tests.Utilities.Blackboards;
+﻿using MNAC.Utilities.Attributes;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
 
 
-namespace Tests.Characters.Interaction
+namespace MNAC.Characters.Interaction
 {
     [PlayerComponent(DontDestroyOnLoad = true)]
     internal class GameObjsInScreenCatcher : CharacterComponent
     {
-        Tests.Interaction.GameObjsInScreenCatcher _catcher;
+        MNAC.Interaction.GameObjsInScreenCatcher _catcher;
 
         [SerializeField]
         ushort _processingAmountOfFrames = 30;

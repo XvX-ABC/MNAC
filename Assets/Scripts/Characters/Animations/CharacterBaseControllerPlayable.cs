@@ -1,8 +1,8 @@
-﻿using Tests.Animations;
+﻿using MNAC.Animations;
 using UnityEngine;
 using UnityEngine.Playables;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     internal class CharacterBaseControllerPlayable : ControllerPlayable
     {

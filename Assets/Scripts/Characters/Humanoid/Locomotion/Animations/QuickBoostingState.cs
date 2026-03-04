@@ -1,11 +1,11 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.States;
-using Tests.Utilities.Timeline;
+using MNAC.Animations;
+using MNAC.States;
+using MNAC.Utilities.Timeline;
 using UnityEngine;
 using UnityEngine.Animations;
 
-namespace Tests.Characters.Humanoid.Locomotion.Animations
+namespace MNAC.Characters.Humanoid.Locomotion.Animations
 {
     internal class QuickBoostingState : MovementState
     {

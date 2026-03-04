@@ -1,6 +1,6 @@
-﻿using Tests.Interaction;
+﻿using MNAC.Interaction;
 
-namespace Tests.Behaviours
+namespace MNAC.Behaviours
 {
     internal interface IPlayerTargetLocker : IPlayerTargetLocker<ILockTarget>, ITargetLocker
     {

@@ -1,10 +1,10 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.States;
-using Tests.Weapons_New.Launcher;
+using MNAC.Animations;
+using MNAC.States;
+using MNAC.Weapons.Launcher;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Launcher.Animations
 {
     internal class AmmoLoad : ArmedLauncherAnimationStateBase
     {

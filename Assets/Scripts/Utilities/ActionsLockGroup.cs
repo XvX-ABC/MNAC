@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-namespace Tests.Utilities
+namespace MNAC.Utilities
 {
     public class ActionsLockGroup<T> : IActionsLock<T> where T : Enum
     {

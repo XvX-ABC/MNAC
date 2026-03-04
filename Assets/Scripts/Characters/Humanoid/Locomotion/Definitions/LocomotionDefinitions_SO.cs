@@ -1,7 +1,7 @@
-﻿using Tests.Characters.Humanoid.Locomotion.Animations;
+﻿using MNAC.Characters.Humanoid.Locomotion.Animations;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Locomotion
+namespace MNAC.Characters.Humanoid.Locomotion
 {
     [CreateAssetMenu(fileName = "LocomotionDefinitions", menuName = SOHelper.DEFINITIONS_MENU_NAME + "/LocomotionDefinitions")]
     internal class LocomotionDefinitions_SO : ScriptableObject, ILocomotionDefinitions

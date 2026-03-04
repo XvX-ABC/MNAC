@@ -1,8 +1,8 @@
-﻿using Tests.Behaviours.Arms.Weapons.Sword;
-using Tests.Behaviours.Arms.Weapons.Sword.Animations;
+﻿using MNAC.Behaviours.Arms.Weapons.Sword;
+using MNAC.Behaviours.Arms.Weapons.Sword.Animations;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Sword
 {
     [CreateAssetMenu(fileName = "ArmedSwordArmAnimationDefinitions", menuName = "Tests/Definitions/Characters/Humanoid/Arms/Weapons/Sword/ArmedSwordArmAnimationDefinitions")]
     public class ArmedSwordArmAnimationDefinitions_SO : ScriptableObject, IArmedSwordArmAnimationDefinitions

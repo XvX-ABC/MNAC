@@ -1,19 +1,19 @@
 ﻿using System;
-using Tests.Behaviours;
-using Tests.Characters.Humanoid;
-using Tests.Characters.Humanoid.Input;
-using Tests.Characters.Interaction;
-using Tests.Characters.UI;
-using Tests.Interaction;
-using Tests.UI;
-using Tests.Utilities.Attributes;
-using Tests.Utilities.Blackboards;
+using MNAC.Behaviours;
+using MNAC.Characters.Humanoid;
+using MNAC.Characters.Humanoid.Input;
+using MNAC.Characters.Interaction;
+using MNAC.Characters.UI;
+using MNAC.Interaction;
+using MNAC.UI;
+using MNAC.Utilities.Attributes;
+using MNAC.Utilities.Blackboards;
 using TMPro;
 using UnityEngine;
-using IndicatedTarget = Tests.Characters.UI.IndicatedTarget;
-using PlayerCursorIndicator = Tests.Characters.UI.PlayerCursorIndicator;
+using IndicatedTarget = MNAC.Characters.UI.IndicatedTarget;
+using PlayerCursorIndicator = MNAC.Characters.UI.PlayerCursorIndicator;
 
-namespace Tests.Characters.Weapons
+namespace MNAC.Characters.Weapons
 {
     [PlayerComponent(DontDestroyOnLoad = true)]
     internal class PlayerTargetLocker : TargetLockerBase, IPlayerTargetLocker
@@ -73,7 +73,7 @@ namespace Tests.Characters.Weapons
         float _receiveInputDuration = 0.05f;
 
 
-        Tests.Interaction.GameObjsInScreenCatcher _screenCatcher;
+        MNAC.Interaction.GameObjsInScreenCatcher _screenCatcher;
         Behaviours.Interaction.PlayerTargetLocker _locker;
         PlayerCursorIndicator _cursorIndicator;
         IndicatorsManager _indicatorsManager;

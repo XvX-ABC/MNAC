@@ -1,6 +1,6 @@
-﻿using Tests.States;
+﻿using MNAC.States;
 
-namespace Tests.Animations
+namespace MNAC.Animations
 {
     public interface IAnimationPlayableState : IWithCallbackPlayableState<object>
     {

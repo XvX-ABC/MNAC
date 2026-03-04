@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Tests.Utilities.Blackboards
+namespace MNAC.Utilities.Blackboards
 {
     public interface IMiddleware<K, A>
     {

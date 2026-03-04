@@ -1,66 +1,34 @@
 ﻿using System;
 using System.Reflection;
+using System.Security.Policy;
 using Unity.Properties;
 using UnityEngine.Rendering;
 
-namespace Tests.TPhysics.Locomotion
+namespace MNAC.TPhysics.Locomotion
 {
-    public abstract class EvaluationModuleBase : IEvaluationModule
-    {
-        protected bool enabled;
-        [Obsolete]
-        protected World world;
-        public virtual bool Enabled { get => enabled; set => enabled = value; }
-        protected EvaluationModuleBase()
-        {
-            world = World.Default;
-        }
-        [Obsolete]
-        public virtual World World
-        {
-            get => world;
-            set
-            {
-                world = value == null ? World.Default : value;
-            }
-        }
-
-        public virtual Context Update(Context context)
-        {
-            return context;
-        }
-    }
     public abstract class LocomotionModuleBase : ILocomotionModule
     {
 
         protected bool enabled;
-        protected World world;
         protected LocomotionModuleState state;
-        public LocomotionModuleBase()
+        protected int priority;
+        public LocomotionModuleBase(int priority = 0)
         {
-            world = World.Default;
             state = LocomotionModuleState.Ready;
+            this.priority = priority;
         }
         public virtual bool Enabled
         {
             get => enabled;
             set => enabled = value;
         }
-        [Obsolete]
-        public virtual World World
-        {
-            get => world;
-            set
-            {
-                world = value == null ? World.Default : value;
-            }
-        }
 
         public LocomotionModuleState State { get => state; }
+        public int Priority { get => priority; }
 
-        public abstract Context OnStart(Context context);
-        public abstract Context OnUpdate(Context context);
-        public abstract Context OnEnd(Context context);
+        public virtual Context OnStart(Context context) { return context; }
+        public virtual Context OnUpdate(Context context) { return context; }
+        public virtual Context OnEnd(Context context) { return context; }
 
         public Context Start(Context context)
         {

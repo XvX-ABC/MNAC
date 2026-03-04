@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Interaction;
+using MNAC.Interaction;
 using UnityEngine;
-using HealthInfluence = Tests.Interaction.Influence.Health_Obsolete;
-namespace Tests.Characters.Interaction
+using HealthInfluence = MNAC.Interaction.Influence.Health_Obsolete;
+namespace MNAC.Characters.Interaction
 {
     [SerializeField]
     [Obsolete]

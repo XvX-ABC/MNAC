@@ -1,7 +1,7 @@
-﻿using Tests.TPhysics.Locomotion;
+﻿using MNAC.TPhysics.Locomotion;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword
+namespace MNAC.Behaviours.Arms.Weapons.Sword
 {
     internal class SlashHelper
     {

@@ -1,8 +1,8 @@
-﻿using Tests.Characters.Humanoid.Locomotion;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
+﻿using MNAC.Characters.Humanoid.Locomotion;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Composable;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal abstract class AIComponent : ComponentBase<AIComponentContext>
     {

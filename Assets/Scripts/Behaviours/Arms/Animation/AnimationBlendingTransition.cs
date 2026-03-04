@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.States;
-using Tests.Utilities.Timeline;
+using MNAC.States;
+using MNAC.Utilities.Timeline;
 
-namespace Tests.Behaviours.Arms.Animations
+namespace MNAC.Behaviours.Arms.Animations
 {
     internal class AnimationBlendingTransition : BlendingTransition<object>
     {

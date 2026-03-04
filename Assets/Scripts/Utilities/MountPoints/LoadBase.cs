@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Utilities.MountPoints;
+using MNAC.Utilities.MountPoints;
 using UnityEngine;
 
-namespace Tests.Utilities.MountPoints
+namespace MNAC.Utilities.MountPoints
 {
     public class LoadBase : ILoad
     {

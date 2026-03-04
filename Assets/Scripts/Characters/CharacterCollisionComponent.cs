@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Characters.Humanoid
+namespace MNAC.Characters.Humanoid
 {
     internal class CharacterCollisionComponent : CharacterComponent
     {

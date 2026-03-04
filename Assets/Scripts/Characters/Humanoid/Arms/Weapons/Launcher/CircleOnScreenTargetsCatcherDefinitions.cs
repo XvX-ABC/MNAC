@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Launchers
 {
     [Serializable]
     public class CircleOnScreenTargetsCatcherDefinitions : ICircleOnScreenTargetsCatcherDefinitions

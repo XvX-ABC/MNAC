@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Tests.Utilities.Timeline.Events.Point;
+using MNAC.Utilities.Timeline.Events.Point;
 
-namespace Tests.Utilities.Timeline.Events.Range
+namespace MNAC.Utilities.Timeline.Events.Range
 {
     public static class TimelineExtensionOfRangeEvents
     {

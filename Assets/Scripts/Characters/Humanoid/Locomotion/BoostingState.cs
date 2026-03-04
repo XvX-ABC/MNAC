@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Tests.TPhysics.Environment;
+using MNAC.TPhysics.Environment;
 
-namespace Tests.Characters.Humanoid.Locomotion
+namespace MNAC.Characters.Humanoid.Locomotion
 {
     internal class BoostingState : MovementState
     {

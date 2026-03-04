@@ -1,10 +1,10 @@
 ﻿using Minimalist.Utility.SampleScene;
 using System;
-using Tests.Interaction;
-using Tests.Interaction.Influences;
+using MNAC.Interaction;
+using MNAC.Interaction.Influences;
 using UnityEngine;
 
-namespace Tests.Characters.C_0
+namespace MNAC.Characters.C_0
 {
     internal class C_0Accessor : CharacterAccessor<C_0>, IC_0
     {
@@ -21,7 +21,7 @@ namespace Tests.Characters.C_0
 
         public IHealthWithCallBack HP => ((IDamageableWithCallback)character).HP;
 
-        IHealth Tests.Interaction.IDamageable.HP => HP;
+        IHealth MNAC.Interaction.IDamageable.HP => HP;
 
         public GameObject GetItem(uint key)
         {

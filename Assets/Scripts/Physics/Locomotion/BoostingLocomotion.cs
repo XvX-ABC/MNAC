@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.TPhysics.Locomotion
+namespace MNAC.TPhysics.Locomotion
 {
     public class BoostingLocomotion : HorizontalLocomotion
     {
@@ -18,6 +18,7 @@ namespace Tests.TPhysics.Locomotion
         }
         public override Context OnUpdate(Context context)
         {
+            var world = context.world;
             context = base.OnUpdate(context);
             var worldUp = world.Up;
             var currentVelocity = context.CurrentVelocity;

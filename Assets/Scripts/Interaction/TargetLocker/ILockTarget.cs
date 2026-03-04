@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public interface ILockTarget : IGameObjTarget_New, IPositionTarget
     {

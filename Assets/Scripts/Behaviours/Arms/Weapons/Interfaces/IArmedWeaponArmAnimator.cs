@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Tests.Behaviours.Arms.Weapons.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Animations
 {
-    internal interface IArmedWeaponArmAnimator
+    internal interface IArmedArmAnimator
     {
         public ArmedWeaponPlayablePart PlayablePart { get; }
         [Obsolete]

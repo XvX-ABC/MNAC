@@ -1,9 +1,9 @@
-﻿using Tests.Behaviours.Arm.Weapons;
-using Tests.Characters.Interaction.Input;
-using Tests.States;
-using Tests.Weapons_New.Launcher;
+﻿using MNAC.Behaviours.Arm.Weapons;
+using MNAC.Characters.Interaction.Input;
+using MNAC.States;
+using MNAC.Weapons.Launcher;
 
-namespace Tests.Behaviours.Arms
+namespace MNAC.Behaviours.Arms
 {
     internal class ArmAiming : ArmedArmStateBase
     {

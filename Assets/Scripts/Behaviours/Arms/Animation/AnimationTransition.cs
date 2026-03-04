@@ -1,11 +1,11 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.States;
-using Tests.Utilities.Timeline;
+using MNAC.Animations;
+using MNAC.States;
+using MNAC.Utilities.Timeline;
 using UnityEngine.Playables;
-using Tests.Utilities.Timeline.Events.Range;
+using MNAC.Utilities.Timeline.Events.Range;
 
-namespace Tests.Behaviours.Arms.Animations
+namespace MNAC.Behaviours.Arms.Animations
 {
     internal class AnimationTransition : AnimationBlendingTransition
     {

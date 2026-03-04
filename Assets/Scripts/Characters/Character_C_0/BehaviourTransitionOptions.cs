@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.States;
+using MNAC.States;
 using UnityEngine;
 
-namespace Tests.Characters.C_0
+namespace MNAC.Characters.C_0
 {
     [Serializable]
     internal class BehaviourTransitionOptions : BlendingTransitionOptions

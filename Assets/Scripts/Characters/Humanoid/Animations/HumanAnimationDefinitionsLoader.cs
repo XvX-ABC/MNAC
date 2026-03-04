@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tests.Characters.Animations;
+using MNAC.Characters.Animations;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Animations
+namespace MNAC.Characters.Humanoid.Animations
 {
     [Obsolete]
     internal class HumanAnimationDefinitionsLoader : MonoBehaviour, IHumanAnimationDefinitions

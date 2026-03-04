@@ -2,14 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Tests.Behaviours.Input;
-using Tests.Interaction;
-using Tests.UI;
-using Tests.Utilities.Composable;
+using MNAC.Behaviours.Input;
+using MNAC.Interaction;
+using MNAC.UI;
+using MNAC.Utilities.Composable;
 using UnityEngine;
-using IndicatedTarget = Tests.Characters.UI.IndicatedTarget;
+using IndicatedTarget = MNAC.Characters.UI.IndicatedTarget;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Launchers
 {
     //public class LauncherLocker
     //{
@@ -31,14 +31,14 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
     public partial class CircleOnScreenTargetsCatcher : ComponentBase, ITargetsCatcher_New<IGameObjTarget_New>
     {
         GameObjsInScreenCatcher_Obsolete _screenCatcher;
-        Tests.Interaction.CircleOnScreenTargetsCatcher _catcher;
+        MNAC.Interaction.CircleOnScreenTargetsCatcher _catcher;
         RingCatcher _ringCatcher;
         [Obsolete]
         TargetsDisplay _targetDisplay;
         IndicatorsManager _indicatorsManager;
         Camera _camera;
         IBaseInput _input;
-        Action<IList<Tests.Interaction.ITarget_Obsolete>> _targetsChangedAction;
+        Action<IList<MNAC.Interaction.ITarget_Obsolete>> _targetsChangedAction;
 
         ICircleOnScreenTargetsCatcherDefinitions _definitions;
 
@@ -66,7 +66,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
             _catcher.CaughtItemsChangedAction += targets =>
             {
-                _targetsChangedAction?.Invoke(targets.Cast<Tests.Interaction.ITarget_Obsolete>().ToList());
+                _targetsChangedAction?.Invoke(targets.Cast<MNAC.Interaction.ITarget_Obsolete>().ToList());
             };
         }
 
@@ -86,7 +86,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
 
             _catcher.CaughtItemsChangedAction += targets =>
             {
-                _targetsChangedAction?.Invoke(targets.Cast<Tests.Interaction.ITarget_Obsolete>().ToList());
+                _targetsChangedAction?.Invoke(targets.Cast<MNAC.Interaction.ITarget_Obsolete>().ToList());
             };
 
             _catcher.Radius = definitions.CatchingViewPortRadius;
@@ -120,7 +120,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
                 _screenCatcher.Enabled = value;
             }
         }
-        internal Tests.Interaction.CircleOnScreenTargetsCatcher catcher
+        internal MNAC.Interaction.CircleOnScreenTargetsCatcher catcher
         {
             get
             {
@@ -140,14 +140,11 @@ namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
         }
         void WhenTargetRelease(IGameObjTarget_New target)
         {
-            //var obj = target.Obj;
-            //_indicatorsManager.RemoveTargetFor<IndicatedTarget>(obj);
         }
         public void LateUpdate()
         {
             _catcher.MousePosition = _input.MousePosition;
             UpdateRingCatcher();
-            //ShowAllWaitingForSelectObjs();
         }
         void UpdateRingCatcher()
         {

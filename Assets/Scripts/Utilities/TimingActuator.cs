@@ -1,10 +1,10 @@
-﻿using Tests.Utilities.Timeline;
-using Tests.Utilities.Timeline.Events;
-using Tests.Utilities.Timeline.Events.Point;
+﻿using MNAC.Utilities.Timeline;
+using MNAC.Utilities.Timeline.Events;
+using MNAC.Utilities.Timeline.Events.Point;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Tests.Utilities
+namespace MNAC.Utilities
 {
     internal class TimingActuator : MonoBehaviour
     {

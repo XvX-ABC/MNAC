@@ -1,10 +1,10 @@
 ﻿using DG.Tweening;
 using System;
 using System.Collections.Generic;
-using Tests.Extensions;
 using UnityEngine;
+using MNAC.Utilities.Extensions;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public class FilterCollection_New<T>
     {

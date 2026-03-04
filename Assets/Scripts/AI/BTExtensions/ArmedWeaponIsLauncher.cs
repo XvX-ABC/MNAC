@@ -1,4 +1,4 @@
-﻿using Tests.Weapons_New.Launcher;
+﻿using MNAC.Weapons.Launcher;
 
 namespace Assets.Tests.Scripts.AI.BTExtensions
 {

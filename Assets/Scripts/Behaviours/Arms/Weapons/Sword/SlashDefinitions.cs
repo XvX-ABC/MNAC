@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword
+namespace MNAC.Behaviours.Arms.Weapons.Sword
 {
     [Serializable]
     public class SlashDefinitions : ISlashDefinitions

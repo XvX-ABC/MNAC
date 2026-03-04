@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Sword
 {
     [Serializable]
     public struct TriggerDefinitions

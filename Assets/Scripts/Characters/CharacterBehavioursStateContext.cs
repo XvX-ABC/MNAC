@@ -1,4 +1,4 @@
-﻿namespace Tests.Characters
+﻿namespace MNAC.Characters
 {
     internal class CharacterBehavioursStateContext { }
 }

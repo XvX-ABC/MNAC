@@ -1,11 +1,11 @@
 ﻿using System;
-using Tests.Utilities.Timeline.Events;
-using Tests.Utilities.Timeline.Events.Point;
-using Tests.Utilities.Timeline.Events.Range;
+using MNAC.Utilities.Timeline.Events;
+using MNAC.Utilities.Timeline.Events.Point;
+using MNAC.Utilities.Timeline.Events.Range;
 using UnityEngine;
 using UTime = UnityEngine.Time;
 
-namespace Tests.Utilities.Timeline
+namespace MNAC.Utilities.Timeline
 {
     //public class Timeline_V2 : Timeline_V1
     //{

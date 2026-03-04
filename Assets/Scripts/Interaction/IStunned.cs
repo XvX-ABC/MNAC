@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public interface IStunned
     {

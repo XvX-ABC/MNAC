@@ -1,7 +1,7 @@
-﻿using Tests.Interaction;
-using Tests.Interaction.Influences;
+﻿using MNAC.Interaction;
+using MNAC.Interaction.Influences;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     internal class CharacterAccessor_Debug : CharacterAccessor<Character_Debug>, ITeamMember, IDamageable, IKnockbackable
     {

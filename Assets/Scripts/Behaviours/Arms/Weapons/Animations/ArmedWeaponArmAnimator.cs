@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tests.Extensions;
-using Tests.Weapons;
-using Tests.Weapons_New;
+using MNAC.Utilities.Extensions;
+using MNAC.Weapons;
+using MNAC.Weapons;
 using UnityEngine;
 using UnityEngine.Playables;
-using IAnimationPlayablePart = Tests.Animations.IAnimationPlayablePart;
+using IAnimationPlayablePart = MNAC.Animations.IAnimationPlayablePart;
 
-namespace Tests.Behaviours.Arms.Weapons.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Animations
 {
 
-    internal class ArmedWeaponArmAnimator<T> : IArmedWeaponArmAnimator where T : IArmedWeaponArmBehaviour
+    internal class ArmedArmAnimator<T> : IArmedArmAnimator where T : IArmedArmBehaviour
     {
-        Dictionary<string, IArmedWeaponArmAnimationPlayablePart> _animators;
-        IArmedWeaponArmAnimationPlayablePart[] _activatedAnimators;
-        IArmedWeaponArmAnimationPlayablePart _activatedAnimator;
-        IArmedWeaponArmBehavioursController<T> _controller;
+        Dictionary<string, IArmedArmAnimationPlayablePart> _animators;
+        IArmedArmAnimationPlayablePart[] _activatedAnimators;
+        IArmedArmAnimationPlayablePart _activatedAnimator;
+        IArmedArmBehavioursController<T> _controller;
         ArmedWeaponPlayablePart _playablePart;
         Action<bool, IAnimationPlayablePart> _stateAction;
         [Obsolete]
         internal Action<bool, IAnimationPlayablePart> stateAction { get => _stateAction; set => _stateAction = value; }
         public ArmedWeaponPlayablePart PlayablePart { get => _playablePart; /*set => _playablePart = value;*/ }
 
-        public ArmedWeaponArmAnimator(PlayableGraph graph, IArmedWeaponArmBehavioursController<T> controller)
+        public ArmedArmAnimator(PlayableGraph graph, IArmedArmBehavioursController<T> controller)
         {
             _animators = new();
             _controller = controller ?? throw new ArgumentNullException(nameof(controller));
@@ -37,7 +37,7 @@ namespace Tests.Behaviours.Arms.Weapons.Animations
             if (_animators.TryGetValue(name, out var animator))
             {
                 if (_activatedAnimators == null)
-                    _activatedAnimators = new IArmedWeaponArmAnimationPlayablePart[] { animator };
+                    _activatedAnimators = new IArmedArmAnimationPlayablePart[] { animator };
                 else
                     ArrayExtensions.Append(ref _activatedAnimators, animator);
                 _playablePart.animator = animator;

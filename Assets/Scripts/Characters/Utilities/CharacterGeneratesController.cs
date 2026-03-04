@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tests.Interaction;
-using Tests.Utilities;
+using MNAC.Interaction;
+using MNAC.Utilities.Extensions;
 using UnityEngine;
 using Utils;
 using Random = Unity.Mathematics.Random;
 
-namespace Tests.Characters.Utilities
+namespace MNAC.Characters.Utilities
 {
 
     internal class CharacterGeneratesController<T> : MonoBehaviour where T : CharacterBase, IDamageableWithCallback

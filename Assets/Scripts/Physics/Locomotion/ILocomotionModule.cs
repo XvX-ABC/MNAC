@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Tests.TPhysics.Locomotion
+namespace MNAC.TPhysics.Locomotion
 {
     public interface ILocomotionModule
     {
         public bool Enabled { get; set; }
-        [Obsolete]
-        public World World { get; set; }
+        public int Priority { get; }
         public LocomotionModuleState State { get; }
         public Context Start(Context context);
         public Context Update(Context context);

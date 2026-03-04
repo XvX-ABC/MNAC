@@ -1,7 +1,7 @@
-﻿using Tests.States;
-using Tests.Utilities.Blackboards;
+﻿using MNAC.States;
+using MNAC.Utilities.Blackboards;
 
-namespace Tests.Utilities.Composable
+namespace MNAC.Utilities.Composable
 {
     public class StateComponentNode_MonoComponent : WithCallbackPlayableState_MonoComponent, IComponent
     {

@@ -1,23 +1,23 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.Characters.Humanoid;
-using Tests.Characters.Humanoid.Locomotion;
-using Tests.Characters.Interaction.Influences;
-using Tests.Characters.UI;
-using Tests.Interaction;
-using Tests.Interaction.Influence;
-using Tests.Interaction.Influences;
-using Tests.Players.UI;
-using Tests.States;
-using Tests.UI;
-using Tests.Utilities.Blackboards;
+using MNAC.Animations;
+using MNAC.Characters.Humanoid;
+using MNAC.Characters.Humanoid.Locomotion;
+using MNAC.Characters.Interaction.Influences;
+using MNAC.Characters.UI;
+using MNAC.Interaction;
+using MNAC.Interaction.Influence;
+using MNAC.Interaction.Influences;
+using MNAC.Players.UI;
+using MNAC.States;
+using MNAC.UI;
+using MNAC.Utilities.Blackboards;
 using UnityEditor;
 using UnityEngine;
-using AnimationNormalState = Tests.Characters.Humanoid.Animations.NormalState;
-using NormalState = Tests.Characters.Humanoid.NormalState;
-using Stun = Tests.Interaction.Influence.Stun;
+using AnimationNormalState = MNAC.Characters.Humanoid.Animations.NormalState;
+using NormalState = MNAC.Characters.Humanoid.NormalState;
+using Stun = MNAC.Interaction.Influence.Stun;
 
-namespace Tests.Characters.C_0
+namespace MNAC.Characters.C_0
 {
     [DefaultExecutionOrder(1)]
     [Interactable]

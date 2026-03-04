@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.TPhysics.Environment
+namespace MNAC.TPhysics.Environment
 {
     public struct Ground
     {

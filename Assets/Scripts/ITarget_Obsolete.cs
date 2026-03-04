@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Tests
+namespace MNAC
 {
     public interface ITarget_Obsolete
     {

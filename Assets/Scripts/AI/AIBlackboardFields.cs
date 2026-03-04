@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Characters;
-using Tests.Characters.Humanoid.Locomotion;
+using MNAC.Characters;
+using MNAC.Characters.Humanoid.Locomotion;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal class AIBlackboardFields
     {

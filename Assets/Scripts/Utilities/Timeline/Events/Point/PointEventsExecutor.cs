@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tests.Utilities.Timeline;
-using Tests.Utilities.Timeline.Events;
+using MNAC.Utilities.Timeline;
+using MNAC.Utilities.Timeline.Events;
 
-namespace Tests.Utilities.Timeline.Events.Point
+namespace MNAC.Utilities.Timeline.Events.Point
 {
     public class PointEventsExecutor : IEventsExecutor
     {

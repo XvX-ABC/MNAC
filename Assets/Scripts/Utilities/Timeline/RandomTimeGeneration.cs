@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Random = Unity.Mathematics.Random;
 
-namespace Tests.Utilities.Timeline
+namespace MNAC.Utilities.Timeline
 {
     internal class RandomTimeGeneration : ITimeGenerator
     {

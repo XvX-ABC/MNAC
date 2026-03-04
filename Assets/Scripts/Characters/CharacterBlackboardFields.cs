@@ -1,7 +1,7 @@
 ﻿using System;
-using Tests.Utilities.Blackboards;
+using MNAC.Utilities.Blackboards;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     //TODO: 修改为人形专用黑板字段
     public static class CharacterBlackboardFields

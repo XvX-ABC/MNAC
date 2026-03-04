@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-namespace Tests.States
+namespace MNAC.States
 {
     public class TransitionOptionsCantFoundException : Exception
     {

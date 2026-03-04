@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tests.Player;
-using Tests.UI;
+using MNAC.Player;
+using MNAC.UI;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Launchers
 {
     public class CircleOnScreenTargetsCatcher_Test : MonoBehaviour
     {

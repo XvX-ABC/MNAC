@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tests.UI;
+using MNAC.UI;
 using UnityEngine;
 
-namespace Tests.Characters.UI
+namespace MNAC.Characters.UI
 {
     [RequireComponent(typeof(QuantityBhv))]
     public class ProgressSlider_QuantityBhv : ProgressSlider

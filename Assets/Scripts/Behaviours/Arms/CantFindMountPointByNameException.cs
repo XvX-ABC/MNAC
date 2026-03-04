@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Behaviours.Arms
+namespace MNAC.Behaviours.Arms
 {
     internal class CantFindMountPointByNameException : Exception
     {

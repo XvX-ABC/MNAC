@@ -1,10 +1,10 @@
 ﻿using System;
-using Tests.Behaviours;
-using Tests.Interaction;
-using Tests.Utilities.Blackboards;
+using MNAC.Behaviours;
+using MNAC.Interaction;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
 
-namespace Tests.Characters.Interaction
+namespace MNAC.Characters.Interaction
 {
     internal abstract class TargetLockerBase : CharacterComponent, ITargetLocker
     {

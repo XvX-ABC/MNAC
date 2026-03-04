@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     [Serializable]
     public class GameObjsInScreenCatcher : CatcherBase<GameObject>

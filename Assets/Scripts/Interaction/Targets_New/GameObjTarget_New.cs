@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public class GameObjTarget_New : MonoBehaviour, IGameObjTarget_New
     {

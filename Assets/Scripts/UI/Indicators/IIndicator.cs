@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     public interface IIndicator
     {

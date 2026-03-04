@@ -1,4 +1,4 @@
-﻿namespace Tests.Utilities.MountPoints
+﻿namespace MNAC.Utilities.MountPoints
 {
     public enum MountPointType
     {

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
-    public interface ICompositeItems : Tests.Interaction.ICompositeItems<GameObject>
+    public interface ICompositeItems : MNAC.Interaction.ICompositeItems<GameObject>
     {
 
     }

@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tests.Interaction;
+using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
 #if UNITY_EDITOR
     [RequireComponent(typeof(QuantityBhv))]

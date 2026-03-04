@@ -1,6 +1,6 @@
 ﻿using BehaviorDesigner.Runtime;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal class SharedTarget : SharedVariable<Target>
     {

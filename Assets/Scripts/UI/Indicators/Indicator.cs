@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     public abstract class Indicator : UIComponent, IIndicator
     {

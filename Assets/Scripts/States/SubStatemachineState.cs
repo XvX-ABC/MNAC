@@ -1,7 +1,7 @@
-﻿using Tests.Utilities.Timeline;
+﻿using MNAC.Utilities.Timeline;
 using UnityEngine;
 
-namespace Tests.States
+namespace MNAC.States
 {
     public class SubStatemachineState<T> : WithCallbackPlayableState<T>
     {

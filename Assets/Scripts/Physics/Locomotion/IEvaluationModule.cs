@@ -1,9 +1,7 @@
-﻿namespace Tests.TPhysics.Locomotion
+﻿namespace MNAC.TPhysics.Locomotion
 {
-    public interface IEvaluationModule
+    public interface IEvaluationModule : ILocomotionModule
     {
-        public World World { get; set; }
-        public bool Enabled { get; set; }
-        public Context Update(Context context);
+        public const int DEFAULT_PRIORITY = 0;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Utilities.Composable
+namespace MNAC.Utilities.Composable
 {
     public interface IComponentDescriptions
     {

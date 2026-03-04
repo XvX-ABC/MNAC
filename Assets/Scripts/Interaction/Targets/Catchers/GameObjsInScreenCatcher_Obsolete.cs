@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     [Serializable]
     public class GameObjsInScreenCatcher_Obsolete

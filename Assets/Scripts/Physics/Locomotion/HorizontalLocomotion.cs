@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.TPhysics.Locomotion
+namespace MNAC.TPhysics.Locomotion
 {
     public class HorizontalLocomotion : LocomotionModuleBase
     {
@@ -38,6 +38,7 @@ namespace Tests.TPhysics.Locomotion
         {
             var direction = _direction;
             var grounds = context.GroundDetector.Grounds;
+            var world = context.world;
 
             var groundNormal = context.GroundDetector.GroundsNormal;
             if (groundNormal == Vector3.zero)
@@ -52,6 +53,7 @@ namespace Tests.TPhysics.Locomotion
         }
         public override Context OnUpdate(Context context)
         {
+            var world = context.world;
             var up = world.Up;
             if (context.GroundDetector.Grounds.Count > 0)
             {

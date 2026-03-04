@@ -1,14 +1,14 @@
-using Tests.Behaviours.Input;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
+using MNAC.Behaviours.Input;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Composable;
 using UnityEngine;
-using Core = Tests.UI.UICore;
-namespace Tests.Characters.UI
+using Core = MNAC.UI.UICore;
+namespace MNAC.Characters.UI
 {
     [RequireComponent(typeof(Core))]
     internal class UICore : CharacterComponent
     {
-        class Input : Tests.UI.IInput
+        class Input : MNAC.UI.IInput
         {
             IBaseInput _input;
 

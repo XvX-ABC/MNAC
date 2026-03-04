@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tests.Utilities.Composable;
+using MNAC.Utilities.Composable;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     internal class CharacterComponent : ComponentBase_MonoComponent
     {

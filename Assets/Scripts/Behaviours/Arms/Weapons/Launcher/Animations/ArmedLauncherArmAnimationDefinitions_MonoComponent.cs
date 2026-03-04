@@ -1,4 +1,4 @@
-﻿namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
+﻿namespace MNAC.Behaviours.Arms.Weapons.Launcher.Animations
 {
     //internal class ArmedLauncherArmAnimationDefinitions_MonoComponent : MonoBehaviour, IArmedLauncherArmAnimationDefinitions
     //{

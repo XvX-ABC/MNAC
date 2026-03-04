@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Characters.Humanoid
+namespace MNAC.Characters.Humanoid
 {
     internal class BodyPartNotFoundException : Exception
     {

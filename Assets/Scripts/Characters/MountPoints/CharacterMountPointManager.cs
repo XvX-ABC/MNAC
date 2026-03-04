@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Composable;
 using UnityEngine;
 
-namespace Tests.Characters.MountPoints
+namespace MNAC.Characters.MountPoints
 {
     [Serializable]
     internal class CharacterMountPointManager : ComponentBase

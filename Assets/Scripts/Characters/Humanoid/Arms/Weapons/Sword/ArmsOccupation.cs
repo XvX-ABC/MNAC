@@ -1,4 +1,4 @@
-﻿namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
+﻿namespace MNAC.Characters.Humanoid.Arms.Weapons.Sword
 {
     class ArmsOccupation
     {

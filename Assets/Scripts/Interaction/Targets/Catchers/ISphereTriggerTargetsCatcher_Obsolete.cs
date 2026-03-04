@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Interaction.Targets
+namespace MNAC.Interaction.Targets
 {
     [Obsolete]
     public interface ISphereTriggerTargetsCatcher_Obsolete : ITargetsCatcher

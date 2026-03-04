@@ -1,10 +1,10 @@
 ﻿using System;
-using Tests.Behaviours.Arm.Weapons;
-using Tests.States;
-using Tests.Utilities.Timeline;
-using Tests.Weapons_New.Sword;
+using MNAC.Behaviours.Arm.Weapons;
+using MNAC.States;
+using MNAC.Utilities.Timeline;
+using MNAC.Weapons.Sword;
 using UnityEngine;
-namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Sword
 {
     internal class SwordBoosting : ArmedArmStateBase
     {

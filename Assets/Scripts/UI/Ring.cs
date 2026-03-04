@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     [ExecuteAlways]
     public class Ring : MonoBehaviour

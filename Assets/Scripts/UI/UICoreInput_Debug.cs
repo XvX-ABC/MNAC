@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     [SerializeField]
     public class UICoreInput_Debug : MonoBehaviour, IInput

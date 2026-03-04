@@ -1,7 +1,7 @@
-﻿using Tests.States;
+﻿using MNAC.States;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Launcher.Animations
 {
     internal class ArmedLauncherAnimationState : WithCallbackStatemachineState<object>
     {

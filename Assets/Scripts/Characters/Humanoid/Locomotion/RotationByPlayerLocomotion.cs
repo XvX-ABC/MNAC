@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Tests.Behaviours.Arms.Weapons.Launcher;
-using Tests.Behaviours.Input;
-using Tests.Interaction;
-using Tests.TPhysics.Locomotion;
-using Tests.Utilities;
+using MNAC.Behaviours.Arms.Weapons.Launcher;
+using MNAC.Behaviours.Input;
+using MNAC.Interaction;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Utilities;
 using UnityEngine;
-using LCore = Tests.TPhysics.Locomotion.LocomotionCore;
+using LCore = MNAC.TPhysics.Locomotion.LocomotionCore;
 
-namespace Tests.Characters.Humanoid.Locomotion
+namespace MNAC.Characters.Humanoid.Locomotion
 {
     public class RotationByPlayerLocomotion : RotationLocomotionBase
     {

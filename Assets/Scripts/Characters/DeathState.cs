@@ -1,14 +1,14 @@
 ﻿using System;
-using Tests.Characters.Humanoid.Locomotion;
-using Tests.Characters.UI;
-using Tests.Players.UI;
-using Tests.TPhysics.Locomotion;
-using Tests.Utilities.Timeline;
-using Tests.Utilities.Timeline.Events.Point;
+using MNAC.Characters.Humanoid.Locomotion;
+using MNAC.Characters.UI;
+using MNAC.Players.UI;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Utilities.Timeline;
+using MNAC.Utilities.Timeline.Events.Point;
 using UnityEngine;
-using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
+using LocomotionCore = MNAC.Characters.Humanoid.Locomotion.LocomotionCore;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     internal class DeathStateHelper
     {

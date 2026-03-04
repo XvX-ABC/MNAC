@@ -1,4 +1,4 @@
-﻿namespace Tests.States
+﻿namespace MNAC.States
 {
     public interface IBlendingTransitionOptions
     {

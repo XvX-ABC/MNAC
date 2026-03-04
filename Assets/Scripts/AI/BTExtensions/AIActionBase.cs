@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Action = BehaviorDesigner.Runtime.Tasks.Action;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     [TaskCategory("Tests/AI")]
     internal abstract class AIActionBase : Action

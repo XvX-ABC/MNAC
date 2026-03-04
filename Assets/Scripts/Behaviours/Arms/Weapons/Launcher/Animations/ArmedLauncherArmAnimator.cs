@@ -1,21 +1,21 @@
 ﻿using RootMotion.FinalIK;
 using System;
 using System.Text;
-using Tests.Animations;
-using Tests.Characters.Humanoid.Locomotion;
-using Tests.Characters.Interaction.Input;
-using Tests.Interaction;
-using Tests.States;
-using Tests.TPhysics.Environment;
-using Tests.Weapons_New.Launcher;
+using MNAC.Animations;
+using MNAC.Characters.Humanoid.Locomotion;
+using MNAC.Characters.Interaction.Input;
+using MNAC.Interaction;
+using MNAC.States;
+using MNAC.TPhysics.Environment;
+using MNAC.Weapons.Launcher;
 using UnityEngine;
 using UnityEngine.Playables;
-using static Tests.Behaviours.Arms.Weapons.Launcher.Animations.IArmedLauncherArmAnimationDefinitions;
-using World = Tests.TPhysics.World;
+using static MNAC.Behaviours.Arms.Weapons.Launcher.Animations.IArmedLauncherArmAnimationDefinitions;
+using World = MNAC.TPhysics.World;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Launcher.Animations
 {
-    internal class ArmedLauncherArmAnimator : IArmedWeaponArmAnimationPlayablePart
+    internal class ArmedLauncherArmAnimator : IArmedArmAnimationPlayablePart
     {
         ControllerPlayable _controller;
         RuntimeAnimatorController _animatorController;

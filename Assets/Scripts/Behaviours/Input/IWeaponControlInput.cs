@@ -1,4 +1,4 @@
-﻿namespace Tests.Characters.Interaction.Input
+﻿namespace MNAC.Characters.Interaction.Input
 {
     public interface IWeaponControlInput
     {

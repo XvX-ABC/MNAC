@@ -1,6 +1,6 @@
 ﻿using UnityEngine.Analytics;
 
-namespace Tests.Characters.Humanoid
+namespace MNAC.Characters.Humanoid
 {
     internal class HumanoidComponent : CharacterComponent
     {

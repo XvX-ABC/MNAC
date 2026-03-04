@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using Tests.Animations;
-using Tests.States;
-using Tests.TPhysics.Locomotion;
+using MNAC.Animations;
+using MNAC.States;
+using MNAC.TPhysics.Locomotion;
 using UnityEngine;
 using UnityEngine.Android;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Sword.Animations
 {
     internal class Idle : ArmedSwordAnimationStateBase
     {

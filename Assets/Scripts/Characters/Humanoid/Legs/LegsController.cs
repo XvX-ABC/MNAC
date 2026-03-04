@@ -1,9 +1,9 @@
-﻿using Tests.TPhysics;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
+﻿using MNAC.TPhysics;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Composable;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Legs
+namespace MNAC.Characters.Humanoid.Legs
 {
     internal class LegsController : HumanoidComponent
     {

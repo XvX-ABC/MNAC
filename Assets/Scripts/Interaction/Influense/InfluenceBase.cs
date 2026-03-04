@@ -1,4 +1,4 @@
-﻿namespace Tests.Interaction.Influences
+﻿namespace MNAC.Interaction.Influences
 {
     public abstract class InfluenceBase : IInfluence
     {

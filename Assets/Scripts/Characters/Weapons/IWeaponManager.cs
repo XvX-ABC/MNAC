@@ -1,6 +1,6 @@
-﻿namespace Tests.Characters.Weapons
+﻿namespace MNAC.Characters.Weapons
 {
-    public interface IWeaponManager : Weapons_New.IWeaponManager
+    public interface IWeaponManager : MNAC.Weapons.IWeaponManager
     {
         public void Initialize();
     }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public class Target : ITarget_Obsolete
     {

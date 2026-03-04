@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.States;
+using MNAC.Animations;
+using MNAC.States;
 
-namespace Tests.Characters.Humanoid.Locomotion.Animations
+namespace MNAC.Characters.Humanoid.Locomotion.Animations
 {
     internal class DescendingState : LocomotionAnimationStateBase
     {

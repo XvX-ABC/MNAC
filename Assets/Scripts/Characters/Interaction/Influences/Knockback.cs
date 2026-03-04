@@ -1,12 +1,12 @@
 ﻿using System;
-using Tests.Interaction.Influences;
-using Tests.TPhysics.Locomotion;
-using Tests.Utilities.Timeline;
-using Tests.Utilities.Timeline.Events.Point;
+using MNAC.Interaction.Influences;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Utilities.Timeline;
+using MNAC.Utilities.Timeline.Events.Point;
 using UnityEngine;
-using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
+using LocomotionCore = MNAC.Characters.Humanoid.Locomotion.LocomotionCore;
 
-namespace Tests.Characters.Interaction.Influences
+namespace MNAC.Characters.Interaction.Influences
 {
     internal class Knockback : InfluenceBase, IKnockback
     {

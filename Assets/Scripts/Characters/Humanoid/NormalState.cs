@@ -1,10 +1,10 @@
 ﻿using System;
-using Tests.Characters.Humanoid.Arms;
-using Tests.Characters.Humanoid.Locomotion;
-using Tests.States;
-using Tests.Utilities.Timeline;
+using MNAC.Characters.Humanoid.Arms;
+using MNAC.Characters.Humanoid.Locomotion;
+using MNAC.States;
+using MNAC.Utilities.Timeline;
 
-namespace Tests.Characters.Humanoid
+namespace MNAC.Characters.Humanoid
 {
     internal class NormalState : WithCallbackPlayableStatemachine<object>
     {

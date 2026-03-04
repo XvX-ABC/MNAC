@@ -1,6 +1,6 @@
-﻿using Tests.Utilities.Timeline.Events;
+﻿using MNAC.Utilities.Timeline.Events;
 
-namespace Tests.Utilities.Timeline.Events.Range
+namespace MNAC.Utilities.Timeline.Events.Range
 {
     public interface IRangeEvent : ITimelineEvent
     {

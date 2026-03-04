@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Characters.MountPoints
+namespace MNAC.Characters.MountPoints
 {
     [Serializable]
-    internal class MountPoint : Tests.Utilities.MountPoints.MountPoint
+    internal class MountPoint : MNAC.Utilities.MountPoints.MountPoint
     {
         [SerializeField]
         internal MountPointLocation place;

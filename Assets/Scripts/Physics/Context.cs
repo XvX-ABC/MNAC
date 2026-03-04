@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
-namespace Tests.TPhysics
+namespace MNAC.TPhysics
 {
     public static class TPhysicsHelper
     {

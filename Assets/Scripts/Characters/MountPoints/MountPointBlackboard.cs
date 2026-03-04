@@ -1,6 +1,6 @@
-﻿using Tests.Utilities.Blackboards;
+﻿using MNAC.Utilities.Blackboards;
 
-namespace Tests.Characters.MountPoints
+namespace MNAC.Characters.MountPoints
 {
     internal class MountPointBlackboard : Blackboard
     {

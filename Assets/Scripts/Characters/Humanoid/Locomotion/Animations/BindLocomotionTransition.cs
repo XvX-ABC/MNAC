@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.States;
-using Tests.Utilities.Timeline;
+using MNAC.States;
+using MNAC.Utilities.Timeline;
 
-namespace Tests.Characters.Humanoid.Locomotion.Animations
+namespace MNAC.Characters.Humanoid.Locomotion.Animations
 {
     internal class BindLocomotionTransition : BlendingTransition<object>
     {

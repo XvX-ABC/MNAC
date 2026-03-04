@@ -1,7 +1,7 @@
-﻿using Tests.Interaction;
+﻿using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tests.Characters.Utilities
+namespace MNAC.Characters.Utilities
 {
     internal class GenerationPoint : MonoBehaviour
     {

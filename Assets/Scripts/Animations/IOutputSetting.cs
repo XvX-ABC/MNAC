@@ -1,4 +1,4 @@
-﻿namespace Tests.Animations
+﻿namespace MNAC.Animations
 {
     public interface IOutputSetting
     {

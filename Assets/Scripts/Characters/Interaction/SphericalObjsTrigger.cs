@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tests.Extensions;
-using Tests.TPhysics.Locomotion;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Utilities.Extensions;
 using UnityEngine;
 
-namespace Tests.Characters.Interaction
+namespace MNAC.Characters.Interaction
 {
-    internal class SphericalObjsTrigger : Tests.Interaction.SphericalObjsTrigger, IDisposable
+    internal class SphericalObjsTrigger : MNAC.Interaction.SphericalObjsTrigger, IDisposable
     {
         #region internal classes
         class AngleChecker : EvaluationModuleBase
@@ -44,7 +44,7 @@ namespace Tests.Characters.Interaction
         #endregion
         LocomotionCore _locomotionCore;
         AngleChecker _angleChecker;
-        public void Initialize(Tests.TPhysics.Locomotion.LocomotionCore locomotionCore, float maxAngle)
+        public void Initialize(MNAC.TPhysics.Locomotion.LocomotionCore locomotionCore, float maxAngle)
         {
             _angleChecker = new(maxAngle);
             _locomotionCore = locomotionCore ?? throw new ArgumentNullException(nameof(locomotionCore));

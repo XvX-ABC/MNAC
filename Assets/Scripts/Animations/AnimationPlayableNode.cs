@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Utilities.MTrees;
+using MNAC.Utilities.MTrees;
 using UnityEngine;
 using UnityEngine.Playables;
 
-namespace Tests.Animations
+namespace MNAC.Animations
 {
     public class AnimationPlayableNode : MTContainerNode<IAnimationPlayablePart>, IAnimationPlayablePartNode
     {

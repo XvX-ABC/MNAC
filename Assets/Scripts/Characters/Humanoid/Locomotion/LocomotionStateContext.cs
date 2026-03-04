@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Tests.Characters.Humanoid.Input;
-using Tests.Input;
-using Tests.TPhysics.Locomotion;
-using Core = Tests.TPhysics.Locomotion.LocomotionCore;
-namespace Tests.Characters.Humanoid.Locomotion
+using MNAC.Characters.Humanoid.Input;
+using MNAC.Input;
+using MNAC.TPhysics.Locomotion;
+using Core = MNAC.TPhysics.Locomotion.LocomotionCore;
+namespace MNAC.Characters.Humanoid.Locomotion
 {
     internal class LocomotionStateContext
     {

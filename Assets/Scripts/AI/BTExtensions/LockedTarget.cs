@@ -2,7 +2,7 @@
 using Tess.AI;
 using UnityEngine;
 using Random = Unity.Mathematics.Random;
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal class StartFindTarget : AIActionBase
     {

@@ -1,13 +1,13 @@
 ﻿using BehaviorDesigner.Runtime.Tasks;
 using RootMotion.FinalIK;
 using System;
-using Tests.Behaviours.Foots;
-using Tests.TPhysics;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
+using MNAC.Behaviours.Foots;
+using MNAC.TPhysics;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Composable;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Legs
+namespace MNAC.Characters.Humanoid.Legs
 {
     [RequiredComponent(typeof(LegIK))]
     public class LegController : ComponentBase_MonoComponent

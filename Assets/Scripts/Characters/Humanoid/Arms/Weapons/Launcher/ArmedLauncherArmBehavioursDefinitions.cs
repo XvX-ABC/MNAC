@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Launchers
 {
     [Serializable]
     internal class ArmedLauncherArmBehavioursDefinitions : Behaviours.Arms.Weapons.Launcher.ArmedLauncherArmBehavioursDefinitions, IArmedLauncherArmBehaviourDefinitions

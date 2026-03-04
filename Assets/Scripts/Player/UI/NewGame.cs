@@ -2,7 +2,7 @@
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
-namespace Tests.Players.UI
+namespace MNAC.Players.UI
 {
     internal class NewGame : MonoBehaviour
     {

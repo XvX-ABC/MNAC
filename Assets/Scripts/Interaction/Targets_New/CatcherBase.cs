@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public abstract class CatcherBase<T> : ICatcher<T>
     {

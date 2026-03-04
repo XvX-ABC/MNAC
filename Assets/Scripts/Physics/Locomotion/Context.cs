@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
-using static Tests.TPhysics.Context;
-using IGroundDetector = Tests.TPhysics.Environment.IGroundDetector;
+using static MNAC.TPhysics.Context;
+using IGroundDetector = MNAC.TPhysics.Environment.IGroundDetector;
 
-namespace Tests.TPhysics.Locomotion
+namespace MNAC.TPhysics.Locomotion
 {
     public struct Context
     {
@@ -29,7 +29,7 @@ namespace Tests.TPhysics.Locomotion
         {
             this.world = world ?? throw new ArgumentNullException(nameof(world));
             _physicsContext = physicsContext;
-            _groundDetector = groundDetector;
+            _groundDetector = groundDetector??throw new ArgumentNullException(nameof(groundDetector));
             verticalPosture = VerticalPosture.Holding;
             _groundPlane = default;
             _worldPlane = default;

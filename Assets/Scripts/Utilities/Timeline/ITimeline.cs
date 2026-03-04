@@ -1,7 +1,7 @@
 ﻿using System;
-using Tests.Utilities.Timeline.Events;
+using MNAC.Utilities.Timeline.Events;
 
-namespace Tests.Utilities.Timeline
+namespace MNAC.Utilities.Timeline
 {
     public interface IReadonlyTimeline
     {

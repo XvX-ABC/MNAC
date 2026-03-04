@@ -1,4 +1,4 @@
-﻿namespace Tests.UI
+﻿namespace MNAC.UI
 {
     public enum IndicatorType
     {

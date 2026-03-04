@@ -1,4 +1,4 @@
-﻿namespace Tests.Input
+﻿namespace MNAC.Input
 {
     public interface IHybridInput : IVirtualInput
     {

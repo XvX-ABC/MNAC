@@ -1,11 +1,11 @@
 ﻿using System;
-using Tests.Characters.MountPoints;
+using MNAC.Characters.MountPoints;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms
+namespace MNAC.Characters.Humanoid.Arms
 {
     [Serializable]
-    internal class MountPoint : Tests.Characters.MountPoints.MountPoint
+    internal class MountPoint : MNAC.Characters.MountPoints.MountPoint
     {
         public override GameObject LoadObj
         {

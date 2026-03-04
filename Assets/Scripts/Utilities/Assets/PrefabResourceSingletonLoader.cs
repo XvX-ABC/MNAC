@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Utilities.Assets
+namespace MNAC.Utilities.Assets
 {
     public class PrefabResourceSingletonLoader<T> : ResourceLoader<T> where T : Component
     {

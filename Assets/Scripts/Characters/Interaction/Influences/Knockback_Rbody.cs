@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Interaction.Influences;
+using MNAC.Interaction.Influences;
 using UnityEngine;
 
-namespace Tests.Characters.Interaction.Influences
+namespace MNAC.Characters.Interaction.Influences
 {
     internal class Knockback_Rbody : InfluenceBase, IKnockback
     {

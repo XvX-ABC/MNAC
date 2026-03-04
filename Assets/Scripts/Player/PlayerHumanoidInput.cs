@@ -1,10 +1,10 @@
 ﻿using System;
-using Tests.Behaviours.Input;
-using Tests.Characters.Humanoid.Input;
+using MNAC.Behaviours.Input;
+using MNAC.Characters.Humanoid.Input;
 using UnityEngine;
 using UInput = UnityEngine.Input;
 
-namespace Tests.Player
+namespace MNAC.Player
 {
     [Serializable]
     public class PlayerHumanoidInput : IHumanoidInput

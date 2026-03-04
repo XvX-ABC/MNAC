@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace Tests.TPhysics
+namespace MNAC.TPhysics
 {
     public class World
     {

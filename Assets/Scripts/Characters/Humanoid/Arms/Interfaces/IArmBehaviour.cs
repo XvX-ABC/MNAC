@@ -1,6 +1,6 @@
-﻿using Tests.Utilities.Composable;
+﻿using MNAC.Utilities.Composable;
 
-namespace Tests.Characters.Humanoid.Arms
+namespace MNAC.Characters.Humanoid.Arms
 {
     public interface IArmBehaviour : IComponent
     {

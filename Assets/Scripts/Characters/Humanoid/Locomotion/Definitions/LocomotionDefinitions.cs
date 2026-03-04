@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Characters.Humanoid.Locomotion.Animations;
+using MNAC.Characters.Humanoid.Locomotion.Animations;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Locomotion
+namespace MNAC.Characters.Humanoid.Locomotion
 {
     [Serializable]
     internal class LocomotionDefinitions : ILocomotionDefinitions

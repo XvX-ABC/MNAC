@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tests.AI;
-using Tests.Behaviours;
-using Tests.Characters;
-using Tests.Characters.Humanoid.Locomotion;
-using Tests.Interaction;
-using Tests.TPhysics.Locomotion;
-using Tests.Utilities.Blackboards;
+using MNAC.AI;
+using MNAC.Behaviours;
+using MNAC.Characters;
+using MNAC.Characters.Humanoid.Locomotion;
+using MNAC.Interaction;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Utilities.Blackboards;
 using Unity.VisualScripting;
 using UnityEngine;
-using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
+using LocomotionCore = MNAC.Characters.Humanoid.Locomotion.LocomotionCore;
 
 namespace Tess.AI
 {

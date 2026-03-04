@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     internal class SOHelper
     {
-        public const string DEFINITIONS_MENU_NAME = Tests.SOHelper.DEFINITIONS_MENU_NAME + "/Characters";
-        public const string BEHAVIOURS_MENU_NAME = Tests.SOHelper.BEHAVIOURS_MENU_NAME + "/Characters";
+        public const string DEFINITIONS_MENU_NAME = MNAC.SOHelper.DEFINITIONS_MENU_NAME + "/Characters";
+        public const string BEHAVIOURS_MENU_NAME = MNAC.SOHelper.BEHAVIOURS_MENU_NAME + "/Characters";
     }
 }

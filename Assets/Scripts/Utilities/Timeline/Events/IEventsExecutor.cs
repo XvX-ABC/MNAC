@@ -1,7 +1,7 @@
 ﻿using System;
-using Tests.Utilities.Timeline;
+using MNAC.Utilities.Timeline;
 
-namespace Tests.Utilities.Timeline.Events
+namespace MNAC.Utilities.Timeline.Events
 {
     public interface IEventsExecutor
     {

@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Utilities.Timeline;
+using MNAC.Utilities.Timeline;
 using UnityEngine;
 
-namespace Tests.Utilities.Timeline.Events.Point
+namespace MNAC.Utilities.Timeline.Events.Point
 {
     public abstract class PointEvent : IPointEvent
     {

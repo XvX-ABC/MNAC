@@ -1,11 +1,11 @@
 ﻿using System;
-using Tests.Characters.Humanoid;
-using Tests.Interaction;
-using Tests.UI;
+using MNAC.Characters.Humanoid;
+using MNAC.Interaction;
+using MNAC.UI;
 using UnityEngine;
-using IndicatedTarget = Tests.Characters.UI.IndicatedTarget;
-using ULockType = Tests.UI.BoxIndicator.LockType;
-namespace Tests.Characters.Interaction
+using IndicatedTarget = MNAC.Characters.UI.IndicatedTarget;
+using ULockType = MNAC.UI.BoxIndicator.LockType;
+namespace MNAC.Characters.Interaction
 {
     internal class LockTarget : MonoBehaviour, ILockTarget
     {

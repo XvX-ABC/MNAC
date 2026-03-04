@@ -1,7 +1,7 @@
 ﻿using System;
-using Tests.TPhysics.Locomotion;
+using MNAC.TPhysics.Locomotion;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Sword.Animations
 {
     internal class IdleArmAnimationLocomotion : EvaluationModuleBase
     {

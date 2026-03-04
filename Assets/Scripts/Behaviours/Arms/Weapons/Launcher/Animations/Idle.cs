@@ -1,11 +1,11 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.States;
-using Tests.TPhysics.Environment;
+using MNAC.Animations;
+using MNAC.States;
+using MNAC.TPhysics.Environment;
 using UnityEngine;
-using World = Tests.TPhysics.World;
+using World = MNAC.TPhysics.World;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Launcher.Animations
 {
     internal class Idle : ArmedLauncherAnimationStateBase
     {

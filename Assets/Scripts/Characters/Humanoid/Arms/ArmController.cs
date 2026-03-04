@@ -1,23 +1,23 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.Behaviours.Arms.Animations;
-using Tests.Behaviours.Arms.Weapons;
-using Tests.Behaviours.Arms.Weapons.Animations;
-using Tests.Characters.Humanoid.Arms.Weapons;
-using Tests.Characters.Humanoid.Input;
-using Tests.Characters.MountPoints;
-using Tests.States;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Timeline;
-using Tests.Weapons;
-using Tests.Weapons_New;
+using MNAC.Animations;
+using MNAC.Behaviours.Arms.Animations;
+using MNAC.Behaviours.Arms.Weapons;
+using MNAC.Behaviours.Arms.Weapons.Animations;
+using MNAC.Characters.Humanoid.Arms.Weapons;
+using MNAC.Characters.Humanoid.Input;
+using MNAC.Characters.MountPoints;
+using MNAC.States;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Timeline;
+using MNAC.Weapons;
+using MNAC.Weapons;
 using UnityEngine;
 using UnityEngine.Playables;
-using IArmedWeaponArmBehaviour = Tests.Characters.Humanoid.Arms.Weapons.IArmedWeaponArmBehaviour;
-using IArmedWeaponArmDefinitions = Tests.Characters.Humanoid.Arms.Weapons.IArmedWeaponArmDefinitions;
-using WeaponBackpack = Tests.Characters.Weapons.WeaponBackpack;
+using IArmedArmBehaviour = MNAC.Characters.Humanoid.Arms.Weapons.IArmedArmBehaviour;
+using IArmedArmDefinitions = MNAC.Characters.Humanoid.Arms.Weapons.IArmedArmDefinitions;
+using WeaponBackpack = MNAC.Characters.Weapons.WeaponBackpack;
 
-namespace Tests.Characters.Humanoid.Arms
+namespace MNAC.Characters.Humanoid.Arms
 {
     internal class ArmController : HumanoidComponent, IArmBehaviour
     {
@@ -50,6 +50,8 @@ namespace Tests.Characters.Humanoid.Arms
         {
             return core.stateMachine;
         }
+
+
         WeaponBackpack _weaponBackpack;
         IArmInput _armInput;
         [SerializeField]
@@ -57,14 +59,19 @@ namespace Tests.Characters.Humanoid.Arms
         [SerializeField]
         HumanBodyPart _part;
 
+
         IArmDefinitions _definitions;
         IArmAnimationDefinitions animationDefinitions;
 
 
         internal WeaponSwitchingState weaponSwitching;
         Func<WeaponDescription[], string> _weaponSelectionFunc;
-        ArmedWeaponArmBehaviourController<IArmedWeaponArmBehaviour> _armedWeaponController;
-        internal ArmedWeaponArmBehaviourControllerState armedWeaponControllerState;
+
+
+        ArmedArmBehaviourController<IArmedArmBehaviour> _armedArmBehaviourController;
+        internal ArmedArmBehaviourControllerState armedWeaponControllerState;
+
+
         internal IdleState idle;
         internal AnimationTransition transition_its;
         internal AnimationTransition transition_ats;
@@ -72,9 +79,13 @@ namespace Tests.Characters.Humanoid.Arms
         internal AnimationBlendingTransition transition_sta;
         internal BlendingTransition<object> transition_sti;
 
-        internal ArmAnimationCore animatorCore;
         internal PlayableStateMachine stateMachine;
-        public IOutputSetting OutputSetting { get => animatorCore.OutputSetting; set => animatorCore.OutputSetting = value; }
+
+
+        internal ArmAnimationCore animatorCore;
+
+
+        //public IOutputSetting OutputSetting { get => animatorCore.OutputSetting; set => animatorCore.OutputSetting = value; }
         public Action<Playable> UpdateAction { get => throw new Exception(); set => throw new Exception(); }
 
 
@@ -97,8 +108,17 @@ namespace Tests.Characters.Humanoid.Arms
         }
         internal IWeapon currentWeapon { get => weaponSwitching?.switching?.CurrentWeapon; }
         internal WeaponBackpack weaponBackpack { get => _weaponBackpack; }
-        internal IArmedWeaponArmBehaviour currentActivatedBehaviour { get => armedWeaponControllerState.currentActivatedBehaviour; }
-        internal HumanBodyPart bodyPart { get => _part; set => _part = value; }
+        internal IArmedArmBehaviour currentActivatedBehaviour { get => armedWeaponControllerState.currentActivatedBehaviour; }
+        internal HumanBodyPart bodyPart
+        {
+            get => _part;
+            set
+            {
+                _part = value;
+                if (_part != HumanBodyPart.LeftArm && _part != HumanBodyPart.RightArm)
+                    throw new Exception("The body part must be either the left arm or the right arm.");
+            }
+        }
 
         protected override void Awake()
         {
@@ -106,11 +126,39 @@ namespace Tests.Characters.Humanoid.Arms
             _definitions = GetComponent<IArmDefinitions>() ?? throw new ComponentCantFindException(gameObject, typeof(IArmDefinitions));
             animationDefinitions = _definitions.Animation;
 
-            //node = new(this);
-
-            if (_part != HumanBodyPart.LeftArm && _part != HumanBodyPart.RightArm)
-                throw new Exception("The part of definitions must is left arm or right arm.");
+            bodyPart = _part;
         }
+        void OnEnable()
+        {
+            if (stateMachine != null)
+            {
+                animatorCore.StatusNum = 3;
+                stateMachine.Enabled = true;
+            }
+        }
+        void OnDisable()
+        {
+            if (stateMachine != null)
+            {
+                stateMachine.Enabled = false;
+                animatorCore.StatusNum = 3;
+            }
+        }
+        void Update()
+        {
+            stateMachine.OnUpdate();
+            _armedArmBehaviourController.Update();
+            animatorCore.OnUpdate();
+        }
+        void FixedUpdate()
+        {
+            _armedArmBehaviourController.FixedUpdate();
+        }
+        void LateUpdate()
+        {
+            _armedArmBehaviourController.LateUpdate();
+        }
+
 
         internal MountPoint FindMountPoint(string name)
         {
@@ -175,7 +223,7 @@ namespace Tests.Characters.Humanoid.Arms
 
 
 
-            animatorCore = new(graph, _definitions.Weapon, animationDefinitions.Weapon, new ArmedWeaponArmAnimator<IArmedWeaponArmBehaviour>(graph, armedWeaponControllerState));
+            animatorCore = new(graph, _definitions.Weapon, animationDefinitions.Weapon, new ArmedArmAnimator<IArmedArmBehaviour>(graph, armedWeaponControllerState));
             InitializeStateMachine();
 
             weaponSwitching.animationCore = animatorCore;
@@ -206,16 +254,16 @@ namespace Tests.Characters.Humanoid.Arms
             SetDefaultWeapon(launcherMountPoint, weaponDefinitions.Origins[0].Name, _weaponBackpack);
 
         }
-        void InitializeSwitchingBehaviour(IArmedWeaponArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint)
+        void InitializeSwitchingBehaviour(IArmedArmDefinitions definitions, MountPoint launcherMountPoint, MountPoint swordMountPoint)
         {
             weaponSwitching = new(this, definitions, launcherMountPoint, swordMountPoint, _weaponBackpack);
             weaponSwitching.switching.selectionFunc = _weaponSelectionFunc;
         }
-        void InitializeArmedWeaponBehaviours(IArmedWeaponArmDefinitions definitions)
+        void InitializeArmedWeaponBehaviours(IArmedArmDefinitions definitions)
         {
             var behaviours = _definitions.Weapon.ArmedWeaponBehaviours;
-            _armedWeaponController = new(_definitions.Weapon, behaviours);
-            armedWeaponControllerState = new(_armedWeaponController, _part);
+            _armedArmBehaviourController = new(_definitions.Weapon, behaviours);
+            armedWeaponControllerState = new(_armedArmBehaviourController, _part);
             weaponSwitching.SwitchedEvent += (ow, nw) =>
             {
                 if (ow != null)
@@ -274,36 +322,7 @@ namespace Tests.Characters.Humanoid.Arms
         {
             weaponSwitching.SetDefaultWeapon();
         }
-        void OnEnable()
-        {
-            if (stateMachine != null)
-            {
-                animatorCore.StatusNum = 3;
-                stateMachine.Enabled = true;
-            }
-        }
-        void OnDisable()
-        {
-            if (stateMachine != null)
-            {
-                stateMachine.Enabled = false;
-                animatorCore.StatusNum = 3;
-            }
-        }
-        void Update()
-        {
-            stateMachine.OnUpdate();
-            _armedWeaponController.Update();
-            animatorCore.OnUpdate();
-        }
-        void FixedUpdate()
-        {
-            _armedWeaponController.FixedUpdate();
-        }
-        void LateUpdate()
-        {
-            _armedWeaponController.LateUpdate();
-        }
+
 
     }
 }

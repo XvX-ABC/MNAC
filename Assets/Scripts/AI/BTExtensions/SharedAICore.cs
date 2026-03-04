@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal class SharedAICore : SharedVariable<AICore>
     {

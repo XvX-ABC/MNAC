@@ -1,6 +1,6 @@
-﻿using Tests.AI;
-using Tests.Characters.Humanoid.Arms;
-using Tests.Weapons_New;
+﻿using MNAC.AI;
+using MNAC.Characters.Humanoid.Arms;
+using MNAC.Weapons;
 using UnityEngine;
 using TaskStatus = BehaviorDesigner.Runtime.Tasks.TaskStatus;
 

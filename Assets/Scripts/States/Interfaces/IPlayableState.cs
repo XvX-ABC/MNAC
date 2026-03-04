@@ -1,7 +1,7 @@
 ﻿using System;
-using Tests.Utilities.Timeline;
+using MNAC.Utilities.Timeline;
 
-namespace Tests.States
+namespace MNAC.States
 {
     public interface IPlayableState<T> : IState<T>
     {

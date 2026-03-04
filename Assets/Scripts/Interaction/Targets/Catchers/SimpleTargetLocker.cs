@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public class SimpleTargetLocker<T> : TargetLockerBase<T>, ITargetLocker<T>, IDisposable where T : class, ILockTarget
     {

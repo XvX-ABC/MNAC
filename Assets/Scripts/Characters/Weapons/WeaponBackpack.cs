@@ -1,21 +1,20 @@
 ﻿using System;
-using Tests.Characters.Humanoid;
-using Tests.Utilities;
-using Tests.Utilities.Assets.Tests.Scripts.Utilities.Extensions;
-using Tests.Utilities.Blackboards;
-using Tests.Weapons_New;
+using MNAC.Characters.Humanoid;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Extensions;
+using MNAC.Weapons;
 using UnityEngine;
 
-namespace Tests.Characters.Weapons
+namespace MNAC.Characters.Weapons
 {
     internal class WeaponBackpack : CharacterComponent, IWeaponBackpack
     {
-        public static explicit operator Weapons_New.WeaponBackpack(WeaponBackpack backpack)
+        public static explicit operator Weapons.WeaponBackpack(WeaponBackpack backpack)
         {
             return backpack._weaponBackpack;
         }
         #region internal classes
-        internal class InternalWeaponBackpack : Weapons_New.WeaponBackpack
+        internal class InternalWeaponBackpack : MNAC.Weapons.WeaponBackpack
         {
             WeaponManager _weaponManager;
             Transform _parent;

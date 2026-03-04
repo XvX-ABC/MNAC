@@ -1,9 +1,9 @@
-﻿using Tests.Characters;
-using Tests.Utilities;
+﻿using MNAC.Characters;
+using MNAC.Utilities;
 using UnityEngine;
 using UnityEngine.Playables;
 
-namespace Tests.Players
+namespace MNAC.Players
 {
     internal enum PlayingStatus
     {

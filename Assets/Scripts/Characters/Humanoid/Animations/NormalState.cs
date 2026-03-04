@@ -1,5 +1,5 @@
-﻿using Tests.States;
-namespace Tests.Characters.Humanoid.Animations
+﻿using MNAC.States;
+namespace MNAC.Characters.Humanoid.Animations
 {
     internal class NormalState : SubStatemachineState<object>
     {

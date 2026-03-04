@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tests.Weapons;
-using Tests.Weapons_New;
+using MNAC.Weapons;
+using MNAC.Weapons;
 
-namespace Tests.Behaviours.Arms.Weapons
+namespace MNAC.Behaviours.Arms.Weapons
 {
-    internal interface IArmedWeaponArmBehavioursController<T> where T : IArmedWeaponArmBehaviour
+    internal interface IArmedArmBehavioursController<T> where T : IArmedArmBehaviour
     {
         Action<IWeapon, T> ActivatedAction { get; set; }
         Action<IWeapon, T> UnactivatedAction { get; set; }

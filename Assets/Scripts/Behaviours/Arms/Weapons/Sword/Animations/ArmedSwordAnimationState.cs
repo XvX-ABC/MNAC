@@ -1,6 +1,6 @@
-﻿using Tests.States;
+﻿using MNAC.States;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword.Animations
+namespace MNAC.Behaviours.Arms.Weapons.Sword.Animations
 {
     internal class ArmedSwordAnimationState : WithCallbackStatemachineState<object>
     {

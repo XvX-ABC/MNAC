@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 
 {
     public interface ICatcher<T>

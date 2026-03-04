@@ -1,7 +1,7 @@
 ﻿using System;
-using Tests.Utilities.Timeline;
+using MNAC.Utilities.Timeline;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     internal class StunningState : CharacterBehaviourStateBase
     {

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using Tess.AI;
-using Tests.Characters.Humanoid.Locomotion;
-using Tests.Interaction;
-using Tests.TPhysics.Locomotion;
-using Tests.Utilities.Blackboards;
+using MNAC.Characters.Humanoid.Locomotion;
+using MNAC.Interaction;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Utilities.Blackboards;
 using UnityEngine.AI;
-using LocomotionCore = Tests.Characters.Humanoid.Locomotion.LocomotionCore;
+using LocomotionCore = MNAC.Characters.Humanoid.Locomotion.LocomotionCore;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal class AIComponentContext
     {

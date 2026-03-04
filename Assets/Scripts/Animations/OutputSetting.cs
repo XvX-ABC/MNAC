@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Playables;
 
-namespace Tests.Animations
+namespace MNAC.Animations
 {
     internal class OutputSetting : IOutputSetting
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     public static class UIBlackboardFields
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     public class CharacterDefinitions : MonoBehaviour, ICharacterDefinitions
     {

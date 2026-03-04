@@ -1,16 +1,16 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.Characters.Humanoid.Locomotion;
-using Tests.Characters.Humanoid.Locomotion.Animations;
-using Tests.Interaction.Influence;
-using Tests.States;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
-using Tests.Utilities.MTrees;
+using MNAC.Animations;
+using MNAC.Characters.Humanoid.Locomotion;
+using MNAC.Characters.Humanoid.Locomotion.Animations;
+using MNAC.Interaction.Influence;
+using MNAC.States;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Composable;
+using MNAC.Utilities.MTrees;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
-namespace Tests.Characters.Humanoid.Animations
+namespace MNAC.Characters.Humanoid.Animations
 {
     internal partial class HumanAnimator : ComponentBase, IDisposable
     {

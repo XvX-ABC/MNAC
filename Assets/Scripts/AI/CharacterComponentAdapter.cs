@@ -1,7 +1,7 @@
-﻿using Tests.Characters;
+﻿using MNAC.Characters;
 using UnityEngine;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal class CharacterComponentAdapter : CharacterComponent
     {

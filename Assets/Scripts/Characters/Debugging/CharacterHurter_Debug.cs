@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tests.Interaction;
+using MNAC.Interaction;
 using UnityEditor;
 using UnityEngine;
 
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     internal class CharacterHurter_Debug : MonoBehaviour
     {

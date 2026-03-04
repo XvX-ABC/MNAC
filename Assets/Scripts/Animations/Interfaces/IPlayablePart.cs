@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine.Playables;
 
-namespace Tests.Animations
+namespace MNAC.Animations
 {
     public interface IDynamicPlayablePart
     {

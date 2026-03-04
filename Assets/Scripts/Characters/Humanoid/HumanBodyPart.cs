@@ -1,4 +1,4 @@
-﻿namespace Tests.Characters.Humanoid
+﻿namespace MNAC.Characters.Humanoid
 {
     public enum HumanBodyPart
     {

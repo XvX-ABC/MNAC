@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace Tests.Characters.Animations
+namespace MNAC.Characters.Animations
 {
     public interface ICharacterArmAnimationDefinitions
     {

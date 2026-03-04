@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     [Obsolete]
     public interface ILeadingActorTargetsCatcherDefinitions

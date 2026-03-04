@@ -1,10 +1,10 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.TPhysics;
-using Tests.TPhysics.Environment;
+using MNAC.Animations;
+using MNAC.TPhysics;
+using MNAC.TPhysics.Environment;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Locomotion.Animations
+namespace MNAC.Characters.Humanoid.Locomotion.Animations
 {
     internal class MovementAnimator
     {

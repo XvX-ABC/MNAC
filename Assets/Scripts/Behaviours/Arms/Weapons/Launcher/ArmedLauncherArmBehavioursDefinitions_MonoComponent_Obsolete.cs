@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Characters.Humanoid.Arms.Weapons.Launchers;
-using Tests.Interaction;
+using MNAC.Characters.Humanoid.Arms.Weapons.Launchers;
+using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher
+namespace MNAC.Behaviours.Arms.Weapons.Launcher
 {
     [Obsolete]
     public class ArmedLauncherArmBehavioursDefinitions_MonoComponent_Obsolete : MonoBehaviour, IArmedLauncherArmBehaviourDefinitions

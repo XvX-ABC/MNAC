@@ -1,7 +1,7 @@
-﻿using Tests.Utilities;
+﻿using MNAC.Utilities;
 using UnityEngine;
 
-namespace Tests.Players.UI
+namespace MNAC.Players.UI
 {
     internal class MainPlane : Singleton<MainPlane>
     {

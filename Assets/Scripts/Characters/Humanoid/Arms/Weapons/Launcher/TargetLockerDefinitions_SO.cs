@@ -1,7 +1,7 @@
-﻿using Tests.Interaction;
+﻿using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons.Launchers
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Launchers
 {
     [CreateAssetMenu(fileName = "TargetLockerDefinitions", menuName = "Tests/Definitions/Characters/Humanoid/Arms/Weapons/Launchers/TargetLockerDefinitions")]
     internal class TargetLockerDefinitions_SO : ScriptableObject, ITargetLockerDefinitions

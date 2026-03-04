@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public abstract class TargetsTriggerBase<T> : CatcherBase<T>, ITargetsTrigger<T>
     {

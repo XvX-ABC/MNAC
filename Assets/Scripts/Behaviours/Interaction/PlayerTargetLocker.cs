@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Characters.Humanoid.Input;
-using Tests.Interaction;
+using MNAC.Characters.Humanoid.Input;
+using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tests.Behaviours.Interaction
+namespace MNAC.Behaviours.Interaction
 {
     internal class PlayerTargetLocker : PlayerTargetLocker<ILockTarget>, IPlayerTargetLocker
     {

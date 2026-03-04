@@ -1,6 +1,6 @@
-﻿using Tests.Characters;
-using Tests.Characters.Humanoid;
-using Tests.Interaction;
+﻿using MNAC.Characters;
+using MNAC.Characters.Humanoid;
+using MNAC.Interaction;
 using Unity.VisualScripting;
 using UnityEngine;
 

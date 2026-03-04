@@ -1,4 +1,4 @@
-﻿namespace Tests.TPhysics.Locomotion
+﻿namespace MNAC.TPhysics.Locomotion
 {
     public enum LocomotionModuleState
     {

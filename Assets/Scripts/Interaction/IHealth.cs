@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public interface IHealth : INumerical
     {

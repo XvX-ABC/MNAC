@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Tests.Behaviours.Input;
-using Tests.TPhysics.Environment;
-using Tests.TPhysics.Locomotion;
+using MNAC.Behaviours.Input;
+using MNAC.TPhysics.Environment;
+using MNAC.TPhysics.Locomotion;
 using UnityEngine;
-using LCore = Tests.TPhysics.Locomotion.LocomotionCore;
-namespace Tests.Characters.Humanoid.Locomotion
+using LCore = MNAC.TPhysics.Locomotion.LocomotionCore;
+namespace MNAC.Characters.Humanoid.Locomotion
 {
     [Obsolete]
     internal class MutativeDragController

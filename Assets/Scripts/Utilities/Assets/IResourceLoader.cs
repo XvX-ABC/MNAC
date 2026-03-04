@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Utilities.Assets
+namespace MNAC.Utilities.Assets
 {
     public interface IResourceLoader<T> : IDisposable
     {

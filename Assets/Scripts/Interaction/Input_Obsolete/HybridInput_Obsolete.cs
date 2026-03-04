@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-namespace Tests.Input
+namespace MNAC.Input
 {
     [Obsolete]
     public class HybridInput_Obsolete : MonoBehaviour, IHybridInput

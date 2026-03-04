@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine.UIElements;
 
-namespace Tests.Extensions
+namespace MNAC.Utilities.Extensions
 {
     public static class ArrayExtensions
     {
@@ -32,8 +32,24 @@ namespace Tests.Extensions
             var index = Array.FindIndex(array, e => e.Equals(elem));
             if (index == -1)
                 return array;
-            return Remove(array, index);
+            return array.Remove(index);
 
+        }
+        public static T[] Insert<T>(this T[] array, int index, T elem)
+        {
+            if (array == null)
+            {
+                array = new T[] { elem };
+                return array;
+            }
+            Array.Resize(ref array, array.Length + 1);
+            if (index != array.Length - 1)
+            {
+                Array.Copy(array, index, array, index + 1, array.Length - index - 1);
+            }
+            array[index] = elem;
+
+            return array;
         }
         public static T[] Remove<T>(this T[] array, int index)
         {

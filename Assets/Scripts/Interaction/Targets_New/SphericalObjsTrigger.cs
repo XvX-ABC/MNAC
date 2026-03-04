@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     [RequireComponent(typeof(SphereCollider))]
     public class SphericalObjsTrigger : MonoBehaviour, ISphericalObjsTrigger

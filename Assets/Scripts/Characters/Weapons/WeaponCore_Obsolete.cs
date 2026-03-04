@@ -1,20 +1,20 @@
 ﻿using System;
-using Tests.Characters.Humanoid;
-using Tests.Utilities.Blackboards;
-using Tests.Weapons_New;
+using MNAC.Characters.Humanoid;
+using MNAC.Utilities.Blackboards;
+using MNAC.Weapons;
 using UnityEngine;
 
-namespace Tests.Characters.Weapons
+namespace MNAC.Characters.Weapons
 {
     [Obsolete]
     internal class WeaponCore_Obsolete : HumanoidComponent
     {
-        public static explicit operator Weapons_New.WeaponCore_Obsolete(WeaponCore_Obsolete weaponCore)
+        public static explicit operator Weapons.WeaponCore_Obsolete(WeaponCore_Obsolete weaponCore)
         {
             return weaponCore._core;
         }
         [SerializeField]
-        Weapons_New.WeaponCore_Obsolete _core;
+        MNAC.Weapons.WeaponCore_Obsolete _core;
         protected override void Awake()
         {
             base.Awake();

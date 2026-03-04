@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Behaviours.Arms.Animations;
-using Tests.Characters.Humanoid.Arms.Weapons;
+using MNAC.Behaviours.Arms.Animations;
+using MNAC.Characters.Humanoid.Arms.Weapons;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms
+namespace MNAC.Characters.Humanoid.Arms
 {
     [Obsolete]
     internal class ArmDefinitionsGetter_Mono : MonoBehaviour, IArmDefinitions
@@ -11,7 +11,7 @@ namespace Tests.Characters.Humanoid.Arms
         [SerializeField]
         ArmDefinitions_SO _definitions;
 
-        public IArmedWeaponArmDefinitions Weapon => _definitions.Weapon;
+        public IArmedArmDefinitions Weapon => _definitions.Weapon;
 
         public IArmAnimationDefinitions Animation => _definitions.Animation;
     }

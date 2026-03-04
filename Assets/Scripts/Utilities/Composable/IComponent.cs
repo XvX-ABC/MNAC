@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Utilities.Blackboards;
-using Tests.Utilities.Composable;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Composable;
 
-namespace Tests.Utilities.Composable
+namespace MNAC.Utilities.Composable
 {
     public interface IComponent<T> : IComponentDescriptions, IDisposable
     {

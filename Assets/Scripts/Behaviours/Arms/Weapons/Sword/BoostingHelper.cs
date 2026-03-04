@@ -1,12 +1,12 @@
 ﻿using System;
-using Tests.Behaviours.Input;
-using Tests.Characters.Interaction.Input;
-using Tests.Input;
-using Tests.TPhysics.Locomotion;
-using Tests.Utilities.Timeline;
+using MNAC.Behaviours.Input;
+using MNAC.Characters.Interaction.Input;
+using MNAC.Input;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Utilities.Timeline;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword
+namespace MNAC.Behaviours.Arms.Weapons.Sword
 {
     internal class BoostingHelper
     {

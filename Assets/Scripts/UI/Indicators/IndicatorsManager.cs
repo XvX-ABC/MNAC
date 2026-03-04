@@ -2,10 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using Tests.Utilities.Blackboards;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
 
     public class IndicatorsManager : UIComponent

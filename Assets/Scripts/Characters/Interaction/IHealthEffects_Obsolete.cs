@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Characters.Interaction
+namespace MNAC.Characters.Interaction
 {
     [Obsolete]
     public interface IHealthEffects_Obsolete

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Tests.Utilities.Timeline.Events.Point;
-namespace Tests.States
+using MNAC.Utilities.Timeline.Events.Point;
+namespace MNAC.States
 {
     public class SubStatemachineTransition<T> : BlendingTransition<T>
     {

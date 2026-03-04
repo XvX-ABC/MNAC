@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Characters.Humanoid.Locomotion
+namespace MNAC.Characters.Humanoid.Locomotion
 
 {
     public interface IJumpDefinitions

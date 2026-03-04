@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Tests.Behaviours.Input;
-using Tests.Characters.Humanoid.Input;
-using Tests.Input;
-using Tests.States;
-using Tests.TPhysics.Locomotion;
-using Tests.Utilities.Timeline;
+using MNAC.Behaviours.Input;
+using MNAC.Characters.Humanoid.Input;
+using MNAC.Input;
+using MNAC.States;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Utilities.Timeline;
 using TMPro;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Locomotion
+namespace MNAC.Characters.Humanoid.Locomotion
 {
     internal class QuickBoostingHelper
     {

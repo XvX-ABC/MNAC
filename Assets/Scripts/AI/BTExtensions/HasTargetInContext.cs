@@ -1,6 +1,6 @@
 ﻿using TaskStatus = BehaviorDesigner.Runtime.Tasks.TaskStatus;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal class HasTargetInContext : AIConditionalBase
     {

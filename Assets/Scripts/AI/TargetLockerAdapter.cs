@@ -1,6 +1,6 @@
 ﻿using System;
-using Tests.Characters.Interaction;
-using Tests.Interaction;
+using MNAC.Characters.Interaction;
+using MNAC.Interaction;
 using UnityEngine;
 
 namespace Tess.AI

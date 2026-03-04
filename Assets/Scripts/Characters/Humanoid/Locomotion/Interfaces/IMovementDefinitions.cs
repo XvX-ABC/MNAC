@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Locomotion
+namespace MNAC.Characters.Humanoid.Locomotion
 {
     public interface IMovementDefinitions
     {

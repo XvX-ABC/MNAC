@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tests.Input;
+using MNAC.Input;
 using UnityEngine;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     [Obsolete]
     public class SimpleLeadingActorTargetsCatcher_Obsolete : TargetsCatcherBase

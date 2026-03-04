@@ -1,6 +1,6 @@
 ﻿using System;
-using Tests.States;
-namespace Tests.Characters.Humanoid.Arms.Weapons.Sword
+using MNAC.States;
+namespace MNAC.Characters.Humanoid.Arms.Weapons.Sword
 {
     class Occupited : WithCallbackPlayableState
     {

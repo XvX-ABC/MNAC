@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace Tests.TPhysics.Environment
+namespace MNAC.TPhysics.Environment
 {
     public interface IEnvironmentDefinitions
     {

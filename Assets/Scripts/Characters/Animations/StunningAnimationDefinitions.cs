@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Characters.Animations
+namespace MNAC.Characters.Animations
 {
     [Serializable]
     public class StunningAnimationDefinitions : IStunningAnimationDefinitions

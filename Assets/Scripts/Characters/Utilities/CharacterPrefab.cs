@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Utilities.Assets;
+using MNAC.Utilities.Assets;
 using UnityEngine;
 
-namespace Tests.Characters.Utilities
+namespace MNAC.Characters.Utilities
 {
     [Serializable]
     internal class CharacterPrefab<T> : PrefabLoader<T> where T : Component

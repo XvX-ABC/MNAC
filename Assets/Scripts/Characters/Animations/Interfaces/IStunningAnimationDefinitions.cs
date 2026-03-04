@@ -1,4 +1,4 @@
-﻿namespace Tests.Characters.Animations
+﻿namespace MNAC.Characters.Animations
 {
     public interface IStunningAnimationDefinitions
     {

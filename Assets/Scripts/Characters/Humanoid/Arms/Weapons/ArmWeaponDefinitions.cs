@@ -1,23 +1,20 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using Tests.Extensions;
+﻿using System;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Arms.Weapons
+namespace MNAC.Characters.Humanoid.Arms.Weapons
 {
     [Serializable]
-    public class ArmWeaponDefinitions : Behaviours.Arms.Weapons.ArmWeaponDefinitions, IArmedWeaponArmDefinitions
+    public class ArmWeaponDefinitions : Behaviours.Arms.Weapons.ArmWeaponDefinitions, IArmedArmDefinitions
     {
         [SerializeField]
-        ArmedWeaponArmBehaviourBase_SO[] _behaviours;
+        ArmedArmBehaviourBase_SO[] _behaviours;
 
-        public IArmedWeaponArmBehaviour[] ArmedWeaponBehaviours
+        public IArmedArmBehaviour[] ArmedWeaponBehaviours
         {
             get
             {
                 var length = _behaviours.Length;
-                var behaviours = new ArmedWeaponArmBehaviourBase_SO[_behaviours.Length];
+                var behaviours = new ArmedArmBehaviourBase_SO[_behaviours.Length];
                 for (int i = 0; i < length; i++)
                 {
                     behaviours[i] = GameObject.Instantiate(_behaviours[i]);
@@ -26,7 +23,7 @@ namespace Tests.Characters.Humanoid.Arms.Weapons
             }
         }
 
-        public IArmedWeaponArmBehaviour[] GetArmBehaviours(Transform parent)
+        public IArmedArmBehaviour[] GetArmBehaviours(Transform parent)
         {
             throw new NotImplementedException();
         }

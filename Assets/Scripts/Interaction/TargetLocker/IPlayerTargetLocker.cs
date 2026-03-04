@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public interface IPlayerTargetLocker<T> : ITargetLocker<T> where T : class, ILockTarget
     {

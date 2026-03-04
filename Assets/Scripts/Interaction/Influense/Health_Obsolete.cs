@@ -1,7 +1,7 @@
 ﻿using System;
-using Tests.Interaction.Influences;
+using MNAC.Interaction.Influences;
 
-namespace Tests.Interaction.Influence
+namespace MNAC.Interaction.Influence
 {
     [Obsolete]
     public class Health_Obsolete : InfluenceBase

@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace Tests.Behaviours.Input
+namespace MNAC.Behaviours.Input
 {
     public interface IBaseInput
     {

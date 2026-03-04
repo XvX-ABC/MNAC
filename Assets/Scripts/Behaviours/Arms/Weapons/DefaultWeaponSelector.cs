@@ -1,7 +1,7 @@
 ﻿using System;
-using Tests.Weapons;
+using MNAC.Weapons;
 
-namespace Tests.Behaviours.Arms.Weapons
+namespace MNAC.Behaviours.Arms.Weapons
 {
     internal class DefaultWeaponSelector
     {

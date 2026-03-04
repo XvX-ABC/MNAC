@@ -1,17 +1,17 @@
 ﻿using System;
-using Tests.Behaviours.Input;
-using Tests.Characters.Humanoid.Input;
-using Tests.Characters.Humanoid.Locomotion.Animations;
-using Tests.Extensions;
-using Tests.States;
-using Tests.TPhysics;
-using Tests.TPhysics.Environment;
-using Tests.TPhysics.Locomotion;
-using Tests.Utilities.Blackboards;
+using MNAC.Behaviours.Input;
+using MNAC.Characters.Humanoid.Input;
+using MNAC.Characters.Humanoid.Locomotion.Animations;
+using MNAC.States;
+using MNAC.TPhysics;
+using MNAC.TPhysics.Environment;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Utilities.Blackboards;
+using MNAC.Utilities.Extensions;
 using UnityEngine;
-using LContext = Tests.TPhysics.Locomotion.Context;
-using LCore = Tests.TPhysics.Locomotion.LocomotionCore;
-namespace Tests.Characters.Humanoid.Locomotion
+using LContext = MNAC.TPhysics.Locomotion.Context;
+using LCore = MNAC.TPhysics.Locomotion.LocomotionCore;
+namespace MNAC.Characters.Humanoid.Locomotion
 {
 
     internal class LocomotionCore : HumanoidComponent
@@ -108,7 +108,6 @@ namespace Tests.Characters.Humanoid.Locomotion
             InitializeRotation(camera, rbody, _input.BaseInput);
             InitializeMovementStatemachine();
             InitializeMainStatemachine(rbody, world, groundDetector);
-            //InitializeMutativeDragControl(groundDetector, _input.BaseInput);
 
             _core.EvaluationModules = ArrayExtensions.Append(_core.EvaluationModules, statemachine);
 
@@ -119,7 +118,6 @@ namespace Tests.Characters.Humanoid.Locomotion
         void InitializeLocomotionCore(Rigidbody rbody, IGroundDetector groundDetector, World world)
         {
             _core = new LCore(world, rbody, groundDetector, new VerticalPostureEvaluator(definitions.PostureEvaluationFramesAmount));
-            _core.World = world;
         }
         void InitializeRotation(Camera camera, Rigidbody rigidbody, IBaseInput input)
         {

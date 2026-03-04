@@ -1,4 +1,4 @@
-﻿namespace Tests.Behaviours.Arms.Weapons.Sword
+﻿namespace MNAC.Behaviours.Arms.Weapons.Sword
 {
     public interface IArmedSwordArmBehaviourDefinitions
     {

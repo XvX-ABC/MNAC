@@ -1,7 +1,7 @@
-﻿using Tests.Interaction;
+﻿using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher
+namespace MNAC.Behaviours.Arms.Weapons.Launcher
 {
     public class ArmedLauncherArmBehavioursDefinitions_SO : ScriptableObject, IArmedLauncherArmBehaviourDefinitions
     {

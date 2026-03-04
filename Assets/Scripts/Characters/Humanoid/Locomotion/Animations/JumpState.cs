@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Animations;
-using Tests.States;
-using Tests.Utilities.Timeline;
+using MNAC.Animations;
+using MNAC.States;
+using MNAC.Utilities.Timeline;
 
-namespace Tests.Characters.Humanoid.Locomotion.Animations
+namespace MNAC.Characters.Humanoid.Locomotion.Animations
 {
     internal class JumpState : LocomotionAnimationStateBase
     {

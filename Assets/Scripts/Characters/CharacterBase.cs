@@ -2,17 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Tests.Animations;
-using Tests.Characters.Humanoid;
-using Tests.Characters.Interaction;
-using Tests.Interaction;
-using Tests.Interaction.Influences;
-using Tests.Utilities.Blackboards;
+using MNAC.Animations;
+using MNAC.Characters.Humanoid;
+using MNAC.Characters.Interaction;
+using MNAC.Interaction;
+using MNAC.Interaction.Influences;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 using UnityEngine.Rendering;
-namespace Tests.Characters
+namespace MNAC.Characters
 {
     [DefaultExecutionOrder(1)]
     public abstract class CharacterBase : MonoBehaviour, ICharacter

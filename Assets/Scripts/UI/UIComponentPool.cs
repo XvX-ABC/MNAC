@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     public class UIComponentPool<T> where T : UIComponent
     {

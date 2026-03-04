@@ -1,13 +1,13 @@
 ﻿using BehaviorDesigner.Runtime;
 using System;
 using System.Collections.Generic;
-using Tests.Characters;
-using Tests.Interaction;
-using Tests.Utilities.Blackboards;
+using MNAC.Characters;
+using MNAC.Interaction;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Tests.AI
+namespace MNAC.AI
 {
     [DefaultExecutionOrder(0)]
     internal class AICore : MonoBehaviour

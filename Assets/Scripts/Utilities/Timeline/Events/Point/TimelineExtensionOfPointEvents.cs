@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Utilities.Timeline.Events.Point
+namespace MNAC.Utilities.Timeline.Events.Point
 {
     public static class TimelineExtensionOfPointEvents
     {

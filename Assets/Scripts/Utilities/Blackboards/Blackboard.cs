@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Tests.Utilities.Blackboards
+namespace MNAC.Utilities.Blackboards
 {
     public struct ValueInfo<K, A>
     {

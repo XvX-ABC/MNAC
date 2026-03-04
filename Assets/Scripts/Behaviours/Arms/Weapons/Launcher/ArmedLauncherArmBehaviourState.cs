@@ -1,10 +1,10 @@
 ﻿using System;
-using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
-using Tests.States;
+using MNAC.Behaviours.Arms.Weapons.Launcher.Animations;
+using MNAC.States;
 using TMPro;
 using UnityEngine;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher
+namespace MNAC.Behaviours.Arms.Weapons.Launcher
 {
     internal class ArmedLauncherArmBehaviourState : WithCallbackStatemachineState<object>
     {

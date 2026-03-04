@@ -1,4 +1,4 @@
-﻿namespace Tests.States
+﻿namespace MNAC.States
 {
     public class AnimationStateMachine<T> : StateMachine<T>
     {

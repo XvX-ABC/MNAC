@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.States
+namespace MNAC.States
 {
     public abstract class WithCallbackPlayableState_MonoComponent<T> : PlayableState_MonoComponent<T>, IWithCallbackPlayableState<T>
     {

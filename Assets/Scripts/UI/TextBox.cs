@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     public class TextBox : MonoBehaviour
     {

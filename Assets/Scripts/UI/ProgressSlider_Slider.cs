@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tests.UI
+namespace MNAC.UI
 {
     [RequireComponent(typeof(Slider))]
     public class ProgressSlider_Slider : ProgressSlider

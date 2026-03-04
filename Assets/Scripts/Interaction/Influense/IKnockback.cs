@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace Tests.Interaction.Influences
+namespace MNAC.Interaction.Influences
 {
     public interface IKnockback : IInfluence
     {

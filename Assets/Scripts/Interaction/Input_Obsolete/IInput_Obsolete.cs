@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-namespace Tests.Input
+namespace MNAC.Input
 {
     [Obsolete]
     public interface IInput_Obsolete

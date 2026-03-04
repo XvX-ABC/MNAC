@@ -1,17 +1,17 @@
 ﻿using System;
-using Tests.Behaviours.Arms.Weapons.Launcher.Animations;
-using Tests.Characters.Humanoid;
-using Tests.Characters.Interaction.Input;
-using Tests.Interaction;
-using Tests.States;
-using Tests.Weapons_New;
-using Tests.Weapons_New.Launcher;
+using MNAC.Behaviours.Arms.Weapons.Launcher.Animations;
+using MNAC.Characters.Humanoid;
+using MNAC.Characters.Interaction.Input;
+using MNAC.Interaction;
+using MNAC.States;
+using MNAC.Weapons;
+using MNAC.Weapons.Launcher;
 using UnityEngine;
-using WeaponType = Tests.Weapons_New.WeaponType;
+using WeaponType = MNAC.Weapons.WeaponType;
 
-namespace Tests.Behaviours.Arms.Weapons.Launcher
+namespace MNAC.Behaviours.Arms.Weapons.Launcher
 {
-    internal class ArmedLauncherArmBehaviour : ArmedWeaponArmBehaviourBase
+    internal class ArmedLauncherArmBehaviour : ArmedArmBehaviourBase
     {
         IArmedLauncherArmBehaviourDefinitions _definitions;
         ITargetLocker _targetLocker;
@@ -66,7 +66,7 @@ namespace Tests.Behaviours.Arms.Weapons.Launcher
             }
         }
 
-        public override IArmedWeaponArmAnimationPlayablePart Animator => animator;
+        public override IArmedArmAnimationPlayablePart Animator => animator;
 
         public override Func<bool> ActivationTrigger => () => this.enabled;
 

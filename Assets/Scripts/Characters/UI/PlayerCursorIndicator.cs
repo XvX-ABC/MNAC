@@ -1,9 +1,9 @@
-﻿using Tests.Interaction;
+﻿using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tests.Characters.UI
+namespace MNAC.Characters.UI
 {
-    internal class PlayerCursorIndicator : Tests.UI.PlayerCursorIndicator
+    internal class PlayerCursorIndicator : MNAC.UI.PlayerCursorIndicator
     {
         ILockTarget _lockTarget;
         IDamageable _damageable;

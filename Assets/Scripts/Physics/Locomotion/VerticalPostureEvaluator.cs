@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.TPhysics.Locomotion
+namespace MNAC.TPhysics.Locomotion
 {
     public class VerticalPostureEvaluator : EvaluationModuleBase
     {
@@ -94,7 +94,8 @@ namespace Tests.TPhysics.Locomotion
         }
         public override Context Update(Context context)
         {
-            var v = this.world.InverseTransformVector(context.CurrentVelocity);
+            var world = context.world;
+            var v = world.InverseTransformVector(context.CurrentVelocity);
             _data[_sampleQuantity - 1] = v;
             _data.HeadIndex++;
             context.verticalPosture = Evaluate();

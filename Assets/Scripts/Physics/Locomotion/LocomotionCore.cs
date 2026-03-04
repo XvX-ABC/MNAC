@@ -1,10 +1,13 @@
-﻿using System;
+﻿using MNAC.TPhysics.Environment;
+using System;
 using System.Diagnostics.CodeAnalysis;
-using Tests.Extensions;
-using Tests.TPhysics.Environment;
+using System.Linq;
 using UnityEngine;
+using MNAC.Utilities;
+using MNAC.Utilities.Extensions;
+using System.Collections.ObjectModel;
 
-namespace Tests.TPhysics.Locomotion
+namespace MNAC.TPhysics.Locomotion
 {
     public class LocomotionCore
     {
@@ -60,8 +63,8 @@ namespace Tests.TPhysics.Locomotion
             }
 
         }
-        World _world;
         IEvaluationModule[] _evaluationModules;
+        ILocomotionModule[] _modules;
         Wrapper[] _moduleWrappers;
         Context _context;
         public LocomotionCore(World world, [NotNull] Rigidbody rbody, [NotNull] IGroundDetector groundDetector, params IEvaluationModule[] evaluationModules) : this(new(world, new TPhysics.Context(rbody), groundDetector), evaluationModules)
@@ -70,42 +73,22 @@ namespace Tests.TPhysics.Locomotion
         public LocomotionCore(Context context, params IEvaluationModule[] evaluationModules)
         {
             if (context.Rbody == null || context.GroundDetector == null)
-                throw new ArgumentException("This context was invalidate");
+                throw new ArgumentException("This context was invalidated");
             _context = context;
             EvaluationModules = evaluationModules;
         }
 
-        public World World
-        {
-            get => _world;
-            set
-            {
-                _world = value == null ? World.Default : value;
-                _context.world = _world;
-                if (_moduleWrappers != null)
-                    for (int i = 0; i < _moduleWrappers.Length; i++)
-                    {
-                        var m = _moduleWrappers[i].module;
-                        m.World = value;
-                    }
-            }
-        }
         public IEvaluationModule[] EvaluationModules
         {
             get => _evaluationModules;
             set
             {
-                if (value != null)
-                {
-                    foreach (var m in value)
-                    {
-                        m.World = this.World;
-                    }
-                }
                 _evaluationModules = value;
             }
         }
         public Context Context { get => _context; }
+
+        public ReadOnlyCollection<ILocomotionModule> Modules { get => Array.AsReadOnly(_modules); }
 
         int IndexOf(ILocomotionModule module)
         {
@@ -123,6 +106,19 @@ namespace Tests.TPhysics.Locomotion
         {
             return IndexOf(module) != -1;
         }
+        int FindIndexByPriority<T>(T[] arr, Func<T, int> match, int priority)
+        {
+            int left = 0, right = arr.Length;
+            while (left < right)
+            {
+                int mid = left + (right - left) / 2;
+                if (match(arr[mid]) <= priority)
+                    left = mid + 1;
+                else
+                    right = mid;
+            }
+            return left;
+        }
         public void AddModule(ILocomotionModule module, bool enabled = false)
         {
             if (module == null)
@@ -130,13 +126,41 @@ namespace Tests.TPhysics.Locomotion
             var index = IndexOf(module);
             if (index > -1)
                 return;
-            module.World = _world;
             var w = new Wrapper(module, enabled);
             if (_moduleWrappers == null)
                 _moduleWrappers = new Wrapper[] { w };
             else
-                ArrayExtensions.Append(ref _moduleWrappers, w);
-            //_moduleWrappers.Append(w);
+                _moduleWrappers = _moduleWrappers.Append(w);
+        }
+        public void AddModule_InsertByPriority(ILocomotionModule module, bool enabled = false)
+        {
+            if (module == null)
+                throw new ArgumentNullException(nameof(module));
+            var index = IndexOf(module);
+            if (index > -1)
+                return;
+            var w = new Wrapper(module, enabled);
+            if (_moduleWrappers == null)
+            {
+                _moduleWrappers = new Wrapper[] { w };
+                _modules = new ILocomotionModule[] { module };
+            }
+            else
+            {
+                var priority = module.Priority;
+                var idx = FindIndexByPriority<Wrapper>(_moduleWrappers, m => m.module.Priority, priority);
+                if (idx == -1)
+                {
+                    _moduleWrappers = _moduleWrappers.Append(w);
+                    _modules = _modules.Append(module);
+
+                }
+                else
+                {
+                    _moduleWrappers = _moduleWrappers.Insert(idx, w);
+                    _modules = _modules.Insert(idx, module);
+                }
+            }
         }
         public void RemoveModule(ILocomotionModule module)
         {
@@ -145,7 +169,6 @@ namespace Tests.TPhysics.Locomotion
             var index = IndexOf(module);
             if (index == -1)
                 return;
-            module.World = World.Default;
             if (_moduleWrappers.Length == 1)
                 _moduleWrappers = null;
             else
@@ -175,7 +198,6 @@ namespace Tests.TPhysics.Locomotion
                 {
                     var m = _evaluationModules[i];
                     if (m.Enabled)
-                        //_context = m.Update(_context);
                         m.Update(_context);
                 }
             }

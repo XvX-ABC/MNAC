@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using Tests.States;
-using Tests.Utilities;
-using Tests.Utilities.Timeline;
+using MNAC.States;
+using MNAC.Utilities;
+using MNAC.Utilities.Timeline;
 using UnityEngine;
 using UnityEngine.Rendering.VirtualTexturing;
 
-namespace Tests.Interaction
+namespace MNAC.Interaction
 {
     public partial class PlayerTargetLocker<T> : PlayerTargetLockerBase<T>, IPlayerTargetLocker<T> where T : class, ILockTarget
     {

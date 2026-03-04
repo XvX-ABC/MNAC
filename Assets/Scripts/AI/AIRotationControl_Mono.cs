@@ -1,6 +1,6 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
-namespace Tests.AI
+namespace MNAC.AI
 {
     internal class AIRotationControl_Mono : AIComponent_Mono
     {

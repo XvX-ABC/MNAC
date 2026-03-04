@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Interaction.Influences;
-using Tests.Utilities.Timeline;
+using MNAC.Interaction.Influences;
+using MNAC.Utilities.Timeline;
 using UnityEngine;
 
-namespace Tests.Interaction.Influence
+namespace MNAC.Interaction.Influence
 {
     public class Stun : InfluenceBase
     {

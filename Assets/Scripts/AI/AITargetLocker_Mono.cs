@@ -1,4 +1,4 @@
-﻿using Tests.AI;
+﻿using MNAC.AI;
 using Unity.Mathematics;
 using UnityEngine;
 using Random = Unity.Mathematics.Random;

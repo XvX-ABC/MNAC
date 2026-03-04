@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tests.States
+namespace MNAC.States
 {
     public class PlayableStatemachineState<T> : WithCallbackPlayableState<T>
     {

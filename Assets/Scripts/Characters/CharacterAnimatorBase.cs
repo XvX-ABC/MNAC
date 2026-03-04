@@ -1,9 +1,9 @@
 ﻿using System;
-using Tests.Characters.Humanoid.Animations;
-using Tests.Interaction.Influence;
-using Tests.Utilities.Blackboards;
+using MNAC.Characters.Humanoid.Animations;
+using MNAC.Interaction.Influence;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
-namespace Tests.Characters.Interaction
+namespace MNAC.Characters.Interaction
 {
     [Obsolete]
     [DefaultExecutionOrder(1)]

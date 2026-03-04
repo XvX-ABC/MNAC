@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using UnityEngine;
 
-namespace Tests.Utilities.Assets
+namespace MNAC.Utilities.Assets
 {
     public abstract class ResourceLoader<T> : IResourceLoader<T>
     {

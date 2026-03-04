@@ -1,7 +1,7 @@
-﻿using Tests.Utilities.MTrees;
+﻿using MNAC.Utilities.MTrees;
 using UnityEngine.Playables;
 
-namespace Tests.Animations
+namespace MNAC.Animations
 {
     public interface IAnimationPlayablePartNode : IMTContainerNode<IAnimationPlayablePart>
     {

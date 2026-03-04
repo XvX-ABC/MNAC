@@ -1,7 +1,7 @@
-﻿using Tests.Characters.Animations;
+﻿using MNAC.Characters.Animations;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Animations
+namespace MNAC.Characters.Humanoid.Animations
 {
     [SerializeField]
     public interface IHumanAnimationDefinitions

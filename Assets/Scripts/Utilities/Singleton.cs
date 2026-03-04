@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tests.Utilities
+namespace MNAC.Utilities
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static T _instance = null;
 
-        [SerializeField] private bool _persistentAcrossScenes;
+        [SerializeField] protected bool persistentAcrossScenes;
 
         public static T Instance
         {
@@ -46,7 +46,7 @@ namespace Tests.Utilities
                 _instance = GetComponent<T>();
             }
 
-            if (Application.isPlaying && _persistentAcrossScenes)
+            if (Application.isPlaying && persistentAcrossScenes)
             {
                 DontDestroyOnLoad(gameObject);
             }

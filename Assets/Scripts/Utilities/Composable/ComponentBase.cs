@@ -1,7 +1,7 @@
 ﻿using System;
-using Blackboard = Tests.Utilities.Blackboards.Blackboard;
+using Blackboard = MNAC.Utilities.Blackboards.Blackboard;
 
-namespace Tests.Utilities.Composable
+namespace MNAC.Utilities.Composable
 {
     public abstract class ComponentBase<T> : IComponent<T>
     {

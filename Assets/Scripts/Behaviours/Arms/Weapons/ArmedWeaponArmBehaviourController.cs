@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tests.Weapons;
-using Tests.Weapons_New;
+using MNAC.Weapons;
+using MNAC.Weapons;
 using Debug = UnityEngine.Debug;
 
-namespace Tests.Behaviours.Arms.Weapons
+namespace MNAC.Behaviours.Arms.Weapons
 {
 
-    internal class ArmedWeaponArmBehaviourController<T> : IArmedWeaponArmBehavioursController<T> where T : IArmedWeaponArmBehaviour
+    internal class ArmedArmBehaviourController<T> : IArmedArmBehavioursController<T> where T : IArmedArmBehaviour
     {
         internal T[] behavioursCache;
 
@@ -32,10 +32,10 @@ namespace Tests.Behaviours.Arms.Weapons
             }
         }
 
-        IReadOnlyDictionary<string, T> IArmedWeaponArmBehavioursController<T>.Behaviours => weaponBehavioursMapping;
+        IReadOnlyDictionary<string, T> IArmedArmBehavioursController<T>.Behaviours => weaponBehavioursMapping;
 
 
-        public ArmedWeaponArmBehaviourController(IArmedWeaponArmDefinitions definitions, params T[] behaviours)
+        public ArmedArmBehaviourController(IArmedArmDefinitions definitions, params T[] behaviours)
         {
             behaviours = behaviours.Where(b => b != null).ToArray();
             this.behavioursCache = behaviours;

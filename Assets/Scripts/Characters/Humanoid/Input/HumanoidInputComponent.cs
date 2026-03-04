@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
-using Tests.Utilities.Blackboards;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
 
-namespace Tests.Characters.Humanoid.Input
+namespace MNAC.Characters.Humanoid.Input
 {
     internal abstract class HumanoidInputComponent : HumanoidComponent
     {

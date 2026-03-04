@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tests.Behaviours.Arms.Weapons.Sword.Animations;
-using Tests.Behaviours.Interaction;
-using Tests.Characters.Humanoid;
-using Tests.Interaction;
-using Tests.States;
-using Tests.TPhysics.Locomotion;
-using Tests.Weapons_New;
-using Tests.Weapons_New.Sword;
+using MNAC.Behaviours.Arms.Weapons.Sword.Animations;
+using MNAC.Behaviours.Interaction;
+using MNAC.Characters.Humanoid;
+using MNAC.Interaction;
+using MNAC.States;
+using MNAC.TPhysics.Locomotion;
+using MNAC.Weapons;
+using MNAC.Weapons.Sword;
 using UnityEngine;
-using WeaponType = Tests.Weapons_New.WeaponType;
+using WeaponType = MNAC.Weapons.WeaponType;
 
-namespace Tests.Behaviours.Arms.Weapons.Sword
+namespace MNAC.Behaviours.Arms.Weapons.Sword
 {
-    internal class ArmedSwordArmBehaviour : ArmedWeaponArmBehaviourBase
+    internal class ArmedSwordArmBehaviour : ArmedArmBehaviourBase
     {
         IArmedSwordArmBehaviourDefinitions _definitions;
         ISword _sword;
@@ -52,7 +52,7 @@ namespace Tests.Behaviours.Arms.Weapons.Sword
             }
         }
 
-        public override IArmedWeaponArmAnimationPlayablePart Animator => animator;
+        public override IArmedArmAnimationPlayablePart Animator => animator;
 
         public override Func<bool> ActivationTrigger => () => this.enabled;
 

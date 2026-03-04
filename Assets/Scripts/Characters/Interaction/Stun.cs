@@ -1,7 +1,7 @@
 ﻿using System;
-using Tests.Interaction;
-using StunInfluence = Tests.Interaction.Influence.Stun;
-namespace Tests.Characters.Interaction
+using MNAC.Interaction;
+using StunInfluence = MNAC.Interaction.Influence.Stun;
+namespace MNAC.Characters.Interaction
 {
     //TODO：Stun逻辑应该在Tests.Interaction中实现
     [Obsolete]

@@ -1,8 +1,8 @@
 ﻿using System;
-using Tests.Utilities.Composable;
+using MNAC.Utilities.Composable;
 using UnityEngine;
 
-namespace Tests.Utilities.Attributes
+namespace MNAC.Utilities.Attributes
 {
     internal class DontDestroyOnLoadAttributeProcessor : IAttributeProcessor
     {
