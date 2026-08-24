@@ -9,7 +9,7 @@ namespace MNAC.Characters.Weapons
     [Obsolete]
     internal class WeaponCore_Obsolete : HumanoidComponent
     {
-        public static explicit operator Weapons.WeaponCore_Obsolete(WeaponCore_Obsolete weaponCore)
+        public static explicit operator MNAC.Weapons.WeaponCore_Obsolete(WeaponCore_Obsolete weaponCore)
         {
             return weaponCore._core;
         }

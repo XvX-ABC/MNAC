@@ -18,7 +18,8 @@ namespace MNAC.Player
         KeyCode _right;
 
         public Vector3 MousePosition => UInput.mousePosition;
-        public Vector3 MousePositionDelta => UInput.mousePositionDelta;
+        //public Vector3 MousePositionDelta => UInput.mousePositionDelta;
+        public Vector3 MousePositionDelta => Vector3.zero;
 
         public Vector3 HorizontalVector
         {

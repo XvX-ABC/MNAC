@@ -83,6 +83,8 @@ namespace MNAC.TPhysics
         public float CurrentSquareSpeed { get => _currentSquareSpeed; }
         public ushort UpdatedCount { get => _updatedCount; set => _updatedCount = value; }
 
+
+
         public void SynchronizeToRigidbody()
         {
             rbody.velocity = _currentVelocity;

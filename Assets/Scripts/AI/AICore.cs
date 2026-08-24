@@ -32,6 +32,7 @@ namespace MNAC.AI
         [SerializeField]
         CharacterBase _character;
         Blackboard _characterBlackboard;
+        bool _didStart;
 
 
         Action<ITarget, ITarget> _targetChangedAction;
@@ -113,7 +114,7 @@ namespace MNAC.AI
         {
             if (_internalComponents.Contains(comp))
                 return;
-            if (didStart)
+            if (_didStart)
                 comp.Initialize(_componentContext);
             _internalComponents.Add(comp);
         }

@@ -9,7 +9,7 @@ namespace MNAC.Characters.Weapons
 {
     internal class WeaponBackpack : CharacterComponent, IWeaponBackpack
     {
-        public static explicit operator Weapons.WeaponBackpack(WeaponBackpack backpack)
+        public static explicit operator MNAC.Weapons.WeaponBackpack(WeaponBackpack backpack)
         {
             return backpack._weaponBackpack;
         }

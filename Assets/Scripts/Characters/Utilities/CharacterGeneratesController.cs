@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using MNAC.Interaction;
 using MNAC.Utilities.Extensions;
 using UnityEngine;
-using Utils;
+//using Utils;
 using Random = Unity.Mathematics.Random;
 
 namespace MNAC.Characters.Utilities
@@ -87,7 +87,7 @@ namespace MNAC.Characters.Utilities
                 {
                     Gizmos.color = Color.white;
                     var pos = _centerPos;
-                    GizmosExtensions.DrawWireCircle(pos, _radius);
+                    //GizmosExtensions.DrawWireCircle(pos, _radius);
                 }
                 if (_respawnPoints != null)
                 {
@@ -95,7 +95,7 @@ namespace MNAC.Characters.Utilities
                     {
                         var p = _respawnPoints[i];
                         Gizmos.color = Color.blue;
-                        GizmosExtensions.DrawWireSphere(p.transform.position, 3);
+                        //GizmosExtensions.DrawWireSphere(p.transform.position, 3);
                     }
                 }
             }
@@ -155,7 +155,7 @@ namespace MNAC.Characters.Utilities
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
-            GizmosExtensions.DrawWireCapsule(this.transform.position, 1, 3);
+            //GizmosExtensions.DrawWireCapsule(this.transform.position, 1, 3);
             _generationPointsManager.OnDrawGizmosSelected();
         }
     }

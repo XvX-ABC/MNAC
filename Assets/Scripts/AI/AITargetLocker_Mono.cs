@@ -12,6 +12,7 @@ namespace Tess.AI
         [SerializeField]
         Vector2 _randomRadiusRange;
         Random _random;
+        bool _didAwake;
 
         public Vector2 RandomRadiusRange { get => _randomRadiusRange; set => _randomRadiusRange = new Vector2(Mathf.Min(value.x), Mathf.Max(value.y)); }
 
@@ -42,7 +43,7 @@ namespace Tess.AI
             base.Initialize(context);
             locker.Initialize(context);
             SetRadius();
-            if (this.didAwake && this.enabled)
+            if (this._didAwake && this.enabled)
             {
                 locker.StartCoroutine(this);
                 locker.Enabled = this;

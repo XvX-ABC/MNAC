@@ -28,7 +28,7 @@ namespace MNAC.Behaviours.Arms.Weapons
         private void Awake()
         {
             //LockTarget.indicatorsManager = _manager;
-    
+
         }
         private void Start()
         {
@@ -56,7 +56,8 @@ namespace MNAC.Behaviours.Arms.Weapons
 
             _locker.CursorPosition = UnityEngine.Input.mousePosition;
             _locker.OriginWorldPosition = _actor.transform.position;
-            _locker.CursorPositionDelta = UnityEngine.Input.mousePositionDelta;
+            //_locker.CursorPositionDelta = UnityEngine.Input.mousePositionDelta;
+            _locker.CursorPositionDelta = Vector3.zero;
             _locker.OnFixedUpdate();
 
 
