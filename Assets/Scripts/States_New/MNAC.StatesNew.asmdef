@@ -1,0 +1,16 @@
+{
+    "name": "MNAC.StatesNew",
+    "rootNamespace": "MNAC.StatesNew",
+    "references": [
+        "GUID:e77376900b62a3d41a6e000c035ec369"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
