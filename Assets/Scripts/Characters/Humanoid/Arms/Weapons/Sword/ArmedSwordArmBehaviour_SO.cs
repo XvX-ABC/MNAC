@@ -3,7 +3,7 @@ using MNAC.Animations;
 using MNAC.Behaviours;
 using MNAC.Behaviours.Arms.Weapons.Sword.Animations;
 using MNAC.Characters.Humanoid.Input;
-using MNAC.Characters.Interaction.Input;
+using MNAC.Behaviours.Input;
 using MNAC.Characters.MountPoints;
 using MNAC.Characters.UI;
 using MNAC.Interaction;

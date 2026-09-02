@@ -1,4 +1,5 @@
-﻿using MNAC.Utilities.Blackboards;
+﻿using MNAC.Utilities;
+using MNAC.Utilities.Blackboards;
 using UnityEngine;
 
 namespace MNAC.Weapons.Launcher

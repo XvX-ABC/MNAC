@@ -1,4 +1,4 @@
-﻿using MNAC.Characters.Interaction.Input;
+﻿using MNAC.Behaviours.Input;
 
 namespace MNAC.Characters.Humanoid.Input
 {

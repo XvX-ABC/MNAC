@@ -1,20 +1,24 @@
 ﻿using System;
 using UnityEngine;
-public class ComponentException : Exception
+
+namespace MNAC.Utilities
 {
-    public ComponentException(string message):base(message)
+    public class ComponentException : Exception
     {
-    }
-        
-}
-public class ComponentCantFindException : Exception
-{
-    public ComponentCantFindException(string message) : base(message)
-    {
+        public ComponentException(string message) : base(message)
+        {
+        }
 
     }
-    public ComponentCantFindException(GameObject obj, Type componentType) : this($"Can't find a component by type '{componentType.Name}' from object '{obj.name}'.")
+    public class ComponentCantFindException : Exception
     {
+        public ComponentCantFindException(string message) : base(message)
+        {
 
+        }
+        public ComponentCantFindException(GameObject obj, Type componentType) : this($"Can't find a component by type '{componentType.Name}' from object '{obj.name}'.")
+        {
+
+        }
     }
 }

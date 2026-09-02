@@ -13,6 +13,7 @@ using MNAC.Utilities.Composable;
 using UnityEngine;
 using WeaponBackpack = MNAC.Characters.Weapons.WeaponBackpack;
 
+using MNAC.Utilities;
 namespace MNAC.Characters.Humanoid
 {
     internal class HumanoidController : CharacterComponent, IComponent

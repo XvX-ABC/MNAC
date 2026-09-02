@@ -17,6 +17,7 @@ using AnimationNormalState = MNAC.Characters.Humanoid.Animations.NormalState;
 using NormalState = MNAC.Characters.Humanoid.NormalState;
 using Stun = MNAC.Interaction.Influence.Stun;
 
+using MNAC.Utilities;
 namespace MNAC.Characters.C_0
 {
     [DefaultExecutionOrder(1)]

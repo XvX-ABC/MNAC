@@ -1,6 +1,5 @@
 ﻿using MNAC.Behaviours.Input;
 using MNAC.Characters.Humanoid.Input;
-using MNAC.Characters.Interaction.Input;
 using UnityEngine;
 
 namespace MNAC.AI

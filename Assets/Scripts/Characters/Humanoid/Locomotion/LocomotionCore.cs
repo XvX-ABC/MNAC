@@ -11,6 +11,7 @@ using MNAC.Utilities.Extensions;
 using UnityEngine;
 using LContext = MNAC.TPhysics.Locomotion.Context;
 using LCore = MNAC.TPhysics.Locomotion.LocomotionCore;
+using MNAC.Utilities;
 namespace MNAC.Characters.Humanoid.Locomotion
 {
 

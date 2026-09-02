@@ -4,6 +4,7 @@ using MNAC.TPhysics.Environment;
 using MNAC.Utilities.Blackboards;
 using UnityEngine;
 using Core = MNAC.TPhysics.Environment.EnvironmentCore;
+using MNAC.Utilities;
 namespace MNAC.Characters
 {
     [RequireComponent(typeof(CapsuleCollider))]

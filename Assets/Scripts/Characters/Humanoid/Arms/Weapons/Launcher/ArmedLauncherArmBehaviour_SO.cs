@@ -7,7 +7,6 @@ using MNAC.Behaviours.Arms.Weapons.Launcher.Animations;
 using MNAC.Behaviours.Input;
 using MNAC.Characters.Humanoid.Input;
 using MNAC.Characters.Humanoid.Locomotion;
-using MNAC.Characters.Interaction.Input;
 using MNAC.Characters.UI;
 using MNAC.Interaction;
 using MNAC.TPhysics;

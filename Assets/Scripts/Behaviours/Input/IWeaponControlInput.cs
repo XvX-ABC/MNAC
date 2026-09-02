@@ -1,4 +1,4 @@
-﻿namespace MNAC.Characters.Interaction.Input
+﻿namespace MNAC.Behaviours.Input
 {
     public interface IWeaponControlInput
     {
