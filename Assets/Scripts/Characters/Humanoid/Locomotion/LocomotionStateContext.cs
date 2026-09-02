@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using MNAC.Characters.Humanoid.Input;
-using MNAC.Input;
 using MNAC.TPhysics.Locomotion;
 using Core = MNAC.TPhysics.Locomotion.LocomotionCore;
 namespace MNAC.Characters.Humanoid.Locomotion

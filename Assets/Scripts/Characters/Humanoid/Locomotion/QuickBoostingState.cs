@@ -2,7 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using MNAC.Behaviours.Input;
 using MNAC.Characters.Humanoid.Input;
-using MNAC.Input;
 using MNAC.States;
 using MNAC.TPhysics.Locomotion;
 using MNAC.Utilities.Timeline;

@@ -4,7 +4,6 @@ using MNAC.Behaviours.Arms.Weapons.Sword;
 using MNAC.Behaviours.Input;
 using MNAC.Characters.Interaction;
 using MNAC.Characters.Interaction.Input;
-using MNAC.Input;
 using UnityEngine;
 using ISwordBoostingDefinitions = MNAC.Behaviours.Arms.Weapons.Sword.IBoostingDefinitions;
 namespace MNAC.Characters.Humanoid.Arms.Weapons.Sword

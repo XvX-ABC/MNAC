@@ -6,7 +6,6 @@ using MNAC.States;
 using MNAC.Utilities.Blackboards;
 using MNAC.Utilities.Composable;
 using MNAC.Weapons;
-using WeaponCore_Obsolete = MNAC.Characters.Weapons.WeaponCore_Obsolete;
 
 
 namespace MNAC.Characters.Humanoid.Arms.Weapons

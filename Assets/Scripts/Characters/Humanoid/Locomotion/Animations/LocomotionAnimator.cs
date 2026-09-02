@@ -2,7 +2,6 @@
 using MNAC.Animations;
 using MNAC.Characters.Humanoid.Input;
 using MNAC.Characters.Humanoid.Legs;
-using MNAC.Input;
 using MNAC.States;
 using MNAC.TPhysics;
 using MNAC.TPhysics.Environment;
