@@ -1,5 +1,5 @@
 ﻿using MNAC.Behaviours.Arm.Weapons;
-using MNAC.Characters.Interaction.Input;
+using MNAC.Behaviours.Input;
 using MNAC.States;
 using MNAC.Weapons.Launcher;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using MNAC.Behaviours.Arms.Weapons.Launcher.Animations;
 using MNAC.Characters.Humanoid;
-using MNAC.Characters.Interaction.Input;
+using MNAC.Behaviours.Input;
 using MNAC.Interaction;
 using MNAC.States;
 using MNAC.Weapons;

@@ -1,6 +1,5 @@
 ﻿using System;
 using MNAC.Behaviours.Input;
-using MNAC.Characters.Interaction.Input;
 using MNAC.TPhysics.Locomotion;
 using MNAC.Utilities.Timeline;
 using UnityEngine;

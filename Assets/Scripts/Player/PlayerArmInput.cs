@@ -1,6 +1,6 @@
 ﻿using System;
 using MNAC.Characters.Humanoid.Input;
-using MNAC.Characters.Interaction.Input;
+using MNAC.Behaviours.Input;
 using UnityEngine;
 using UInput = UnityEngine.Input;
 

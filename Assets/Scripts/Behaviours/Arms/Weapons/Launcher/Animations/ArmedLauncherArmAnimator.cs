@@ -3,7 +3,7 @@ using System;
 using System.Text;
 using MNAC.Animations;
 using MNAC.Characters.Humanoid.Locomotion;
-using MNAC.Characters.Interaction.Input;
+using MNAC.Behaviours.Input;
 using MNAC.Interaction;
 using MNAC.States;
 using MNAC.TPhysics.Environment;
