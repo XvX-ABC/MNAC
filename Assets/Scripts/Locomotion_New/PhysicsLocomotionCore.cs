@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using MNAC.TPhysics;
 using MNAC.TPhysics.Environment;
 using MNAC.Locomotion.Interfaces;
 
@@ -59,7 +60,7 @@ namespace MNAC.Locomotion.Adapters
             }
         }
 
-        private readonly PhysicsLocomotionContext _physicsContext;
+        private ILocomotionContext _physicsContext;
         private readonly List<ModuleWrapper> _moduleWrappers = new();
         private readonly List<IEvaluationModule<ILocomotionContext>> _evaluationModules = new();
 
