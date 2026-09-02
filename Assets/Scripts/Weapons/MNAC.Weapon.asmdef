@@ -1,6 +1,6 @@
 {
     "name": "MNAC.Weapon",
-    "rootNamespace": "MNAC.Weapon",
+    "rootNamespace": "MNAC.Weapons",
     "references": [
         "GUID:e77376900b62a3d41a6e000c035ec369",
         "GUID:e4edb5abb6d3d2f4fbd7f53d5012ce27",

@@ -3,10 +3,6 @@
     using System;
     using UnityEngine;
 
-    namespace Tests.States
-    {
-    }
-
     public abstract class State_MonoComponent : State_MonoComponent<object>
     {
 
