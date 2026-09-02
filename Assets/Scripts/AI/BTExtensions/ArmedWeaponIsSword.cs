@@ -1,6 +1,6 @@
 ﻿using MNAC.Weapons.Sword;
 
-namespace Assets.Tests.Scripts.AI.BTExtensions
+namespace MNAC.AI.BTExtensions
 {
     internal class ArmedWeaponIsSword : ArmedWeaponTypeIs<ISword>
     {

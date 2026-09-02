@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
-namespace Assets.Tests.Scripts.AI
+namespace MNAC.AI
 {
     internal class DisableNavUpdate : MonoBehaviour
     {

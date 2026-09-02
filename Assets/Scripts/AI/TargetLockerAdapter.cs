@@ -3,7 +3,7 @@ using MNAC.Characters.Interaction;
 using MNAC.Interaction;
 using UnityEngine;
 
-namespace Tess.AI
+namespace MNAC.AI
 {
     internal class TargetLockerAdapter : TargetLockerBase
     {

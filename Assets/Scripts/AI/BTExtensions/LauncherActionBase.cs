@@ -1,7 +1,7 @@
 ﻿using System;
 using MNAC.Weapons.Launcher;
 
-namespace Assets.Tests.Scripts.AI.BTExtensions
+namespace MNAC.AI.BTExtensions
 {
     internal abstract class LauncherActionBase : WeaponActionBase
     {

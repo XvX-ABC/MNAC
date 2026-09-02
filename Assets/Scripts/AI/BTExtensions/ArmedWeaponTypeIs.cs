@@ -4,7 +4,7 @@ using MNAC.Weapons;
 using UnityEngine;
 using TaskStatus = BehaviorDesigner.Runtime.Tasks.TaskStatus;
 
-namespace Assets.Tests.Scripts.AI.BTExtensions
+namespace MNAC.AI.BTExtensions
 {
     internal abstract class ArmedWeaponTypeIs<T> : AIConditionalBase where T : IWeapon
     {

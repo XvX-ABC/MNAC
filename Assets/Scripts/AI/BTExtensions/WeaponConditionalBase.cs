@@ -7,7 +7,7 @@ using MNAC.Weapons;
 using UnityEngine;
 using static MNAC.AI.AIHumanoidInput;
 
-namespace Assets.Tests.Scripts.AI.BTExtensions
+namespace MNAC.AI.BTExtensions
 {
     internal abstract class WeaponConditionalBase : AIConditionalBase
     {

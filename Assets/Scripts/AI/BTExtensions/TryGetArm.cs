@@ -9,7 +9,7 @@ using BoostingHelper = MNAC.Characters.Humanoid.Arms.Weapons.Sword.BoostingHelpe
 using SlashHelper = MNAC.Characters.Humanoid.Arms.Weapons.Sword.SlashHelper;
 using TaskStatus = BehaviorDesigner.Runtime.Tasks.TaskStatus;
 
-namespace Assets.Tests.Scripts.AI.BTExtensions
+namespace MNAC.AI.BTExtensions
 {
     internal class SwordActionBase : WeaponActionBase
     {

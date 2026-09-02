@@ -4,7 +4,7 @@ using MNAC.Interaction;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Tess.AI
+namespace MNAC.AI
 {
     internal class LockTarget : MonoBehaviour, ILockTarget
     {

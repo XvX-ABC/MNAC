@@ -3,7 +3,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using Random = Unity.Mathematics.Random;
 
-namespace Tess.AI
+namespace MNAC.AI
 {
     internal class AITargetLocker_Mono : AIComponent_Mono
     {

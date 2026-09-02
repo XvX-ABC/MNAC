@@ -15,7 +15,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using LocomotionCore = MNAC.Characters.Humanoid.Locomotion.LocomotionCore;
 
-namespace Tess.AI
+namespace MNAC.AI
 {
     [Serializable]
     internal class AITargetLocker : AIComponent, ITargetLocker

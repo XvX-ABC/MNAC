@@ -1,6 +1,6 @@
 ﻿using TaskStatus = BehaviorDesigner.Runtime.Tasks.TaskStatus;
 
-namespace Assets.Tests.Scripts.AI.BTExtensions
+namespace MNAC.AI.BTExtensions
 {
     internal class LauncherFire : LauncherActionBase
     {

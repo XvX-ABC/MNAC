@@ -1,6 +1,6 @@
 ﻿using MNAC.Weapons.Launcher;
 
-namespace Assets.Tests.Scripts.AI.BTExtensions
+namespace MNAC.AI.BTExtensions
 {
     internal class ArmedWeaponIsLauncher : ArmedWeaponTypeIs<ILauncher>
     {
