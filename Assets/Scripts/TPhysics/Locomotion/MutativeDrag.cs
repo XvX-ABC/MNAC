@@ -1,14 +1,16 @@
-﻿using MNAC.Utilities.Timeline;
+using MNAC.Utilities.Timeline;
 using UnityEngine;
 
 namespace MNAC.TPhysics.Locomotion
 {
+    /// 在一段时间内把刚体 drag 从 Range.x 线性过渡到 Range.y。
     public class MutativeDrag : LocomotionModuleBase
     {
+        readonly ITimeline _timeline;
         float _transitionalDuration;
-        ITimeline _timeline;
         Rigidbody _rbody;
         Vector2 _range;
+
         public MutativeDrag(float transitionalDuration, Vector2 range)
         {
             TransitionalDuration = transitionalDuration;
@@ -16,12 +18,16 @@ namespace MNAC.TPhysics.Locomotion
             _range = range;
         }
 
-        public float TransitionalDuration { get => _transitionalDuration; set => _transitionalDuration = Mathf.Max(0, value); }
-        public Vector2 Range { get => _range; set => _range = value; }
-        public override Context OnEnd(Context context)
+        public float TransitionalDuration
         {
-            context.Rbody.drag = _range.x;
-            return context;
+            get => _transitionalDuration;
+            set => _transitionalDuration = Mathf.Max(0f, value);
+        }
+
+        public Vector2 Range
+        {
+            get => _range;
+            set => _range = value;
         }
 
         public override Context OnStart(Context context)
@@ -33,21 +39,15 @@ namespace MNAC.TPhysics.Locomotion
 
         public override Context OnUpdate(Context context)
         {
-            var t = _timeline.NormalizedTime;
-            UpdateDrag(t);
+            _rbody.drag = Mathf.Lerp(_range.x, _range.y, _timeline.NormalizedTime);
             _timeline.OnUpdate(Time.deltaTime);
             return context;
         }
-        void UpdateDrag(TimelineContext ctx)
+
+        public override Context OnEnd(Context context)
         {
-            var t = ctx.NormalizedTime;
-            var m = Mathf.Lerp(_range.x, _range.y, t);
-            _rbody.drag = m;
-        }
-        void UpdateDrag(float t)
-        {
-            var m = Mathf.Lerp(_range.x, _range.y, t);
-            _rbody.drag = m;
+            context.Rbody.drag = _range.x;
+            return context;
         }
     }
 }

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Reflection;
-
 namespace MNAC.TPhysics.Locomotion
 {
+    /// 一个可被 LocomotionCore 按 Start → Update → End 生命周期驱动的运动模块。
     public interface ILocomotionModule
     {
-        public bool Enabled { get; set; }
-        public int Priority { get; }
-        public LocomotionModuleState State { get; }
-        public Context Start(Context context);
-        public Context Update(Context context);
-        public Context End(Context context);
+        bool Enabled { get; set; }
+        int Priority { get; }
+        Context Start(Context context);
+        Context Update(Context context);
+        Context End(Context context);
     }
 }

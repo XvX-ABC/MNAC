@@ -1,54 +1,32 @@
-﻿using System;
-using System.Reflection;
-using System.Security.Policy;
-using Unity.Properties;
-using UnityEngine.Rendering;
-
 namespace MNAC.TPhysics.Locomotion
 {
+    /// 运动模块基类：生命周期追踪由 LocomotionCore 内部的私有状态机负责，
+    /// 模块自身不保存状态，只暴露 Start/Update/End → On* 钩子的转发。
     public abstract class LocomotionModuleBase : ILocomotionModule
     {
-
         protected bool enabled;
-        protected LocomotionModuleState state;
         protected int priority;
-        public LocomotionModuleBase(int priority = 0)
+
+        protected LocomotionModuleBase(int priority = 0)
         {
-            state = LocomotionModuleState.Ready;
             this.priority = priority;
         }
+
         public virtual bool Enabled
         {
             get => enabled;
             set => enabled = value;
         }
 
-        public LocomotionModuleState State { get => state; }
-        public int Priority { get => priority; }
+        public int Priority => priority;
 
-        public virtual Context OnStart(Context context) { return context; }
-        public virtual Context OnUpdate(Context context) { return context; }
-        public virtual Context OnEnd(Context context) { return context; }
+        // 生命周期钩子默认透传，模块只覆盖需要处理的那一个。
+        public virtual Context OnStart(Context context) => context;
+        public virtual Context OnUpdate(Context context) => context;
+        public virtual Context OnEnd(Context context) => context;
 
-        public Context Start(Context context)
-        {
-            context = OnStart(context);
-            state = LocomotionModuleState.Started;
-            return context;
-        }
-
-        public Context Update(Context context)
-        {
-            context = OnUpdate(context);
-            state = LocomotionModuleState.Updating;
-            return context;
-        }
-
-        public Context End(Context context)
-        {
-            context = OnEnd(context);
-            state = LocomotionModuleState.Ended;
-            return context;
-        }
+        public Context Start(Context context) => OnStart(context);
+        public Context Update(Context context) => OnUpdate(context);
+        public Context End(Context context) => OnEnd(context);
     }
 }

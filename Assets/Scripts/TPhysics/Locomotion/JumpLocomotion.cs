@@ -19,13 +19,10 @@ namespace MNAC.TPhysics.Locomotion
         public override Context OnStart(Context context)
         {
             var world = context.world;
-            var jv = Mathf.Sqrt(-2 * world.Gravity.y * _height);
-            var ov = context.CurrentVelocity;
-            context.CurrentVelocity += Quaternion.FromToRotation(World.DefaultUp, world.Up) * new Vector3(0, jv, 0);
-            var time = jv / -world.Gravity.y;
-            _timeline.UpdateLength(time);
+            var jumpVelocity = Mathf.Sqrt(-2 * world.Gravity.y * _height);
+            context.CurrentVelocity += Quaternion.FromToRotation(World.DefaultUp, world.Up) * new Vector3(0, jumpVelocity, 0);
+            _timeline.UpdateLength(jumpVelocity / -world.Gravity.y);
             _timeline.Restart();
-            var nv = context.CurrentVelocity;
             return context;
         }
         public override Context OnUpdate(Context context)

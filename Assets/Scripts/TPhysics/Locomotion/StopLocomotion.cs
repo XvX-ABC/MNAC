@@ -1,23 +1,13 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace MNAC.TPhysics.Locomotion
 {
+    /// 把速度收敛到支撑面平面（去掉垂直分量），用于停止时保持贴地。
     public class StopLocomotion : LocomotionModuleBase
     {
-        public override Context OnEnd(Context context)
-        {
-            return context;
-        }
-
-        public override Context OnStart(Context context)
-        {
-            return context;
-        }
         public override Context OnUpdate(Context context)
         {
-            var v = context.CurrentVelocity;
-            var normal = context.groundNormal;
-            context.CurrentVelocity = Vector3.Project(v, normal);
+            context.CurrentVelocity = Vector3.Project(context.CurrentVelocity, context.groundNormal);
             return context;
         }
     }

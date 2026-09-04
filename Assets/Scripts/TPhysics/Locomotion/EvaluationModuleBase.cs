@@ -1,34 +1,16 @@
-﻿namespace MNAC.TPhysics.Locomotion
+namespace MNAC.TPhysics.Locomotion
 {
+    /// 评估模块基类：启用开关 + 每帧 Update 钩子。
     public abstract class EvaluationModuleBase : IEvaluationModule
     {
         protected bool enabled;
-        protected int priority;
-        public virtual bool Enabled { get => enabled; set => enabled = value; }
 
-
-        int ILocomotionModule.Priority { get => priority; }
-
-        public LocomotionModuleState State => throw new System.NotImplementedException();
-
-        protected EvaluationModuleBase()
+        public virtual bool Enabled
         {
+            get => enabled;
+            set => enabled = value;
         }
 
-
-        public virtual Context Update(Context context)
-        {
-            return context;
-        }
-
-        public Context Start(Context context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Context End(Context context)
-        {
-            throw new System.NotImplementedException();
-        }
+        public virtual Context Update(Context context) => context;
     }
 }

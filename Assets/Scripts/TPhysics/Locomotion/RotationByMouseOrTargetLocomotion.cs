@@ -1,67 +1,51 @@
-﻿using System;
 using MNAC.Interaction;
-using MNAC.Utilities;
 using UnityEngine;
 
 namespace MNAC.TPhysics.Locomotion
 {
+    /// 优先面向 Target 位置；无目标时回退为面向鼠标在水平面上的落点。
     public class RotationByMouseOrTargetLocomotion : LocomotionModuleBase
     {
-        RotationLocomotion _b;
+        readonly RotationLocomotion _base = new();
         Camera _camera;
         Vector3 _mouseScreenPosition;
         IPositionTarget _target;
+
         public RotationByMouseOrTargetLocomotion(Camera camera)
         {
             Camera = camera;
-            _b = new();
         }
+
         public Camera Camera
         {
             get => _camera;
-            set
-            {
-                _camera = value;
-            }
+            set => _camera = value;
         }
+
         public Vector3 MouseScreenPosition { get => _mouseScreenPosition; set => _mouseScreenPosition = value; }
+
         public IPositionTarget Target { get => _target; set => _target = value; }
-
-        public override Context OnEnd(Context context)
-        {
-            return context;
-        }
-
-        public override Context OnStart(Context context)
-        {
-            return context;
-        }
 
         public override Context OnUpdate(Context context)
         {
-            var p = context.WorldPlane;
-            var origin = context.CurrentPosition;
-            var tpos = Vector3.zero;
+            var plane = context.WorldPlane;
             if (_target == null)
             {
                 if (_camera == null)
                     return context;
-                else
-                    tpos = CalculateMousePositionOn(p);
+                _base.TargetPos = Vector3.ProjectOnPlane(CalculateMousePositionOn(plane), plane.normal);
             }
             else
-                tpos = _target.Position;
-            //var tpos = _target == null ? CalculateMousePositionOn(p) : _target.Position;
-            _b.Origin = Vector3.ProjectOnPlane(origin, p.normal);
-            _b.TargetPos = Vector3.ProjectOnPlane(tpos, p.normal);
-            return _b.OnUpdate(context);
+                _base.TargetPos = _target.Position;
+
+            _base.Origin = Vector3.ProjectOnPlane(context.CurrentPosition, plane.normal);
+            return _base.OnUpdate(context);
         }
+
         Vector3 CalculateMousePositionOn(Plane plane)
         {
             var ray = _camera.ScreenPointToRay(_mouseScreenPosition);
-            if (plane.Raycast(ray, out var p))
-                return ray.GetPoint(p);
-            return Vector3.zero;
+            return plane.Raycast(ray, out var distance) ? ray.GetPoint(distance) : Vector3.zero;
         }
     }
 }
