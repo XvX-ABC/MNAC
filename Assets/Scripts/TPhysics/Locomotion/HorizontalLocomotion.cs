@@ -1,0 +1,84 @@
+﻿using UnityEngine;
+
+namespace MNAC.TPhysics.Locomotion
+{
+    public class HorizontalLocomotion : LocomotionModuleBase
+    {
+        Vector3 _direction;
+        float _maxSpeed;
+        float _acceleratedSpeed;
+        public Vector3 DirectionVector
+        {
+            get => _direction;
+            set => _direction = value.normalized;
+        }
+        public float MaxSpeed
+        {
+            get => _maxSpeed;
+            set => _maxSpeed = Mathf.Max(0, value);
+        }
+        public float AcceleratedSpeed
+        {
+            get => _acceleratedSpeed;
+            set => _acceleratedSpeed = Mathf.Max(0, value);
+        }
+
+        public HorizontalLocomotion(float maxSpeed, float acceleratedSpeed, Vector3 horizontalVector)
+        {
+            MaxSpeed = maxSpeed;
+            AcceleratedSpeed = acceleratedSpeed;
+            _direction = horizontalVector;
+        }
+        public HorizontalLocomotion(float maxSpeed, float acceleratedSpeed) : this(maxSpeed, acceleratedSpeed, Vector3.zero)
+        {
+
+        }
+
+        Vector3 CalculateDirection(Context context)
+        {
+            var direction = _direction;
+            var grounds = context.GroundDetector.Grounds;
+            var world = context.world;
+
+            var groundNormal = context.GroundDetector.GroundsNormal;
+            if (groundNormal == Vector3.zero)
+                return direction;
+
+            return world.rotation * Quaternion.FromToRotation(world.Up, groundNormal) * direction;
+
+        }
+        public override Context OnStart(Context context)
+        {
+            return context;
+        }
+        public override Context OnUpdate(Context context)
+        {
+            var world = context.world;
+            var up = world.Up;
+            if (context.GroundDetector.Grounds.Count > 0)
+            {
+                up = context.GroundDetector.GroundsNormal;
+            }
+            var direction = CalculateDirection(context);
+            context.CurrentVelocity = Accelerate(direction, context.CurrentVelocity, _acceleratedSpeed, _maxSpeed);
+            return context;
+        }
+        Vector3 Accelerate(Vector3 accelDir, Vector3 prevVelocity, float accelerate, float maxSpeed)
+        {
+            float projVel = Vector3.Dot(prevVelocity, accelDir);
+            float accelVel = accelerate == 0 ? _maxSpeed : accelerate * Time.deltaTime;
+            if (projVel + accelVel > maxSpeed)
+            {
+                accelVel = maxSpeed - projVel;
+            }
+            var r = prevVelocity + accelDir * accelVel;
+            if (r.magnitude >= maxSpeed)
+                r = r.normalized * maxSpeed;
+            return r;
+        }
+        public override Context OnEnd(Context context)
+        {
+            return context;
+        }
+    }
+}
