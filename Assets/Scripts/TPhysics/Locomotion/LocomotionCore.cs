@@ -63,28 +63,17 @@ namespace MNAC.TPhysics.Locomotion
             }
 
         }
-        IEvaluationModule[] _evaluationModules;
         ILocomotionModule[] _modules;
         Wrapper[] _moduleWrappers;
         Context _context;
-        public LocomotionCore(World world, [NotNull] Rigidbody rbody, [NotNull] IGroundDetector groundDetector, params IEvaluationModule[] evaluationModules) : this(new(world, new TPhysics.Context(rbody), groundDetector), evaluationModules)
+        public LocomotionCore(World world, [NotNull] Rigidbody rbody, [NotNull] IGroundDetector groundDetector) : this(new(world, new TPhysics.Context(rbody), groundDetector))
         {
         }
-        public LocomotionCore(Context context, params IEvaluationModule[] evaluationModules)
+        public LocomotionCore(Context context)
         {
             if (context.Rbody == null || context.GroundDetector == null)
                 throw new ArgumentException("This context was invalidated");
             _context = context;
-            EvaluationModules = evaluationModules;
-        }
-
-        public IEvaluationModule[] EvaluationModules
-        {
-            get => _evaluationModules;
-            set
-            {
-                _evaluationModules = value;
-            }
         }
         public Context Context { get => _context; }
 
@@ -192,15 +181,6 @@ namespace MNAC.TPhysics.Locomotion
         public void Update()
         {
             _context.Synchronise();
-            if (_evaluationModules != null)
-            {
-                for (int i = 0; i < _evaluationModules.Length; i++)
-                {
-                    var m = _evaluationModules[i];
-                    if (m.Enabled)
-                        m.Update(_context);
-                }
-            }
             if (_moduleWrappers != null)
                 for (int i = 0; i < _moduleWrappers.Length; i++)
                 {

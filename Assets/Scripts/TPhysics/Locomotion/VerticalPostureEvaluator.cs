@@ -1,105 +1,57 @@
-﻿using System;
 using UnityEngine;
 
 namespace MNAC.TPhysics.Locomotion
 {
-    public class VerticalPostureEvaluator : EvaluationModuleBase
+    /// 常开观察模块：把最近 <see cref="SampleQuantity"/> 帧速度（世界系）的竖直分量
+    /// 均值分类为 Holding/Ascending/Descending，写入 Context.VerticalPosture。
+    /// 以普通模块形式插入模块链：AddModule_InsertByPriority(module, enabled:true)，
+    /// 需要时给最低优先级，确保先于行为模块读取姿态。
+    public class VerticalPostureEvaluator : LocomotionModuleBase
     {
-        int _sampleQuantity;
-        RingArray<Vector3> _data;
-        VerticalPosture _posture;
-        class RingArray<T>
+        Vector3[] _samples;
+        int _head;
+
+        public VerticalPostureEvaluator(int sampleQuantity, int priority = 0) : base(priority)
         {
-            T[] _array;
-            int _headIndex;
-
-            public int HeadIndex
-            {
-                get => _headIndex;
-                set
-                {
-                    if (value < 0 || value > _array.Length)
-                        throw new IndexOutOfRangeException();
-                    _headIndex = value % _array.Length;
-                }
-            }
-
-            public T this[int index]
-            {
-                get
-                {
-                    if (index < 0 || index >= _array.Length)
-                        throw new IndexOutOfRangeException();
-                    var findex = (_headIndex + index) % _array.Length;
-                    return _array[findex];
-                }
-                set
-                {
-                    if (index < 0 || index >= _array.Length)
-                        throw new IndexOutOfRangeException();
-                    var findex = (_headIndex + index) % _array.Length;
-                    _array[findex] = value;
-                }
-            }
-            public int Length
-            {
-                get => _array.Length;
-                set
-                {
-                    Array.Resize(ref _array, value);
-                }
-            }
-            public RingArray(int length)
-            {
-                if (length < 0)
-                    throw new Exception();
-                _array = new T[length];
-                _headIndex = 0;
-            }
-
-        }
-        public VerticalPostureEvaluator(int sampleQuantity)
-        {
-            _data = new RingArray<Vector3>(0);
+            _samples = System.Array.Empty<Vector3>();
             SampleQuantity = sampleQuantity;
+            Enabled = true;
         }
 
         public int SampleQuantity
         {
-            get => _sampleQuantity;
+            get => _samples.Length;
             set
             {
-                _sampleQuantity = Mathf.Max(0, value);
-                this.enabled = _sampleQuantity > 0;
-                _data.Length = _sampleQuantity;
+                _samples = new Vector3[Mathf.Max(0, value)];
+                _head = 0;
+                Enabled = _samples.Length > 0;
             }
         }
-        VerticalPosture Evaluate()
+
+        public override Context OnUpdate(Context context)
         {
-            var sum = Vector3.zero;
-            for (int i = 0; i < _sampleQuantity; i++)
-            {
-                sum += _data[i];
-            }
-            sum /= _sampleQuantity;
-            var y = sum.y;
-            return GetPosture(y);
-            VerticalPosture GetPosture(float y) => y switch
-            {
-                0 => VerticalPosture.Holding,
-                > 0 => VerticalPosture.Ascending,
-                < 0 => VerticalPosture.Descending,
-                _ => throw new NotImplementedException()
-            };
-        }
-        public override Context Update(Context context)
-        {
-            var world = context.world;
-            var v = world.InverseTransformVector(context.CurrentVelocity);
-            _data[_sampleQuantity - 1] = v;
-            _data.HeadIndex++;
+            if (_samples.Length == 0)
+                return context;
+            var velocity = context.world.InverseTransformVector(context.CurrentVelocity);
+            _samples[_head] = velocity;
+            _head = (_head + 1) % _samples.Length;
             context.verticalPosture = Evaluate();
             return context;
+        }
+
+        VerticalPosture Evaluate()
+        {
+            var sum = 0f;
+            for (int i = 0; i < _samples.Length; i++)
+                sum += _samples[i].y;
+            var mean = sum / _samples.Length;
+            return mean switch
+            {
+                > 0f => VerticalPosture.Ascending,
+                < 0f => VerticalPosture.Descending,
+                _ => VerticalPosture.Holding
+            };
         }
     }
 }
