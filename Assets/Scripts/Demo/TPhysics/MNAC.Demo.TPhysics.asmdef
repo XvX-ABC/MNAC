@@ -1,0 +1,16 @@
+{
+    "name": "MNAC.Demo.TPhysics",
+    "rootNamespace": "MNAC.Demo",
+    "references": [
+        "MNAC.TPhysics"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

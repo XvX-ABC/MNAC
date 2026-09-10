@@ -1,10 +1,17 @@
+using System;
 using UnityEngine;
 
 namespace MNAC.TPhysics.Locomotion
 {
     /// 冲刺：启动时清空速度，期间水平移动并把垂直分量压平。
+    [Serializable]
     public class BoostingLocomotion : HorizontalLocomotion
     {
+        // 无参构造：供 Editor 面板 Add 模块与反序列化使用。
+        public BoostingLocomotion() : base()
+        {
+        }
+
         public BoostingLocomotion(float maxSpeed, float acceleratedSpeed) : base(maxSpeed, acceleratedSpeed)
         {
         }

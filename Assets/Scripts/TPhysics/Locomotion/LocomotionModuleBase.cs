@@ -1,11 +1,14 @@
+using System;
+using UnityEngine;
+
 namespace MNAC.TPhysics.Locomotion
 {
     /// 运动模块基类：生命周期追踪由 LocomotionCore 内部的私有状态机负责，
     /// 模块自身不保存状态，只暴露 Start/Update/End → On* 钩子的转发。
     public abstract class LocomotionModuleBase : ILocomotionModule
     {
-        protected bool enabled;
-        protected int priority;
+        [SerializeField] protected bool enabled;
+        [SerializeField] protected int priority;
 
         protected LocomotionModuleBase(int priority = 0)
         {

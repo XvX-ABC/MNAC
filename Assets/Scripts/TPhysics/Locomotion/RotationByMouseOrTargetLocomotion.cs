@@ -1,15 +1,21 @@
 using MNAC.Interaction;
+using System;
 using UnityEngine;
 
 namespace MNAC.TPhysics.Locomotion
 {
     /// 优先面向 Target 位置；无目标时回退为面向鼠标在水平面上的落点。
+    [Serializable]
     public class RotationByMouseOrTargetLocomotion : LocomotionModuleBase
     {
-        readonly RotationLocomotion _base = new();
-        Camera _camera;
-        Vector3 _mouseScreenPosition;
-        IPositionTarget _target;
+        [NonSerialized] RotationLocomotion _base;
+        [SerializeField] Camera _camera;
+        [SerializeField] Vector3 _mouseScreenPosition;
+        [NonSerialized] IPositionTarget _target;
+
+        public RotationByMouseOrTargetLocomotion()
+        {
+        }
 
         public RotationByMouseOrTargetLocomotion(Camera camera)
         {
@@ -22,12 +28,21 @@ namespace MNAC.TPhysics.Locomotion
             set => _camera = value;
         }
 
-        public Vector3 MouseScreenPosition { get => _mouseScreenPosition; set => _mouseScreenPosition = value; }
+        public Vector3 MouseScreenPosition
+        {
+            get => _mouseScreenPosition;
+            set => _mouseScreenPosition = value;
+        }
 
-        public IPositionTarget Target { get => _target; set => _target = value; }
+        public IPositionTarget Target
+        {
+            get => _target;
+            set => _target = value;
+        }
 
         public override Context OnUpdate(Context context)
         {
+            _base ??= new RotationLocomotion(); // 反序列化后懒重建
             var plane = context.WorldPlane;
             if (_target == null)
             {

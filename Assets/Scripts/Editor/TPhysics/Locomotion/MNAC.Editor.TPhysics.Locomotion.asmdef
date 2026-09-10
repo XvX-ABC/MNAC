@@ -1,0 +1,18 @@
+{
+    "name": "MNAC.Editor.TPhysics.Locomotion",
+    "rootNamespace": "MNAC.Editor",
+    "references": [
+        "GUID:512bf61454096314f9d2c4aa6b5b1c53"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

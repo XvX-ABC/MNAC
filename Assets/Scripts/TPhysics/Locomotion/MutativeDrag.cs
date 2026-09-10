@@ -1,15 +1,21 @@
+using System;
 using MNAC.Utilities.Timeline;
 using UnityEngine;
 
 namespace MNAC.TPhysics.Locomotion
 {
     /// 在一段时间内把刚体 drag 从 Range.x 线性过渡到 Range.y。
+    [Serializable]
     public class MutativeDrag : LocomotionModuleBase
     {
-        readonly ITimeline _timeline;
-        float _transitionalDuration;
-        Rigidbody _rbody;
-        Vector2 _range;
+        [NonSerialized] ITimeline _timeline;
+        [SerializeField] float _transitionalDuration;
+        [NonSerialized] Rigidbody _rbody;
+        [SerializeField] Vector2 _range;
+
+        public MutativeDrag() : this(0f, Vector2.zero)
+        {
+        }
 
         public MutativeDrag(float transitionalDuration, Vector2 range)
         {
@@ -33,6 +39,7 @@ namespace MNAC.TPhysics.Locomotion
         public override Context OnStart(Context context)
         {
             _rbody = context.Rbody;
+            _timeline ??= new Timeline(_transitionalDuration); // 反序列化后懒重建
             _timeline.Restart();
             return context;
         }

@@ -1,13 +1,31 @@
+using System;
 using UnityEngine;
 
 namespace MNAC.TPhysics.Locomotion
 {
     /// 朝一个水平方向加速移动；有支撑面时把方向抬到斜坡平面。
+    [Serializable]
     public class HorizontalLocomotion : LocomotionModuleBase
     {
-        Vector3 _direction;
-        float _maxSpeed;
-        float _acceleratedSpeed;
+        [SerializeField] Vector3 _direction;
+        [SerializeField] float _maxSpeed;
+        [SerializeField] float _acceleratedSpeed;
+
+        // 无参构造：供 Editor 面板 Add 模块与 [SerializeReference] 反序列化使用。
+        public HorizontalLocomotion() : this(0f, 0f, Vector3.zero)
+        {
+        }
+
+        public HorizontalLocomotion(float maxSpeed, float acceleratedSpeed) : this(maxSpeed, acceleratedSpeed, Vector3.zero)
+        {
+        }
+
+        public HorizontalLocomotion(float maxSpeed, float acceleratedSpeed, Vector3 horizontalVector)
+        {
+            MaxSpeed = maxSpeed;
+            AcceleratedSpeed = acceleratedSpeed;
+            _direction = horizontalVector.normalized;
+        }
 
         public Vector3 DirectionVector
         {
@@ -25,17 +43,6 @@ namespace MNAC.TPhysics.Locomotion
         {
             get => _acceleratedSpeed;
             set => _acceleratedSpeed = Mathf.Max(0f, value);
-        }
-
-        public HorizontalLocomotion(float maxSpeed, float acceleratedSpeed) : this(maxSpeed, acceleratedSpeed, Vector3.zero)
-        {
-        }
-
-        public HorizontalLocomotion(float maxSpeed, float acceleratedSpeed, Vector3 horizontalVector)
-        {
-            MaxSpeed = maxSpeed;
-            AcceleratedSpeed = acceleratedSpeed;
-            _direction = horizontalVector.normalized;
         }
 
         public override Context OnUpdate(Context context)

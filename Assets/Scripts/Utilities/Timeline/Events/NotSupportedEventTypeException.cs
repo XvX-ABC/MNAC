@@ -1,0 +1,14 @@
+﻿using System;
+using MNAC.Utilities.Timeline;
+
+namespace MNAC.Utilities.Timeline.Events
+{
+    internal class NotSupportedEventTypeException : TimelineException
+    {
+        public NotSupportedEventTypeException(string message) : base(message)
+        {
+
+        }
+        public NotSupportedEventTypeException(Type type) : this($"The timeline doesn't supported the event type '{type.Name}'.") { }
+    }
+}

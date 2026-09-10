@@ -1,5 +1,8 @@
-﻿namespace MNAC.TPhysics.Locomotion
+using System;
+
+namespace MNAC.TPhysics.Locomotion
 {
+    [Serializable]
     public class StopRotation : LocomotionModuleBase
     {
         public override Context OnEnd(Context context)
