@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using MNAC.Utilities.Timeline;
+using MNAC.Utilities.Timeline.Events;
 using MNAC.Utilities.Timeline.Events.Point;
 using MNAC.Utilities.Timeline.Events.Range;
 using NUnit.Framework;
@@ -81,8 +82,8 @@ namespace MNAC.Tests.TPhysics
             for (var i = 0; i < 11; i++)
                 timeline.OnUpdate(0.1f);
 
-            // 归一化时刻 0,.1,...,.9,1.0；区间 (0.3, 0.5] 内为 .4、.5
-            Assert.AreEqual(2, fired);
+            // 归一化时刻 0,.1,...,.9,1.0；闭区间 [0.3, 0.5] 内为 .3、.4、.5
+            Assert.AreEqual(3, fired);
         }
 
         [Test]
@@ -148,6 +149,181 @@ namespace MNAC.Tests.TPhysics
             Assert.AreEqual(1, ends);
             Assert.IsFalse(timeline.IsRunning);
             Assert.AreEqual(1f, timeline.NormalizedTime, 1e-5f);
+        }
+
+        // ---------- 修复回归 ----------
+
+        [Test]
+        public void UpdateLength_Negative_IsRejected_AndLengthUnchanged()
+        {
+            var timeline = new Timeline(1f);
+
+            LogAssert.Expect(LogType.Warning, new Regex("can't be negative"));
+            Assert.IsFalse(timeline.UpdateLength(-1f));
+            Assert.AreEqual(1f, timeline.Length, 1e-5f);
+        }
+
+        [Test]
+        public void UpdateLength_Shrink_ClampsTime()
+        {
+            var timeline = new Timeline(2f);
+            timeline.SetTime(1.5f);
+
+            Assert.IsTrue(timeline.UpdateLength(1f));
+            Assert.AreEqual(1f, timeline.Time, 1e-5f);
+        }
+
+        [Test]
+        public void ZeroLengthTimeline_UpdateAction_ReceivesOne()
+        {
+            var timeline = new Timeline(0f);
+            var normalized = float.NaN;
+            timeline.UpdateAction = value => normalized = value;
+
+            timeline.Restart();
+            timeline.OnUpdate(0.1f);
+
+            Assert.AreEqual(1f, normalized, 1e-5f, "零长度时不应得到 NaN");
+        }
+
+        [Test]
+        public void End_IsIdempotent_UntilRestart()
+        {
+            var timeline = new Timeline(1f);
+            var ends = 0;
+            timeline.EndAction += _ => ends++;
+
+            timeline.End();
+            timeline.End();
+            Assert.AreEqual(1, ends, "重复 End 只应触发一次");
+
+            timeline.Restart();
+            timeline.End();
+            Assert.AreEqual(2, ends, "Restart 后可再次结束");
+        }
+
+        [Test]
+        public void EndEarly_WhenPaused_StillFiresEnd()
+        {
+            var timeline = new Timeline(1f);
+            var ends = 0;
+            timeline.EndAction += _ => ends++;
+
+            Assert.IsFalse(timeline.IsRunning);
+            timeline.EndEarly();
+
+            Assert.AreEqual(1, ends);
+            Assert.IsFalse(timeline.IsRunning);
+            Assert.AreEqual(1f, timeline.Time, 1e-5f);
+        }
+
+        [Test]
+        public void NormalizedTime_IsClamped_WhenDeltaOvershoots()
+        {
+            var timeline = new Timeline(1f);
+            float endNormalized = -1f;
+            timeline.EndAction += ctx => endNormalized = ctx.NormalizedTime;
+
+            timeline.Restart();
+            timeline.OnUpdate(1.5f); // 越过终点
+            timeline.OnUpdate(0f);   // 下一拍结束，Context 归一化应被钳制
+
+            Assert.AreEqual(1f, endNormalized, 1e-5f);
+            Assert.LessOrEqual(timeline.NormalizedTime, 1f);
+        }
+
+        [Test]
+        public void RangeEvent_StartingAtZero_FiresOnFirstUpdate()
+        {
+            var timeline = new Timeline(1f);
+            var fired = 0;
+            timeline.AddRangeEvent(0f, 1f, _ => fired++);
+
+            timeline.Restart();
+            timeline.OnUpdate(0.1f);
+
+            Assert.AreEqual(1, fired, "闭区间起点应包含归一化 0");
+        }
+
+        [Test]
+        public void PointEvent_InsertedWhileRunning_DoesNotReplayExecutedEvents()
+        {
+            var timeline = new Timeline(1f);
+            var replay = 0;
+            var inserted = 0;
+            var future = 0;
+            timeline.AddPointEvent(0.2f, _ => replay++);
+            timeline.AddPointEvent(0.8f, _ => future++);
+
+            timeline.Restart();
+            timeline.OnUpdate(0.5f); // ctx 0
+            timeline.OnUpdate(0.2f); // ctx 0.5 → 触发 0.2
+            Assert.AreEqual(1, replay);
+
+            timeline.AddPointEvent(0.1f, _ => inserted++);
+            for (var i = 0; i < 10; i++)
+                timeline.OnUpdate(0.1f);
+
+            Assert.AreEqual(1, replay, "已执行的点事件不应重放");
+            Assert.AreEqual(0, inserted, "已越过时刻的新增事件不应补触发");
+            Assert.AreEqual(1, future);
+        }
+
+        [Test]
+        public void PointExecutor_AddEvents_MergesWithExisting()
+        {
+            var executor = new PointEventsExecutor();
+            var first = new TestPointEvent(0.2f);
+            var second = new TestPointEvent(0.8f);
+
+            executor.AddEvents(new ITimelineEvent[] { first });
+            executor.AddEvents(new ITimelineEvent[] { second });
+
+            executor.Execute(Ctx(0.5f));
+            Assert.AreEqual(1, first.Executed);
+            Assert.AreEqual(0, second.Executed);
+
+            executor.Execute(Ctx(0.9f));
+            Assert.AreEqual(1, second.Executed);
+        }
+
+        [Test]
+        public void RangeExecutor_RemoveEvent_OnEmpty_DoesNotThrow_AndRemoveEventsRemoves()
+        {
+            var executor = new RangeEventsExecutor();
+            var evt = new TestRangeEvent(0f, 1f);
+            Assert.IsFalse(executor.RemoveEvent(evt), "空执行器删除不应抛异常");
+
+            var other = new TestRangeEvent(0f, 1f);
+            executor.AddEvents(new ITimelineEvent[] { evt, other });
+            Assert.AreEqual(1, (int)executor.RemoveEvents(new ITimelineEvent[] { evt }));
+
+            executor.Execute(Ctx(0.5f));
+            Assert.AreEqual(0, evt.Executed);
+            Assert.AreEqual(1, other.Executed);
+        }
+
+        static TimelineContext Ctx(float normalized) => new TimelineContext
+        {
+            Time = normalized,
+            Duration = 1f,
+            NormalizedTime = normalized,
+            DeltaTime = 0.1f,
+        };
+
+        class TestPointEvent : PointEvent
+        {
+            public int Executed;
+            public TestPointEvent(float proportion) : base(proportion) { }
+            public override void Execute(TimelineContext context) => Executed++;
+        }
+
+        class TestRangeEvent : RangeEvent
+        {
+            public int Executed;
+            public TestRangeEvent(float triggerProportion, float durationProportion)
+                : base(durationProportion, triggerProportion) { }
+            public override void Execute(TimelineContext context) => Executed++;
         }
     }
 }

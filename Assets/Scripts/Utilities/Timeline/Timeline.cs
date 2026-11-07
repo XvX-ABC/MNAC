@@ -3,7 +3,6 @@ using MNAC.Utilities.Timeline.Events;
 using MNAC.Utilities.Timeline.Events.Point;
 using MNAC.Utilities.Timeline.Events.Range;
 using UnityEngine;
-using UTime = UnityEngine.Time;
 
 namespace MNAC.Utilities.Timeline
 {
@@ -96,6 +95,7 @@ namespace MNAC.Utilities.Timeline
         internal bool isLoop;
         internal bool isRunning;
         internal bool startActionExecuted;
+        internal bool endActionExecuted;
 
         internal Action<TimelineContext> startAction;
         internal Action<float> updateAction;
@@ -106,7 +106,7 @@ namespace MNAC.Utilities.Timeline
         }
         public float NormalizedTime
         {
-            get => length == 0 ? 1 : time / length;
+            get => length <= 0f ? 1f : Mathf.Clamp01(time / length);
         }
         public bool IsRunning
         {
@@ -134,8 +134,8 @@ namespace MNAC.Utilities.Timeline
         }
         internal Timeline(Span<ITimelineEvent> events, IEventsExecutor[] executors, float length, bool isLoop, bool isRunning) : this(executors, length, isLoop, isRunning)
         {
-            if (events == null || events.Length == 0)
-                throw new ArgumentException("events");
+            if (events.Length == 0)
+                return;
             foreach (var evt in executors)
                 evt.AddEvents(events);
         }
@@ -150,10 +150,13 @@ namespace MNAC.Utilities.Timeline
         public virtual void Restart()
         {
             Reset();
+            time = 0f;
             isRunning = true;
         }
         public void Start()
         {
+            if (time >= length)
+                Reset();
             isRunning = true;
         }
         public void Pause()
@@ -164,20 +167,32 @@ namespace MNAC.Utilities.Timeline
         {
             if (isLoop)
                 throw new NotSupportedException("The loop timeline was not supported early end.");
-            time = length;
-            OnUpdate(UTime.deltaTime);
+            if (time < length)
+                time = length;
+            isRunning = true;
+            OnUpdate(0f);
         }
         public void End()
         {
+            if (endActionExecuted)
+                return;
             isRunning = false;
-            var ctx = new TimelineContext() { DeltaTime = UTime.deltaTime, Time = time, NormalizedTime = length == 0 ? 1 : time / length, Duration = length };
+            endActionExecuted = true;
+            var ctx = new TimelineContext()
+            {
+                DeltaTime = 0f,
+                Time = time,
+                NormalizedTime = this.NormalizedTime,
+                Duration = length,
+            };
             endAction?.Invoke(ctx);
         }
         public virtual void OnUpdate(float deltaTime)
         {
             if (!isRunning)
                 return;
-            var context = new TimelineContext() { DeltaTime = deltaTime, Time = time, NormalizedTime = length == 0 ? 1 : time / length, Duration = length };
+            var normalized = NormalizedTime;
+            var context = new TimelineContext() { DeltaTime = deltaTime, Time = time, NormalizedTime = normalized, Duration = length };
 
             if (!startActionExecuted)
             {
@@ -185,14 +200,18 @@ namespace MNAC.Utilities.Timeline
                 startActionExecuted = true;
             }
 
-            updateAction?.Invoke(time / length);
+            updateAction?.Invoke(normalized);
             foreach (var executor in executors)
                 executor.Execute(context);
             if (time >= length)
             {
                 if (!isLoop)
                 {
-                    endAction?.Invoke(context);
+                    if (!endActionExecuted)
+                    {
+                        endActionExecuted = true;
+                        endAction?.Invoke(context);
+                    }
                     Pause();
                 }
                 else
@@ -216,6 +235,7 @@ namespace MNAC.Utilities.Timeline
                 time = 0;
             isRunning = isLoop & isRunning;
             startActionExecuted = false;
+            endActionExecuted = false;
             ResetExecutors();
         }
 
@@ -249,9 +269,14 @@ namespace MNAC.Utilities.Timeline
                 Debug.LogWarning("This timeline can't update length. because it's running right now.");
                 return false;
             }
-            if (newLength < 0)
-                Debug.LogWarning(new ArgumentException(nameof(newLength)));
+            if (newLength < 0f)
+            {
+                Debug.LogWarning($"Timeline length can't be negative: {newLength}");
+                return false;
+            }
             length = newLength;
+            if (time > length)
+                time = length;
             return true;
         }
         public bool SetTime(float time, bool runningCheck = true)

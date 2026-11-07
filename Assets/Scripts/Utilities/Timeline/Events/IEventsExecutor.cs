@@ -5,7 +5,7 @@ namespace MNAC.Utilities.Timeline.Events
 {
     public interface IEventsExecutor
     {
-        [Obsolete]
+        [Obsolete("Use AddEvents instead.")]
         public bool Initialize(Span<ITimelineEvent> events);
         public bool AddEvent(ITimelineEvent @event);
         public ushort AddEvents(Span<ITimelineEvent> events);

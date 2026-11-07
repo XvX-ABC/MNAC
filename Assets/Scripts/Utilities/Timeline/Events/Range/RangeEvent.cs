@@ -14,8 +14,7 @@ namespace MNAC.Utilities.Timeline.Events.Range
                 var proportion = context.NormalizedTime;
                 var startProportion = TriggeredProportion;
                 var endProportion = startProportion + DurationProportion;
-                //return proportion >= startProportion && proportion < endProportion;
-                return proportion > startProportion && proportion <= endProportion;
+                return proportion >= startProportion && proportion <= endProportion;
             };
             this.durationProportion = durationProportion;
             this.triggeredProportion = triggeredProportion;

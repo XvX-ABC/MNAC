@@ -26,6 +26,8 @@ namespace MNAC.Utilities.Timeline.Events.Range
                 throw new InvalidOperationException($"Can't to add the event, because the timeline is running now.");
             if (triggerProportion < 0 || triggerProportion > 1)
                 throw new ArgumentOutOfRangeException($"The trigger proportion must be in range of 0 and 1.");
+            if (durationProportion < 0)
+                throw new ArgumentOutOfRangeException(nameof(durationProportion), "The duration proportion can't be negative.");
             //if (timeline.IsRunning)
             //    throw new InvalidOperationException($"Can't to add the event, because the timeline is running now.");
             var evt = new RangeEventWrapper(action, durationProportion, triggerProportion);

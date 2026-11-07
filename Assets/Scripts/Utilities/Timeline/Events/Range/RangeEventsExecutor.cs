@@ -66,6 +66,7 @@ namespace MNAC.Utilities.Timeline.Events.Range
             else
                 _events = new InternalRangeEvent[1];
             _events[^1] = new() { Event = revt };
+            Array.Sort(_events, new Comparer());
             return true;
         }
         public ushort AddEvents(Span<ITimelineEvent> events)
@@ -87,7 +88,7 @@ namespace MNAC.Utilities.Timeline.Events.Range
         }
         public bool RemoveEvent(ITimelineEvent evt)
         {
-            if (evt == null || evt is not IRangeEvent revt)
+            if (_events == null || evt == null || evt is not IRangeEvent)
                 return false;
             var index = -1;
             for (var i = 0; i < _events.Length; i++)
@@ -98,29 +99,24 @@ namespace MNAC.Utilities.Timeline.Events.Range
             }
             if (index == -1)
                 return false;
-            Array.Copy(_events, index + 1, _events, index, _events.Length - index - 1);
+            if (index != _events.Length - 1)
+                Array.Copy(_events, index + 1, _events, index, _events.Length - index - 1);
             Array.Resize(ref _events, _events.Length - 1);
+            if (_events.Length == 0)
+                _events = null;
             return true;
         }
         public ushort RemoveEvents(Span<ITimelineEvent> events)
         {
-            if (events == null || events.Length == 0)
+            if (_events == null || events.Length == 0)
                 return 0;
-            var existenceCount = (ushort)0;
+            ushort removed = 0;
             foreach (var evt in events)
             {
-                var index = -1;
-                for (var i = 0; i < _events.Length; i++)
-                {
-                    var internalEvent = _events[i];
-                    if (internalEvent.Event == evt)
-                        index = i;
-                }
-                if (index == -1)
-                    continue;
-                existenceCount++;
+                if (RemoveEvent(evt))
+                    removed++;
             }
-            return existenceCount;
+            return removed;
         }
         public void Execute(TimelineContext context)
         {
