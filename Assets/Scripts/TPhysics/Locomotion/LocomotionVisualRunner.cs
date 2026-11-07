@@ -18,7 +18,7 @@ namespace MNAC.TPhysics.Locomotion
         [SerializeField]
         EnvironmentSettings environmentSettings = new EnvironmentSettings(Vector3.up, 45f, ~0, 1f);
 
-        [Tooltip("运动模块，列表顺序 = 执行顺序（面板里可视编辑）")]
+        [Tooltip("运动模块；运行时按 Priority 升序执行，同优先级保持此列表顺序（面板里可视编辑）")]
         [SerializeReference]
         List<ILocomotionModule> modules = new();
 
@@ -70,6 +70,20 @@ namespace MNAC.TPhysics.Locomotion
             _groundDetector.Position = targetRigidbody.position;
             _groundDetector.OnFixedUpdate();
             _core?.Update();
+        }
+
+        /// 选中对象时驱动各模块的调试绘制（模块默认空实现，只有覆写了才有输出）。
+        void OnDrawGizmosSelected()
+        {
+            if (_core == null)
+                return;
+            var modules = _core.Modules;
+            var context = _core.Context;
+            for (int i = 0; i < modules.Count; i++)
+            {
+                if (modules[i] is LocomotionModuleBase module)
+                    module.OnDrawGizmos(context);
+            }
         }
 
         void OnCollisionEnter(Collision collision)

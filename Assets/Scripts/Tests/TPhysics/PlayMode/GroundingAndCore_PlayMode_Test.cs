@@ -41,6 +41,29 @@ namespace MNAC.Tests.TPhysics.PlayMode
         }
     }
 
+    /// 在 Update 中尝试修改自身优先级（应被 LocomotionCore 拒绝并告警）。
+    class PriorityMutatingModule : SpyModule
+    {
+        public override MNAC.TPhysics.Locomotion.Context OnUpdate(MNAC.TPhysics.Locomotion.Context c)
+        {
+            Priority = 99;
+            return base.OnUpdate(c);
+        }
+    }
+
+    /// 在 Update 中尝试停用自身（应被 LocomotionCore 拒绝并告警）。
+    class ActivationMutatingModule : SpyModule
+    {
+        public LocomotionCore Core;
+        public bool DisableSucceeded;
+
+        public override MNAC.TPhysics.Locomotion.Context OnUpdate(MNAC.TPhysics.Locomotion.Context c)
+        {
+            DisableSucceeded = Core.DisableModule(this);
+            return base.OnUpdate(c);
+        }
+    }
+
     public class GroundingAndCore_PlayMode_Test
     {
         GameObject _floor;
@@ -94,6 +117,53 @@ namespace MNAC.Tests.TPhysics.PlayMode
         }
 
         [UnityTest]
+        public IEnumerator ActivationChange_DuringUpdate_IsRejectedWithWarning()
+        {
+            var go = new GameObject("Player");
+            var rb = go.AddComponent<Rigidbody>();
+            rb.useGravity = false;
+
+            var detector = new GroundDetector(45f, LayerMask.GetMask("Default"));
+            var core = new LocomotionCore(new MNAC.TPhysics.World(), rb, detector);
+
+            var module = new ActivationMutatingModule { Enabled = true, Core = core };
+            core.SetModules(new ILocomotionModule[] { module });
+
+            LogAssert.Expect(LogType.Warning, new System.Text.RegularExpressions.Regex("Update 期间不允许修改模块激活状态"));
+            core.Update(); // 第 1 拍：Start
+            core.Update(); // 第 2 拍：OnUpdate 尝试停用 → 警告并忽略
+
+            Assert.IsTrue(module.Enabled, "Update 期间不应改变激活状态");
+            Assert.IsFalse(module.DisableSucceeded, "DisableModule 应返回 false");
+
+            yield return null;
+            Object.Destroy(go);
+        }
+
+        [UnityTest]
+        public IEnumerator PriorityChange_DuringUpdate_IsRejectedWithWarning()
+        {
+            var go = new GameObject("Player");
+            var rb = go.AddComponent<Rigidbody>();
+            rb.useGravity = false;
+
+            var detector = new GroundDetector(45f, LayerMask.GetMask("Default"));
+            var core = new LocomotionCore(new MNAC.TPhysics.World(), rb, detector);
+
+            var module = new PriorityMutatingModule { Enabled = true };
+            core.SetModules(new ILocomotionModule[] { module });
+
+            LogAssert.Expect(LogType.Warning, new System.Text.RegularExpressions.Regex("Priority"));
+            core.Update(); // 第 1 拍：Start
+            core.Update(); // 第 2 拍：OnUpdate 尝试改优先级 → 警告并忽略
+
+            Assert.AreEqual(0, module.Priority, "Update 期间的优先级修改应被拒绝");
+
+            yield return null;
+            Object.Destroy(go);
+        }
+
+        [UnityTest]
         public IEnumerator CoreUpdate_AppliesModuleVelocity_AndLifecycleRuns()
         {
             var go = new GameObject("Player");
@@ -132,5 +202,6 @@ namespace MNAC.Tests.TPhysics.PlayMode
             yield return null;
             Object.Destroy(go);
         }
+
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine;
 namespace MNAC.Editor.TPhysics.Locomotion
 {
     /// <see cref="LocomotionVisualRunner"/> 的可视装配面板：模块清单增删/拖拽排序/启停 + 选中模块参数编辑。
-    /// 顺序即运行时执行顺序（LocomotionCore.SetModules 不做自动排序）。
+    /// 运行时按各模块 Priority 升序执行；列表顺序只决定同优先级模块之间的先后。
     [CustomEditor(typeof(LocomotionVisualRunner))]
     [CanEditMultipleObjects]
     public class LocomotionVisualRunnerEditor : UnityEditor.Editor
@@ -41,7 +41,7 @@ namespace MNAC.Editor.TPhysics.Locomotion
             EditorGUILayout.PropertyField(serializedObject.FindProperty("environmentSettings"), true);
 
             EditorGUILayout.Space(4f);
-            EditorGUILayout.LabelField("运动模块（顺序 = 执行顺序，勾选 = 启用）", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("运动模块（按 Priority 升序执行，同优先级按列表顺序；勾选 = 启用）", EditorStyles.boldLabel);
 
             if (_modulesList == null)
                 OnEnable();
@@ -82,7 +82,9 @@ namespace MNAC.Editor.TPhysics.Locomotion
         {
             var element = _modulesProp.GetArrayElementAtIndex(index);
             var module = element.managedReferenceValue as ILocomotionModule;
-            var typeName = module != null ? Nicify(module.GetType().Name) : "<null>";
+            var typeName = module != null
+                ? $"{Nicify(module.GetType().Name)}  (P{module.Priority})"
+                : "<null>";
 
             float toggleWidth = 18f;
             float removeWidth = 18f;

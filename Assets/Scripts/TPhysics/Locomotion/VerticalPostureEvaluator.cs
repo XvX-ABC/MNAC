@@ -5,7 +5,7 @@ namespace MNAC.TPhysics.Locomotion
 {
     /// 常开观察模块：把最近 <see cref="SampleQuantity"/> 帧速度（世界系）的竖直分量
     /// 均值分类为 Holding/Ascending/Descending，写入 Context.VerticalPosture。
-    /// 以普通模块形式插入模块链（SetModules 后置为启用），需要时排在行为模块之前。
+    /// 以普通模块形式插入模块链（SetModules 后置为启用），需要先于行为模块读取姿态时把 Priority 设得更小。
     [Serializable]
     public class VerticalPostureEvaluator : LocomotionModuleBase
     {
