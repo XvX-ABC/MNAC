@@ -2,7 +2,8 @@
     "name": "MNAC.Demo.TPhysics",
     "rootNamespace": "MNAC.Demo",
     "references": [
-        "MNAC.TPhysics"
+        "MNAC.TPhysics",
+        "MNAC.Interaction"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
