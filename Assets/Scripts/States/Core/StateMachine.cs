@@ -81,14 +81,26 @@ namespace MNAC.States
         {
             if (state == null)
                 throw new ArgumentNullException(nameof(state));
-            if (!states.Remove(state))
+            if (!states.Contains(state))
                 return false;
+            if (current == state)
+            {
+                try
+                {
+                    state.OnExit();
+                }
+                catch (Exception e)
+                {
+                    throw new StateExitException(state.Name, e);
+                }
+                if (current == state)
+                    current = null; // OnExit 内可能已经切到别的状态，不要覆盖
+            }
+            states.Remove(state);
             state.Context = default;
             transitions.RemoveAll(t => t.Source == state || t.Destination == state);
             if (initial == state)
                 initial = null;
-            if (current == state)
-                current = null;
             return true;
         }
 
@@ -170,15 +182,18 @@ namespace MNAC.States
                     throw new StateExitException(previous.Name, e);
                 }
             }
+            // 先提交 current 再 Enter：OnEnter 内可以安全读取 CurrentState；
+            // 若 Enter 失败则 current 置空，避免机器指向一个已经 Exit、却没有 Enter 成功的状态。
+            current = next;
             try
             {
                 next.OnEnter();
             }
             catch (Exception e)
             {
+                current = null;
                 throw new StateEnterException(next.Name, e);
             }
-            current = next;
         }
 
         // ---------- 每帧驱动 ----------
@@ -193,10 +208,26 @@ namespace MNAC.States
                 if (current == null)
                     return;
             }
-            var transition = Evaluate(current);
+            Transition<T> transition;
+            try
+            {
+                transition = Evaluate(current);
+            }
+            catch (Exception e)
+            {
+                throw new StateTransitionException(current?.Name, e);
+            }
             if (transition != null)
                 ApplyTransition(transition);
-            current?.OnUpdate(deltaTime);
+            var updating = current;
+            try
+            {
+                updating?.OnUpdate(deltaTime);
+            }
+            catch (Exception e)
+            {
+                throw new StateUpdateException(updating?.Name, e);
+            }
         }
 
         protected virtual void EnterInitialState()
@@ -230,11 +261,24 @@ namespace MNAC.States
         {
             if (transition.Destination == current)
             {
-                transition.OnTriggered?.Invoke(context);
+                InvokeTriggered(transition);
                 return;
             }
-            transition.OnTriggered?.Invoke(context);
+            InvokeTriggered(transition);
             ChangeState(transition.Destination);
+        }
+
+        /// <summary>执行 OnTriggered 回调，并把回调异常包装为转移异常。</summary>
+        protected void InvokeTriggered(Transition<T> transition)
+        {
+            try
+            {
+                transition.OnTriggered?.Invoke(context);
+            }
+            catch (Exception e)
+            {
+                throw new StateTransitionException(transition.Source.Name, e);
+            }
         }
 
         // ---------- 作为状态（嵌套） ----------

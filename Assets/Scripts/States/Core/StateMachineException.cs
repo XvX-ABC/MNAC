@@ -45,4 +45,13 @@ namespace MNAC.States
         {
         }
     }
+
+    /// <summary>转移触发/应用过程中抛出异常时包装，携带源状态名。</summary>
+    public class StateTransitionException : StateMachineException
+    {
+        public StateTransitionException(string stateName, Exception inner)
+            : base($"Exception thrown when evaluating/applying transitions from state '{stateName}': {inner?.Message}", inner)
+        {
+        }
+    }
 }

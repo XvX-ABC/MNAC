@@ -10,13 +10,14 @@ namespace MNAC.States
     /// <paramref name="fixedExitTime"/>（源状态播到指定归一化时刻强制触发）。
     /// 过渡开始时缩短目标 Timeline，目标退出时恢复原长度。
     /// </summary>
-    public class BlendingTransition<T> : PlayableTransition<T>
+    public class BlendingTransition<T> : PlayableTransition<T>, IInterruptiblePlayableTransition<T>
     {
         public const float FIXED_EXIT_TIME_INVALID_VALUE = -1f;
 
         protected readonly float offset;
         protected readonly float fixedExitTime;
         readonly IWithCallbackPlayableState<T> destinationState;
+        IWithCallbackPlayableState<T> shortenedState;
         ITimeline shortenedTimeline;
         float oldLength;
 
@@ -55,24 +56,55 @@ namespace MNAC.States
 
         protected virtual void Begin(TimelineContext ctx)
         {
-            // 锁定同一个 Timeline 实例：子状态机等场景中 destinationState.Timeline 会随 current 变化，
-            // 若在 Reset 时再动态取属性会恢复错对象。
-            shortenedTimeline = destinationState.Timeline;
+            // 过渡被重放/中断重配时，先把上一次的缩短恢复，避免把已缩短长度当成原始长度。
+            if (shortenedTimeline != null)
+                ResetDestinationState();
+
+            // destinationState 可能是状态机：Timeline 跟随 current 变化，
+            // 真正拥有该 Timeline 的是当前子状态，ExitAction 也必须订阅到它身上。
+            shortenedState = ResolveTimelineOwner();
+            shortenedTimeline = shortenedState.Timeline;
             if (shortenedTimeline == null)
+            {
+                shortenedState = null;
                 return;
+            }
             oldLength = shortenedTimeline.Length;
             var newLength = Mathf.Max(0f, oldLength - (offset + ctx.Duration));
             // runningCheck:false —— 修复旧库可能因目标 Timeline 正在运行而静默失效的问题
             shortenedTimeline.UpdateLength(newLength, runningCheck: false);
-            destinationState.ExitAction += ResetDestinationState;
+            shortenedState.ExitAction += ResetDestinationState;
         }
+
+        /// <summary>解析真正持有 Timeline 的状态：包装层取子状态，状态机取 current，普通状态取自身。</summary>
+        protected virtual IWithCallbackPlayableState<T> ResolveTimelineOwner()
+        {
+            if (destinationState is IPlayableStateTimelineOwner<T> owner && owner.TimelineOwner != null)
+                return owner.TimelineOwner;
+            if (destinationState is StateMachine<T> machine &&
+                machine.CurrentState is IWithCallbackPlayableState<T> currentState)
+                return currentState;
+            return destinationState;
+        }
+
+        /// <summary>仅当有活动缩短时恢复，供子类在切换状态前调用。</summary>
+        protected void ResetIfActive()
+        {
+            if (shortenedTimeline != null)
+                ResetDestinationState();
+        }
+
+        /// <summary>转移被中断时恢复目标 Timeline，避免缩短长度一直残留。</summary>
+        public void OnInterrupted() => ResetIfActive();
 
         protected virtual void ResetDestinationState()
         {
             if (shortenedTimeline != null)
                 shortenedTimeline.UpdateLength(oldLength, runningCheck: false);
+            if (shortenedState != null)
+                shortenedState.ExitAction -= ResetDestinationState;
             shortenedTimeline = null;
-            destinationState.ExitAction -= ResetDestinationState;
+            shortenedState = null;
         }
     }
 }

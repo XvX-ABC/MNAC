@@ -40,9 +40,25 @@ namespace MNAC.States
             /// <summary>Timeline 播完即完成。</summary>
             public bool IsComplete => timeline != null && timeline.NormalizedTime >= 1f;
 
-            /// <summary>用新转移重配置。重启 Timeline；中断时原地重指向，不重进 OnEnter。</summary>
+            /// <summary>结束当前过渡 Timeline（触发 End 回调并暂停），用于中断/外部切换。</summary>
+            public void EndCurrent()
+            {
+                if (timeline != null && timeline.IsRunning)
+                    timeline.End();
+            }
+
+            /// <summary>中断当前过渡：先清理转移自己申请的临时状态，再结束 Timeline。</summary>
+            public void InterruptCurrent()
+            {
+                if (!IsComplete && currentTransition is IInterruptiblePlayableTransition<T> interruptible)
+                    interruptible.OnInterrupted();
+                EndCurrent();
+            }
+
+            /// <summary>用新转移重配置。中断旧 Timeline；重启新 Timeline。</summary>
             public void Configure(PlayableStateMachine<T> owner, IPlayableTransition<T> transition)
             {
+                InterruptCurrent(); // 中断旧过渡时也要清理/结束，避免 Timeline 永远停在运行中
                 currentTransition = transition;
                 timeline = transition.Timeline;
                 name = $"{transition.Source.Name} -> {transition.Destination.Name}";
@@ -69,19 +85,41 @@ namespace MNAC.States
             {
                 foreach (var t in interruptTransitions)
                 {
-                    if (t.Destination.Enabled && t.IsTriggered)
-                        return t;
+                    try
+                    {
+                        if (t.Destination.Enabled && t.IsTriggered)
+                            return t;
+                    }
+                    catch (Exception e)
+                    {
+                        throw new StateTransitionException(t.Source.Name, e);
+                    }
                 }
                 return null;
             }
 
-            public override void OnEnter() => timeline?.Restart();
+            // Configure 已负责 Restart；这里再 Restart 会重复重置事件游标。
+            public override void OnEnter()
+            {
+            }
 
-            public override void OnUpdate(float deltaTime) => timeline?.OnUpdate(deltaTime);
+            public override void OnUpdate(float deltaTime)
+            {
+                timeline?.OnUpdate(deltaTime);
+                // Timeline 的 End 发生在其时间已经达到 length 的“下一次” OnUpdate；
+                // 而 IsComplete 用的是 NormalizedTime，会在同一帧先变 true。
+                // 这里补一拍把 End 冲出来，确保过渡的 End 回调不会被外层状态切换吞掉。
+                if (timeline != null && timeline.IsRunning && timeline.NormalizedTime >= 1f)
+                    timeline.OnUpdate(0f);
+            }
 
-            // 故意 no-op：End 事件由 Timeline 播完时触发，这里再 End 会二次触发
+            // 外部切换离开过渡状态时也要结束 Timeline；完成路径此时已 Pause，不会二次触发。
             public override void OnExit()
             {
+                if (!IsComplete)
+                    InterruptCurrent();
+                else
+                    EndCurrent();
             }
         }
 
@@ -132,10 +170,10 @@ namespace MNAC.States
         {
             if (transition.Destination == current)
             {
-                transition.OnTriggered?.Invoke(context);
+                InvokeTriggered(transition);
                 return;
             }
-            transition.OnTriggered?.Invoke(context);
+            InvokeTriggered(transition);
             if (transition is IPlayableTransition<T> playable && playable.Timeline != null)
             {
                 transitionState.Configure(this, playable);
@@ -153,32 +191,83 @@ namespace MNAC.States
                 return;
             if (current is TransitionState ts)
             {
-                ts.OnUpdate(deltaTime);
-                if (ts.IsComplete)
-                {
-                    // 完成优先于中断：过渡播完直接进入目标
-                    ChangeState(ts.CurrentTransition.Destination);
-                    current?.OnUpdate(deltaTime);
-                }
-                else if (ts.CheckInterruption() is Transition<T> interruption)
-                {
-                    ApplyInterruption(ts, interruption);
-                }
+                AdvanceTransition(ts, deltaTime);
                 return;
             }
+
             base.Update(deltaTime);
+
+            // base.Update 可能在本帧刚进入过渡状态（且已经推进过一次 delta）。
+            // 这里只处理“零时长过渡”的同帧完成，不再重复推进 delta。
+            if (current is TransitionState started)
+                CompleteTransitionIfDone(started);
+        }
+
+        void AdvanceTransition(TransitionState ts, float deltaTime)
+        {
+            try
+            {
+                ts.OnUpdate(deltaTime);
+            }
+            catch (Exception e)
+            {
+                throw new StateUpdateException(ts.Name, e);
+            }
+
+            if (ts.IsComplete)
+            {
+                CompleteTransitionIfDone(ts);
+                return;
+            }
+
+            if (ts.CheckInterruption() is Transition<T> interruption)
+                ApplyInterruption(ts, interruption);
+        }
+
+        void CompleteTransitionIfDone(TransitionState ts)
+        {
+            if (!ts.IsComplete)
+                return;
+            var destination = ts.CurrentTransition.Destination;
+            ChangeState(destination);
+            // 过渡已经消耗了本帧 delta，目标状态只做 0 时刻的进入回调，避免时间重复推进。
+            UpdateCurrent(0f);
+        }
+
+        void UpdateCurrent(float deltaTime)
+        {
+            var target = current;
+            try
+            {
+                target?.OnUpdate(deltaTime);
+            }
+            catch (Exception e)
+            {
+                throw new StateUpdateException(target?.Name, e);
+            }
         }
 
         void ApplyInterruption(TransitionState ts, Transition<T> interruption)
         {
-            interruption.OnTriggered?.Invoke(context);
+            InvokeTriggered(interruption);
             if (interruption is IPlayableTransition<T> playable && playable.Timeline != null)
             {
-                ts.Configure(this, playable);   // 原地重指向，新 Timeline 已 Restart
+                ts.Configure(this, playable);   // 结束旧 Timeline、重启新 Timeline
+                try
+                {
+                    ts.OnUpdate(0f);
+                }
+                catch (Exception e)
+                {
+                    throw new StateUpdateException(ts.Name, e);
+                }
+                CompleteTransitionIfDone(ts);
             }
             else
             {
-                ChangeState(interruption.Destination);   // 直切
+                ts.InterruptCurrent();          // 直切前清理/结束旧 Timeline
+                ChangeState(interruption.Destination);
+                UpdateCurrent(0f);
             }
         }
     }

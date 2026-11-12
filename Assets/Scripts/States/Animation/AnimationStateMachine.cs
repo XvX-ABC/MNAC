@@ -11,9 +11,15 @@ namespace MNAC.States
 
         public void OnAnimatorIK(int layerIndex)
         {
-            if (CurrentState == null)
+            if (!Enabled)
                 return;
-            CurrentState.OnAnimationIK(layerIndex);
+            if (current is AnimationStateMachine<T> nested)
+            {
+                nested.OnAnimatorIK(layerIndex);
+                return;
+            }
+            var state = current as AnimationStateBase<T>;
+            state?.OnAnimationIK(layerIndex);
         }
     }
 }

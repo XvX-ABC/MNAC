@@ -24,8 +24,15 @@ namespace MNAC.States
         public float FixedExitTime
         {
             get => enableFixedExit ? fixedExitTime : BlendingTransition<object>.FIXED_EXIT_TIME_INVALID_VALUE;
-            set => fixedExitTime = value;
+            set
+            {
+                fixedExitTime = value;
+                enableFixedExit = value != BlendingTransition<object>.FIXED_EXIT_TIME_INVALID_VALUE;
+            }
         }
+
+        /// <summary>是否启用 fixed exit（Inspector 可独立勾选）。</summary>
+        public bool EnableFixedExit { get => enableFixedExit; set => enableFixedExit = value; }
 
         public InterruptionMode InterruptionMode { get => interruptionMode; set => interruptionMode = value; }
     }

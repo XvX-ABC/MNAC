@@ -1,4 +1,5 @@
 using System;
+using MNAC.Utilities.Timeline;
 
 namespace MNAC.States
 {
@@ -6,7 +7,7 @@ namespace MNAC.States
     /// 可播放状态机状态：包装 <see cref="PlayableStateMachine{T}"/>，
     /// 生命周期与过渡回调全部转发。进入时确定性进入子机初始态。
     /// </summary>
-    public class PlayableStateMachineState<T> : WithCallbackPlayableState<T>
+    public class PlayableStateMachineState<T> : WithCallbackPlayableState<T>, IPlayableStateTimelineOwner<T>
     {
         readonly PlayableStateMachine<T> stateMachine;
 
@@ -16,10 +17,15 @@ namespace MNAC.States
             this.stateMachine = stateMachine ?? throw new ArgumentNullException(nameof(stateMachine));
         }
 
+        /// <summary>外层使用子机当前状态的 Timeline，保证 Blending 作用在真正的子状态上。</summary>
+        public override ITimeline Timeline => stateMachine.Timeline;
+
+        public IWithCallbackPlayableState<T> TimelineOwner => stateMachine.CurrentState as IWithCallbackPlayableState<T>;
+
         public override void OnEnter()
         {
             base.OnEnter();
-            stateMachine.OnEnter();
+            EnsureMachineEntered();
         }
 
         public override void OnUpdate(float deltaTime)
@@ -37,6 +43,7 @@ namespace MNAC.States
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<T> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
+            EnsureMachineEntered();
             stateMachine.FromPreviousStateTransitionBegin(currentTransition);
         }
 
@@ -68,6 +75,12 @@ namespace MNAC.States
         {
             base.ToNextStateTransitionEnd(currentTransition);
             stateMachine.ToNextStateTransitionEnd(currentTransition);
+        }
+
+        void EnsureMachineEntered()
+        {
+            if (stateMachine.CurrentState == null)
+                stateMachine.OnEnter();
         }
     }
 }

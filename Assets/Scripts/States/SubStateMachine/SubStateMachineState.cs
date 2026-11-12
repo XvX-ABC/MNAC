@@ -7,7 +7,7 @@ namespace MNAC.States
     /// 子状态机状态：包装一个 <see cref="WithCallbackPlayableStateMachine{T}"/>，
     /// 进入时把子机切到指定目标状态（targetState 需已注册到子机），并透传过渡回调。
     /// </summary>
-    public class SubStateMachineState<T> : WithCallbackPlayableState<T>
+    public class SubStateMachineState<T> : WithCallbackPlayableState<T>, IPlayableStateTimelineOwner<T>
     {
         readonly WithCallbackPlayableStateMachine<T> stateMachine;
         readonly IWithCallbackPlayableState<T> targetState;
@@ -21,12 +21,20 @@ namespace MNAC.States
         {
             this.stateMachine = stateMachine ?? throw new ArgumentNullException(nameof(stateMachine));
             this.targetState = targetState ?? throw new ArgumentNullException(nameof(targetState));
-            timeline = new Timeline(targetState.Timeline.Length);
+            if (!stateMachine.Contains(targetState))
+                throw new StateNotRegisteredException(targetState.Name);
+            timeline = new Timeline(targetState.Timeline?.Length ?? 0f);
         }
+
+        /// <summary>外层使用子机当前状态的 Timeline，而不是包装层那条独立 Timeline。</summary>
+        public override ITimeline Timeline => stateMachine.Timeline;
+
+        public IWithCallbackPlayableState<T> TimelineOwner => stateMachine.CurrentState as IWithCallbackPlayableState<T>;
 
         public override void OnEnter()
         {
             base.OnEnter();
+            EnsureMachineEntered();
             stateMachine.ChangeStateTo(targetState);
         }
 
@@ -45,6 +53,7 @@ namespace MNAC.States
         public override void FromPreviousStateTransitionBegin(IReadonlyPlayableTransition<T> currentTransition)
         {
             base.FromPreviousStateTransitionBegin(currentTransition);
+            EnsureMachineEntered();
             stateMachine.ChangeStateTo(targetState);
             stateMachine.FromPreviousStateTransitionBegin(currentTransition);
         }
@@ -77,6 +86,12 @@ namespace MNAC.States
         {
             base.ToNextStateTransitionEnd(currentTransition);
             stateMachine.ToNextStateTransitionEnd(currentTransition);
+        }
+
+        void EnsureMachineEntered()
+        {
+            if (stateMachine.CurrentState == null)
+                stateMachine.OnEnter();
         }
     }
 }

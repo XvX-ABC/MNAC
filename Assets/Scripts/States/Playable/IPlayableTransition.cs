@@ -19,4 +19,10 @@ namespace MNAC.States
         IState<T> Source { get; }
         IState<T> Destination { get; }
     }
+
+    /// <summary>可被中断的转移：中断时需要清理自己申请的临时状态（如 Blending 缩短的目标 Timeline）。</summary>
+    public interface IInterruptiblePlayableTransition<T> : IPlayableTransition<T>
+    {
+        void OnInterrupted();
+    }
 }

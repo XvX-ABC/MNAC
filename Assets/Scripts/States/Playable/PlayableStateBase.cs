@@ -30,7 +30,7 @@ namespace MNAC.States
             return new Timeline(duration);
         }
 
-        public ITimeline Timeline => timeline;
+        public virtual ITimeline Timeline => timeline;
 
         public override void OnEnter()
         {
