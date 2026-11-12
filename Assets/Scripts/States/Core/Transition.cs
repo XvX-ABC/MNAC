@@ -27,24 +27,34 @@ namespace MNAC.States
         /// <summary>触发成功时回调（携带 Context），在状态切换前调用。</summary>
         public Action<T> OnTriggered { get; set; }
 
+        /// <summary>上次求值是否有结果（仅调试/可视化读取，不参与状态机逻辑）。</summary>
+        public bool HasTriggerResult { get; private set; }
+
+        /// <summary>上次 <see cref="IsTriggered"/> 的求值结果，供调试器展示，避免重复调用委托。</summary>
+        public bool LastTriggerResult { get; private set; }
+
         /// <summary>只读触发条件列表。</summary>
         public IReadOnlyList<Func<bool>> Triggers => triggers;
 
         /// <summary>
         /// 是否满足触发条件。空条件列表 = 恒 true；多个条件 AND 短路求值。
+        /// 结果会缓存到 <see cref="LastTriggerResult"/>，调试器直接读取缓存，不重复调用委托。
         /// </summary>
         public bool IsTriggered
         {
             get
             {
-                if (triggers.Count == 0)
-                    return true;
+                var result = true;
                 foreach (var trigger in triggers)
                 {
-                    if (!trigger())
-                        return false;
+                    if (trigger())
+                        continue;
+                    result = false;
+                    break;
                 }
-                return true;
+                LastTriggerResult = result;
+                HasTriggerResult = true;
+                return result;
             }
         }
 
@@ -53,11 +63,15 @@ namespace MNAC.States
             if (trigger == null)
                 return;
             triggers.Add(trigger);
+            HasTriggerResult = false;
         }
 
         public bool RemoveTrigger(Func<bool> trigger)
         {
-            return trigger != null && triggers.Remove(trigger);
+            if (trigger == null || !triggers.Remove(trigger))
+                return false;
+            HasTriggerResult = false;
+            return true;
         }
 
         public bool ContainsTrigger(Func<bool> trigger)
@@ -67,7 +81,10 @@ namespace MNAC.States
 
         public void ClearTriggers()
         {
+            if (triggers.Count == 0)
+                return;
             triggers.Clear();
+            HasTriggerResult = false;
         }
     }
 }

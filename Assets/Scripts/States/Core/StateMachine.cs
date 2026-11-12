@@ -24,7 +24,7 @@ namespace MNAC.States
     /// 本类同时实现 <see cref="IState{T}"/>：作为状态被外层机器 AddState 嵌套，
     /// OnEnter 进入本机初始态、OnUpdate 推进本机、OnExit 退出当前子状态。
     /// </summary>
-    public class StateMachine<T> : IState<T>
+    public class StateMachine<T> : IState<T>, IStateMachineInspection
     {
         protected readonly List<IState<T>> states;
         protected readonly List<Transition<T>> transitions;
@@ -48,6 +48,12 @@ namespace MNAC.States
         public Guid Id => id;
         public virtual bool Enabled { get => enabled; set => enabled = value; }
         public IState<T> CurrentState => current;
+
+        /// <summary>只读状态列表（调试/工具用，运行时不要修改返回的列表）。</summary>
+        public IReadOnlyList<IState<T>> States => states;
+
+        /// <summary>只读转移列表（调试/工具用，运行时不要修改返回的列表）。</summary>
+        public IReadOnlyList<Transition<T>> Transitions => transitions;
 
         /// <summary>
         /// 共享上下文。赋值会广播给所有已注册状态（O(状态数)），建议在 AddState 前或 setup 期设置。
@@ -325,6 +331,62 @@ namespace MNAC.States
             return current == null
                 ? $"StateMachine '{name}' (no current state)"
                 : $"StateMachine '{name}' -> '{current.Name}'";
+        }
+
+        // ---------- 只读快照（Inspector / 调试工具） ----------
+
+        /// <summary>当前正在播放的过渡；基类没有过渡概念，默认 null。</summary>
+        protected virtual Transition<T> ActiveTransition => null;
+
+        bool IStateMachineInspection.Enabled => enabled;
+        string IStateMachineInspection.CurrentStateName => current?.Name;
+        bool IStateMachineInspection.IsTransitioning => ActiveTransition != null;
+
+        string IStateMachineInspection.ActiveTransitionSource => ActiveTransition?.Source?.Name;
+        string IStateMachineInspection.ActiveTransitionDestination => ActiveTransition?.Destination?.Name;
+
+        float IStateMachineInspection.ActiveTransitionProgress
+        {
+            get
+            {
+                if (ActiveTransition is IPlayableTransition<T> playable && playable.Timeline != null)
+                    return playable.Timeline.NormalizedTime;
+                return 0f;
+            }
+        }
+
+        IReadOnlyList<StateSnapshot> IStateMachineInspection.StateSnapshots => CreateStateSnapshots();
+        IReadOnlyList<TransitionSnapshot> IStateMachineInspection.TransitionSnapshots => CreateTransitionSnapshots();
+
+        List<StateSnapshot> CreateStateSnapshots()
+        {
+            var result = new List<StateSnapshot>(states.Count);
+            foreach (var state in states)
+                result.Add(new StateSnapshot(state.Name, state.GetType().Name, state.Enabled, state == current));
+            return result;
+        }
+
+        List<TransitionSnapshot> CreateTransitionSnapshots()
+        {
+            var active = ActiveTransition;
+            var result = new List<TransitionSnapshot>(transitions.Count);
+            foreach (var transition in transitions)
+            {
+                var playable = transition as IPlayableTransition<T>;
+                var timeline = playable?.Timeline;
+                var isActive = ReferenceEquals(transition, active);
+                result.Add(new TransitionSnapshot(
+                    transition.Source.Name,
+                    transition.Destination.Name,
+                    timeline?.Length ?? 0f,
+                    playable?.InterruptionMode ?? InterruptionMode.None,
+                    transition.Triggers.Count,
+                    transition.HasTriggerResult,
+                    transition.LastTriggerResult,
+                    isActive,
+                    isActive ? timeline?.NormalizedTime ?? 0f : 0f));
+            }
+            return result;
         }
     }
 }

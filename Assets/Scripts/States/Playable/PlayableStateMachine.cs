@@ -130,6 +130,10 @@ namespace MNAC.States
             transitionState = new TransitionState();
         }
 
+        /// <summary>当前正在播放的过渡；非过渡状态时为 null。只读，供 Inspector 展示。</summary>
+        protected override Transition<T> ActiveTransition =>
+            (current as TransitionState)?.CurrentTransition as Transition<T>;
+
         // 让继承自 Core 的 AddTransition(source, dest, trigger) 也产出可播放转移（零时长）
         protected override Transition<T> CreateTransition(IState<T> source, IState<T> destination, Func<bool> trigger)
         {
