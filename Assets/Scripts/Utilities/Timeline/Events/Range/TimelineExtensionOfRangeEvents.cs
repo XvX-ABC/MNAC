@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using MNAC.Utilities.Timeline.Events.Point;
 
@@ -22,17 +22,19 @@ namespace MNAC.Utilities.Timeline.Events.Range
         }
         public static ITimelineEvent AddRangeEvent(this ITimeline timeline, float triggerProportion, float durationProportion, Action<TimelineContext> action)
         {
+            if (timeline == null)
+                throw new ArgumentNullException(nameof(timeline));
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
             if (timeline.IsRunning)
                 throw new InvalidOperationException($"Can't to add the event, because the timeline is running now.");
             if (triggerProportion < 0 || triggerProportion > 1)
                 throw new ArgumentOutOfRangeException($"The trigger proportion must be in range of 0 and 1.");
             if (durationProportion < 0)
                 throw new ArgumentOutOfRangeException(nameof(durationProportion), "The duration proportion can't be negative.");
-            //if (timeline.IsRunning)
-            //    throw new InvalidOperationException($"Can't to add the event, because the timeline is running now.");
             var evt = new RangeEventWrapper(action, durationProportion, triggerProportion);
             if (!timeline.AddEvent(evt))
-                throw new NotSupportedEventTypeException($"Doesn't exist a events executor is support the 'IPointEvent' event type in the timeline.");
+                throw new NotSupportedEventTypeException($"Doesn't exist a events executor is support the 'IRangeEvent' event type in the timeline.");
             return evt;
         }
         public static bool RemoveRangeEvent(this ITimeline timeline, ITimelineEvent evt)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using MNAC.Utilities.Timeline.Events;
 using MNAC.Utilities.Timeline.Events.Point;
 using MNAC.Utilities.Timeline.Events.Range;
@@ -155,7 +155,9 @@ namespace MNAC.Utilities.Timeline
         }
         public void Start()
         {
-            if (time >= length)
+            // End()/EndEarly() 或自然播完后 endActionExecuted 会保持 true；
+            // 此时 Start 视为开始新一轮，而不是从半途续跑（否则 End 将永远不再触发）。
+            if (endActionExecuted || time >= length)
                 Reset();
             isRunning = true;
         }
@@ -167,6 +169,8 @@ namespace MNAC.Utilities.Timeline
         {
             if (isLoop)
                 throw new NotSupportedException("The loop timeline was not supported early end.");
+            if (endActionExecuted)
+                return; // 已经结束过：不要重复触发 UpdateAction / 事件
             if (time < length)
                 time = length;
             isRunning = true;
@@ -230,7 +234,7 @@ namespace MNAC.Utilities.Timeline
         public virtual void Reset()
         {
             if (isLoop && time >= length)
-                time -= length;
+                time = length > 0f ? Mathf.Repeat(time, length) : 0f; // 大 delta 时一次取模，避免逐帧追帧
             else
                 time = 0;
             isRunning = isLoop & isRunning;

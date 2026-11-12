@@ -107,6 +107,22 @@ namespace MNAC.Tests.TPhysics
         }
 
         [Test]
+        public void LoopTimeline_LargeDelta_ResyncsInOneWrap()
+        {
+            var timeline = new Timeline(1f, isLoop: true);
+            var starts = 0;
+            timeline.StartAction += _ => starts++;
+
+            timeline.Restart();
+            timeline.OnUpdate(3.5f); // 一次跨过 3 个循环
+            timeline.OnUpdate(0f);   // 应一次取模回到 [0, 1)
+
+            Assert.IsTrue(timeline.IsRunning);
+            Assert.AreEqual(0.5f, timeline.Time, 1e-4f, "大 delta 应一次取模，而不是逐帧追帧");
+            Assert.AreEqual(1, starts);
+        }
+
+        [Test]
         public void SetTimeAndNormalizedTime_Clamp_AndRejectWhileRunning()
         {
             var timeline = new Timeline(2f);
@@ -218,6 +234,48 @@ namespace MNAC.Tests.TPhysics
         }
 
         [Test]
+        public void Start_AfterEnd_ResetsAndCanEndAgain()
+        {
+            var timeline = new Timeline(1f);
+            var ends = 0;
+            timeline.EndAction += _ => ends++;
+
+            timeline.Restart();
+            timeline.OnUpdate(0.5f);
+            timeline.End();
+            Assert.AreEqual(1, ends);
+
+            timeline.Start();
+            Assert.AreEqual(0f, timeline.Time, 1e-5f, "End 后 Start 应开始新一轮");
+
+            timeline.OnUpdate(0.5f);
+            timeline.OnUpdate(0.5f);
+            timeline.OnUpdate(0f);
+
+            Assert.AreEqual(2, ends, "新一轮应能再次触发 End");
+        }
+
+        [Test]
+        public void EndEarly_AfterEnd_DoesNotReplayCallbacks()
+        {
+            var timeline = new Timeline(1f);
+            var ends = 0;
+            var updates = 0;
+            timeline.UpdateAction += _ => updates++;
+            timeline.EndAction += _ => ends++;
+
+            timeline.Restart();
+            timeline.OnUpdate(1.2f);
+            timeline.OnUpdate(0f);
+            Assert.AreEqual(2, updates);
+            Assert.AreEqual(1, ends);
+
+            timeline.EndEarly();
+            Assert.AreEqual(2, updates, "结束后 EndEarly 不应重复 UpdateAction");
+            Assert.AreEqual(1, ends, "结束后 EndEarly 不应重复 EndAction");
+        }
+
+        [Test]
         public void NormalizedTime_IsClamped_WhenDeltaOvershoots()
         {
             var timeline = new Timeline(1f);
@@ -243,6 +301,23 @@ namespace MNAC.Tests.TPhysics
             timeline.OnUpdate(0.1f);
 
             Assert.AreEqual(1, fired, "闭区间起点应包含归一化 0");
+        }
+
+        [Test]
+        public void RangeEvent_SkippedByLargeDelta_FiresOnce()
+        {
+            var timeline = new Timeline(1f);
+            var fired = 0;
+            timeline.AddRangeEvent(0.3f, 0.2f, _ => fired++);
+
+            timeline.Restart();
+            timeline.OnUpdate(0.25f); // 0 → 0.25
+            timeline.OnUpdate(0.4f);  // 0.25 → 0.65，整段跨过 [0.3, 0.5]
+            timeline.OnUpdate(0f);    // 在 0.65 处补一次
+
+            Assert.AreEqual(1, fired, "被整帧跨过的区间应至少触发一次");
+            timeline.OnUpdate(0f);
+            Assert.AreEqual(1, fired, "补触发后不应重复");
         }
 
         [Test]
@@ -281,6 +356,24 @@ namespace MNAC.Tests.TPhysics
 
             executor.Execute(Ctx(0.5f));
             Assert.AreEqual(1, first.Executed);
+            Assert.AreEqual(0, second.Executed);
+
+            executor.Execute(Ctx(0.9f));
+            Assert.AreEqual(1, second.Executed);
+        }
+
+        [Test]
+        public void RangeExecutor_AddEvents_MergesWithExisting()
+        {
+            var executor = new RangeEventsExecutor();
+            var first = new TestRangeEvent(0.2f, 0.1f);
+            var second = new TestRangeEvent(0.8f, 0.1f);
+
+            executor.AddEvents(new ITimelineEvent[] { first });
+            executor.AddEvents(new ITimelineEvent[] { second });
+
+            executor.Execute(Ctx(0.3f));
+            Assert.AreEqual(1, first.Executed, "第一次 AddEvents 的事件不应被覆盖");
             Assert.AreEqual(0, second.Executed);
 
             executor.Execute(Ctx(0.9f));

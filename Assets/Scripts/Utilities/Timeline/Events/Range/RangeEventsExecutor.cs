@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MNAC.Utilities.Timeline;
@@ -25,13 +25,33 @@ namespace MNAC.Utilities.Timeline.Events.Range
         {
             public IRangeEvent Event;
             public bool Triggered;
+            bool _hasEntered;
             public Func<TimelineContext, bool> Trigger { get => Event.Trigger; }
+
+            /// <summary>
+            /// 本帧是否应执行。除正常逐帧命中区间外，还处理“一帧跨过整个区间”的情况：
+            /// 若区间从未被执行过，则补一次，避免短窗口被整帧跳过。
+            /// </summary>
+            public bool ShouldExecute(float currentProportion)
+            {
+                if (Triggered)
+                    return false;
+                var start = Event.TriggeredProportion;
+                var end = start + Event.DurationProportion;
+                if (currentProportion < start)
+                    return false;
+                if (currentProportion <= end)
+                    return true;
+                return !_hasEntered; // 已经进入过则不再补，直接跨过才算漏掉
+            }
+
             public void UpdateTriggeredState(float currentProportion)
             {
                 Triggered = currentProportion >= Event.TriggeredProportion + Event.DurationProportion;
             }
             public void Execute(TimelineContext context)
             {
+                _hasEntered = true;
                 Event.Execute(context);
                 UpdateTriggeredState(context.NormalizedTime);
             }
@@ -39,6 +59,7 @@ namespace MNAC.Utilities.Timeline.Events.Range
             public void Reset()
             {
                 Triggered = false;
+                _hasEntered = false;
                 Event.Reset();
             }
         }
@@ -79,7 +100,10 @@ namespace MNAC.Utilities.Timeline.Events.Range
                     list.Add(new() { Event = revt });
             if (list.Count == 0)
                 return 0;
-            _events = list.OrderBy(evt => evt.Event.TriggeredProportion).ToArray();
+            _events = (_events ?? Array.Empty<InternalRangeEvent>())
+                .Concat(list)
+                .OrderBy(evt => evt.Event.TriggeredProportion)
+                .ToArray();
             return (ushort)list.Count;
         }
         public void RemoveAll()
@@ -127,7 +151,7 @@ namespace MNAC.Utilities.Timeline.Events.Range
             {
                 if (evt.Triggered)
                     continue;
-                if (evt.Trigger(context))
+                if (evt.ShouldExecute(currentProportion))
                     evt.Execute(context);
             }
         }
