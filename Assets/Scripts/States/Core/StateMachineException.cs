@@ -19,6 +19,24 @@ namespace MNAC.States
         }
     }
 
+    /// <summary>同一个 key 被注册给不同的状态。</summary>
+    public class DuplicateStateKeyException : StateMachineException
+    {
+        public DuplicateStateKeyException(string key)
+            : base($"State key '{key}' is already registered to another state.")
+        {
+        }
+    }
+
+    /// <summary>按 key 查找状态失败。</summary>
+    public class StateKeyNotFoundException : StateMachineException
+    {
+        public StateKeyNotFoundException(string key)
+            : base($"State key '{key}' is not registered in the state machine.")
+        {
+        }
+    }
+
     /// <summary>状态 OnExit 抛出异常时包装，携带状态名。</summary>
     public class StateExitException : StateMachineException
     {

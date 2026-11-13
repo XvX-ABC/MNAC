@@ -75,19 +75,19 @@ namespace MNAC.States
                 foreach (var t in owner.transitions)
                 {
                     // 只取目标状态上带触发条件的出边，避免无条件转移立即打断当前过渡
-                    if (t.Source == destination && t.Triggers.Count > 0)
+                    if (t.Source == destination && t.HasTriggerConditions)
                         interruptTransitions.Add(t);
                 }
             }
 
             /// <summary>返回第一条满足条件的中断转移（目标需 Enabled）。</summary>
-            public Transition<T> CheckInterruption()
+            public Transition<T> CheckInterruption(T context)
             {
                 foreach (var t in interruptTransitions)
                 {
                     try
                     {
-                        if (t.Destination.Enabled && t.IsTriggered)
+                        if (t.Destination.Enabled && t.Evaluate(context))
                             return t;
                     }
                     catch (Exception e)
@@ -224,7 +224,7 @@ namespace MNAC.States
                 return;
             }
 
-            if (ts.CheckInterruption() is Transition<T> interruption)
+            if (ts.CheckInterruption(context) is Transition<T> interruption)
                 ApplyInterruption(ts, interruption);
         }
 
