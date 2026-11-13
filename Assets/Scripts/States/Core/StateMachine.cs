@@ -20,6 +20,7 @@ namespace MNAC.States
     /// - 自转移（源==目标）统一 no-op，不触发切换。
     /// - 生命周期异常用 <see cref="StateExitException"/>/<see cref="StateEnterException"/>/<see cref="StateUpdateException"/> 包装并携带状态名。
     /// - <see cref="Update(float)"/> 显式传 deltaTime，可测、可支持 FixedUpdate。
+    /// - 状态可按稳定 key 注册（Blueprint 使用），旧的无 key AddState 保持兼容。
     ///
     /// 本类同时实现 <see cref="IState{T}"/>：作为状态被外层机器 AddState 嵌套，
     /// OnEnter 进入本机初始态、OnUpdate 推进本机、OnExit 退出当前子状态。
@@ -28,6 +29,7 @@ namespace MNAC.States
     {
         protected readonly List<IState<T>> states;
         protected readonly List<Transition<T>> transitions;
+        readonly Dictionary<string, IState<T>> statesByKey;
         protected readonly string name;
         protected readonly Guid id;
         protected bool enabled;
@@ -42,6 +44,7 @@ namespace MNAC.States
             this.enabled = enabled;
             states = new List<IState<T>>();
             transitions = new List<Transition<T>>();
+            statesByKey = new Dictionary<string, IState<T>>();
         }
 
         public virtual string Name => name;
@@ -54,6 +57,9 @@ namespace MNAC.States
 
         /// <summary>只读转移列表（调试/工具用，运行时不要修改返回的列表）。</summary>
         public IReadOnlyList<Transition<T>> Transitions => transitions;
+
+        /// <summary>key -> 状态映射（Blueprint 构建与调试用，运行时不要修改）。</summary>
+        public IReadOnlyDictionary<string, IState<T>> StatesByKey => statesByKey;
 
         /// <summary>
         /// 共享上下文。赋值会广播给所有已注册状态（O(状态数)），建议在 AddState 前或 setup 期设置。
@@ -82,6 +88,30 @@ namespace MNAC.States
             states.Add(state);
         }
 
+        /// <summary>
+        /// 以稳定 key 注册状态。key 在单台机器内唯一，一个状态实例只能挂一个 key。
+        /// Blueprint 依赖 key 解析转移端点。
+        /// </summary>
+        public void AddState(string key, IState<T> state)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentException("State key must be non-empty.", nameof(key));
+            if (state == null)
+                throw new ArgumentNullException(nameof(state));
+            if (statesByKey.TryGetValue(key, out var existing))
+            {
+                if (ReferenceEquals(existing, state))
+                    return;
+                throw new DuplicateStateKeyException(key);
+            }
+            if (states.Contains(state))
+                throw new StateMachineException(
+                    $"State '{state.Name}' is already registered; a state can only have one key.");
+
+            AddState(state);
+            statesByKey.Add(key, state);
+        }
+
         /// <summary>移除状态，并清理所有以它为源或目标的转移。</summary>
         public bool RemoveState(IState<T> state)
         {
@@ -105,12 +135,42 @@ namespace MNAC.States
             states.Remove(state);
             state.Context = default;
             transitions.RemoveAll(t => t.Source == state || t.Destination == state);
+            RemoveKeysFor(state);
             if (initial == state)
                 initial = null;
             return true;
         }
 
+        void RemoveKeysFor(IState<T> state)
+        {
+            List<string> keys = null;
+            foreach (var pair in statesByKey)
+            {
+                if (!ReferenceEquals(pair.Value, state))
+                    continue;
+                (keys ??= new List<string>()).Add(pair.Key);
+            }
+            if (keys == null)
+                return;
+            foreach (var key in keys)
+                statesByKey.Remove(key);
+        }
+
         public bool Contains(IState<T> state) => state != null && states.Contains(state);
+
+        /// <summary>按 key 查找状态；找不到返回 null。</summary>
+        public IState<T> FindState(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+                return null;
+            return statesByKey.TryGetValue(key, out var state) ? state : null;
+        }
+
+        /// <summary>按 key 查找状态；找不到抛 <see cref="StateKeyNotFoundException"/>。</summary>
+        public IState<T> GetState(string key)
+        {
+            return FindState(key) ?? throw new StateKeyNotFoundException(key);
+        }
 
         /// <summary>显式设置初始状态（首个 Update 时进入）。未设置则取首个 AddState 的状态。</summary>
         public void SetInitialState(IState<T> state)
@@ -121,6 +181,9 @@ namespace MNAC.States
                 throw new StateNotRegisteredException(state.Name);
             initial = state;
         }
+
+        /// <summary>按 key 设置初始状态。</summary>
+        public void SetInitialState(string key) => SetInitialState(GetState(key));
 
         // ---------- 转移注册 ----------
 
@@ -138,6 +201,9 @@ namespace MNAC.States
         {
             return new Transition<T>(source, destination, trigger);
         }
+
+        /// <summary>注册已构造的转移（Blueprint / Playable 层构造完成后调用）。</summary>
+        public void AddTransition(Transition<T> transition) => RegisterTransition(transition);
 
         /// <summary>注册已构造的转移（Playable 层构造完成后调用）。</summary>
         protected void RegisterTransition(Transition<T> transition)
@@ -159,6 +225,9 @@ namespace MNAC.States
 
         /// <summary>显式切换到某状态；已在当前状态则 no-op。</summary>
         public void ChangeStateTo(IState<T> state) => ChangeState(state);
+
+        /// <summary>按 key 显式切换状态。</summary>
+        public void ChangeStateTo(string key) => ChangeStateTo(GetState(key));
 
         protected virtual void ChangeState(IState<T> next)
         {
@@ -256,7 +325,7 @@ namespace MNAC.States
                     continue;
                 if (!transition.Destination.Enabled)
                     continue;
-                if (transition.IsTriggered)
+                if (transition.Evaluate(context))
                     return transition;
             }
             return null;
@@ -380,7 +449,7 @@ namespace MNAC.States
                     transition.Destination.Name,
                     timeline?.Length ?? 0f,
                     playable?.InterruptionMode ?? InterruptionMode.None,
-                    transition.Triggers.Count,
+                    transition.TriggerCount,
                     transition.HasTriggerResult,
                     transition.LastTriggerResult,
                     isActive,

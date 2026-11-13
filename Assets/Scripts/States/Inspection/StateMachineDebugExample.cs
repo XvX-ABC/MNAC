@@ -3,21 +3,21 @@ using UnityEngine;
 namespace MNAC.States
 {
     /// <summary>
-    /// 转移矩阵 Inspector 的示例宿主：自动构建一个小型 Playable 状态机，
+    /// 转移矩阵 Inspector 的示例宿主：用 <see cref="PlayableStateMachineBlueprint{T}"/>
+    /// 描述状态图，运行时 Build 出一台 Playable 状态机。
     /// 挂到任意 GameObject 上即可在 Inspector 中看到矩阵和过渡进度。
-    /// 正式项目请按同样的方式实现自己的 StateMachineHost。
     /// </summary>
     [AddComponentMenu("MNAC/States/State Machine Debug Example")]
     public sealed class StateMachineDebugExample : StateMachineHost
     {
-        sealed class ExampleState : PlayableStateBase
+        sealed class ExampleState : PlayableStateBase<object>
         {
             public ExampleState(string name, float duration) : base(name, duration)
             {
             }
         }
 
-        PlayableStateMachine machine;
+        PlayableStateMachine<object> machine;
 
         public override IStateMachineInspection Inspection
         {
@@ -44,26 +44,21 @@ namespace MNAC.States
             if (machine != null)
                 return;
 
-            machine = new PlayableStateMachine("Example");
-            var idle = new ExampleState("Idle", 1f);
-            var run = new ExampleState("Run", 1.2f);
-            var jump = new ExampleState("Jump", 0.15f);
-            var fall = new ExampleState("Fall", 0.2f);
-            var land = new ExampleState("Land", 0.3f);
+            var blueprint = new PlayableStateMachineBlueprint<object>("Example")
+                .State("Idle", () => new ExampleState("Idle", 1f))
+                .State("Run", () => new ExampleState("Run", 1.2f))
+                .State("Jump", () => new ExampleState("Jump", 0.15f))
+                .State("Fall", () => new ExampleState("Fall", 0.2f))
+                .State("Land", () => new ExampleState("Land", 0.3f))
+                .Entry("Idle")
+                .PlayableTransition("Idle", "Run", 0.15f, _ => Time.time % 6f > 1f)
+                .PlayableTransition("Run", "Jump", 0.10f, _ => Time.time % 6f > 2.5f)
+                .PlayableTransition("Jump", "Fall", 0.10f, _ => Time.time % 6f > 2.7f)
+                .PlayableTransition("Fall", "Land", 0.10f, _ => Time.time % 6f > 2.9f)
+                .PlayableTransition("Land", "Idle", 0.20f, _ => Time.time % 6f > 3.5f)
+                .PlayableTransition("Run", "Idle", 0.15f, _ => Time.time % 6f > 4.5f);
 
-            machine.AddState(idle);
-            machine.AddState(run);
-            machine.AddState(jump);
-            machine.AddState(fall);
-            machine.AddState(land);
-            machine.SetInitialState(idle);
-
-            machine.AddTransition(idle, run, 0.15f, () => Time.time % 6f > 1f);
-            machine.AddTransition(run, jump, 0.10f, () => Time.time % 6f > 2.5f);
-            machine.AddTransition(jump, fall, 0.10f, () => Time.time % 6f > 2.7f);
-            machine.AddTransition(fall, land, 0.10f, () => Time.time % 6f > 2.9f);
-            machine.AddTransition(land, idle, 0.20f, () => Time.time % 6f > 3.5f);
-            machine.AddTransition(run, idle, 0.15f, () => Time.time % 6f > 4.5f);
+            machine = blueprint.Build(null);
         }
     }
 }
